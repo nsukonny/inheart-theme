@@ -20,14 +20,13 @@ function ih_load_theme_dependencies(): void
 {
 	// Register theme menus.
 	register_nav_menus( [
-		'header_menu'	=> esc_html__( 'Header Menu', THEME_NAME ),
-		'footer_menu'	=> esc_html__( 'Footer Menu', THEME_NAME )
+		'header_menu'	=> esc_html__( 'Header Menu', 'inheart' ),
+		'footer_menu'	=> esc_html__( 'Footer Menu', 'inheart' )
 	] );
 
-	// Auto-generate ACF Flexible Content templates files.
-	require_once( 'theme-functions/acf-fc-templates-generator.php' );
-	// Please place all custom functions declarations in this file.
-	require_once( 'theme-functions/theme-functions.php' );
+	require_once( 'theme-functions/acf-fc-templates-generator.php' );	// Auto-generate ACF Flexible Content templates files.
+	require_once( 'theme-functions/theme-functions.php' );	// Please place all custom functions declarations in this file.
+	require_once( 'theme-functions/auth.php' );	// Authorization.
 }
 
 add_action( 'init', 'ih_init_theme' );
@@ -116,8 +115,9 @@ function ih_acf_init(): void
 add_action( 'wp_head', 'ih_js_vars_for_frontend' );
 /**
  * JS variables for frontend, such as AJAX URL. Available in JS via window.wpData object.
- *
  * @example window.wpData.ajaxUrl
+ *
+ * @return void
  */
 function ih_js_vars_for_frontend(): void
 {

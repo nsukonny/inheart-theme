@@ -33,7 +33,7 @@
 			echo " | $site_description";
 
 		if( $paged >= 2 || $page >= 2 )
-			echo ' | ' . sprintf( __( 'Page %s', THEME_NAME ), max( $paged, $page ) );
+			echo ' | ' . sprintf( __( 'Page %s', 'inheart' ), max( $paged, $page ) );
 		?>
 	</title>
 
