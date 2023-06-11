@@ -146,3 +146,99 @@ function ih_load_template_part( string $template_name, string $part_name = null,
 	return $tp;
 }
 
+/**
+ * Generate form field.
+ *
+ * @param array $args	name, class, value, label, type, label_class, choices, data_value.
+ * @return null|string
+ */
+function ih_generate_form_field( array $args ): ?string
+{
+	if( empty( $args ) || ! $args['name'] || ! $args['label'] ) return null;
+
+	$settings = [
+		'class'			=> 'input-dark',
+		'type'			=> 'text',
+		'label_class'	=> 'label-animated',
+		'choices'		=> [],
+		'value'			=> '',
+		'data_value'	=> ''
+	];
+	$settings = array_merge( $settings, $args );
+
+	switch( $settings['type'] ){
+		case 'checkbox':
+			return '<input
+				id="' . esc_attr( $settings['name'] ) . '"
+				name="' . esc_attr( $settings['name'] ) . '"
+				class="' . esc_attr( $settings['class'] ) . '"
+				type="' . esc_attr( $settings['type'] ) . '"
+			/>
+			<label for="' . esc_attr( $settings['name'] ) . '" class="' . esc_attr( $settings['label_class'] ) . '">'
+				. sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) .
+				'</label>';
+
+		case 'select':
+			$options = '';
+
+			if( ! empty( $settings['choices'] ) ){
+				foreach( $settings['choices'] as $key => $choice ){
+					$selected = $choice === $settings['value'] ? ' data-selected="1"' : '';
+					$options .= '<span data-value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $choice ) . '</span>';
+				}
+			}
+
+			return '<label class="' . esc_attr( $settings['label_class'] ) . '" data-for="' . esc_attr( $settings['name'] ) . '">
+				<input
+					type="text"
+					id="' . esc_attr( $settings['name'] ) . '"
+					name="' . esc_attr( $settings['name'] ) . '"
+					class="' . esc_attr( $settings['class'] ) . '"
+					value="' . esc_attr( $settings['value'] ) . '"
+					data-value="' . esc_attr( $settings['data_value'] ?: $settings['value'] ) . '"
+					disabled
+				/>
+				<span class="label-text">'
+				. sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) .
+				'</span>
+				<span class="select-options">
+					<span data-value="">' . sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) . '</span>'
+				. $options .
+				'</span>
+				<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M1 1L5 5L9 1" stroke="#CBCBCB"/>
+				</svg>
+				<span class="field-error hidden"></span>
+			</label>';
+
+		case 'date':
+			return '<label for="' . esc_attr( $settings['name'] ) . '" class="' . esc_attr( $settings['label_class'] ) . '">
+				<input
+					type="' . esc_attr( $settings['type'] ) . '"
+					id="' . esc_attr( $settings['name'] ) . '"
+					name="' . esc_attr( $settings['name'] ) . '"
+					class="' . esc_attr( $settings['class'] ) . '"
+					min="' . date( 'Y-m-d' ) . '"
+					value="' . esc_attr( $settings['value'] ) . '"
+				/>
+				<span class="label-text">'
+				. sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) .
+				'</span>
+				<span class="field-error hidden"></span>
+			</label>';
+
+		default:
+			return '<label for="' . esc_attr( $settings['name'] ) . '" class="' . esc_attr( $settings['label_class'] ) . '">
+				<input
+					type="' . esc_attr( $settings['type'] ) . '"
+					id="' . esc_attr( $settings['name'] ) . '"
+					name="' . esc_attr( $settings['name'] ) . '"
+					class="' . esc_attr( $settings['class'] ) . '"
+					value="' . esc_attr( $settings['value'] ) . '"
+				/>
+				<span class="label-text">' . sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) . '</span>
+				<span class="field-error hidden"></span>
+			</label>';
+	}
+}
+
