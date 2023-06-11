@@ -59,13 +59,14 @@ flush();
 $commands = array(
 	'echo $PWD',
 	'whoami',
+	'git clean  -d  -f .',
 	'git pull',
 	'git status',
-	'export COMPOSER_HOME="$HOME/.config/composer"; composer install',
-	'git submodule sync',
-	'git submodule update',
-	'git submodule status',
-	'test -e /usr/share/update-notifier/notify-reboot-required && echo "system restart required"',
+	//'export COMPOSER_HOME="$HOME/.config/composer"; composer install',
+	//'git submodule sync',
+	//'git submodule update',
+//	'git submodule status',
+//	'test -e /usr/share/update-notifier/notify-reboot-required && echo "system restart required"',
 );
 
 $output = "\n";
