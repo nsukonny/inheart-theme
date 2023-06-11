@@ -1,0 +1,28 @@
+@mixin container() {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	padding: 0 $container-padding;
+	margin: 0 auto;
+
+	@media (min-width: $md) {
+		max-width: $container-md
+	}
+
+	@media (min-width: $lg) {
+		max-width: $container-lg
+	}
+
+	@media (min-width: $xl) {
+		max-width: $container-xl
+	}
+}
+
+@mixin container-sm() {
+	@include container;
+	width: 100%;
+
+	@media (min-width: $xl) {
+		max-width: calc(1036px + $container-padding * 2)
+	}
+}

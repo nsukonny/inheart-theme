@@ -1,0 +1,89 @@
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+	font-family: $ff-title;
+	font-weight: $fw-semibold;
+	margin: 0 0 1rem
+}
+
+h1, .h1 {
+	font-size: 30px;
+	line-height: $lh-1;
+
+	@media (min-width: $sm) {
+		font-size: 60px;
+		line-height: 68px
+	}
+}
+
+h2, .h2 {
+	font-size: 26px;
+	line-height: $lh-2;
+
+	@media (min-width: $sm) {
+		font-size: 40px;
+		line-height: $lh-3
+	}
+}
+
+h3, .h3 {
+	font-size: 24px;
+	line-height: $lh-3;
+
+	@media (min-width: $sm) {
+		font-size: 30px;
+		line-height: $lh-5
+	}
+}
+
+h4, .h4 {
+	font-size: $fs-md;
+	line-height: $lh-4;
+
+	@media (min-width: $sm) {
+		font-size: 26px;
+		line-height: 35px
+	}
+}
+
+h5, .h5 {
+	font-size: $fs-sm
+}
+
+h6, .h6 {
+	font-size: $fs-xs
+}
+
+.title-lg {
+	font-size: 22px;
+	line-height: $lh-4;
+
+	@media (min-width: $sm) {
+		font-size: 24px
+	}
+}
+
+a {
+	display: inline-block;
+	text-decoration: underline;
+	transition: color ease-out $tr;
+
+	&:hover {
+		text-decoration: none
+	}
+}
+
+p {
+	margin-top: 0;
+
+	&:last-of-type {
+		margin-bottom: 0
+	}
+}
+
+b, strong {
+	font-weight: $fw-bold
+}
