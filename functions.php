@@ -60,6 +60,7 @@ function ih_inclusion_enqueue(): void
 		wp_dequeue_style( 'wp-block-library' );
 		wp_dequeue_style( 'wp-block-library-theme' );
 		wp_dequeue_style( 'wc-blocks-style' );
+		wp_dequeue_style( 'classic-theme-styles' );
 	}
 
 	// Styles.
