@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions and code definitions
+ * Functions and code definitions.
  *
  * @package Inheart
  */
