@@ -1,0 +1,16 @@
+// Theme components.
+@import 'components/fonts';
+@import 'components/vars';
+@import 'components/helpers';
+@import 'components/grid';
+@import 'components/typography';
+
+// Theme base styles.
+@import 'components/base';
+@import 'components/buttons';
+
+// Theme common styles.
+@import 'header/header';
+@import 'header/menu';
+@import 'footer/footer';
+@import 'footer/menu';

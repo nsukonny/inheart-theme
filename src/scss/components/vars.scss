@@ -1,0 +1,72 @@
+// Grid breakpoints.
+$xs	: 375px;
+$sm	: 480px;
+$md	: 768px;
+$lg	: 992px;
+$xl	: 1280px;
+
+// Container max-width.
+$container-md: 760px;
+$container-lg: 990px;
+$container-xl: 1280px;
+
+// Container padding.
+$container-padding: 16px;
+
+// Font families.
+$ff			: Arial, sans-serif;
+$ff-title	: Arial, sans-serif;
+
+// Font sizes.
+$fs-xs	: 12px;
+$fs-sm	: 14px;
+$fs-md	: 16px;
+$fs-lg	: 18px;
+$fs-xl	: 20px;
+
+// Font weights.
+$fw-light		: 300;
+$fw-regular		: 400;
+$fw-medium		: 500;
+$fw-semibold	: 600;
+$fw-bold		: 700;
+$fw-extrabold	: 800;
+$fw-black		: 900;
+
+// Line heights.
+$lh-base: 1.5;
+$lh-1	: 1.1;
+$lh-2	: 1.2;
+$lh-3	: 1.25;
+$lh-4	: 1.3;
+$lh-5	: 1.33;
+
+// Colors - primary.
+$white				: #FFFFFF;
+$bright-yellow		: #F7B941;
+$dark-yellow		: #C69A39;
+$red				: #C63939;
+$light-blue			: #C1E3FB;
+
+// Colors - Background.
+$very-dark-green	: #011C1A;
+$a-bit-blue-white	: #F7FBFC;
+
+// Colors - Grayscale.
+$black-for-text		: #2D2D2D;
+$dark-green			: #2D4443;
+$green				: #7E969B;
+$light-green		: #C3DAE2;
+$black				: #001211;
+
+// Colors - Error/Hint.
+$error-primary		: #D83B01;
+$error-secondary	: #E9C4B7;
+$success-primary	: #107C10;
+$success-secondary	: #CBE1C9;
+$try-again-primary	: #FFC80A;
+$try-again-secondary: #EADFB9;
+
+// Others.
+$tr		: 0.35s;
+$radius	: 5px;

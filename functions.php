@@ -1,148 +1,126 @@
 <?php
+
 /**
- * Functions and code definitions.
+ * Theme functions.
  *
- * @package Inheart
+ * @package WordPress
+ * @subpackage inheart
  */
 
-//TODO Накидал сюда кастомные типы постов которые мы использовали ранее что бы отобразить их в админке. Перенести можешь куда угодно
-$labels = array(
-    'name'          => __( 'Спогади', 'inheart' ),
-    'singular_name' => __( 'Спогади', 'inheart' ),
-    'add_new'       => __( 'Додати спогад', 'inheart' ),
-    'add_new_item'  => __( 'Додати новий спогад', 'inheart' ),
-    'edit_item'     => __( 'Редагувати', 'inheart' ),
-    'new_item'      => __( 'Новий спогад', 'inheart' ),
-    'all_item'      => __( 'Усі спогади', 'inheart' ),
-    'view_item'     => __( 'Дивитись', 'inheart' ),
-    'search_item'   => __( 'Пошук', 'inheart' ),
-    'menu_item'     => __( 'Спогади', 'inheart' ),
-);
+const THEME_NAME = 'inheart';
+define( 'THEME_URI', get_template_directory_uri() );
+define( 'THEME_DIR', get_template_directory() );
+define( 'THEME_VERSION', mt_rand() );
 
-$args = array(
-    'labels'             => $labels,
-    'public'             => true,
-    'publicly_queryable' => false,
-    'show_ui'            => true,
-    'hierarchical'       => false,
-    'menu_icon'          => 'dashicons-format-status',
-    'menu_position'      => 6,
-    'has_archive'        => true,
-    'show_in_rest'       => true,
-    'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
+add_action( 'after_setup_theme', 'ih_load_theme_dependencies' );
+/**
+ * Theme dependencies.
+ */
+function ih_load_theme_dependencies(): void
+{
+	// Register theme menus.
+	register_nav_menus( [
+		'header_menu'	=> esc_html__( 'Header Menu', THEME_NAME ),
+		'footer_menu'	=> esc_html__( 'Footer Menu', THEME_NAME )
+	] );
 
-register_post_type( 'memory', $args );
+	// Auto-generate ACF Flexible Content templates files.
+	require_once( 'theme-functions/acf-fc-templates-generator.php' );
+	// Please place all custom functions declarations in this file.
+	require_once( 'theme-functions/theme-functions.php' );
+}
 
+add_action( 'init', 'ih_init_theme' );
+/**
+ * Theme initialization.
+ */
+function ih_init_theme(): void
+{
+	// Remove extra styles and default SVG tags.
+	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+	remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
 
-$labels = array(
-    'name'          => __( 'Сторінка пам`яті', 'inheart' ),
-    'singular_name' => __( 'Сторінки пам`яті', 'inheart' ),
-    'add_new'       => __( 'Додати сторінку', 'inheart' ),
-    'add_new_item'  => __( 'Додати нову сторінку', 'inheart' ),
-    'edit_item'     => __( 'Редагувати', 'inheart' ),
-    'new_item'      => __( 'Нова сторінка', 'inheart' ),
-    'all_item'      => __( 'Усі сторінкі пам`яті', 'inheart' ),
-    'view_item'     => __( 'Дивитись', 'inheart' ),
-    'search_item'   => __( 'Пошук', 'inheart' ),
-    'menu_item'     => __( 'Сторінки пам`яті', 'inheart' ),
-);
+	// Enable post thumbnails.
+	add_theme_support( 'post-thumbnails' );
 
-$args = array(
-    'labels'             => $labels,
-    'public'             => true,
-    'publicly_queryable' => false,
-    'show_ui'            => true,
-    'hierarchical'       => false,
-    'menu_icon'          => 'dashicons-image-filter',
-    'menu_position'      => 6,
-    'has_archive'        => true,
-    'show_in_rest'       => true,
-    'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
+	// Custom image sizes.
+	// add_image_size( 'full-hd', 1920, 0, 1 );
 
-register_post_type( 'memory_page', $args );
+	require_once( 'theme-functions/custom-post-types.php' );
+}
 
-$labels = array(
-    'name'          => __( 'Промокоди', 'inheart' ),
-    'singular_name' => __( 'Промокоди', 'inheart' ),
-    'add_new'       => __( 'Додати промокод', 'inheart' ),
-    'add_new_item'  => __( 'Додати новий промокод', 'inheart' ),
-    'edit_item'     => __( 'Редагувати', 'inheart' ),
-    'new_item'      => __( 'Новий промокод', 'inheart' ),
-    'all_item'      => __( 'Усі промокоди', 'inheart' ),
-    'view_item'     => __( 'Дивитись', 'inheart' ),
-    'search_item'   => __( 'Пошук', 'inheart' ),
-    'menu_item'     => __( 'Промокоди', 'inheart' ),
-);
+add_action( 'wp_enqueue_scripts', 'ih_inclusion_enqueue' );
+/**
+ * Enqueue styles and scripts.
+ */
+function ih_inclusion_enqueue(): void
+{
+	// Remove Gutenberg styles on front-end.
+	if( ! is_admin() ){
+		wp_dequeue_style( 'wp-block-library' );
+		wp_dequeue_style( 'wp-block-library-theme' );
+		wp_dequeue_style( 'wc-blocks-style' );
+	}
 
-$args = array(
-    'labels'             => $labels,
-    'public'             => true,
-    'publicly_queryable' => false,
-    'show_ui'            => true,
-    'hierarchical'       => false,
-    'menu_icon'          => 'dashicons-tickets',
-    'menu_position'      => 6,
-    'has_archive'        => true,
-    'show_in_rest'       => true,
-    'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
+	// Styles.
+	wp_enqueue_style( 'main', THEME_URI . '/static/css/main.min.css', [], THEME_VERSION, 'all' );
 
-register_post_type( 'promocode', $args );
+	// Scripts.
+	wp_enqueue_script( 'scripts', THEME_URI . '/static/js/main.min.js', ['jquery'], THEME_VERSION, true );
+}
 
-$labels = array(
-    'name'          => __( 'Підписки', 'inheart' ),
-    'singular_name' => __( 'Підписки', 'inheart' ),
-    'add_new'       => __( 'Додати підписку', 'inheart' ),
-    'add_new_item'  => __( 'Додати нову підписку', 'inheart' ),
-    'edit_item'     => __( 'Редагувати', 'inheart' ),
-    'new_item'      => __( 'Нова підписка', 'inheart' ),
-    'all_item'      => __( 'Усі підписки', 'inheart' ),
-    'view_item'     => __( 'Дивитись', 'inheart' ),
-    'search_item'   => __( 'Пошук', 'inheart' ),
-    'menu_item'     => __( 'Підписки', 'inheart' ),
-);
+add_action( 'acf/init', 'ih_acf_init' );
+/**
+ * ACF add Theme Settings.
+ *
+ * @return void
+ */
+function ih_acf_init(): void
+{
+	$acf_parent_options = null;
 
-$args = array(
-    'labels'             => $labels,
-    'public'             => true,
-    'publicly_queryable' => false,
-    'show_ui'            => true,
-    'hierarchical'       => false,
-    'menu_icon'          => 'dashicons-editor-unlink',
-    'menu_position'      => 8,
-    'has_archive'        => true,
-    'show_in_rest'       => true,
-    'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
+	// Add ACF Options Page.
+	if( function_exists( 'acf_add_options_page' ) ){
+		$acf_parent_options = acf_add_options_page( [
+			'page_title' 	=> 'Theme Settings',
+			'menu_title'	=> 'Theme Settings',
+			'menu_slug' 	=> 'theme_settings',
+			'capability'	=> 'edit_posts',
+			'redirect'		=> true
+		] );
+	}
 
-register_post_type( 'subscription', $args );
+	// Options sub-pages.
+	if( function_exists( 'acf_add_options_sub_page' ) && $acf_parent_options ){
+		acf_add_options_sub_page( [
+			'page_title' 	=> __( 'Global' ),
+			'menu_title'	=> __( 'Global' ),
+			'parent_slug'	=> $acf_parent_options['menu_slug']
+		] );
 
-$labels = array(
-    'name'          => __( 'Плани підписки', 'inheart' ),
-    'singular_name' => __( 'План підписки', 'inheart' ),
-    'add_new'       => __( 'Додати план', 'inheart' ),
-    'add_new_item'  => __( 'Додати новий план', 'inheart' ),
-    'edit_item'     => __( 'Редагувати', 'inheart' ),
-    'new_item'      => __( 'Новий план', 'inheart' ),
-    'all_item'      => __( 'Усі плани', 'inheart' ),
-    'view_item'     => __( 'Дивитись', 'inheart' ),
-    'search_item'   => __( 'Пошук', 'inheart' ),
-    'menu_item'     => __( 'Плани підписки', 'inheart' ),
-);
+		acf_add_options_sub_page( [
+			'page_title' 	=> __( 'Header' ),
+			'menu_title'	=> __( 'Header' ),
+			'parent_slug'	=> $acf_parent_options['menu_slug']
+		] );
 
-$args = array(
-    'labels'             => $labels,
-    'public'             => true,
-    'publicly_queryable' => false,
-    'show_ui'            => true,
-    'hierarchical'       => false,
-    'menu_icon'          => 'dashicons-money-alt',
-    'menu_position'      => 7,
-    'has_archive'        => true,
-    'show_in_rest'       => true,
-    'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
+		acf_add_options_sub_page( [
+			'page_title' 	=> __( 'Footer' ),
+			'menu_title'	=> __( 'Footer' ),
+			'parent_slug'	=> $acf_parent_options['menu_slug']
+		] );
+	}
+}
 
-register_post_type( 'subscription_plan', $args );
+add_action( 'wp_head', 'ih_js_vars_for_frontend' );
+/**
+ * JS variables for frontend, such as AJAX URL. Available in JS via window.wpData object.
+ *
+ * @example window.wpData.ajaxUrl
+ */
+function ih_js_vars_for_frontend(): void
+{
+	$variables = ['ajaxUrl' => admin_url( 'admin-ajax.php' )];
+	echo '<script type="text/javascript">window.wpData = ' . json_encode( $variables ) . ';</script>';
+}
+

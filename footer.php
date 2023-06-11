@@ -1,15 +1,19 @@
 <?php
-/**
- * The template for displaying the footer
- *
- * @package Inheart
- */
 
+/**
+ * Footer default template.
+ *
+ * @see Options -> Footer.
+ *
+ * @package WordPress
+ * @subpackage inheart
+ */
 ?>
 
-<footer><?php _e('Footer is here', 'inheart'); ?></footer>
+			<footer class="footer">
+			</footer>
 
-<?php wp_footer(); ?>
-
-</body>
+			<?php wp_footer() ?>
+		</div><!-- .wrapper -->
+	</body>
 </html>
