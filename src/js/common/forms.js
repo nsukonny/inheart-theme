@@ -2,8 +2,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
 	togglePasswordVisibility()
+	hideFieldsErrors()
 } )
 
+/**
+ * Click on eye button to show/hide password symbols.
+ */
 const togglePasswordVisibility = () => {
 	const eyeButtons = document.querySelectorAll( '.pass-toggle' )
 
@@ -22,6 +26,38 @@ const togglePasswordVisibility = () => {
 				wrap.classList.add( 'pass-visible' )
 				passInput.type = 'text'
 			}
+		} )
+	} )
+}
+
+const hideFieldsErrors = () => {
+	const forms = document.querySelectorAll( 'form' )
+
+	if( ! forms.length ) return
+
+	forms.forEach( form => {
+		const
+			inputs	= form.querySelectorAll( 'input' ),
+			note	= form.querySelector( '.note' )
+
+		if( ! inputs.length ) return
+
+		inputs.forEach( input => {
+			const label = input.closest( 'label.label' )
+
+			const cleanInputError = () => {
+				if( input.required ){
+					if( ! input.value ) label.classList.add( 'error' )
+					else label.classList.remove( 'error' )
+				}	else{
+					label.classList.remove( 'error' )
+				}
+
+				note.classList.remove( 'note-error', 'note-success' )
+			}
+
+			input.addEventListener( 'change', cleanInputError )
+			input.addEventListener( 'keyup', cleanInputError )
 		} )
 	} )
 }

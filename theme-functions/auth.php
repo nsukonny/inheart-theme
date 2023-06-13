@@ -58,28 +58,18 @@ function ih_ajax_login(): void
 	// If data is not set - send error.
 	if( ! $login || ! $pass ){
 		if( ! $login )
-			$errors[] = [
-				'field'	=> 'email',
-				'error'	=> esc_html__( 'Please enter Email *', 'inheart' )
-			];
+			$errors[] = ['field' => 'email'];
 
 		if( ! $pass )
-			$errors[] = [
-				'field'	=> 'pass',
-				'error'	=> esc_html__( 'Please enter password *', 'inheart' )
-			];
+			$errors[] = ['field' => 'pass'];
 
-		wp_send_json_error( ['errors' => $errors] );
+		wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( 'Невірна пошта або пароль', 'inheart' )] );
 	}
 
 	// If this login or email was not found - user not exists, send error.
 	if( ! username_exists( $login ) && ! email_exists( $login ) ){
-		$errors[] = [
-			'field'	=> 'email',
-			'error'	=> esc_html__( 'This user does not exist', 'inheart' )
-		];
-
-		wp_send_json_error( ['errors' => $errors] );
+		$errors[] = ['field' => 'email'];
+		wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( 'Такий Користувач не існує', 'inheart' )] );
 	}
 
 	// If not success - trying to find user by email field.
@@ -87,7 +77,7 @@ function ih_ajax_login(): void
 		$user = get_user_by( 'email', $login );
 
 		// If fail again - user not found, send error.
-		if( ! $user ) wp_send_json_error( ['msg' => esc_html__( 'Error during user capture.', 'inheart' )] );
+		if( ! $user ) wp_send_json_error( ['msg' => esc_html__( 'Неможливо отримати цього Користувача', 'inheart' )] );
 	}
 
 	$user_id	= $user->ID;
@@ -96,20 +86,16 @@ function ih_ajax_login(): void
 
 	// If passwords are not equal - send error.
 	if( ! wp_check_password( $pass, $hash, $user_id ) ){
-		$errors[] = [
-			'field'	=> 'pass',
-			'error'	=> esc_html__( 'Invalid password', 'inheart' )
-		];
-
-		wp_send_json_error( ['errors' => $errors] );
+		$errors[] = ['field' => 'pass'];
+		wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( 'Невірний пароль', 'inheart' )] );
 	}
 
 	// Check if account is activated.
 	if( get_user_meta( $user_id, 'activation_code', true ) ){
 		$msg = '
-			Account is not activated.<br />
-			Please check your email Inbox or Spam folder.<br />
-			Or try to send activation link one more time <a href="' . get_the_permalink( 529 ) .  '?user=' . $user_id . '&code=fail">here</a>. 
+			Акаунт не активований.<br />
+			Будь ласка, перевірте свою пошту та розділ Спам.<br />
+			Або спробуйте надіслати посилання на активацію ще раз <a href="' . get_the_permalink( 529 ) .  '?user=' . $user_id . '&code=fail">тут</a>. 
 		';
 		wp_send_json_error( ['msg' => $msg] );
 	}
@@ -128,7 +114,7 @@ function ih_ajax_login(): void
 	wp_set_auth_cookie( $user_id );
 
 	wp_send_json_success( [
-		'msg'		=> sprintf( esc_html__( 'Hello, %s!', 'inheart' ), $user->display_name ),
+		'msg'		=> sprintf( esc_html__( 'Вітаємо, %s!', 'inheart' ), $user->display_name ),
 		'redirect'	=> $referer ?: home_url( '/' )
 	] );
 }

@@ -201,16 +201,20 @@ export const submitAuthForm = ( formSelector, action ) => {
 						if( res.data.redirect )
 							setTimeout( () => window.location.href = res.data.redirect, 1000 )
 
-						if( note ) note.innerHTML = res.data.msg
+						if( note ){
+							note.classList.add( 'note-success' )
+							note.innerHTML = res.data.msg
+						}
 
 						break
 
 					case false:
-						if( res.data.errors ){
-							showFormErrors( form, res.data.errors )
-						}	else {
-							if( note ) note.innerHTML = res.data.msg
+						if( note ){
+							note.classList.add( 'note-error' )
+							note.innerHTML = res.data.msg
 						}
+
+						if( res.data.errors ) showFormErrors( form, res.data.errors )
 
 						break
 				}

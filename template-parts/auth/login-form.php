@@ -17,12 +17,12 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 
 			<label for="email" class="label">
 				<span class="label-text"><?php esc_html_e( 'Ваша пошта', 'inheart' ) ?></span>
-				<input id="email" name="email" type="text" placeholder="<?php esc_html_e( 'Пошта', 'inheart' ) ?>" />
+				<input id="email" name="email" type="text" placeholder="<?php esc_html_e( 'Пошта', 'inheart' ) ?>" required />
 			</label>
 			<label for="pass" class="label">
 				<span class="label-text"><?php esc_html_e( 'Ваш пароль', 'inheart' ) ?></span>
 				<span class="pass-wrapper">
-					<input id="pass" name="pass" type="password" placeholder="<?php esc_html_e( 'Пароль', 'inheart' ) ?>" />
+					<input id="pass" name="pass" type="password" placeholder="<?php esc_html_e( 'Пароль', 'inheart' ) ?>" required />
 					<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-light.svg' ?>" alt="" />
 				</span>
 				<span class="lostpass-wrapper">
@@ -37,11 +37,10 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 		</fieldset>
 
 		<div class="form-submit">
+			<div class="note note-with-icon"></div>
 			<button class="btn lg primary full" type="submit">
 				<?php esc_html_e( 'Увійти', 'inheart' ) ?>
 			</button>
-
-			<div class="note"></div>
 		</div>
 	</form><!-- .form-login -->
 </div><!-- .form-login-wrapper -->

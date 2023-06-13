@@ -63,3 +63,37 @@
 .align-center {
 	align-items: center
 }
+
+.note-with-icon {
+	position: relative;
+	padding-left: 19px;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 0;
+		display: block;
+		width: 15px;
+		height: 14px;
+		background-size: 100%;
+		background-position: center
+	}
+
+	&.note-error {
+		color: $error-primary;
+
+		&::before {
+			background-image: url(../img/warning-red.svg)
+		}
+	}
+
+	&.note-success {
+		color: $success-primary;
+
+		&::before {
+			background-image: url(../img/check-green.svg)
+		}
+	}
+}

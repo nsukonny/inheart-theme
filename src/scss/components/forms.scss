@@ -18,7 +18,18 @@ legend.legend {
 
 label.label {
 	position: relative;
-	margin-bottom: 21px
+	margin-bottom: 21px;
+
+	&.error {
+		input {
+			&[type="text"],
+			&[type="password"],
+			&[type="email"] {
+				color: $error-primary;
+				border-color: $error-primary
+			}
+		}
+	}
 }
 
 .label-text {
@@ -87,5 +98,16 @@ input {
 }
 
 .form-submit {
-	padding-bottom: 19px
+	padding-bottom: 19px;
+	text-align: center
+}
+
+.note {
+	display: none;
+	font-size: $fs-sm;
+
+	&:not(:empty) {
+		display: inline-block;
+		margin-bottom: 20px
+	}
 }
