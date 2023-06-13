@@ -26,3 +26,40 @@
 		max-width: calc(1036px + $container-padding * 2)
 	}
 }
+
+@mixin container-fluid() {
+	@include container;
+	width: 100%;
+
+	@media (min-width: $md) {
+		max-width: 100%
+	}
+
+	@media (min-width: $lg) {
+		max-width: 100%
+	}
+
+	@media (min-width: $xl) {
+		max-width: 100%
+	}
+}
+
+.flex {
+	display: flex
+}
+
+.flex-wrap {
+	flex-wrap: wrap
+}
+
+.direction-column {
+	flex-direction: column
+}
+
+.justify-center {
+	justify-content: center
+}
+
+.align-center {
+	align-items: center
+}

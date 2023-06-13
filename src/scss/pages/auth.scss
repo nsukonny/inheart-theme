@@ -1,0 +1,52 @@
+@import '../components/vars';
+
+.main.login {
+	padding: 40px 0
+}
+
+.auth {
+	&-form {
+		width: 100%;
+		max-width: 370px;
+
+		&-wrapper {
+			width: 100%;
+
+			@media (min-width: $lg) {
+				width: 50%;
+				padding-left: 95px
+			}
+		}
+	}
+
+	&-illustration {
+		display: none;
+
+		@media (min-width: $lg) {
+			display: flex;
+			position: relative;
+			width: 50%;
+			background-color: $deep-green;
+			padding-left: 80px
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			transform: translateY(-100vh);
+			left: 0;
+			width: 50vw;
+			height: 200vh;
+			background-color: inherit
+		}
+
+		&-login {
+			.auth-illustration-inner {
+				position: relative;
+				width: 100%;
+				max-width: 490px
+			}
+		}
+	}
+}

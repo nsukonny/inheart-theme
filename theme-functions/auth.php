@@ -50,9 +50,8 @@ function ih_ajax_login(): void
 	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_login_nonce'], 'ih_ajax_login' ) )
 		wp_send_json_error( ['msg' => esc_html__( 'Invalid request data.', 'inheart' )] );
 
-	$login		= ih_clean( $_POST['form-login-email'] );
-	$pass		= str_replace( ' ', '', $_POST['form-login-pass'] );
-	$remember	= ( bool ) ih_clean( $_POST['remember-me'] );
+	$login		= ih_clean( $_POST['email'] );
+	$pass		= trim( str_replace( ' ', '', $_POST['pass'] ) );
 	$referer	= ih_clean( $_POST['referer'] );
 	$errors		= [];
 
@@ -60,13 +59,13 @@ function ih_ajax_login(): void
 	if( ! $login || ! $pass ){
 		if( ! $login )
 			$errors[] = [
-				'field'	=> 'form-login-email',
+				'field'	=> 'email',
 				'error'	=> esc_html__( 'Please enter Email *', 'inheart' )
 			];
 
 		if( ! $pass )
 			$errors[] = [
-				'field'	=> 'form-login-pass',
+				'field'	=> 'pass',
 				'error'	=> esc_html__( 'Please enter password *', 'inheart' )
 			];
 
@@ -76,7 +75,7 @@ function ih_ajax_login(): void
 	// If this login or email was not found - user not exists, send error.
 	if( ! username_exists( $login ) && ! email_exists( $login ) ){
 		$errors[] = [
-			'field'	=> 'form-login-email',
+			'field'	=> 'email',
 			'error'	=> esc_html__( 'This user does not exist', 'inheart' )
 		];
 
@@ -98,7 +97,7 @@ function ih_ajax_login(): void
 	// If passwords are not equal - send error.
 	if( ! wp_check_password( $pass, $hash, $user_id ) ){
 		$errors[] = [
-			'field'	=> 'form-login-pass',
+			'field'	=> 'pass',
 			'error'	=> esc_html__( 'Invalid password', 'inheart' )
 		];
 
@@ -118,8 +117,7 @@ function ih_ajax_login(): void
 	// If all is OK - trying to sign user on.
 	$credentials = [
 		'user_login'	=> $login,
-		'user_password'	=> $pass,
-		'remember'		=> $remember
+		'user_password'	=> $pass
 	];
 	$sign_on = wp_signon( $credentials, false );
 
@@ -127,7 +125,7 @@ function ih_ajax_login(): void
 	if( is_wp_error( $sign_on ) ) wp_send_json_error( ['msg' => $sign_on->get_error_message()] );
 
 	wp_set_current_user( $user_id );
-	wp_set_auth_cookie( $user_id, $remember );
+	wp_set_auth_cookie( $user_id );
 
 	wp_send_json_success( [
 		'msg'		=> sprintf( esc_html__( 'Hello, %s!', 'inheart' ), $user->display_name ),

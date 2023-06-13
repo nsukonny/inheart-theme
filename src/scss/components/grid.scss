@@ -1,6 +1,10 @@
 .container {
 	@include container;
 
+	&.fluid {
+		@include container-fluid
+	}
+
 	&.sm {
 		@include container-sm
 	}

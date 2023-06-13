@@ -8,6 +8,9 @@
  * @package WordPress
  * @subpackage inheart
  */
+
+$page_theme	= get_field( 'page_theme' ) ?: 'light';
+$logo_only	= get_field( 'logo_only' );
 ?>
 
 <!doctype html>
@@ -29,11 +32,9 @@
 		bloginfo( 'name' );
 		$site_description = get_bloginfo( 'description', 'display' );
 
-		if( $site_description && ( is_home() || is_front_page() ) )
-			echo " | $site_description";
+		if( $site_description && ( is_home() || is_front_page() ) ) echo " | $site_description";
 
-		if( $paged >= 2 || $page >= 2 )
-			echo ' | ' . sprintf( __( 'Page %s', 'inheart' ), max( $paged, $page ) );
+		if( $paged >= 2 || $page >= 2 ) echo ' | ' . sprintf( __( 'Page %s', 'inheart' ), max( $paged, $page ) );
 		?>
 	</title>
 
@@ -44,9 +45,11 @@
 	<?php wp_head() ?>
 </head>
 
-<body <?php body_class() ?>>
+<body <?php body_class( "theme-$page_theme" ) ?>>
 	<?php wp_body_open() ?>
 
 	<div class="wrapper">
-		<header class="header">
-		</header>
+		<?php
+		if( $logo_only ) get_template_part( 'template-parts/header/logo-only' );
+		else get_template_part( 'template-parts/header/full' );
+		?>

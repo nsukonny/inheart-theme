@@ -168,9 +168,8 @@ export const submitAjaxForm = ( formSelector, action ) => {
  *
  * @param {String}	formSelector	Specific form CSS-selector.
  * @param {String}	action			AJAX action name.
- * @param {String}	token			Google ReCaptcha v3 token.
  */
-export const submitAuthForm = ( formSelector, action, token = '' ) => {
+export const submitAuthForm = ( formSelector, action ) => {
 	const form = document.querySelector( formSelector )
 
 	if( ! form ) return
@@ -182,8 +181,8 @@ export const submitAuthForm = ( formSelector, action, token = '' ) => {
 
 		setAjaxWorkingStatus( true )
 
-		const note		= form.querySelector( '.note' ),
-			selects		= form.querySelectorAll( '.input-select' ),
+		const
+			note		= form.querySelector( '.note' ),
 			formData	= new FormData( form )
 
 		hideFormErrors( form )
@@ -192,9 +191,6 @@ export const submitAuthForm = ( formSelector, action, token = '' ) => {
 
 		form.classList.add( 'disabled' )
 		formData.append( 'action', action )
-		formData.append( 'token', token )
-
-		if( selects.length ) selects.forEach( select => formData.append( select.id, select.dataset.value ) )
 
 		ihAjaxRequest( formData ).then( res => {
 			form.classList.remove( 'disabled' )
@@ -207,7 +203,6 @@ export const submitAuthForm = ( formSelector, action, token = '' ) => {
 
 						if( note ) note.innerHTML = res.data.msg
 
-						form.reset()
 						break
 
 					case false:

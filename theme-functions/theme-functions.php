@@ -14,7 +14,7 @@
  * @param	mixed	$value	Some value to clean.
  * @return	string
  */
-function ih_clean( mixed $value ): string
+function ih_clean( $value ): string
 {
 	$value	= wp_unslash( $value );
 	$value	= trim( $value );

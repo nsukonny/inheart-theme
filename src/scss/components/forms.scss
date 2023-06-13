@@ -1,0 +1,91 @@
+fieldset {
+	border: none;
+	padding: 0;
+	margin: 0
+}
+
+legend.legend {
+	display: block;
+	width: 100%;
+	color: $white;
+	margin-bottom: 20px;
+	text-align: center;
+
+	@media (min-width: $lg) {
+		text-align: left
+	}
+}
+
+label.label {
+	position: relative;
+	margin-bottom: 21px
+}
+
+.label-text {
+	display: block;
+	font-size: $fs-sm;
+	color: $light-green;
+	padding: 0 16px 10px
+}
+
+input {
+	&[type="text"],
+	&[type="password"],
+	&[type="email"] {
+		width: 100%;
+		height: 48px;
+		font-size: $fs-md;
+		color: $white;
+		background-color: transparent;
+		border: 0.5px solid $white;
+		border-radius: $radius-input;
+		padding: 0 16px;
+		transition: border-color ease-out $tr;
+
+		&:active,
+		&:focus {
+			border-color: $bright-yellow
+		}
+	}
+
+	&::placeholder {
+		font-family: $ff;
+		font-size: $fs-md;
+		color: rgba(156, 180, 186, 0.51)
+	}
+}
+
+.pass-wrapper {
+	display: block;
+	position: relative
+}
+
+.pass-toggle {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 16px;
+	display: block;
+	width: 24px;
+	cursor: pointer;
+	transition: opacity ease-out $tr;
+
+	&:hover {
+		opacity: 0.7
+	}
+}
+
+.lostpass-wrapper {
+	display: block;
+	padding-right: 17px;
+	margin-top: 7px;
+	text-align: right;
+
+	a {
+		font-size: $fs-sm
+	}
+}
+
+.form-submit {
+	padding-bottom: 19px
+}
