@@ -43,7 +43,11 @@ const hideFieldsErrors = () => {
 		if( ! inputs.length ) return
 
 		inputs.forEach( input => {
-			const label = input.closest( 'label.label' )
+			const type = input.type
+
+			if( type === 'hidden' ) return
+
+			const label = input.closest( 'label.label' ) || input.closest( `.${ type }-wrapper` ).querySelector( 'label' )
 
 			const cleanInputError = () => {
 				if( input.required ){

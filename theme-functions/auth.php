@@ -48,7 +48,7 @@ function ih_ajax_login(): void
 {
 	// Verify hidden nonce field.
 	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_login_nonce'], 'ih_ajax_login' ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Invalid request data.', 'inheart' )] );
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	$login		= ih_clean( $_POST['email'] );
 	$pass		= trim( str_replace( ' ', '', $_POST['pass'] ) );
@@ -151,82 +151,61 @@ add_action( 'wp_ajax_nopriv_ih_ajax_register', 'ih_ajax_register' );
 function ih_ajax_register(): void
 {
 	if( ! get_option( 'users_can_register' ) )
-		wp_send_json_error( [
-			'msg' => esc_html__( 'User registration currently is unavailable, please try again later.', 'inheart' )
-		] );
+		wp_send_json_error( ['msg' => esc_html__( 'Реєстрація користувачів зараз неможлива, спробуйте пізніше', 'inheart' )] );
 
 	// Verify hidden nonce field.
 	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_register_nonce'], 'ih_ajax_register' ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Invalid request data.', 'inheart' )] );
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
-	$firstname		= ih_clean( $_POST['form-register-firstname'] );
-	$lastname		= ih_clean( $_POST['form-register-lastname'] );
-	$company		= ih_clean( $_POST['form-register-company'] );
-	$email			= ih_clean( $_POST['form-register-email'] );
-	$address1		= ih_clean( $_POST['form-register-billing-address-1'] );
-	$address2		= ih_clean( $_POST['form-register-billing-address-2'] );
-	$country		= ih_clean( $_POST['form-register-country'] );
-	$city			= ih_clean( $_POST['form-register-city'] );
-	$pass			= str_replace( ' ', '', trim( $_POST['form-register-pass'] ) );
-	$pass2			= str_replace( ' ', '', trim( $_POST['form-register-pass2'] ) );
+	$fullname		= ih_clean( $_POST['fullname'] );
+	$email			= ih_clean( $_POST['email'] );
+	$pass			= str_replace( ' ', '', trim( $_POST['pass'] ) );
+	$pass2			= str_replace( ' ', '', trim( $_POST['pass-confirm'] ) );
+	$agreement		= ih_clean( $_POST['agreement'] );
 	$errors			= [];
 
 	// If some of required data fields is not set - send error.
-	if(
-		! $firstname || ! $lastname || ! $company || ! $email
-		|| ! $address1 || ! $address2 || ! $country || ! $city
-		|| ! $pass || ! $pass2
-	){
-		ih_collect_errors( $errors, $firstname, 'form-register-firstname', 'Please enter first name *' );
-		ih_collect_errors( $errors, $lastname, 'form-register-lastname', 'Please enter last name *' );
-		ih_collect_errors( $errors, $company, 'form-register-company', 'Please enter company name *' );
-		ih_collect_errors( $errors, $email, 'form-register-email', 'Please enter Email *' );
-		ih_collect_errors( $errors, $address1, 'form-register-billing-address-1', 'Please enter street address *' );
-		ih_collect_errors( $errors, $address2, 'form-register-billing-address-2', 'Please enter apartment address *' );
-		ih_collect_errors( $errors, $country, 'form-register-country', 'Please enter country *' );
-		ih_collect_errors( $errors, $city, 'form-register-city', 'Please enter city *' );
-		ih_collect_errors( $errors, $pass, 'form-register-pass', 'Please enter password *' );
-		ih_collect_errors( $errors, $pass2, 'form-register-pass2', 'Please confirm password *' );
+	if( ! $fullname || ! $email || ! $pass || ! $pass2 || ! $agreement ) {
+		if ( ! $fullname ) $errors[] = ['field' => 'fullname'];
+		if ( ! $email ) $errors[] = ['field' => 'email'];
+		if ( ! $pass ) $errors[] = ['field' => 'pass'];
+		if ( ! $pass2 ) $errors[] = ['field' => 'pass-confirm'];
+		if ( ! $agreement ) $errors[] = ['field' => 'agreement'];
 
-		wp_send_json_error( ['errors' => $errors] );
+		wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( "Будь ласка, заповніть всі поля", 'inheart' )] );
 	}
 
 	// Additional checking.
-	ih_collect_errors( $errors, $firstname, 'form-register-firstname', 'Please enter from 1 to 50 symbols', ih_check_length( $firstname, 1, 50 ) );
-	ih_collect_errors( $errors, $lastname, 'form-register-lastname', 'Please enter from 1 to 50 symbols', ih_check_length( $lastname, 1, 50 ) );
-	ih_collect_errors( $errors, $company, 'form-register-company', 'Please enter from 1 to 100 symbols', ih_check_length( $company, 1, 100 ) );
-	ih_collect_errors( $errors, $email, 'form-register-email', 'Invalid Email format', filter_var( $email, FILTER_VALIDATE_EMAIL ) );
-	ih_collect_errors( $errors, $email, 'form-register-email', 'Please enter from 1 to 50 symbols', ih_check_length( $email, 1, 50 ) );
-	ih_collect_errors( $errors, $address1, 'form-register-billing-address-1', 'Please enter from 1 to 100 symbols', ih_check_length( $address1, 1, 100 ) );
-	ih_collect_errors( $errors, $address2, 'form-register-billing-address-2', 'Please enter from 1 to 100 symbols', ih_check_length( $address2, 1, 100 ) );
-	ih_collect_errors( $errors, $country, 'form-register-country', 'Please enter from 1 to 50 symbols', ih_check_length( $country, 1, 50 ) );
-	ih_collect_errors( $errors, $city, 'form-register-city', 'Please enter from 1 to 50 symbols', ih_check_length( $city, 1, 50 ) );
-	ih_collect_errors( $errors, $pass, 'form-register-pass', 'Please enter from 6 to 128 symbols', ih_check_length( $pass, 6, 128 ) );
-	ih_collect_errors( $errors, $pass2, 'form-register-pass2', 'Please enter from 6 to 128 symbols', ih_check_length( $pass2, 6, 128 ) );
+	if( ! ih_check_length( $fullname, 1, 50 ) ) $errors[] = ['field' => 'fullname'];
+	if( ! ih_check_length( $email, 1, 50 ) ) $errors[] = ['field' => 'email'];
+	if( ! empty( $errors ) ) wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( "Максимум 50 символів", 'inheart' )] );
 
-	if( ! empty( $errors ) ) wp_send_json_error( ['errors' => $errors] );
+	if( ! ih_check_name( $fullname ) ) wp_send_json_error( ['errors' => [['field' => 'fullname']], 'msg' => esc_html__( "Зайві символи у полі імені", 'inheart' )] );
+
+	if( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) )
+		wp_send_json_error( ['errors' => [['field' => 'email']], 'msg' => esc_html__( "Невірний формат пошти", 'inheart' )] );
+
+	if( ! ih_check_length( $pass, 8, 256 ) ) $errors[] = ['field' => 'pass'];
+	if( ! ih_check_length( $email, 8, 256 ) ) $errors[] = ['field' => 'pass-confirm'];
+	if( ! empty( $errors ) ) wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( "Від 8 до 256 символів", 'inheart' )] );
 
 	// Check passwords' equality.
 	if( $pass !== $pass2 ){
-		$errors[] = [
-			'field'	=> 'form-register-pass',
-			'error'	=> esc_html__( 'Passwords are not equal', 'inheart' )
-		];
-		$errors[] = [
-			'field'	=> 'form-register-pass2',
-			'error'	=> esc_html__( 'Passwords are not equal', 'inheart' )
-		];
-
-		wp_send_json_error( ['errors' => $errors] );
+		$errors = [ ['field' => 'pass'], ['field' => 'pass-confirm'] ];
+		wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( 'Паролі не однакові', 'inheart' )] );
 	}
+
+	$fullname = explode( ' ', $fullname, 2 );
+
+	if( count( $fullname ) < 2 ) wp_send_json_error( ['errors' => [['field' => 'fullname']], 'msg' => esc_html__( "Будь ласка, вкажіть ім'я та прізвище", 'inheart' )] );
 
 	// Data to create new User.
 	$login			= substr( $email, 0, strrpos( $email, '@' ) );
 	$new_user_id	= wp_insert_user( [
 		'user_login'			=> $login,
 		'user_email'			=> $email,
-		'first_name'			=> $firstname,
-		'last_name'				=> $lastname,
+		'first_name'			=> $fullname[0],
+		'last_name'				=> $fullname[1],
 		'show_admin_bar_front'	=> 'false'
 	] );
 
@@ -235,17 +214,10 @@ function ih_ajax_register(): void
 
 	// Set new User's password and meta fields.
 	wp_set_password( $pass, $new_user_id );
-	update_user_meta( $new_user_id, 'billing_first_name', $firstname );
-	update_user_meta( $new_user_id, 'billing_last_name', $lastname );
-	update_user_meta( $new_user_id, 'billing_company', $company );
-	update_user_meta( $new_user_id, 'billing_address_1', $address1 );
-	update_user_meta( $new_user_id, 'billing_address_2', $address2 );
-	update_user_meta( $new_user_id, 'billing_country', $country );
-	update_user_meta( $new_user_id, 'billing_city', $city );
 
 	// Account activation.
-	$code = sha1( $new_user_id . time() );
-	$link = home_url() . '/activate/?code=' . $code . '&user=' . $new_user_id;
+	$code   = sha1( $new_user_id . time() );
+	$link   = home_url() . '/activate/?code=' . $code . '&user=' . $new_user_id;
 	add_user_meta( $new_user_id, 'activation_code', $code, true );
 
 	/**
@@ -253,9 +225,10 @@ function ih_ajax_register(): void
 	 *
 	 * @see Theme Settings -> Email Templates -> New User Registered.
 	 */
+	$lifetime   = get_field( 'registration_link_lifetime', 'option' ) ?? 5;
 	$subject	= get_field( 'registered_subject', 'option' );
 	$msg		= get_field( 'registered_body', 'option' );
-	$msg		= str_replace( ['[user_login]', '[activation_url]'], [$login, $link], $msg );
+	$msg		= str_replace( ['[user_login]', '[activation_url]', '[registration_link_lifetime]'], [$login, $link, $lifetime], $msg );
 	$msg		= str_replace( ['https://https://', 'http://https://', 'http://http://'], ['https://', 'https://', 'http://'], $msg );
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
@@ -266,7 +239,7 @@ function ih_ajax_register(): void
 	if( ! $send )
 		wp_send_json_error( [
 			'msg' => sprintf(
-				esc_html__( 'New User %s registered successfully, but the letter with your account activation link was not sent to %s due to an unknown error.', 'inheart' ),
+				esc_html__( 'Новий Користувач %s зареєстрований, але лист з посиланням на активацію не відправлено на %s через невідому помилку.', 'inheart' ),
 				$login, $email
 			)
 		] );
@@ -275,26 +248,10 @@ function ih_ajax_register(): void
 	date_default_timezone_set( 'UTC' );
 	add_user_meta( $new_user_id, 'registration_date', time(), true );
 
-	// Success!
-	$code_lifetime = get_field( 'code_lifetime', 'option' ) ?? 5;
-
-	/**
-	 * @see Theme Settings -> Email Templates -> New User Registered.
-	 */
-	if( $success_message = get_field( 'registered_success_message', 'option' ) ){
-		$success_message = str_replace(
-			['[user_full_name]', '[user_email]', '[code_lifetime]'],
-			["$firstname $lastname", $email, $code_lifetime],
-			$success_message
-		);
-	}	else{
-		$success_message = sprintf(
-			esc_html__( 'Congratulations! New User %s registered successfully. The letter with your account activation link was sent to %s. Hurry up - the link will expire in %d minute(s)!', 'inheart' ),
-			$login, $email, $code_lifetime
-		);
-	}
-
-	wp_send_json_success( ['msg' => $success_message] );
+	wp_send_json_success( [
+		'msg'       => esc_html__( 'Успішно. Вітаємо!', 'inheart' ),
+		'redirect'	=> get_the_permalink( 16 ) . "?user=$new_user_id&registered=1"
+	] );
 }
 
 add_action( 'wp_ajax_nopriv_ih_ajax_resend_activation_link', 'ih_ajax_resend_activation_link' );
@@ -304,7 +261,7 @@ add_action( 'wp_ajax_nopriv_ih_ajax_resend_activation_link', 'ih_ajax_resend_act
 function ih_ajax_resend_activation_link(): void
 {
 	if( ! $user_id = ih_clean( $_POST['user_id'] ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Invalid request data - User does not exists.', 'inheart' )] );
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані - Користувач не існує.', 'inheart' )] );
 
 	// Get User E-mail address by ID.
 	$userdata	= get_userdata( $user_id );
@@ -320,9 +277,10 @@ function ih_ajax_resend_activation_link(): void
 	 *
 	 * @see Options -> Email Templates -> Resend Activation Link.
 	 */
+	$lifetime   = get_field( 'registration_link_lifetime', 'option' ) ?? 5;
 	$subject	= get_field( 'resend_activation_subject', 'option' );
 	$msg		= get_field( 'resend_activation_body', 'option' );
-	$msg		= str_replace( ['[user_login]', '[activation_url]'], [$login, $link], $msg );
+	$msg		= str_replace( ['[user_login]', '[activation_url]', '[registration_link_lifetime]'], [$login, $link, $lifetime], $msg );
 	$msg		= str_replace( ['https://https://', 'http://https://', 'http://http://'], ['https://', 'https://', 'http://'], $msg );
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
@@ -330,18 +288,15 @@ function ih_ajax_resend_activation_link(): void
 	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 
 	// If letter with is not send - show error.
-	if( ! $send ) wp_send_json_error( ['msg' => esc_html__( 'Unknown error. Link was not sent.', 'inheart' )] );
+	if( ! $send ) wp_send_json_error( ['msg' => esc_html__( 'Помилка відправки.', 'inheart' )] );
 
 	// Store current date and time to check difference on E-mail submit.
 	date_default_timezone_set( 'UTC' );
 	update_user_meta( $user_id, 'registration_date', time() );
 
-	$code_lifetime = get_field( 'code_lifetime', 'option' ) ?? 5;
 	wp_send_json_success( [
-		'msg' => sprintf(
-			esc_html__( 'The letter with your link was sent to %s. The link will expire in %d minutes.', 'inheart' ),
-			$email, $code_lifetime
-		)
+		'msg'       => esc_html__( 'Успішно. Вітаємо!', 'inheart' ),
+		'redirect'	=> get_the_permalink( 16 ) . "?user=$user_id&registered=1"
 	] );
 }
 

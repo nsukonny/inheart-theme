@@ -9,39 +9,61 @@
 
 $user_id	= isset( $_GET['user'] ) ? ( int ) $_GET['user'] : '';
 $code		= $_GET['code'] ?? '';
+$registered = isset( $_GET['registered'] ) ? ( int ) $_GET['registered'] : '';
 
 // User doesn't exist.
 if( ! get_user_by( 'id', $user_id ) ){
-	esc_html_e( 'Account does not exist.', 'inheart' );
+	get_template_part( 'template-parts/auth/activation-fail', null, [
+		'msg' => esc_html__( 'Такий акаунт не існує.', 'inheart' )
+	] );
+	return;
+}
+
+// User just registered, show success screen.
+if( $user_id && $registered === 1 && ! $code ){
+	get_template_part( 'template-parts/auth/registration-success', null, ['user_id' => $user_id] );
 	return;
 }
 
 // User has no field with code - already activated.
 if( ! $original_code = get_user_meta( $user_id, 'activation_code', true ) ){
-	esc_html_e( 'Account already activated.', 'inheart' );
-	echo '<div class="btn-wrap"><a href="' . get_the_permalink( 10 ) . '" class="btn md">Login</a></div>';
+	get_template_part( 'template-parts/auth/activation-fail', null, [
+		'msg' => esc_html__( 'Цей акаунт вже активований!', 'inheart' )
+	] );
 	return;
 }
 
 // If there are no GET-params in page address.
 if( ! $user_id || ! $code ){
-	esc_html_e( 'Activation parameters are missing or User is already activated. Please check your account E-mail for our letter with activation link. If the letter did not arrive in the inbox - don\'t forget to check "Spam" folder too.', 'inheart' );
+	get_template_part( 'template-parts/auth/activation-fail', null, [
+		'msg' => esc_html__( 'Параметри активації відсутні або Користувач вже активований. Будь ласка, перевірте свою пошту та розділ "Спам".', 'inheart' )
+	] );
 	return;
 }
 
 // If code & original_code parameter from URL are equal - success.
 if( $code === $original_code ){
-	_e( 'Account activation is success! Now you can log in.', 'inheart' );
-	echo '<div class="btn-wrap"><a href="' . get_the_permalink( 10 ) . '" class="btn md">'
-		. esc_html__( 'Login', 'inheart' ) .
-	'</a></div>';
-	delete_user_meta( $user_id, 'activation_code' );
-	delete_user_meta( $user_id, 'registration_date' );
+	// If expired.
+	if( ih_is_activation_link_expired( $user_id ) ){
+		get_template_part( 'template-parts/auth/activation-fail', null, [
+			'msg' => sprintf(
+				esc_html__( 'Акаунт не активовано - посилання вже не дійсне. %sНадіслати ще раз%s', 'inheart' ),
+				'<a href="#send-activation-again">', '</a>'
+			)
+		] );
+	}	else {
+		get_template_part( 'template-parts/auth/activation-success' );
+		delete_user_meta( $user_id, 'activation_code' );
+		delete_user_meta( $user_id, 'registration_date' );
+	}
+
 	return;
 }
 
-esc_html_e( 'Activation parameters are invalid or your account is already activated.', 'inheart' );
-echo '<div class="btn-wrap"><a href="' . get_the_permalink( 10 ) . '" class="btn md">'
-	. esc_html__( 'Login', 'inheart' ) .
-'</a></div>';
+get_template_part( 'template-parts/auth/activation-fail', null, [
+	'msg' => sprintf(
+		esc_html__( 'Параметри активації невірні або аккаунт вже активований. %sУвійти%s', 'inheart' ),
+		'<a href="' . get_the_permalink( 10 ) . '">', '</a>'
+	)
+] );
 

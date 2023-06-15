@@ -25,33 +25,6 @@ function ih_clean( $value ): string
 }
 
 /**
- * Check data for specific errors and add them to an array.
- *
- * @param array  $errors
- * @param string $field_data
- * @param string $field
- * @param string $error_msg
- * @param bool   $specific_check
- * @return array
- */
-function ih_collect_errors( array &$errors, string $field_data, string $field, string $error_msg, bool $specific_check = true ): array
-{
-	if( ! $field_data )
-		$errors[] = [
-			'field'	=> $field,
-			'error'	=> sprintf( esc_html__( '%s', 'inheart' ), $error_msg )
-		];
-
-	if( ! $specific_check )
-		$errors[] = [
-			'field'	=> $field,
-			'error'	=> sprintf( esc_html__( '%s', 'inheart' ), $error_msg )
-		];
-
-	return $errors;
-}
-
-/**
  * Send new User creation error.
  *
  * @param WP_Error $new_user_id
@@ -61,30 +34,16 @@ function ih_check_user_creation_errors( WP_Error $new_user_id ): void
 {
 	switch( $new_user_id->get_error_code() ){
 		case 'existing_user_email':
-			wp_send_json_error( [
-				'errors'	=> [ [
-					'field'	=> 'form-register-email',
-					'error'	=> esc_html__( 'User with this E-mail already exists', 'inheart' )
-				] ]
-			] );
+			wp_send_json_error(
+				['errors' => [ ['field' => 'email'] ], 'msg' => esc_html__( 'Ця пошта вже використовується', 'inheart' )] );
 			break;
 
 		case 'existing_user_login':
-			wp_send_json_error( [
-				'errors'	=> [ [
-					'field'	=> 'form-register-email',
-					'error'	=> esc_html__( 'User with this login already exists', 'inheart' )
-				] ]
-			] );
+			wp_send_json_error( ['errors' => [ ['field' => 'email'] ], 'msg' => esc_html__( 'Цей логін вже використовується', 'inheart' )] );
 			break;
 
 		case 'empty_user_login':
-			wp_send_json_error( [
-				'errors'	=> [ [
-					'field'	=> 'form-register-email',
-					'error'	=> esc_html__( 'Please enter only latin letters for login', 'inheart' )
-				] ]
-			] );
+			wp_send_json_error( ['errors' => [ ['field' => 'email'] ], 'msg' => esc_html__( 'Невірні символи у логіні', 'inheart' )] );
 			break;
 
 		default:
@@ -106,21 +65,21 @@ function ih_check_length( string $value, int $min, int $max ): bool
 }
 
 /**
- * Function checks phone symbols.
+ * Check if name has incorrect symbols.
  *
- * @param   string  $phone  Some phone number.
- * @return  bool            True if OK, false if string has bad symbols.
+ * @param string $name
+ * @return bool
  */
-function ih_check_phone( string $phone ): bool
+function ih_check_name( string $name ): bool
 {
-	return preg_match('/^[0-9()+\-\s]+$/iu', $phone );
+	return preg_match( '/^[a-zа-яіїє]+[a-zа-яіїє \-\'`]+[a-zа-яіїє]$/iu', $name );
 }
 
 /**
  * Email filters.
  */
 add_filter( 'wp_mail_from_name', function( $from_name ){ return 'Inheart'; } );
-add_filter( 'wp_mail_from', function( $email_address ){ return 'no-reply@inheart.memorial'; } );
+add_filter( 'wp_mail_from', function( $email_address ){ return 'no-reply@' . $_SERVER['SERVER_NAME']; } );
 /**
  * Function sets HTML content type in E-mails.
  *
@@ -147,98 +106,20 @@ function ih_load_template_part( string $template_name, string $part_name = null,
 }
 
 /**
- * Generate form field.
+ * Chec if account activation link is expired.
  *
- * @param array $args	name, class, value, label, type, label_class, choices, data_value.
- * @return null|string
+ * @param int $user_id
+ * @return bool|null    true - already expired, false - still could be used.
  */
-function ih_generate_form_field( array $args ): ?string
+function ih_is_activation_link_expired( int $user_id ): ?bool
 {
-	if( empty( $args ) || ! $args['name'] || ! $args['label'] ) return null;
+	if( ! $user_id ) return null;
 
-	$settings = [
-		'class'			=> 'input-dark',
-		'type'			=> 'text',
-		'label_class'	=> 'label-animated',
-		'choices'		=> [],
-		'value'			=> '',
-		'data_value'	=> ''
-	];
-	$settings = array_merge( $settings, $args );
+	date_default_timezone_set( 'UTC' );
+	$lifetime   = get_field( 'registration_link_lifetime', 'option' ) ?? 5;
+	$old_date   = ( int ) get_user_meta( $user_id, 'registration_date', true );
+	$new_date   = time();
 
-	switch( $settings['type'] ){
-		case 'checkbox':
-			return '<input
-				id="' . esc_attr( $settings['name'] ) . '"
-				name="' . esc_attr( $settings['name'] ) . '"
-				class="' . esc_attr( $settings['class'] ) . '"
-				type="' . esc_attr( $settings['type'] ) . '"
-			/>
-			<label for="' . esc_attr( $settings['name'] ) . '" class="' . esc_attr( $settings['label_class'] ) . '">'
-				. sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) .
-				'</label>';
-
-		case 'select':
-			$options = '';
-
-			if( ! empty( $settings['choices'] ) ){
-				foreach( $settings['choices'] as $key => $choice ){
-					$selected = $choice === $settings['value'] ? ' data-selected="1"' : '';
-					$options .= '<span data-value="' . esc_attr( $key ) . '"' . $selected . '>' . esc_html( $choice ) . '</span>';
-				}
-			}
-
-			return '<label class="' . esc_attr( $settings['label_class'] ) . '" data-for="' . esc_attr( $settings['name'] ) . '">
-				<input
-					type="text"
-					id="' . esc_attr( $settings['name'] ) . '"
-					name="' . esc_attr( $settings['name'] ) . '"
-					class="' . esc_attr( $settings['class'] ) . '"
-					value="' . esc_attr( $settings['value'] ) . '"
-					data-value="' . esc_attr( $settings['data_value'] ?: $settings['value'] ) . '"
-					disabled
-				/>
-				<span class="label-text">'
-				. sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) .
-				'</span>
-				<span class="select-options">
-					<span data-value="">' . sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) . '</span>'
-				. $options .
-				'</span>
-				<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M1 1L5 5L9 1" stroke="#CBCBCB"/>
-				</svg>
-				<span class="field-error hidden"></span>
-			</label>';
-
-		case 'date':
-			return '<label for="' . esc_attr( $settings['name'] ) . '" class="' . esc_attr( $settings['label_class'] ) . '">
-				<input
-					type="' . esc_attr( $settings['type'] ) . '"
-					id="' . esc_attr( $settings['name'] ) . '"
-					name="' . esc_attr( $settings['name'] ) . '"
-					class="' . esc_attr( $settings['class'] ) . '"
-					min="' . date( 'Y-m-d' ) . '"
-					value="' . esc_attr( $settings['value'] ) . '"
-				/>
-				<span class="label-text">'
-				. sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) .
-				'</span>
-				<span class="field-error hidden"></span>
-			</label>';
-
-		default:
-			return '<label for="' . esc_attr( $settings['name'] ) . '" class="' . esc_attr( $settings['label_class'] ) . '">
-				<input
-					type="' . esc_attr( $settings['type'] ) . '"
-					id="' . esc_attr( $settings['name'] ) . '"
-					name="' . esc_attr( $settings['name'] ) . '"
-					class="' . esc_attr( $settings['class'] ) . '"
-					value="' . esc_attr( $settings['value'] ) . '"
-				/>
-				<span class="label-text">' . sprintf( esc_html__( '%s', 'inheart' ), $settings['label'] ) . '</span>
-				<span class="field-error hidden"></span>
-			</label>';
-	}
+	return ( $new_date - $old_date > $lifetime * 60 );
 }
 

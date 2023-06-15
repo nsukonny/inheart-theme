@@ -1,6 +1,6 @@
 {
     "key": "group_648792dded545",
-    "title": "Page Template: Login",
+    "title": "Page Template: Login | Register",
     "fields": [
         {
             "key": "field_648792def9089",
@@ -35,6 +35,13 @@
                 "operator": "==",
                 "value": "page-templates\/login.php"
             }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-templates\/register.php"
+            }
         ]
     ],
     "menu_order": 0,
@@ -46,5 +53,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1686606628
+    "modified": 1686774874
 }

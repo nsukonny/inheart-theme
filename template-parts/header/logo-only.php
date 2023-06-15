@@ -13,6 +13,14 @@ if( ! $logo = get_field( 'header_logo_light', 'option' ) ) return;
 			<a href="<?php echo home_url( '/' ) ?>">
 				<?php echo wp_get_attachment_image( $logo['id'], 'ih-logo' ) ?>
 			</a>
+
+			<?php
+			if( is_user_logged_in() ){
+				?>
+				<button class="logout">Logout</button>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 </header>

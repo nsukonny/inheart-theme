@@ -115,6 +115,12 @@ function ih_acf_init(): void
 			'menu_title'	=> __( 'Footer' ),
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
+
+		acf_add_options_sub_page( [
+			'page_title' 	=> __( 'Email Templates' ),
+			'menu_title'	=> __( 'Email Templates' ),
+			'parent_slug'	=> $acf_parent_options['menu_slug']
+		] );
 	}
 }
 
