@@ -1,1 +1,38 @@
-// Header common styles.
+.header {
+	padding: 20px;
+
+	@media (min-width: $lg) {
+		padding: 42px 99px
+	}
+
+	&-logo {
+		width: 104px;
+		height: 68px;
+		margin: 0 auto;
+
+		@media (min-width: $lg) {
+			width: 98px;
+			height: auto;
+			margin: 0
+		}
+
+		a {
+			display: block;
+			transition: opacity ease-out $tr;
+
+			&:hover {
+				opacity: 0.7
+			}
+		}
+
+		img, svg {
+			display: block;
+			width: 100%;
+			height: auto
+		}
+	}
+
+	.container {
+		padding: 0
+	}
+}

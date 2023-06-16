@@ -26,3 +26,74 @@
 		max-width: calc(1036px + $container-padding * 2)
 	}
 }
+
+@mixin container-fluid() {
+	@include container;
+	width: 100%;
+
+	@media (min-width: $md) {
+		max-width: 100%
+	}
+
+	@media (min-width: $lg) {
+		max-width: 100%
+	}
+
+	@media (min-width: $xl) {
+		max-width: 100%
+	}
+}
+
+.flex {
+	display: flex
+}
+
+.flex-wrap {
+	flex-wrap: wrap
+}
+
+.direction-column {
+	flex-direction: column
+}
+
+.justify-center {
+	justify-content: center
+}
+
+.align-center {
+	align-items: center
+}
+
+.note-with-icon {
+	position: relative;
+	padding-left: 19px;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 0;
+		display: block;
+		width: 15px;
+		height: 14px;
+		background-size: 100%;
+		background-position: center
+	}
+
+	&.note-error {
+		color: $error-primary;
+
+		&::before {
+			background-image: url(../img/warning-red.svg)
+		}
+	}
+
+	&.note-success {
+		color: $success-primary;
+
+		&::before {
+			background-image: url(../img/check-green.svg)
+		}
+	}
+}

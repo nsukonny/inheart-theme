@@ -28,7 +28,7 @@ $img_404	= $img_404
 						if( $title_404 ){
 							?>
 							<h1 class="hero-title">
-								<?php printf( esc_html__( '%s', THEME_NAME ), $title_404 ) ?>
+								<?php printf( esc_html__( '%s', 'inheart' ), $title_404 ) ?>
 							</h1>
 							<?php
 						}
@@ -40,11 +40,7 @@ $img_404	= $img_404
 
 		<div class="page-content page-content-404">
 			<div class="container">
-				<?php
-				if( $desc_404 ){
-					printf( __( '%s', THEME_NAME ), $desc_404 );
-				}
-				?>
+				<?php if( $desc_404 ) printf( __( '%s', 'inheart' ), $desc_404 ) ?>
 			</div>
 		</div>
 	</main>

@@ -1,21 +1,21 @@
 // Grid breakpoints.
-$xs	: 375px;
+$xs	: 335px;
 $sm	: 480px;
 $md	: 768px;
 $lg	: 992px;
-$xl	: 1280px;
+$xl	: 1320px;
 
 // Container max-width.
 $container-md: 760px;
 $container-lg: 990px;
-$container-xl: 1280px;
+$container-xl: 1320px;
 
 // Container padding.
-$container-padding: 16px;
+$container-padding: 20px;
 
 // Font families.
-$ff			: Arial, sans-serif;
-$ff-title	: Arial, sans-serif;
+$ff			: 'Grafita-Normal', Arial, sans-serif;
+$ff-title	: 'Calvino-Grande', Arial, sans-serif;
 
 // Font sizes.
 $fs-xs	: 12px;
@@ -45,8 +45,11 @@ $lh-5	: 1.33;
 $white				: #FFFFFF;
 $bright-yellow		: #F7B941;
 $dark-yellow		: #C69A39;
+$darkest-yellow		: #AC7E19;
 $red				: #C63939;
 $light-blue			: #C1E3FB;
+$disabled			: #CEDCE0;
+$disabled-text		: #91A6A3;
 
 // Colors - Background.
 $very-dark-green	: #011C1A;
@@ -55,8 +58,11 @@ $a-bit-blue-white	: #F7FBFC;
 // Colors - Grayscale.
 $black-for-text		: #2D2D2D;
 $dark-green			: #2D4443;
+$deep-green			: #052422;
 $green				: #7E969B;
 $light-green		: #C3DAE2;
+$light-green-blue	: #D3EFF9;
+$bright-light-green	: #DCF6FF;
 $black				: #001211;
 
 // Colors - Error/Hint.
@@ -68,5 +74,6 @@ $try-again-primary	: #FFC80A;
 $try-again-secondary: #EADFB9;
 
 // Others.
-$tr		: 0.35s;
-$radius	: 5px;
+$tr				: 0.35s;
+$radius-checkbox: 2px;
+$radius-input	: 12px;

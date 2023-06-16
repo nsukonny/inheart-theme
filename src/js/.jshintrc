@@ -10,5 +10,5 @@
 	"strict": false,
 	"browser": true,
 	"devel": true,
-	"esversion": 8
+	"esversion": 9
 }

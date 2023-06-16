@@ -5,15 +5,15 @@ h4, .h4,
 h5, .h5,
 h6, .h6 {
 	font-family: $ff-title;
-	font-weight: $fw-semibold;
-	margin: 0 0 1rem
+	font-weight: $fw-medium;
+	margin: 0
 }
 
 h1, .h1 {
 	font-size: 30px;
 	line-height: $lh-1;
 
-	@media (min-width: $sm) {
+	@media (min-width: $lg) {
 		font-size: 60px;
 		line-height: 68px
 	}
@@ -23,7 +23,7 @@ h2, .h2 {
 	font-size: 26px;
 	line-height: $lh-2;
 
-	@media (min-width: $sm) {
+	@media (min-width: $lg) {
 		font-size: 40px;
 		line-height: $lh-3
 	}
@@ -33,7 +33,7 @@ h3, .h3 {
 	font-size: 24px;
 	line-height: $lh-3;
 
-	@media (min-width: $sm) {
+	@media (min-width: $lg) {
 		font-size: 30px;
 		line-height: $lh-5
 	}
@@ -43,7 +43,7 @@ h4, .h4 {
 	font-size: $fs-md;
 	line-height: $lh-4;
 
-	@media (min-width: $sm) {
+	@media (min-width: $lg) {
 		font-size: 26px;
 		line-height: 35px
 	}
@@ -61,14 +61,14 @@ h6, .h6 {
 	font-size: 22px;
 	line-height: $lh-4;
 
-	@media (min-width: $sm) {
+	@media (min-width: $lg) {
 		font-size: 24px
 	}
 }
 
 a {
 	display: inline-block;
-	text-decoration: underline;
+	text-decoration: none;
 	transition: color ease-out $tr;
 
 	&:hover {

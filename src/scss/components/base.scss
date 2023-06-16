@@ -24,6 +24,10 @@ body {
 		font-size: $fs-md;
 		line-height: $lh-4
 	}
+
+	&.theme-dark {
+		background-color: $very-dark-green
+	}
 }
 
 img {

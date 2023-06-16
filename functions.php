@@ -20,14 +20,13 @@ function ih_load_theme_dependencies(): void
 {
 	// Register theme menus.
 	register_nav_menus( [
-		'header_menu'	=> esc_html__( 'Header Menu', THEME_NAME ),
-		'footer_menu'	=> esc_html__( 'Footer Menu', THEME_NAME )
+		'header_menu'	=> esc_html__( 'Header Menu', 'inheart' ),
+		'footer_menu'	=> esc_html__( 'Footer Menu', 'inheart' )
 	] );
 
-	// Auto-generate ACF Flexible Content templates files.
-	require_once( 'theme-functions/acf-fc-templates-generator.php' );
-	// Please place all custom functions declarations in this file.
-	require_once( 'theme-functions/theme-functions.php' );
+	require_once( 'theme-functions/acf-fc-templates-generator.php' );	// Auto-generate ACF Flexible Content templates files.
+	require_once( 'theme-functions/theme-functions.php' );	// Please place all custom functions declarations in this file.
+	require_once( 'theme-functions/auth.php' );	// Authorization.
 }
 
 add_action( 'init', 'ih_init_theme' );
@@ -44,7 +43,13 @@ function ih_init_theme(): void
 	add_theme_support( 'post-thumbnails' );
 
 	// Custom image sizes.
-	// add_image_size( 'full-hd', 1920, 0, 1 );
+	add_image_size( 'ih-logo', 98 );
+	add_image_size( 'ih-content-half', 413 );
+	add_image_size( 'ih-content-full', 845 );
+	add_image_size( 'ih-additional-material', 285, 151 );
+	add_image_size( 'ih-profile-media', 305, 240 );
+	add_image_size( 'ih-illustration', 490 );
+	add_image_size( 'ih-illustration-alt', 571 );
 
 	require_once( 'theme-functions/custom-post-types.php' );
 }
@@ -110,14 +115,21 @@ function ih_acf_init(): void
 			'menu_title'	=> __( 'Footer' ),
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
+
+		acf_add_options_sub_page( [
+			'page_title' 	=> __( 'Email Templates' ),
+			'menu_title'	=> __( 'Email Templates' ),
+			'parent_slug'	=> $acf_parent_options['menu_slug']
+		] );
 	}
 }
 
 add_action( 'wp_head', 'ih_js_vars_for_frontend' );
 /**
  * JS variables for frontend, such as AJAX URL. Available in JS via window.wpData object.
- *
  * @example window.wpData.ajaxUrl
+ *
+ * @return void
  */
 function ih_js_vars_for_frontend(): void
 {
