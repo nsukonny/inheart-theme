@@ -33,7 +33,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Registration",
+            "default_value": "Реєстрація",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -214,5 +214,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1686947259
+    "modified": 1686957105
 }
