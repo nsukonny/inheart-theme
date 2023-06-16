@@ -306,37 +306,29 @@ add_action( 'wp_ajax_nopriv_ih_ajax_lost_password', 'ih_ajax_lost_password' );
  */
 function ih_ajax_lost_password(): void
 {
-	$email_login	= ih_clean( $_POST['email'] );
-	$errors			= [];
-
-	ih_collect_errors( $errors, $email_login, 'email', 'Please enter account email or login *' );
-
-	if( ! empty( $errors ) ) wp_send_json_error( ['errors' => $errors] );
+	$email_login = ih_clean( $_POST['email'] );
 
 	// Verify hidden nonce field.
 	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_lost_password_nonce'], 'ih_ajax_lost_password' ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Invalid request data.', 'inheart' )] );
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	if( ! $email_login )
+		wp_send_json_error( ['errors' => [['field' => 'email']], 'msg' => esc_html__( 'Вкажіть пошту або логін', 'inheart' )] );
+
+	if( ! filter_var( $email_login, FILTER_VALIDATE_EMAIL ) )
+		wp_send_json_error( ['errors' => [['field' => 'email']], 'msg' => esc_html__( "Невірний формат пошти", 'inheart' )] );
 
 	// Account not found.
 	if( ! username_exists( $email_login ) && ! email_exists( $email_login ) )
-		wp_send_json_error( ['errors' => [ [
-			'field'	=> 'email',
-			'error'	=> esc_html__( 'This account does not exist.', 'inheart' )
-		] ] ] );
-
-	// Search User by login.
-	$user = get_user_by( 'login', $email_login );
+		wp_send_json_error( ['errors' => [['field'	=> 'email']], 'msg' => esc_html__( 'Такий акаунт не існує', 'inheart' )] );
 
 	// User not found - search by email.
-	if( ! $user ){
+	if( ! $user = get_user_by( 'login', $email_login ) ){
 		$user = get_user_by( 'email', $email_login );
 
 		// User not found, send error.
 		if( ! $user )
-			wp_send_json_error( ['errors' => [ [
-				'field'	=> 'email',
-				'error'	=> esc_html__( 'This account does not exist.', 'inheart' )
-			] ] ] );
+			wp_send_json_error( ['errors' => [['field' => 'email']], 'msg' => esc_html__( 'Такий акаунт не існує', 'inheart' )] );
 	}
 
 	$user_id	= $user->ID;
@@ -354,9 +346,10 @@ function ih_ajax_lost_password(): void
 	 *
 	 * @see Theme Settings -> Email Templates -> Forgot Password.
 	 */
+	$lifetime   = get_field( 'registration_link_lifetime', 'option' ) ?? 5;
 	$subject	= get_field( 'pass_recovery_subject', 'option' );
 	$msg		= get_field( 'pass_recovery_body', 'option' );
-	$msg		= str_replace( ['[user_login]', '[pass_url]'], [$email_login, $link], $msg );
+	$msg		= str_replace( ['[user_login]', '[pass_url]', '[registration_link_lifetime]'], [$email_login, $link, $lifetime], $msg );
 	$msg		= str_replace( ['https://https://', 'http://https://', 'http://http://'], ['https://', 'https://', 'http://'], $msg );
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
@@ -364,21 +357,62 @@ function ih_ajax_lost_password(): void
 	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 
 	// If letter with is not send - show error.
-	if( ! $send )
-		wp_send_json_error( [
-			'msg' => sprintf(
-				esc_html__( 'Sorry, but %s\'s letter was not sent to %s due to an unknown error.', 'inheart' ),
-				$email_login, $user_email
-			)
-		] );
+	if( ! $send ) wp_send_json_error( ['msg' => esc_html__( 'Помилка відправки.', 'inheart' )] );
+
+	wp_send_json_success( [
+		'msg'       => esc_html__( 'Успішно, вітаємо!', 'inheart' ),
+		'redirect'	=> get_the_permalink( 14 ) . "?user=$user_id&send=1"
+	] );
+}
+
+add_action( 'wp_ajax_nopriv_ih_ajax_new_password', 'ih_ajax_new_password' );
+/**
+ * Set new password for specific User.
+ */
+function ih_ajax_new_password(): void
+{
+	// Verify hidden nonce field.
+	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_new_password_nonce'], 'ih_ajax_new_password' ) )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	$user_id	= ih_clean( $_POST['user-id'] );
+	$code		= ih_clean( $_POST['code'] );
+	$pass		= str_replace( ' ', '', trim( $_POST['pass'] ) );
+	$pass2		= str_replace( ' ', '', trim( $_POST['pass-confirm'] ) );
+	$errors		= [];
+
+	if( ! $user_id || ! $code )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	if( ! $pass ) $errors[] = ['field' => 'pass'];
+	if( ! $pass2 ) $errors[] = ['field' => 'pass-confirm'];
+	if( ! empty( $errors ) ) wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( "Заповніть поля", 'inheart' )] );
+
+	if( ! ih_check_length( $pass, 8, 256 ) ) $errors[] = ['field' => 'pass'];
+	if( ! ih_check_length( $pass2, 8, 256 ) ) $errors[] = ['field' => 'pass-confirm'];
+	if( ! empty( $errors ) ) wp_send_json_error( ['errors' => $errors, 'msg' => esc_html__( "Від 8 до 256 символів", 'inheart' )] );
+
+	if( $pass !== $pass2 ) wp_send_json_error( ['errors' => [['field' => $pass2]], 'msg' => esc_html__( "Паролі не однакові", 'inheart' )] );
+
+	// Account not found.
+	if( ! $user = get_user_by( 'id', $user_id ) )
+		wp_send_json_error( ['msg' => esc_html__( 'такий акаунт не існує', 'inheart' )] );
+
+	$original_code = get_user_meta( $user_id, 'new_pass_code', true );
+
+	// If original code from User's field differs from current code - send error.
+	if( ! $original_code || $original_code !== $code )
+		wp_send_json_error( ['msg' => esc_html__( 'Помилка: невірні дані', 'inheart' )] );
+
+	delete_user_meta( $user_id, 'pass_recovery_code' );
+	delete_user_meta( $user_id, 'pass_recovery_date' );
+	delete_user_meta( $user_id, 'new_pass_code' );
+	wp_set_password( $pass, $user_id );
 
 	// Success!
-	$code_lifetime = get_field( 'code_lifetime', 'option' ) ?? 5;
 	wp_send_json_success( [
-		'msg' => sprintf(
-			esc_html__( 'Congratulations! %s\'s letter was sent to %s. Hurry up - the link will expire in %d minute(s)!', 'inheart' ),
-			$email_login, $user_email, $code_lifetime
-		)
+		'msg'		=> esc_html__( 'Успішно, пароль змінено!', 'inheart' ),
+		'redirect'	=> get_the_permalink( 10 )	// To Login page.
 	] );
 }
 

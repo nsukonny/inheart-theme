@@ -8,30 +8,52 @@
  */
 ?>
 
-<form id="form-lostpass" class="form-lostpass wrap-gray">
-	<fieldset>
-		<legend><?php the_title() ?></legend>
+<div class="auth-form-wrapper">
+	<form id="form-lostpass" class="auth-form form-lostpass">
+		<fieldset>
+			<legend class="legend h3"><?php the_title() ?></legend>
 
-		<?php echo ih_generate_form_field( ['name' => 'email', 'label' => 'User Name or Email*', 'label_class' => 'label-animated full'] ) ?>
+			<label for="email" class="label">
+				<span class="label-text"><?php esc_html_e( 'Ваша пошта', 'inheart' ) ?></span>
+				<input id="email" name="email" type="text" placeholder="<?php esc_html_e( 'Пошта', 'inheart' ) ?>" required />
+			</label>
 
-		<?php wp_nonce_field( 'ih_ajax_lost_password', 'ih_lost_password_nonce' ) ?>
-	</fieldset>
+			<?php wp_nonce_field( 'ih_ajax_lost_password', 'ih_lost_password_nonce' ) ?>
+		</fieldset>
 
-	<div class="form-buttons display-flex flex-wrap justify-center align-center">
-		<button class="btn md" type="submit">
-			<?php esc_html_e( 'Send Link', 'inheart' ) ?>
-		</button>
-		<a class="btn link accent underlined" href="<?php echo get_the_permalink( 10 ) ?>">
-			<?php esc_html_e( 'Login', 'inheart' ) ?>
-		</a>
+		<div class="form-submit">
+			<div class="note note-with-icon"></div>
+			<button class="btn lg primary full" type="submit">
+				<?php esc_html_e( 'Оновити', 'inheart' ) ?>
+			</button>
+		</div>
+	</form><!-- #form-lostpass -->
+
+	<div class="auth-additional">
+		<span class="auth-additional-title flex align-center">
+			<span class="auth-additional-title-line before"></span>
+			<span class="auth-additional-title-text">
+				<?php esc_html_e( 'або за допомогою', 'inheart' ) ?>
+			</span>
+			<span class="auth-additional-title-line after"></span>
+		</span>
+
+		<div class="auth-google">
+			<button class="btn lg secondary full">
+				<?php esc_html_e( 'Авторізація через Google', 'inheart' ) ?>
+			</button>
+		</div>
+
+		<div class="auth-additional-option">
+			<?php
+			printf(
+				__( 'Ще не зареєстровані? %sСтворити акаунт %s', 'inheart' ),
+				'<a href="' . get_the_permalink( 12 ) . '">', '</a>'
+			);
+			?>
+		</div>
 	</div>
+</div>
 
-	<div class="form-lost display-flex justify-center">
-		<a class="btn link accent underlined" href="<?php echo get_the_permalink( 12 ) ?>">
-			<?php esc_html_e( 'Register', 'inheart' ) ?>
-		</a>
-	</div>
-
-	<div class="note"></div>
-</form>
+<?php get_template_part( 'template-parts/auth/illustration' ) ?>
 

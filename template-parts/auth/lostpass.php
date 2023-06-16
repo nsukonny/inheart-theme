@@ -7,8 +7,9 @@
  * @subpackage inheart
  */
 
-$user_id	= isset( $_GET['user'] ) ? ( int ) $_GET['user'] : null;
+$user_id	= isset( $_GET['user'] ) ? ( int ) ih_clean( $_GET['user'] ) : null;
 $code		= $_GET['code'] ?? null;
+$send		= isset( $_GET['send'] ) ? ( int ) ih_clean( $_GET['send'] ) : null;
 
 // If no URL params - lost password form.
 if( ! $user_id && ! $code ){
@@ -21,9 +22,14 @@ if( ! $user_id && ! $code ){
  * Let's check.
  */
 
+if( $user_id && $send === 1 ){
+	get_template_part( 'template-parts/auth/lostpass-pass-sent', null, ['user_id' => $user_id] );
+	return;
+}
+
 // User doesn't exist.
 if( ! get_user_by( 'id', $user_id ) ){
-	echo '<div class="activation-inner wrap-gray">'
+	echo '<div class="activation-inner">'
 		. esc_html__( 'Account does not exist.', 'inheart' ) .
 		'</div>';
 	return;
@@ -31,7 +37,7 @@ if( ! get_user_by( 'id', $user_id ) ){
 
 // User has no field with code.
 if( ! $original_code = get_user_meta( $user_id, 'pass_recovery_code', true ) ){
-	echo '<div class="activation-inner wrap-gray">' . esc_html__( 'This User did not ask for a new password.', 'inheart' ) . '</div>';
+	echo '<div class="activation-inner">' . esc_html__( 'This User did not ask for a new password.', 'inheart' ) . '</div>';
 	return;
 }
 

@@ -112,7 +112,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Registration",
+            "default_value": "Реєстрація",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -125,6 +125,63 @@
             "aria-label": "",
             "type": "wysiwyg",
             "instructions": "You can use these placeholders: [user_login] [activation_url] [registration_link_lifetime]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_648cc3e1254f8",
+            "label": "Forgot Password",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_648cc3ed254f9",
+            "label": "Subject",
+            "name": "pass_recovery_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Відновлення Паролю",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_648cc3f1254fa",
+            "label": "Body",
+            "name": "pass_recovery_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "You can use these placeholders: [user_login] [pass_url] [registration_link_lifetime]",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -157,5 +214,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1686863427
+    "modified": 1686947259
 }

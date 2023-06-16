@@ -5,7 +5,8 @@
 }
 
 .auth {
-	&.login {
+	&.login,
+	&.lostpass {
 		.auth-illustration {
 			@media (min-width: $lg) {
 				padding-left: 80px
@@ -26,6 +27,12 @@
 			&-inner {
 				max-width: 571px
 			}
+		}
+	}
+
+	&.lostpass {
+		.registration-success {
+			width: 100%
 		}
 	}
 
@@ -114,12 +121,6 @@
 	}
 }
 
-.form-register {
-	.checkbox-wrapper {
-		margin-bottom: 33px
-	}
-}
-
 .registration-success-inner {
 	position: relative;
 	width: 100%;
@@ -157,4 +158,10 @@
 
 .activation-success {
 	width: 100%
+}
+
+.form-lostpass {
+	.form-submit {
+		padding-top: 33px
+	}
 }

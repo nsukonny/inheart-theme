@@ -1,6 +1,6 @@
 {
     "key": "group_648792dded545",
-    "title": "Page Template: Login | Register",
+    "title": "Page Template: Login | Register | Lost Password",
     "fields": [
         {
             "key": "field_648792def9089",
@@ -42,6 +42,13 @@
                 "operator": "==",
                 "value": "page-templates\/register.php"
             }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-templates\/lostpass.php"
+            }
         ]
     ],
     "menu_order": 0,
@@ -53,5 +60,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1686774874
+    "modified": 1686948129
 }

@@ -68,5 +68,5 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 			?>
 		</div>
 	</div>
-</div><!-- .form-login-wrapper -->
+</div><!-- .auth-form-wrapper -->
 
