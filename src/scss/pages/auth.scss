@@ -121,6 +121,12 @@
 	}
 }
 
+.form-register {
+	.checkbox-wrapper {
+		margin-bottom: 33px
+	}
+}
+
 .registration-success-inner {
 	position: relative;
 	width: 100%;
@@ -158,10 +164,4 @@
 
 .activation-success {
 	width: 100%
-}
-
-.form-lostpass {
-	.form-submit {
-		padding-top: 33px
-	}
 }
