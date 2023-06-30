@@ -38,6 +38,8 @@ function ih_block_admin_access(): void
 	}
 }
 
+add_filter( 'rtcamp.google_default_redirect', function( $admin_url ){ $admin_url = home_url(); return $admin_url; } );
+
 add_action( 'wp_ajax_nopriv_ih_ajax_login', 'ih_ajax_login' );
 /**
  * Custom login logic.

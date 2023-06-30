@@ -58,8 +58,7 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 			echo do_shortcode(
 				'[google_login
 				button_text="' . esc_html__( 'Авторізація через Google', 'inheart' ) . '"
-				force_display="yes"
-				redirect_to="' . home_url( '/' ) . '" /]'
+				redirect_to="' . home_url() . '" /]'
 			);
 			?>
 		</div>
