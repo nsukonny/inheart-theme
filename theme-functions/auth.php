@@ -16,13 +16,6 @@ add_action( 'init', 'ih_block_admin_access' );
  */
 function ih_block_admin_access(): void
 {
-	global $pagenow;
-
-	if( 'wp-login.php' === $pagenow && is_user_logged_in() ){
-		wp_redirect( get_the_permalink( 10 ) );	// To Login page.
-		exit;
-	}
-
 	if(
 		is_admin()
 		&& ! current_user_can( 'administrator' )
