@@ -73,9 +73,13 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 		</span>
 
 		<div class="auth-google">
-			<button class="btn lg secondary full">
-				<?php esc_html_e( 'Авторізація через Google', 'inheart' ) ?>
-			</button>
+			<?php
+			echo do_shortcode(
+				'[google_login
+				button_text="' . esc_html__( 'Авторізація через Google', 'inheart' ) . '"
+				redirect_to="' . home_url() . '" /]'
+			);
+			?>
 		</div>
 
 		<div class="auth-additional-option">
