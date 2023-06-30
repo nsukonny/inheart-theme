@@ -19,16 +19,6 @@ function ih_block_admin_access(): void
 	global $pagenow;
 
 	if(
-		'wp-login.php' === $pagenow
-		&& $_SERVER['REQUEST_METHOD'] === 'GET'
-		&& ! current_user_can( 'administrator' )
-		&& ! current_user_can( 'editor' )
-	){
-		wp_redirect( get_the_permalink( 10 ) );	// To Login page.
-		exit;
-	}
-
-	if(
 		is_admin()
 		&& ! current_user_can( 'administrator' )
 		&& ! current_user_can( 'editor' )
