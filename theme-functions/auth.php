@@ -19,6 +19,15 @@ function ih_block_admin_access(): void
 	global $pagenow;
 
 	if(
+		'wp-login.php' === $pagenow
+		&& ! current_user_can( 'administrator' )
+		&& ! current_user_can( 'editor' )
+	){
+		wp_redirect( get_the_permalink( 10 ) );	// To Login page.
+		exit;
+	}
+
+	if(
 		is_admin()
 		&& ! current_user_can( 'administrator' )
 		&& ! current_user_can( 'editor' )
