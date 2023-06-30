@@ -20,6 +20,7 @@ function ih_block_admin_access(): void
 
 	if(
 		'wp-login.php' === $pagenow
+		&& $_SERVER['REQUEST_METHOD'] === 'GET'
 		&& ! current_user_can( 'administrator' )
 		&& ! current_user_can( 'editor' )
 	){
@@ -37,8 +38,6 @@ function ih_block_admin_access(): void
 		exit;
 	}
 }
-
-add_filter( 'rtcamp.google_default_redirect', function( $admin_url ){ $admin_url = home_url(); return $admin_url; } );
 
 add_action( 'wp_ajax_nopriv_ih_ajax_login', 'ih_ajax_login' );
 /**
