@@ -118,6 +118,35 @@
 				}
 			}
 		}
+
+		.wp_google_login {
+			margin-top: 19px;
+
+			&__button-container {
+				margin-top: 0
+			}
+
+			&__button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				border: none;
+				border-radius: $radius-input;
+				background-color: $light-blue;
+				transition: background-color ease-out $tr;
+
+				&:hover {
+					background-color: $light-green-blue
+				}
+			}
+
+			&__google-icon {
+				width: 22px;
+				height: 22px;
+				background-image: url('../../img/google-colored.svg');
+				margin-right: 6px
+			}
+		}
 	}
 }
 
