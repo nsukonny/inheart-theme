@@ -16,8 +16,6 @@ add_action( 'init', 'ih_block_admin_access' );
  */
 function ih_block_admin_access(): void
 {
-	global $pagenow;
-
 	if(
 		is_admin()
 		&& ! current_user_can( 'administrator' )
