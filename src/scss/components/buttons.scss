@@ -26,6 +26,10 @@
 		width: 100%
 	}
 
+	&.min-width {
+		min-width: 190px
+	}
+
 	&.sm {
 		min-height: 32px;
 		padding: 4px 16px 5px

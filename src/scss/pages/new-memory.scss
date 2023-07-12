@@ -1,5 +1,6 @@
 @import '../components/vars';
 @import '../components/typography';
+@import '../new-memory/footer';
 
 .new-memory {
 	&-step {
@@ -59,7 +60,8 @@
 			border: 1px solid $dark-yellow;
 			border-radius: $radius-theme-border;
 			opacity: 0;
-			transition: opacity ease-out $tr
+			transition: opacity ease-out $tr;
+			pointer-events: none
 		}
 
 		img {

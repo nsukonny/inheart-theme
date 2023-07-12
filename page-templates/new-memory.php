@@ -20,5 +20,5 @@ wp_enqueue_script( 'new-memory', THEME_URI . '/static/js/new-memory/new-memory.m
 </main>
 
 <?php
-get_template_part( 'template-parts/footer/new-memory' );
+get_template_part( 'template-parts/new-memory/footer' );
 
