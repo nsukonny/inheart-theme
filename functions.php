@@ -50,6 +50,7 @@ function ih_init_theme(): void
 	add_image_size( 'ih-profile-media', 305, 240 );
 	add_image_size( 'ih-illustration', 490 );
 	add_image_size( 'ih-illustration-alt', 571 );
+	add_image_size( 'ih-theme', 197, 197 );
 
 	require_once( 'theme-functions/custom-post-types.php' );
 }

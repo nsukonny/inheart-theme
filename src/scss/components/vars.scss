@@ -5,13 +5,13 @@ $md	: 768px;
 $lg	: 992px;
 $xl	: 1320px;
 
-// Container max-width.
-$container-md: 760px;
-$container-lg: 990px;
-$container-xl: 1320px;
-
 // Container padding.
 $container-padding: 20px;
+
+// Container max-width.
+$container-md: calc(720px + $container-padding * 2);
+$container-lg: calc(950px + $container-padding * 2);
+$container-xl: calc(1280px + $container-padding * 2);
 
 // Font families.
 $ff			: 'Grafita-Normal', Arial, sans-serif;
@@ -74,6 +74,8 @@ $try-again-primary	: #FFC80A;
 $try-again-secondary: #EADFB9;
 
 // Others.
-$tr				: 0.35s;
-$radius-checkbox: 2px;
-$radius-input	: 12px;
+$tr					: 0.35s;
+$radius-checkbox	: 2px;
+$radius-input		: 12px;
+$radius-theme		: 40px;
+$radius-theme-border: 46px;
