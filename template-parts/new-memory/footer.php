@@ -19,10 +19,10 @@
 
 				<div class="container">
 					<div class="new-memory-footer-inner flex flex-wrap">
-						<button class="btn lg primary min-width new-memory-prev-step hidden">
+						<button class="btn lg primary min-width new-memory-prev-step hidden" data-prev="0">
 							<?php esc_html_e( 'Назад', 'inheart' ) ?>
 						</button>
-						<button class="btn lg primary min-width new-memory-next-step" disabled>
+						<button class="btn lg primary min-width new-memory-next-step" data-next="1" disabled>
 							<?php esc_html_e( 'Далі', 'inheart' ) ?>
 						</button>
 					</div>

@@ -19,6 +19,7 @@ legend.legend {
 label.label {
 	position: relative;
 	display: block;
+	width: 100%;
 	margin-bottom: 21px;
 
 	&-checkbox {
@@ -64,6 +65,62 @@ label.label {
 		}
 	}
 
+	&-file {
+		display: flex;
+
+		.label-text {
+			display: inline-flex;
+			padding: 11px 16px;
+			margin-right: 22px;
+			border: 0.5px solid $white;
+			border-radius: $radius-input;
+			cursor: pointer;
+			transition: background-color ease-out $tr;
+
+			&::before {
+				content: '';
+				display: block;
+				width: 24px;
+				height: 24px;
+				background-image: url(../img/add-photo.svg);
+				background-size: contain;
+				background-position: center;
+				background-repeat: no-repeat;
+				margin-right: 6px
+			}
+
+			&:hover {
+				background-color: $a-bit-blue-white
+			}
+
+			&.added {
+				display: none;
+				background-color: $a-bit-blue-white
+			}
+
+			svg {
+				width: 24px;
+				height: auto;
+				margin-right: 6px
+			}
+		}
+
+		.filename {
+			display: block;
+			max-width: 123px;
+			font-size: $fs-sm;
+			color: $green
+		}
+
+		&.added .label-text {
+			display: none;
+
+			&.added {
+				display: inline-flex
+			}
+		}
+	}
+
 	&.error {
 		input {
 			&[type="text"],
@@ -71,6 +128,42 @@ label.label {
 			&[type="email"] {
 				color: $error-primary;
 				border-color: $error-primary
+			}
+		}
+	}
+
+	&.half {
+		@media (min-width: $sm) {
+			width: calc(50% - 10px)
+		}
+	}
+
+	&.end {
+		margin-left: auto
+	}
+
+	&.dark {
+		&.label-file {
+			.label-text {
+				border-color: $very-dark-green
+			}
+		}
+
+		.label-text {
+			color: $very-dark-green
+		}
+
+		input {
+			&[type="text"],
+			&[type="password"],
+			&[type="date"],
+			&[type="email"] {
+				color: $very-dark-green;
+				border-color: $very-dark-green
+			}
+
+			&::placeholder {
+				color: rgba(1, 28, 26, 0.51)
 			}
 		}
 	}
@@ -86,6 +179,7 @@ label.label {
 input {
 	&[type="text"],
 	&[type="password"],
+	&[type="date"],
 	&[type="email"] {
 		width: 100%;
 		height: 48px;
@@ -120,6 +214,15 @@ input {
 				display: flex
 			}
 		}
+	}
+
+	&[type="file"] {
+		position: absolute;
+		width: 0;
+		height: 0;
+		opacity: 0;
+		top: -10vh;
+		left: -10vw
 	}
 
 	&::placeholder {

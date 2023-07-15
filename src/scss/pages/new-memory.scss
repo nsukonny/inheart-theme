@@ -1,9 +1,36 @@
 @import '../components/vars';
 @import '../components/typography';
+
 @import '../new-memory/footer';
 
+@import '../new-memory/step-0';
+
+@import '../../../node_modules/cropperjs/dist/cropper.min';
+@import '../new-memory/step-1';
+
+
 .new-memory {
+	background-color: $a-bit-blue-white;
+	padding-bottom: 87px;
+
 	&-step {
+		display: none;
+		transition: opacity ease-out $tr;
+
+		&.active {
+			display: block
+		}
+
+		&-1 .new-memory-step-desc {
+			margin-bottom: 20px
+		}
+
+		&-suptitle {
+			font-size: $fs-lg;
+			color: $green;
+			margin-bottom: 12px
+		}
+
 		&-title {
 			margin-bottom: 19px;
 
@@ -20,54 +47,125 @@
 		}
 	}
 
-	&-themes {
-		width: 100%;
-		max-width: 414px;
-		gap: 20px;
-
-		&-desc {
-			width: 100%;
-			max-width: 445px;
-			margin-bottom: 20px;
-			line-height: $lh-base
-		}
-	}
-
-	&-theme {
+	&-main-info {
 		position: relative;
 		width: 100%;
-		background-color: transparent;
-		padding: 0;
-		border: none;
-		border-radius: $radius-theme;
-		cursor: pointer;
-
-		@media (min-width: $sm) {
-			width: calc(50% - 10px)
-		}
-
-		&.active::before {
-			opacity: 1
-		}
+		max-width: 522px;
+		background-color: $white;
+		padding: 40px 109px 51px 0;
+		border-top-right-radius: $radius-theme;
+		margin-top: 40px;
 
 		&::before {
 			content: '';
 			position: absolute;
-			top: -8px;
-			left: -8px;
-			width: calc(100% + 16px);
-			height: calc(100% + 16px);
-			border: 1px solid $dark-yellow;
-			border-radius: $radius-theme-border;
-			opacity: 0;
-			transition: opacity ease-out $tr;
-			pointer-events: none
+			top: 0;
+			right: 100%;
+			width: 100vw;
+			height: 100%;
+			background-color: $white
 		}
 
-		img {
-			display: block;
+		.label-file {
+			margin: 19px 0 0
+		}
+	}
+
+	.popup {
+		display: flex;
+		padding: 100px $container-padding;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+		background-color: rgba(0, 0, 0, 0.81);
+		cursor: pointer;
+		overflow-y: auto;
+
+		&-inner {
 			width: 100%;
-			border-radius: $radius-theme
+			max-width: 800px;
+			margin: auto 0;
+			background-color: $white;
+			border-radius: $radius-theme;
+			overflow: hidden;
+			cursor: auto
+		}
+
+		&-photo-wrapper {
+			height: 662px;
+			overflow: hidden;
+
+			img {
+				max-width: 100%;
+				max-height: 100%
+			}
+		}
+
+		&-buttons {
+			padding: 42px 0 48px
+		}
+
+		.cropper-modal {
+			opacity: 0.6
+		}
+
+		.cropper-face,
+		.cropper-view-box {
+			border-radius: 200px
+		}
+
+		.cropper-view-box {
+			outline: none
+		}
+
+		.cropper-dashed,
+		.cropper-center,
+		.cropper-line,
+		.cropper-point.point-e,
+		.cropper-point.point-n,
+		.cropper-point.point-w,
+		.cropper-point.point-s {
+			display: none
+		}
+
+		.cropper-point {
+			width: 11px;
+			height: 11px;
+			background-color: transparent;
+			opacity: 1;
+
+			&.point-nw {	// Top-left
+				top: 0;
+				left: 0;
+				border-top: 2px solid $white;
+				border-left: 2px solid $white
+			}
+
+			&.point-ne {	// Top-right
+				top: 0;
+				right: 0;
+				border-top: 2px solid $white;
+				border-right: 2px solid $white
+			}
+
+			&.point-sw {	// Bottom-left
+				bottom: 0;
+				left: 0;
+				border-left: 2px solid $white;
+				border-bottom: 2px solid $white
+			}
+
+			&.point-se {	// Bottom-right
+				bottom: 0;
+				right: 0;
+				border-right: 2px solid $white;
+				border-bottom: 2px solid $white
+			}
 		}
 	}
 }

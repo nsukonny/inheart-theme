@@ -10,12 +10,13 @@
  * @subpackage inheart
  */
 
+$is_active		= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
 $title			= get_field( 'title_0' );
 $desc			= get_field( 'desc_0' );
 $themes_desc	= get_field( 'themes_desc' );
 ?>
 
-<section id="new-memory-step-0" class="new-memory-step new-memory-step-0">
+<section id="new-memory-step-0" class="new-memory-step new-memory-step-0<?php echo esc_attr( $is_active ) ?>">
 	<div class="container">
 		<?php
 		if( $title ){

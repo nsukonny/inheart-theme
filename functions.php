@@ -27,6 +27,7 @@ function ih_load_theme_dependencies(): void
 	require_once( 'theme-functions/acf-fc-templates-generator.php' );	// Auto-generate ACF Flexible Content templates files.
 	require_once( 'theme-functions/theme-functions.php' );	// Please place all custom functions declarations in this file.
 	require_once( 'theme-functions/auth.php' );	// Authorization.
+	require_once( 'theme-functions/new-memory-creation.php' );	// Create new memory.
 }
 
 add_action( 'init', 'ih_init_theme' );
