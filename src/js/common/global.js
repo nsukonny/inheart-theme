@@ -224,3 +224,16 @@ export const submitAuthForm = ( formSelector, action ) => {
 		} )
 	} )
 }
+
+/**
+ * Update URL parameter.
+ *
+ * @param {string} paramName
+ * @param {string|number} paramValue
+ */
+export const replaceUrlParam = ( paramName, paramValue ) => {
+	let url = new URL( window.location.href )
+
+	url.searchParams.set( paramName, paramValue )
+	window.history.pushState( `Step ${ paramValue }`, '', url.href )
+}

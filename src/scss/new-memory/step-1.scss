@@ -42,4 +42,28 @@
 			transition: left ease-out $tr
 		}
 	}
+
+	&-main-info {
+		position: relative;
+		width: 100%;
+		max-width: 522px;
+		background-color: $white;
+		padding: 40px 109px 51px 0;
+		border-top-right-radius: $radius-theme;
+		margin-top: 40px;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 100%;
+			width: 100vw;
+			height: 100%;
+			background-color: $white
+		}
+
+		.label-file {
+			margin: 19px 0 0
+		}
+	}
 }

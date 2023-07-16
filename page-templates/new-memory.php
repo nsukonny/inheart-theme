@@ -19,6 +19,7 @@ $step = $_GET['step'] ?? 0;
 	<?php
 	get_template_part( 'template-parts/new-memory/step', '0', ['is_active' => $step == 0] );
 	get_template_part( 'template-parts/new-memory/step', '1', ['is_active' => $step == 1] );
+	get_template_part( 'template-parts/new-memory/step', '2', ['is_active' => $step == 2] );
 	?>
 </main>
 

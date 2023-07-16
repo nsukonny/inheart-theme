@@ -10,10 +10,9 @@
  * @subpackage inheart
  */
 
-$is_active		= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
-$title			= get_field( 'title_1' );
-$desc			= get_field( 'desc_1' );
-$themes_desc	= get_field( 'themes_desc' );
+$is_active	= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
+$title		= get_field( 'title_1' );
+$desc		= get_field( 'desc_1' );
 ?>
 
 <section id="new-memory-step-1" class="new-memory-step new-memory-step-1<?php echo esc_attr( $is_active ) ?>">
@@ -57,23 +56,27 @@ $themes_desc	= get_field( 'themes_desc' );
 			<fieldset class="flex flex-wrap">
 				<label for="lastname" class="label dark">
 					<span class="label-text"><?php esc_html_e( 'Прізвище', 'inheart' ) ?></span>
-					<input id="lastname" name="lastname" type="text" placeholder="<?php esc_html_e( 'Прізвище', 'inheart' ) ?>" required />
+					<input id="lastname" name="lastname" type="text" placeholder="<?php esc_html_e( 'Прізвище Померлого', 'inheart' ) ?>" required />
 				</label>
 				<label for="firstname" class="label dark">
 					<span class="label-text"><?php esc_html_e( "Ім'я", 'inheart' ) ?></span>
-					<input id="firstname" name="firstname" type="text" placeholder="<?php esc_html_e( "Ім'я", 'inheart' ) ?>" required />
+					<input id="firstname" name="firstname" type="text" placeholder="<?php esc_html_e( "Ім'я Померлого", 'inheart' ) ?>" required />
 				</label>
 				<label for="fathername" class="label dark">
 					<span class="label-text"><?php esc_html_e( 'По батькові', 'inheart' ) ?></span>
-					<input id="fathername" name="fathername" type="text" placeholder="<?php esc_html_e( 'По батькові', 'inheart' ) ?>" required />
+					<input id="fathername" name="fathername" type="text" placeholder="<?php esc_html_e( 'По батькові Померлого', 'inheart' ) ?>" required />
 				</label>
 				<label for="date-of-birth" class="label dark half">
 					<span class="label-text"><?php esc_html_e( 'Дата народження', 'inheart' ) ?></span>
-					<input id="date-of-birth" name="date-of-birth" type="date" placeholder="<?php esc_html_e( 'Дата народження', 'inheart' ) ?>" required />
+					<span class="input-date-wrapper">
+						<input id="date-of-birth" name="date-of-birth" type="text" onfocus="this.type='date';this.showPicker()" onblur="(this.value == '' ? this.type='text' : this.type='date')" placeholder="__.__.____" required />
+					</span>
 				</label>
 				<label for="date-of-death" class="label dark half end">
 					<span class="label-text"><?php esc_html_e( 'Дата смерті', 'inheart' ) ?></span>
-					<input id="date-of-death" name="date-of-death" type="date" placeholder="<?php esc_html_e( 'Дата смерті', 'inheart' ) ?>" required />
+					<span class="input-date-wrapper">
+						<input id="date-of-death" name="date-of-death" type="text" onfocus="this.type='date';this.showPicker()" onblur="(this.value == '' ? this.type='text' : this.type='date')" placeholder="__.__.____" required />
+					</span>
 				</label>
 				<label for="photo" class="label label-file dark flex-wrap align-center">
 					<span class="label-text flex-wrap align-center">

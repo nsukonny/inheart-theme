@@ -5,7 +5,8 @@ import {
 	setAjaxWorkingStatus,
 	ihAjaxRequest,
 	setTargetElement,
-	getTargetElement
+	getTargetElement,
+	replaceUrlParam
 } from '../common/global'
 
 let footer,
@@ -27,6 +28,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Step 1.
 	selectLanguage()
 	uploadMainPhoto()
+	addMainFormValidation()
 } )
 
 /**
@@ -74,8 +76,11 @@ const selectTheme = () => {
 const allowNextStep = ( nextStepId = 1 ) => {
 	nextStepBtn.removeAttribute( 'disabled' )
 	nextStepBtn.dataset.next = `${ nextStepId }`
-	// prevStepBtn.classList.remove( 'hidden' )
-	// prevStepBtn.dataset.prev = `${ nextStepId - 1 }`
+}
+
+const disallowNextStep = () => {
+	nextStepBtn.setAttribute( 'disabled', 'true' )
+	nextStepBtn.dataset.next = ''
 }
 
 /**
@@ -96,12 +101,13 @@ const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
 		if( nextStepBtn.disabled ) return
 
-		const nextStepId = nextStepBtn.dataset.next
+		const nextStepId = parseInt( nextStepBtn.dataset.next )
 
 		if( ! nextStepId ) return
 
 		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
 		document.querySelector( `#new-memory-step-${ nextStepId }` ).classList.add( 'active' )
+		replaceUrlParam( 'step', nextStepId )
 	} )
 }
 
@@ -121,6 +127,9 @@ const selectLanguage = () => {
 	} )
 }
 
+/**
+ * Upload main photo in Main info form, Step 1.
+ */
 const uploadMainPhoto = () => {
 	const
 		popup			= document.querySelector( '.photo-popup' ),
@@ -185,8 +194,9 @@ const uploadMainPhoto = () => {
 				if( res ){
 					switch( res.success ){
 						case true:
-							mainPhotoNameEl.innerHTML = mainPhotoName
+							mainPhotoNameEl.innerHTML = cutFilename( mainPhotoName )
 							mainPhotoNameEl.closest( '.label' ).classList.add( 'added' )
+							isMainFormValid()
 							break
 
 						case false:
@@ -200,4 +210,70 @@ const uploadMainPhoto = () => {
 			} )
 		} )
 	} )
+}
+
+/**
+ * Return shorter filename.
+ *
+ * @param {string} filename
+ * @returns {string}
+ */
+const cutFilename = filename => {
+	const
+		extension	= /(?:\.([^.]+))?$/.exec( filename )[1],
+		firstPart	= filename.substring( 0, filename.length - extension.length - 2 )
+
+	return ( filename.length - extension.length > 17 ) ? firstPart.substring( 0, 10 ) + '...' + extension : filename
+}
+
+/**
+ * Validate Step 1 Main info form.
+ */
+const addMainFormValidation = () => {
+	const fields = document.querySelectorAll( '.new-memory-main-info input:not([type="file"])' )
+
+	if( ! fields.length ) return
+
+	fields.forEach( field => {
+		field.addEventListener( 'change', e => checkFieldValue( e ) )
+		field.addEventListener( 'keyup', e => checkFieldValue( e ) )
+		field.addEventListener( 'blur', e => checkFieldValue( e ) )
+	} )
+
+	const checkFieldValue = e => {
+		const
+			field	= e.target,
+			value	= field.value
+
+		if( ! value ) field.classList.add( 'error' )
+		else field.classList.remove( 'error' )
+
+		isMainFormValid()
+	}
+}
+
+/**
+ * Check if Step 1 Main info form is valid.
+ *
+ * @returns {boolean}
+ */
+const isMainFormValid = () => {
+	const fields = document.querySelectorAll( '.new-memory-main-info input' )
+
+	if( ! fields.length ) return false
+
+	let isFormValid = true
+
+	fields.forEach( field => {
+		if( field.classList.contains( 'error' ) || ! field.value ) isFormValid = false
+	} )
+
+	if( isFormValid ){
+		allowNextStep( 2 )
+		applyProgress()
+	}else{
+		disallowNextStep()
+	}
+
+	return isFormValid
 }
