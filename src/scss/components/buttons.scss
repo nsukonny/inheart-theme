@@ -15,6 +15,7 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	font-family: $ff;
 	font-size: $fs-sm;
 	color: $very-dark-green;
 	border: none;
@@ -80,6 +81,16 @@
 		&:active {
 			background-color: $light-green;
 			border-color: $light-green
+		}
+	}
+
+	&.simple {
+		background-color: transparent;
+		padding: 0;
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
 		}
 	}
 

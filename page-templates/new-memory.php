@@ -24,5 +24,5 @@ $step = $_GET['step'] ?? 0;
 </main>
 
 <?php
-get_template_part( 'template-parts/new-memory/footer' );
+get_template_part( 'template-parts/new-memory/footer', null, ['step' => $step] );
 

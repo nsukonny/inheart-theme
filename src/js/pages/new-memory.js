@@ -29,6 +29,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	selectLanguage()
 	uploadMainPhoto()
 	addMainFormValidation()
+	prevStep()
+
+	// Step 2.
+	addSection()
+	removeSection()
 } )
 
 /**
@@ -97,6 +102,9 @@ const applyProgress = ( partId = 1, percentage = 100 ) => {
 	part.querySelector( '.new-memory-progress-inner' ).style.width = `${ percentage }%`
 }
 
+/**
+ * Go to the next step.
+ */
 const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
 		if( nextStepBtn.disabled ) return
@@ -108,6 +116,30 @@ const nextStep = () => {
 		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
 		document.querySelector( `#new-memory-step-${ nextStepId }` ).classList.add( 'active' )
 		replaceUrlParam( 'step', nextStepId )
+		prevStepBtn.classList.remove( 'hidden' )
+		prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
+		disallowNextStep()
+	} )
+}
+
+/**
+ * Go to the previous step.
+ */
+const prevStep = () => {
+	prevStepBtn.addEventListener( 'click', () => {
+		if( prevStepBtn.classList.contains( 'hidden' ) ) return
+
+		const prevStepId = parseInt( prevStepBtn.dataset.prev )
+
+		if( ! prevStepId && prevStepId != '0' ) return
+
+		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
+		document.querySelector( `#new-memory-step-${ prevStepId }` ).classList.add( 'active' )
+		replaceUrlParam( 'step', prevStepId )
+		allowNextStep( prevStepId + 1 )
+		applyProgress( prevStepId, 0 )
+
+		if( prevStepId == 0 ) prevStepBtn.classList.add( 'hidden' )
 	} )
 }
 
@@ -276,4 +308,64 @@ const isMainFormValid = () => {
 	}
 
 	return isFormValid
+}
+
+/**
+ * Add section to added sections list.
+ * Step 2.
+ */
+const addSection = () => {
+	const sectionsWrapper = document.querySelector( '.sections-sidebar' )
+
+	if( ! sectionsWrapper ) return
+
+	sectionsWrapper.addEventListener( 'click', e => {
+		const target = e.target
+
+		if(
+			target.closest( '.section-add' ) ||
+			( target.className && target.classList.contains( '.section-add' ) )
+		){
+			const
+				addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
+				targetSection			= target.closest( '.section' )
+
+			if( ! addedSectionsWrapper ) return
+
+			const clonedSection = targetSection.cloneNode( true )
+
+			addedSectionsWrapper.append( clonedSection )
+			targetSection.remove()
+		}
+	} )
+}
+
+/**
+ * Remove section to sections list.
+ * Step 2.
+ */
+const removeSection = () => {
+	const sectionsWrapper = document.querySelector( '.sections-sidebar' )
+
+	if( ! sectionsWrapper ) return
+
+	sectionsWrapper.addEventListener( 'click', e => {
+		const target = e.target
+
+		if(
+			target.closest( '.section-remove' ) ||
+			( target.className && target.classList.contains( '.section-remove' ) )
+		){
+			const
+				sectionsWrapper	= document.querySelector( '.sections-list' ),
+				targetSection	= target.closest( '.section' )
+
+			if( ! sectionsWrapper ) return
+
+			const clonedSection = targetSection.cloneNode( true )
+
+			sectionsWrapper.append( clonedSection )
+			targetSection.remove()
+		}
+	} )
 }
