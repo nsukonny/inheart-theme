@@ -34,6 +34,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Step 2.
 	addSection()
 	removeSection()
+	setActiveSectionContent()
 } )
 
 /**
@@ -315,9 +316,11 @@ const isMainFormValid = () => {
  * Step 2.
  */
 const addSection = () => {
-	const sectionsWrapper = document.querySelector( '.sections-sidebar' )
+	const
+		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
+		sectionsContent	= document.querySelector( '.sections-content' )
 
-	if( ! sectionsWrapper ) return
+	if( ! sectionsWrapper || ! sectionsContent ) return
 
 	sectionsWrapper.addEventListener( 'click', e => {
 		const target = e.target
@@ -332,22 +335,33 @@ const addSection = () => {
 
 			if( ! addedSectionsWrapper ) return
 
-			const clonedSection = targetSection.cloneNode( true )
+			const
+				clonedSection			= targetSection.cloneNode( true ),
+				clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true )
 
-			addedSectionsWrapper.append( clonedSection )
+			// Replace in sidebar.
 			targetSection.remove()
+			addedSectionsWrapper.append( clonedSection )
+
+			// Add new content.
+			clonedSectionContent.querySelector( 'textarea' ).innerText = ''
+			clonedSectionContent.querySelector( '.section-content-title' ).innerText = clonedSection.querySelector( '.section-label' ).innerText
+			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
+			sectionsContent.append( clonedSectionContent )
 		}
 	} )
 }
 
 /**
- * Remove section to sections list.
+ * Remove section from sections list.
  * Step 2.
  */
 const removeSection = () => {
-	const sectionsWrapper = document.querySelector( '.sections-sidebar' )
+	const
+		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
+		sectionsContent	= document.querySelector( '.sections-content' )
 
-	if( ! sectionsWrapper ) return
+	if( ! sectionsWrapper || ! sectionsContent ) return
 
 	sectionsWrapper.addEventListener( 'click', e => {
 		const target = e.target
@@ -358,7 +372,8 @@ const removeSection = () => {
 		){
 			const
 				sectionsWrapper	= document.querySelector( '.sections-list' ),
-				targetSection	= target.closest( '.section' )
+				targetSection	= target.closest( '.section' ),
+				sectionId		= targetSection.dataset.id
 
 			if( ! sectionsWrapper ) return
 
@@ -366,6 +381,48 @@ const removeSection = () => {
 
 			sectionsWrapper.append( clonedSection )
 			targetSection.remove()
+
+			sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ).remove()
 		}
+	} )
+}
+
+/**
+ * Set active section content.
+ */
+const setActiveSectionContent = () => {
+	const sectionsContent = document.querySelector( '.sections-content' )
+
+	if( ! sectionsContent ) return
+
+	sectionsContent.addEventListener( 'click', e => {
+		const target = e.target
+
+		if(
+			target.closest( '.section-content' ) ||
+			( target.className && target.classList.contains( '.section-content' ) )
+		){
+			const
+				targetSection	= target.closest( '.section-content' ),
+				activeSection	= sectionsContent.querySelector( '.section-content.active' )
+
+			if( activeSection ) activeSection.classList.remove( 'active' )
+
+			targetSection.classList.add( 'active' )
+		}
+	} )
+
+	// Click outside - set section inactive.
+	document.addEventListener( 'click', e => {
+		const
+			target			= e.target,
+			activeSection	= sectionsContent.querySelector( '.section-content.active' )
+
+		if( ! activeSection ) return
+
+		if(
+			! target.closest( '.section-content' ) &&
+			( target.className && ! target.classList.contains( '.section-content' ) )
+		) activeSection.classList.remove( 'active' )
 	} )
 }

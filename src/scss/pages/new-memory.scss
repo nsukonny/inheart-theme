@@ -58,12 +58,53 @@
 
 	.sections {
 		&-wrapper {
-			max-width: 860px;
-			padding: 53px 95px 53px 0
+			max-width: 955px;
+			padding: 53px 95px 53px 0;
+
+			button {
+				background-color: transparent;
+				padding: 0;
+				border: none;
+				cursor: pointer;
+				transition: opacity ease-out $tr;
+
+				&:hover {
+					opacity: 0.7
+				}
+
+				&.section-add,
+				&.section-remove {
+					color: $bright-yellow;
+					margin-left: auto
+				}
+
+				&.section-remove {
+					display: none
+				}
+
+				&.section-drag {
+					display: none;
+					position: absolute;
+					top: 50%;
+					left: 100%;
+					transform: translateY(-50%);
+					color: #96AAAE;
+					cursor: grab;
+
+					&:active {
+						cursor: grabbing
+					}
+				}
+
+				svg {
+					display: block
+				}
+			}
 		}
 
 		&-sidebar {
-			width: 245px
+			width: 245px;
+			padding-right: 24px
 		}
 
 		&-added {
@@ -122,38 +163,82 @@
 			width: calc(100% - 38px)
 		}
 
-		button {
-			background-color: transparent;
-			padding: 0;
-			border: none;
+		&-content {
+			position: relative;
+			width: 100%;
+			color: $black-for-text;
+			padding: 27px 59px 19px 25px;
+			border-radius: $radius-input;
 			cursor: pointer;
-			transition: opacity ease-out $tr;
+			transition: background-color ease-out $tr;
 
 			&:hover {
-				opacity: 0.7
+				background-color: $a-bit-blue-white;
+
+				button {
+					&.section-drag,
+					&.section-remove {
+						display: block
+					}
+				}
 			}
 
-			&.section-add,
-			&.section-remove {
-				color: $bright-yellow;
-				margin-left: auto
+			&.active {
+				background-color: $a-bit-blue-white;
+
+				.section-content-text {
+					height: 180px
+				}
+
+				button.section-remove {
+					display: block
+				}
 			}
 
-			&.section-remove {
-				display: none
+			&-title {
+				margin-bottom: 20px
 			}
 
-			&.section-drag {
-				display: none;
-				position: absolute;
-				top: 50%;
-				left: 100%;
-				transform: translateY(-50%);
-				color: #96AAAE;
-				cursor: grab;
+			&-text {
+				width: 100%;
+				height: 21px;
+				font-family: $ff;
+				font-size: $fs-md;
+				line-height: $lh-4;
+				border: none;
+				resize: none;
+				background-color: transparent;
+				padding: 0;
+				caret-color: $bright-yellow;
+				transition: height ease-out $tr;
 
-				&:active {
-					cursor: grabbing
+				&::-webkit-scrollbar {
+					width: 3px
+				}
+
+				&::-webkit-scrollbar-track {
+					-webkit-box-shadow: none
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background-color: $bright-yellow;
+					outline: none
+				}
+			}
+
+			button {
+				&.section-drag {
+					top: 33px;
+					left: auto;
+					right: 100%;
+					transform: none
+				}
+
+				&.section-remove {
+					position: absolute;
+					top: 33px;
+					right: 29px;
+					color: #96AAAE
 				}
 			}
 		}
