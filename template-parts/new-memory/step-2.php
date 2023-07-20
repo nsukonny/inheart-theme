@@ -57,7 +57,7 @@ $sections				= get_field( 'sections' );
 						?>
 
 						<div class="sections-added-list flex direction-column">
-							<div class="section flex flex-wrap align-center" style="order: 0" data-id="0">
+							<div class="section flex flex-wrap align-center" data-order="0" data-id="0">
 								<div class="section-label">
 									<?php echo esc_html( $sections[0]['title'] ) ?>
 								</div>
@@ -125,7 +125,7 @@ $sections				= get_field( 'sections' );
 								?>
 								<div
 									class="section flex flex-wrap align-center"
-									style="order: <?php echo esc_attr( $key ) ?>"
+									data-order="<?php echo esc_attr( $key ) ?>"
 									data-id="<?php echo esc_attr( $key ) ?>"
 								>
 									<div class="section-label">

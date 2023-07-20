@@ -83,13 +83,13 @@
 				}
 
 				&.section-drag {
-					display: none;
 					position: absolute;
 					top: 50%;
 					left: 100%;
 					transform: translateY(-50%);
 					color: #96AAAE;
 					cursor: grab;
+					opacity: 0;
 
 					&:active {
 						cursor: grabbing
@@ -115,7 +115,7 @@
 				background-color: $a-bit-blue-white;
 
 				&:hover button.section-drag {
-					display: block
+					opacity: 1
 				}
 
 				button.section-add {
@@ -176,7 +176,10 @@
 				background-color: $a-bit-blue-white;
 
 				button {
-					&.section-drag,
+					&.section-drag {
+						opacity: 1
+					}
+
 					&.section-remove {
 						display: block
 					}

@@ -1,4 +1,5 @@
 import Cropper from 'cropperjs'
+import Sortable from 'sortablejs'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import {
 	checkAjaxWorkingStatus,
@@ -35,6 +36,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	addSection()
 	removeSection()
 	setActiveSectionContent()
+	dragOrderSections()
 } )
 
 /**
@@ -323,7 +325,9 @@ const addSection = () => {
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
 	sectionsWrapper.addEventListener( 'click', e => {
-		const target = e.target
+		const
+			target			= e.target,
+			sectionsCount	= sectionsWrapper.querySelectorAll( '.sections-added-list .section' ).length
 
 		if(
 			target.closest( '.section-add' ) ||
@@ -346,6 +350,11 @@ const addSection = () => {
 			// Add new content.
 			clonedSectionContent.querySelector( 'textarea' ).innerText = ''
 			clonedSectionContent.querySelector( '.section-content-title' ).innerText = clonedSection.querySelector( '.section-label' ).innerText
+			// Change SVG IDs and so on.
+			clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ sectionsCount }`
+			clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ sectionsCount })` )
+			clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ sectionsCount }`
+			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ sectionsCount })` )
 			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
 			sectionsContent.append( clonedSectionContent )
 		}
@@ -424,5 +433,37 @@ const setActiveSectionContent = () => {
 			! target.closest( '.section-content' ) &&
 			( target.className && ! target.classList.contains( '.section-content' ) )
 		) activeSection.classList.remove( 'active' )
+	} )
+}
+
+/**
+ * Re-order sections with drag-and-drop events.
+ */
+const dragOrderSections = () => {
+	const
+		wrapper			= document.querySelector( '.sections-added-list' ),
+		contentWrapper	= document.querySelector( '.sections-content' )
+
+	Sortable.create( wrapper, {
+		handle	: '.section-drag',
+		onEnd	:  evt => {
+			const
+				item		= evt.item,
+				itemId		= item.dataset.id,
+				oldIndex	= evt.oldIndex,
+				newIndex	= evt.newIndex,
+				step		= oldIndex < newIndex ? 2 : 1,
+				content		= contentWrapper.querySelector( `.section-content[data-id="${ itemId }"]` ),
+				cloned		= content.cloneNode( true ),
+				putBefore	= contentWrapper.querySelector( `.section-content:nth-child(${ newIndex + step })` )
+
+			if( putBefore ) putBefore.parentNode.insertBefore( cloned, putBefore )
+			else contentWrapper.append( cloned )
+
+			content.remove()
+		}
+	} )
+	Sortable.create( contentWrapper, {
+		handle: '.section-drag'
 	} )
 }
