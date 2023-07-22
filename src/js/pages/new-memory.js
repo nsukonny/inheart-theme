@@ -34,7 +34,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Step 2.
 	addSection()
-	removeSection()
+	removeSidebarAddedSection()
+	removeContentSection()
 	setActiveSectionContent()
 	dragOrderSections()
 } )
@@ -365,7 +366,7 @@ const addSection = () => {
  * Remove section from sections list.
  * Step 2.
  */
-const removeSection = () => {
+const removeSidebarAddedSection = () => {
 	const
 		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
 		sectionsContent	= document.querySelector( '.sections-content' )
@@ -382,9 +383,10 @@ const removeSection = () => {
 			const
 				sectionsWrapper	= document.querySelector( '.sections-list' ),
 				targetSection	= target.closest( '.section' ),
-				sectionId		= targetSection.dataset.id
+				sectionId		= targetSection.dataset.id,
+				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' )
 
-			if( ! sectionsWrapper ) return
+			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
 
 			const clonedSection = targetSection.cloneNode( true )
 
@@ -392,6 +394,43 @@ const removeSection = () => {
 			targetSection.remove()
 
 			sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ).remove()
+		}
+	} )
+}
+
+/**
+ * Remove section from content.
+ * Step 2.
+ */
+const removeContentSection = () => {
+	const
+		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
+		sectionsContent	= document.querySelector( '.sections-content' )
+
+	if( ! sectionsWrapper || ! sectionsContent ) return
+
+	sectionsContent.addEventListener( 'click', e => {
+		const target = e.target
+
+		if(
+			target.closest( '.section-remove' ) ||
+			( target.className && target.classList.contains( '.section-remove' ) )
+		){
+			const
+				sectionsWrapper	= document.querySelector( '.sections-list' ),
+				targetContent	= target.closest( '.section-content' ),
+				sectionId		= targetContent.dataset.id,
+				targetSection	= document.querySelector( `.sections-added-list .section[data-id="${ sectionId }"]` ),
+				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' )
+
+			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
+
+			const clonedSection = targetSection.cloneNode( true )
+
+			sectionsWrapper.append( clonedSection )
+			targetSection.remove()
+
+			targetContent.remove()
 		}
 	} )
 }
@@ -464,6 +503,22 @@ const dragOrderSections = () => {
 		}
 	} )
 	Sortable.create( contentWrapper, {
-		handle: '.section-drag'
+		handle	: '.section-drag',
+		onEnd	:  evt => {
+			const
+				item		= evt.item,
+				itemId		= item.dataset.id,
+				oldIndex	= evt.oldIndex,
+				newIndex	= evt.newIndex,
+				step		= oldIndex < newIndex ? 2 : 1,
+				section		= wrapper.querySelector( `.section[data-id="${ itemId }"]` ),
+				cloned		= section.cloneNode( true ),
+				putBefore	= wrapper.querySelector( `.section:nth-child(${ newIndex + step })` )
+
+			if( putBefore ) putBefore.parentNode.insertBefore( cloned, putBefore )
+			else wrapper.append( cloned )
+
+			section.remove()
+		}
 	} )
 }
