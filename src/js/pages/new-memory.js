@@ -38,6 +38,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	removeContentSection()
 	setActiveSectionContent()
 	dragOrderSections()
+	sectionsContentInput()
 } )
 
 /**
@@ -330,10 +331,7 @@ const addSection = () => {
 			target			= e.target,
 			sectionsCount	= sectionsWrapper.querySelectorAll( '.sections-added-list .section' ).length
 
-		if(
-			target.closest( '.section-add' ) ||
-			( target.className && target.classList.contains( '.section-add' ) )
-		){
+		if( target.closest( '.section-add' ) || ( target.className && target.classList.contains( '.section-add' ) ) ){
 			const
 				addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
 				targetSection			= target.closest( '.section' )
@@ -342,7 +340,8 @@ const addSection = () => {
 
 			const
 				clonedSection			= targetSection.cloneNode( true ),
-				clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true )
+				clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
+				clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' )
 
 			// Replace in sidebar.
 			targetSection.remove()
@@ -357,7 +356,11 @@ const addSection = () => {
 			clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ sectionsCount }`
 			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ sectionsCount })` )
 			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
-			sectionsContent.append( clonedSectionContent )
+			clonedTextarea.value = ''	// Clear value.
+			sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
+			setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
+			sectionsContentInput()	// Add event listeners.
+			disallowNextStep()	// New section added, it's empty, so next step is not allowed.
 		}
 	} )
 }
@@ -394,6 +397,7 @@ const removeSidebarAddedSection = () => {
 			targetSection.remove()
 
 			sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ).remove()
+			checkIfAllSectionsContentSet()
 		}
 	} )
 }
@@ -431,12 +435,14 @@ const removeContentSection = () => {
 			targetSection.remove()
 
 			targetContent.remove()
+			checkIfAllSectionsContentSet()
 		}
 	} )
 }
 
 /**
  * Set active section content.
+ * Step 2.
  */
 const setActiveSectionContent = () => {
 	const sectionsContent = document.querySelector( '.sections-content' )
@@ -457,6 +463,7 @@ const setActiveSectionContent = () => {
 			if( activeSection ) activeSection.classList.remove( 'active' )
 
 			targetSection.classList.add( 'active' )
+			targetSection.querySelector( '.section-content-text' ).focus()
 		}
 	} )
 
@@ -477,6 +484,7 @@ const setActiveSectionContent = () => {
 
 /**
  * Re-order sections with drag-and-drop events.
+ * Step 2.
  */
 const dragOrderSections = () => {
 	const
@@ -521,4 +529,49 @@ const dragOrderSections = () => {
 			section.remove()
 		}
 	} )
+}
+
+/**
+ * Check if User could be allowed to go further - if all textareas are set.
+ * Step 2.
+ */
+const sectionsContentInput = () => {
+	const textareas	= document.querySelectorAll( '.section-content-text' )
+
+	if( ! textareas.length ) return
+
+	textareas.forEach( area => {
+		// Remove event listeners.
+		area.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
+		area.removeEventListener( 'change', checkIfAllSectionsContentSet )
+		area.removeEventListener( 'blur', checkIfAllSectionsContentSet )
+		// Add event listeners.
+		area.addEventListener( 'keyup', checkIfAllSectionsContentSet )
+		area.addEventListener( 'change', checkIfAllSectionsContentSet )
+		area.addEventListener( 'blur', checkIfAllSectionsContentSet )
+	} )
+}
+
+/**
+ * Check if all textareas are set. This means we can go further.
+ * Step 2.
+ */
+const checkIfAllSectionsContentSet = () => {
+	const textareas	= document.querySelectorAll( '.section-content-text' )
+	let allIsSet	= true
+
+	if( ! textareas.length ) return
+
+	textareas.forEach( area => {
+		if( ! area.value ) allIsSet = false
+
+		console.log(area.value)
+	} )
+
+	if( allIsSet ){
+		allowNextStep( 3 )
+		applyProgress( 2 )
+	}else{
+		disallowNextStep()
+	}
 }
