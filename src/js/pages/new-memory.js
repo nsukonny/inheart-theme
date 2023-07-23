@@ -39,6 +39,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	setActiveSectionContent()
 	dragOrderSections()
 	sectionsContentInput()
+
+	// Step 3
+	checkEpitaphContentLength()
 } )
 
 /**
@@ -334,11 +337,8 @@ const addSection = () => {
 		if( target.closest( '.section-add' ) || ( target.className && target.classList.contains( '.section-add' ) ) ){
 			const
 				addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
-				targetSection			= target.closest( '.section' )
-
-			if( ! addedSectionsWrapper ) return
-
-			const
+				targetSection			= target.closest( '.section' ),
+				imgUrl					= targetSection.dataset.thumb || null,
 				clonedSection			= targetSection.cloneNode( true ),
 				clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
 				clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' )
@@ -358,6 +358,14 @@ const addSection = () => {
 			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
 			clonedTextarea.value = ''	// Clear value.
 			sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
+
+			// If this is a section with a custom title.
+			if( imgUrl ){
+				clonedSectionContent.classList.add( 'custom' )
+				clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Придумайте заголовок" />'
+				clonedSectionContent.insertAdjacentHTML( 'beforeend', `<img class="section-content-thumb" src="${ imgUrl }" alt="" />` )
+			}
+
 			setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
 			sectionsContentInput()	// Add event listeners.
 			disallowNextStep()	// New section added, it's empty, so next step is not allowed.
@@ -387,16 +395,20 @@ const removeSidebarAddedSection = () => {
 				sectionsWrapper	= document.querySelector( '.sections-list' ),
 				targetSection	= target.closest( '.section' ),
 				sectionId		= targetSection.dataset.id,
-				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' )
+				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
+				sectionContent	= sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` )
 
 			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
+
+			// Section content is not empty - double-check if User wants to delete it.
+			if( sectionContent.querySelector( '.section-content-text' ).value && ! confirm( 'Дійсно видалити цю секцію?' ) ) return
 
 			const clonedSection = targetSection.cloneNode( true )
 
 			sectionsWrapper.append( clonedSection )
 			targetSection.remove()
 
-			sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ).remove()
+			sectionContent.remove()
 			checkIfAllSectionsContentSet()
 		}
 	} )
@@ -428,6 +440,9 @@ const removeContentSection = () => {
 				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' )
 
 			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
+
+			// Section content is not empty - double-check if User wants to delete it.
+			if( targetContent.querySelector( '.section-content-text' ).value && ! confirm( 'Дійсно видалити цю секцію?' ) ) return
 
 			const clonedSection = targetSection.cloneNode( true )
 
@@ -463,7 +478,9 @@ const setActiveSectionContent = () => {
 			if( activeSection ) activeSection.classList.remove( 'active' )
 
 			targetSection.classList.add( 'active' )
-			targetSection.querySelector( '.section-content-text' ).focus()
+
+			// Focus textarea if target is not input (like custom title).
+			if( target.tagName !== 'INPUT' ) targetSection.querySelector( '.section-content-text' ).focus()
 		}
 	} )
 
@@ -541,6 +558,8 @@ const sectionsContentInput = () => {
 	if( ! textareas.length ) return
 
 	textareas.forEach( area => {
+		const titleInput = area.closest( '.section-content' ).querySelector( '.section-content-title-input' )
+
 		// Remove event listeners.
 		area.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
 		area.removeEventListener( 'change', checkIfAllSectionsContentSet )
@@ -549,6 +568,21 @@ const sectionsContentInput = () => {
 		area.addEventListener( 'keyup', checkIfAllSectionsContentSet )
 		area.addEventListener( 'change', checkIfAllSectionsContentSet )
 		area.addEventListener( 'blur', checkIfAllSectionsContentSet )
+
+		if( titleInput ){
+			// Remove event listeners.
+			titleInput.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
+			titleInput.removeEventListener( 'change', checkIfAllSectionsContentSet )
+			titleInput.removeEventListener( 'blur', checkIfAllSectionsContentSet )
+			titleInput.removeEventListener( 'keyup', duplicateValueToSidebarSection )
+			titleInput.removeEventListener( 'change', duplicateValueToSidebarSection )
+			// Add event listeners.
+			titleInput.addEventListener( 'keyup', checkIfAllSectionsContentSet )
+			titleInput.addEventListener( 'change', checkIfAllSectionsContentSet )
+			titleInput.addEventListener( 'blur', checkIfAllSectionsContentSet )
+			titleInput.addEventListener( 'keyup', duplicateValueToSidebarSection )
+			titleInput.addEventListener( 'change', duplicateValueToSidebarSection )
+		}
 	} )
 }
 
@@ -563,9 +597,10 @@ const checkIfAllSectionsContentSet = () => {
 	if( ! textareas.length ) return
 
 	textareas.forEach( area => {
-		if( ! area.value ) allIsSet = false
+		const titleInput = area.closest( '.section-content' ).querySelector( '.section-content-title-input' )
 
-		console.log(area.value)
+		// If textarea or title input is not set.
+		if( ! area.value || ( titleInput && ! titleInput.value ) ) allIsSet = false
 	} )
 
 	if( allIsSet ){
@@ -574,4 +609,62 @@ const checkIfAllSectionsContentSet = () => {
 	}else{
 		disallowNextStep()
 	}
+}
+
+/**
+ * Set custom section title in the sidebar the same as in the title input.
+ * Step 2.
+ *
+ * @param {Event} e
+ */
+const duplicateValueToSidebarSection = e => {
+	const
+		target				= e.target,
+		value				= target.value,
+		id					= target.closest( '.section-content' ).dataset.id,
+		sidebarSectionTitle	= document.querySelector( `.sections-added-list .section[data-id="${ id }"] .section-label` )
+
+	sidebarSectionTitle.innerHTML = value || 'Свій заголовок'
+}
+
+/**
+ * Listen to epitaph textarea changes.
+ * Step 3.
+ */
+const checkEpitaphContentLength = () => {
+	const textarea = document.querySelector( '.epitaph-text' )
+
+	if( ! textarea ) return
+
+	textarea.addEventListener( 'keyup', onEpitaphChange )
+	textarea.addEventListener( 'change', onEpitaphChange )
+	textarea.addEventListener( 'focus', onEpitaphChange )
+}
+
+/**
+ * Check epitaph textarea length and compare with allowed length.
+ * Step 3.
+ *
+ * @param {Event} e
+ */
+const onEpitaphChange = e => {
+	const
+		textarea		= e.target,
+		value			= textarea.value,
+		symbolsTyped	= document.querySelector( '.symbols-count-typed' ),
+		symbolsAllowed	= parseInt( document.querySelector( '.symbols-count-allowed' ).innerText.trim() )
+
+	if( ! symbolsTyped || ! symbolsAllowed ) return
+
+	if( ! value ){
+		disallowNextStep()
+		applyProgress( 3, 0 )
+		return
+	}
+
+	if( value.length > symbolsAllowed ) textarea.value = value.substring( 0, symbolsAllowed )
+
+	symbolsTyped.innerHTML = textarea.value.length
+	applyProgress( 3 )
+	allowNextStep( 4 )
 }

@@ -16,8 +16,8 @@ $desc			= get_field( 'desc_0' );
 $themes_desc	= get_field( 'themes_desc' );
 ?>
 
-<section id="new-memory-step-0" class="new-memory-step new-memory-step-0<?php echo esc_attr( $is_active ) ?>">
-	<div class="container">
+<section id="new-memory-step-0" class="new-memory-step new-memory-step-0 direction-column<?php echo esc_attr( $is_active ) ?>">
+	<div class="container direction-column">
 		<?php
 		if( $title ){
 			?>

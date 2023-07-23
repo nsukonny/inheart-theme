@@ -18,8 +18,8 @@ $added_sections_title	= get_field( 'added_sections_title' );
 $sections				= get_field( 'sections' );
 ?>
 
-<section id="new-memory-step-2" class="new-memory-step new-memory-step-2<?php echo esc_attr( $is_active ) ?>">
-	<div class="container">
+<section id="new-memory-step-2" class="new-memory-step new-memory-step-2 direction-column<?php echo esc_attr( $is_active ) ?>">
+	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
 			<?php esc_html_e( 'Крок 2', 'inheart' ) ?>
 		</div>
@@ -43,7 +43,7 @@ $sections				= get_field( 'sections' );
 
 		if( $sections ){
 			?>
-			<div class="new-memory-main-info sections-wrapper flex flex-wrap">
+			<div class="form-white sections-wrapper flex flex-wrap">
 				<div class="sections-sidebar">
 					<div class="sections-added">
 						<?php
@@ -122,11 +122,17 @@ $sections				= get_field( 'sections' );
 							<?php
 							foreach( $sections as $key => $section ){
 								if( ! $key || ! ( $sec_title = $section['title'] ) ) continue;
+
+								$is_custom_title	= $section['is_custom_title'] ? ' custom' : '';
+								$thumb				= ( $is_custom_title && $section['thumb'] )
+													? ' data-thumb="' . esc_url( $section['thumb'] ) . '"'
+													: '';
 								?>
 								<div
-									class="section flex flex-wrap align-center"
+									class="section flex flex-wrap align-center<?php echo esc_attr( $is_custom_title ) ?>"
 									data-order="<?php echo esc_attr( $key ) ?>"
 									data-id="<?php echo esc_attr( $key ) ?>"
+									<?php echo $thumb ?>
 								>
 									<div class="section-label">
 										<?php echo esc_html( $sec_title ) ?>
@@ -183,9 +189,9 @@ $sections				= get_field( 'sections' );
 
 				<div class="sections-content">
 					<div class="section-content" data-id="0">
-						<h3 class="section-content-title">
+						<div class="section-content-title">
 							<?php echo esc_html( $sections[0]['title'] ) ?>
-						</h3>
+						</div>
 						<textarea class="section-content-text" placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"></textarea>
 						<button
 							class="section-drag"

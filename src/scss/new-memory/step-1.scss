@@ -43,44 +43,6 @@
 		}
 	}
 
-	&-main-info {
-		position: relative;
-		width: 100%;
-		max-width: 522px;
-		background-color: $white;
-		padding: 40px 109px 51px 0;
-		border-top-right-radius: $radius-theme;
-		margin-top: 40px;
-
-		&::before {
-			display: none;
-			content: '';
-			position: absolute;
-			top: 0;
-			right: 100%;
-			width: calc((100vw - 720px) / 2 - 8px);
-			height: 100%;
-			background-color: $white;
-			border-bottom-left-radius: $radius-theme;
-
-			@media (min-width: $md) {
-				display: block
-			}
-
-			@media (min-width: $lg) {
-				width: calc((100vw - 950px) / 2 - 8px)
-			}
-
-			@media (min-width: $xl) {
-				width: calc((100vw - 1280px) / 2 - 8px)
-			}
-		}
-
-		.label-file {
-			margin: 19px 0 0
-		}
-	}
-
 	.popup {
 		display: flex;
 		padding: 100px $container-padding;

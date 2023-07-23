@@ -15,11 +15,13 @@ wp_enqueue_script( 'new-memory', THEME_URI . '/static/js/new-memory/new-memory.m
 $step = $_GET['step'] ?? 0;
 ?>
 
-<main class="main new-memory">
+<main class="main new-memory flex direction-column">
 	<?php
 	get_template_part( 'template-parts/new-memory/step', '0', ['is_active' => $step == 0] );
 	get_template_part( 'template-parts/new-memory/step', '1', ['is_active' => $step == 1] );
 	get_template_part( 'template-parts/new-memory/step', '2', ['is_active' => $step == 2] );
+	get_template_part( 'template-parts/new-memory/step', '3', ['is_active' => $step == 3] );
+	get_template_part( 'template-parts/new-memory/step', '4', ['is_active' => $step == 4] );
 	?>
 </main>
 

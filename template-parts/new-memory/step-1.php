@@ -15,8 +15,8 @@ $title		= get_field( 'title_1' );
 $desc		= get_field( 'desc_1' );
 ?>
 
-<section id="new-memory-step-1" class="new-memory-step new-memory-step-1<?php echo esc_attr( $is_active ) ?>">
-	<div class="container">
+<section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column<?php echo esc_attr( $is_active ) ?>">
+	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
 			<?php esc_html_e( 'Крок 1', 'inheart' ) ?>
 		</div>
@@ -52,7 +52,7 @@ $desc		= get_field( 'desc_1' );
 			<div class="new-memory-lang-bg"></div>
 		</div>
 
-		<form class="new-memory-main-info" enctype="multipart/form-data">
+		<form class="form-white new-memory-main-info" enctype="multipart/form-data">
 			<fieldset class="flex flex-wrap">
 				<label for="lastname" class="label dark">
 					<span class="label-text"><?php esc_html_e( 'Прізвище', 'inheart' ) ?></span>
