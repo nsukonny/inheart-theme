@@ -148,6 +148,9 @@ const prevStep = () => {
 		applyProgress( prevStepId, 0 )
 
 		if( prevStepId == 0 ) prevStepBtn.classList.add( 'hidden' )
+		else prevStepBtn.setAttribute( 'data-prev', prevStepId - 1 )
+
+		nextStepBtn.setAttribute( 'data-next', prevStepId + 1 )
 	} )
 }
 
