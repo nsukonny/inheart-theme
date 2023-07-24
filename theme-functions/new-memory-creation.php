@@ -32,3 +32,15 @@ function ih_ajax_upload_main_photo(): void
 	] );
 }
 
+add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
+add_action( 'wp_ajax_nopriv_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
+/**
+ * Upload other photos.
+ *
+ * @return void
+ */
+function ih_ajax_upload_memory_photo(): void
+{
+	wp_send_json_error( ['msg' => esc_html__( 'ZAZZAZAZ', 'inheart' )] );
+}
+

@@ -43,7 +43,7 @@ $video_tip		= get_field( 'video_tip' );
 		}
 		?>
 
-		<form class="form-white media-form">
+		<form class="form-white media-form" enctype="multipart/form-data">
 			<fieldset>
 				<legend class="flex flex-wrap align-end">
 					<span class="legend-title"><?php echo esc_html( $photo_title ) ?></span>
@@ -69,6 +69,16 @@ $video_tip		= get_field( 'video_tip' );
 							<p><?php esc_html_e( 'PNG, JPG, або JPEG до 50 мб', 'inheart' ) ?></p>
 						</div>
 						<button class="btn sm gray br-24"><?php esc_html_e( 'Завантажити з пристрою', 'inheart' ) ?></button>
+					</div>
+
+					<div class="droparea-loader flex direction-column align-center hidden">
+						<div class="droparea-loader-percents">
+							<span>0</span>%
+						</div>
+						<div class="droparea-loader-note">
+							<?php esc_html_e( 'Завантаження фотокартки...', 'inheart' ) ?>
+						</div>
+						<progress value="0" max="100"></progress>
 					</div>
 				</div>
 			</fieldset>

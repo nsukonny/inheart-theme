@@ -146,6 +146,11 @@
 	border-radius: 28px;
 	padding: 10px 10px 28px;
 
+	&.dragover {
+		border: 1px solid $dark-yellow;
+		background-color: #FCF9F3
+	}
+
 	&-icon {
 		width: 100%;
 		margin-bottom: 9px;
@@ -175,6 +180,61 @@
 			&:not(:last-child) {
 				margin-bottom: 4px
 			}
+		}
+	}
+
+	&-loader {
+		width: 100%;
+
+		&-percents {
+			font-size: 32px;
+			color: $very-dark-green;
+			margin-bottom: 9px
+		}
+
+		&-note {
+			font-size: $fs-lg;
+			color: $very-dark-green;
+			margin-bottom: 6px
+		}
+	}
+
+	progress {
+		width: 100%;
+		max-width: 245px;
+		height: 8px;
+		border: none;
+		background-color: #EEF0F1;
+		border-radius: 4px;
+		color: $dark-yellow;
+
+		// Chrome
+		&::-webkit-progress-bar {
+			background-color: #EEF0F1;
+			border-radius: 4px
+		}
+
+		&::-webkit-progress-value {
+			background-color: $dark-yellow;
+			border-radius: 4px
+		}
+
+		// WebKit / Safari
+		&[value] {
+			background-color: #EEF0F1;
+			border-radius: 4px;
+			-webkit-appearance: none;
+
+			&::-webkit-progress-value {
+				background-color: $dark-yellow;
+				border-radius: 4px
+			}
+		}
+
+		// Firefox
+		&::-moz-progress-bar {
+			background-color: $dark-yellow;
+			border-radius: 4px
 		}
 	}
 }

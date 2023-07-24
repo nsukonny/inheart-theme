@@ -7,7 +7,9 @@ import {
 	ihAjaxRequest,
 	setTargetElement,
 	getTargetElement,
-	replaceUrlParam
+	replaceUrlParam,
+	BYTES_IN_MB,
+	ajaxUrl
 } from '../common/global'
 
 let footer,
@@ -42,6 +44,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Step 3
 	checkEpitaphContentLength()
+
+	// Step 4
+	uploadMediaPhotos()
 } )
 
 /**
@@ -670,4 +675,86 @@ const onEpitaphChange = e => {
 	symbolsTyped.innerHTML = textarea.value.length
 	applyProgress( 3 )
 	allowNextStep( 4 )
+}
+
+/**
+ * Upload media photos.
+ * Step 4.
+ */
+const uploadMediaPhotos = () => {
+	const droparea = document.querySelector( '.droparea-photo' )
+	let fileInstance
+
+	['dragenter', 'dragover', 'dragleave', 'drop'].forEach( event => {
+		document.addEventListener( event, evt => evt.preventDefault() )
+	} );
+	['dragenter', 'dragover'].forEach( event => {
+		droparea.addEventListener( event, () => droparea.classList.add( 'dragover' ) )
+	} );
+	['dragleave', 'drop'].forEach( event => {
+		droparea.addEventListener( event, () => droparea.classList.remove( 'dragover' ) )
+	} )
+
+	droparea.addEventListener( 'drop', e => {
+		fileInstance = [...e.dataTransfer.files]
+
+		if( ! fileInstance.length ) return
+
+		fileInstance.forEach( file => {
+			if( file.size > 5 * BYTES_IN_MB ){
+				alert( 'Не вдалося завантажити фото' )
+				return false
+			}
+
+			if( file.type.startsWith( 'image/' ) ){
+				processingUploadMediaPhoto( file, droparea )
+			} else {
+				alert( 'Завантажте тільки зображення' )
+				return false
+			}
+		} )
+	} )
+}
+
+/**
+ *
+ * @param file
+ * @param droparea
+ */
+const processingUploadMediaPhoto = ( file, droparea ) => {
+	if( ! file || ! droparea ) return
+
+	const
+		loader			= droparea.querySelector( '.droparea-loader' ),
+		percentsValue	= loader.querySelector( '.droparea-loader-percents span' ),
+		progress		= loader.querySelector( 'progress' ),
+		inner			= droparea.querySelector( '.droparea-inner' ),
+		dropareaData	= new FormData(),
+		xhr				= new XMLHttpRequest()
+
+	dropareaData.append( 'file', file )
+	dropareaData.append( 'action', 'ih_ajax_upload_memory_photo' )
+
+	xhr.upload.addEventListener( 'progress', e => {
+		const
+			bytesLoaded = e.loaded,
+			bytesTotal	= e.total,
+			percent		= parseInt( ( bytesLoaded / bytesTotal ) * 100 )
+
+		inner.classList.add( 'hidden' )
+		loader.classList.remove( 'hidden' )
+		percentsValue.innerHTML = percent
+		progress.value 			= percent
+	} )
+
+	xhr.open('POST', ajaxUrl, true )
+	xhr.send( dropareaData )
+
+	xhr.onload = () => {
+		loader.classList.add( 'hidden' )
+		inner.classList.remove( 'hidden' )
+
+		if( xhr.status == 200 ) alert( `Файл «${ file.name }» загружен успешно` )
+		else alert( `Файл не загружен. Ошибка ${ xhr.status } при загрузке файла.` )
+	}
 }
