@@ -94,6 +94,19 @@
 		}
 	}
 
+	&.gray {
+		background-color: $a-bit-blue-white;
+		color: $dark-yellow;
+
+		&:hover {
+			background-color: #EEF0F1
+		}
+	}
+
+	&.br-24 {
+		border-radius: 24px
+	}
+
 	&:disabled {
 		background-color: $disabled;
 		color: $disabled-text;

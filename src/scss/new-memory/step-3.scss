@@ -10,24 +10,8 @@
 			flex-grow: 1
 		}
 
-		legend {
-			padding: 0;
-			margin-bottom: 19px
-		}
-
 		fieldset {
 			flex-grow: 1
-		}
-
-		&-title {
-			font-size: 24px;
-			margin-right: 5px
-		}
-
-		.symbols-count {
-			font-size: $fs-sm;
-			color: #96AAAE;
-			padding-bottom: 5px
 		}
 
 		textarea {

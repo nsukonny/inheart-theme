@@ -9,6 +9,7 @@
 @import '../new-memory/step-1';
 @import '../new-memory/step-2';
 @import '../new-memory/step-3';
+@import '../new-memory/step-4';
 
 .new-memory {
 	flex-grow: 1;
@@ -75,6 +76,15 @@
 			padding: 45px 108px 47px 0;
 			margin-top: 0
 		}
+
+		fieldset {
+			margin-bottom: 40px
+		}
+	}
+
+	legend {
+		padding: 0;
+		margin-bottom: 19px
 	}
 }
 
@@ -114,5 +124,57 @@
 
 	.label-file {
 		margin: 19px 0 0
+	}
+}
+
+.legend-title {
+	font-size: 24px;
+	margin-right: 5px
+}
+
+.legend-subtitle {
+	font-size: $fs-sm;
+	color: #96AAAE;
+	padding-bottom: 5px
+}
+
+.droparea {
+	width: 100%;
+	min-height: 300px;
+	background-color: $white;
+	border: 0.5px solid $very-dark-green;
+	border-radius: 28px;
+	padding: 10px 10px 28px;
+
+	&-icon {
+		width: 100%;
+		margin-bottom: 9px;
+
+		svg {
+			display: block
+		}
+	}
+
+	&-title {
+		width: 100%;
+		font-size: $fs-lg;
+		color: $very-dark-green;
+		text-align: center;
+		margin-bottom: 6px
+	}
+
+	&-desc {
+		width: 100%;
+		margin-bottom: 36px;
+
+		p {
+			font-size: $fs-sm;
+			color: $green;
+			text-align: center;
+
+			&:not(:last-child) {
+				margin-bottom: 4px
+			}
+		}
 	}
 }

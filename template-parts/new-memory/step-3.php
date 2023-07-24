@@ -45,8 +45,8 @@ $max_length	= get_field( 'epitaph_max_length' ) ?: 500;
 			<form class="flex form-white epitaph">
 				<fieldset class="flex direction-column">
 					<legend class="flex flex-wrap align-end">
-						<span class="epitaph-title"><?php esc_html_e( 'Епітафія', 'inheart' ) ?></span>
-						<span class="symbols-count">
+						<span class="legend-title"><?php esc_html_e( 'Епітафія', 'inheart' ) ?></span>
+						<span class="legend-subtitle">
 							<span class="symbols-count-typed"><?php echo esc_html( mb_strlen( $init_text, 'UTF-8' ) ) ?></span>/<span class="symbols-count-allowed"><?php echo esc_html( $max_length ) ?></span>
 						</span>
 					</legend>
