@@ -79,7 +79,12 @@ $video_tip		= get_field( 'video_tip' );
 							<?php esc_html_e( 'Завантаження фотокартки...', 'inheart' ) ?>
 						</div>
 						<progress value="0" max="100"></progress>
+						<button class="btn md gray droparea-loader-cancel" type="button">
+							<?php esc_html_e( 'Відмінити', 'inheart' ) ?>
+						</button>
 					</div>
+
+					<div class="droparea-images flex flex-wrap hidden"></div>
 				</div>
 			</fieldset>
 
