@@ -270,3 +270,27 @@ export const hideAreYouSurePopup = () => {
 
 	if( popup ) popup.remove()
 }
+
+/**
+ * Show popup notification.
+ *
+ * @param {string} text Notification text.
+ * @param {string} type	'success' | 'error' | 'warning'
+ */
+export const showNotification = ( text = 'Please set the text', type = 'success' ) => {
+	const notification = document.createElement( 'div' )
+
+	notification.className 	= `notification ${ type }`
+	notification.innerText 	= text
+	document.body.querySelector( '.wrapper' ).appendChild( notification )
+
+	setTimeout( () => {
+		notification.classList.add( 'show' )
+	}, 10 )
+	setTimeout( () => {
+		notification.classList.remove( 'show' )
+	}, 3000 )
+	setTimeout( () => {
+		notification.remove()
+	}, 3000 + TRANSITION_DURATION )
+}

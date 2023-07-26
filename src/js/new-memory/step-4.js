@@ -5,7 +5,8 @@ import {
 	BYTES_IN_MB,
 	ajaxUrl,
 	showAreYouSurePopup,
-	hideAreYouSurePopup
+	hideAreYouSurePopup,
+	showNotification
 } from '../common/global'
 
 /**
@@ -30,18 +31,15 @@ export const uploadMediaPhotos = () => {
 
 		if( ! fileInstance.length ) return
 
+		// Loop through all files.
 		fileInstance.forEach( file => {
-			if( file.size > 5 * BYTES_IN_MB ){
-				alert( 'Не вдалося завантажити фото' )
+			if( file.size > 50 * BYTES_IN_MB ){
+				console.error( `Не вдалося завантажити фото ${ file.name }` )
 				return false
 			}
 
-			if( file.type.startsWith( 'image/' ) ){
-				processingUploadMediaPhoto( file, droparea )
-			} else {
-				alert( 'Завантажте тільки зображення' )
-				return false
-			}
+			if( file.type.startsWith( 'image/' ) ) processingUploadMediaPhoto( file, droparea )
+			else console.error( `Тільки зображення - файл ${ file.name } не є зображенням` )
 		} )
 	} )
 }
@@ -160,6 +158,7 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 				}
 
 				imagesWrapper.insertAdjacentHTML( 'beforeend', imageHTML )
+				showNotification( `Фото ${ file.name } успішно завантажено` )
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ) ) )
 			}
@@ -168,7 +167,7 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 			if( ! document.querySelectorAll( '.droparea-img-loaded' ).length ) inner.classList.remove( 'hidden' )
 			else imagesWrapper.classList.remove( 'hidden' )
 
-			console.error( `Файл не загружен. Ошибка ${ xhr.status } при загрузке файла.` )
+			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
 		}
 	}
 }
