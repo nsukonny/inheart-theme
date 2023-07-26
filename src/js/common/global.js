@@ -238,3 +238,35 @@ export const replaceUrlParam = ( paramName, paramValue ) => {
 	url.searchParams.set( paramName, paramValue )
 	window.history.pushState( `Step ${ paramValue }`, '', url.href )
 }
+
+/**
+ * Append popup.
+ *
+ * @param {HTMLObjectElement}	container		Where to add popup.
+ * @param {function}			cancelCallback	Fires on popup cancel button click.
+ * @param {function}			applyCallback	Fires on popup apply button click.
+ */
+export const showAreYouSurePopup = ( container, cancelCallback, applyCallback ) => {
+	if( document.querySelector( '.popup-sure' ) ) return
+
+	const popup = `<div class="popup-sure">
+		<div class="popup-sure-text">Дійсно видалити фото?</div>
+		<div class="popup-sure-buttons flex flex-wrap">
+			<button class="popup-sure-cancel" type="button">Залишити</button>
+			<button class="popup-sure-apply" type="button">Видалити</button>
+		</div>
+	</div>`
+
+	container.insertAdjacentHTML( 'beforeend', popup )
+	document.querySelector( '.popup-sure-cancel' ).addEventListener( 'click', cancelCallback )
+	document.querySelector( '.popup-sure-apply' ).addEventListener( 'click', applyCallback )
+}
+
+/**
+ * Remove popup.
+ */
+export const hideAreYouSurePopup = () => {
+	const popup = document.querySelector( '.popup-sure' )
+
+	if( popup ) popup.remove()
+}

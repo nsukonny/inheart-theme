@@ -92,7 +92,8 @@ function ih_ajax_login(): void
 	// If all is OK - trying to sign user on.
 	$credentials = [
 		'user_login'	=> $login,
-		'user_password'	=> $pass
+		'user_password'	=> $pass,
+		'remember'		=> true
 	];
 	$sign_on = wp_signon( $credentials, false );
 

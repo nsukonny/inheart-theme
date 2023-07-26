@@ -66,10 +66,10 @@ function ih_ajax_upload_memory_photo(): void
 		] );
 
 	wp_send_json_success( [
-		'success'   => 1,
-		'msg'       => esc_html__( 'Зображення заваетажено успішно', 'inheart' ),
-		'attach_id' => $attach_id,
-		'url'       => wp_get_attachment_image_url( $attach_id, 'ih-profile-media' )
+		'success'	=> 1,
+		'msg'		=> esc_html__( 'Зображення заваетажено успішно', 'inheart' ),
+		'attachId'	=> $attach_id,
+		'url'		=> wp_get_attachment_image_url( $attach_id, 'ih-profile-media' )
 	] );
 }
 

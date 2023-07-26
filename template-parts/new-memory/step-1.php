@@ -16,7 +16,7 @@ $desc		= get_field( 'desc_1' );
 ?>
 
 <section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column<?php echo esc_attr( $is_active ) ?>">
-	<div class="container direction-column">
+	<div class="container direction-column align-start">
 		<div class="new-memory-step-suptitle">
 			<?php esc_html_e( 'Крок 1', 'inheart' ) ?>
 		</div>
