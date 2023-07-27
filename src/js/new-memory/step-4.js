@@ -13,7 +13,9 @@ import {
  * Upload media photos.
  */
 export const uploadMediaPhotos = () => {
-	const droparea = document.querySelector( '.droparea-photo' )
+	const
+		droparea	= document.querySelector( '.droparea-photo' ),
+		inputs		= document.querySelectorAll( '.file-photo' )
 	let fileInstance
 
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach( event => {
@@ -26,8 +28,8 @@ export const uploadMediaPhotos = () => {
 		droparea.addEventListener( event, () => droparea.classList.remove( 'dragover' ) )
 	} )
 
-	droparea.addEventListener( 'drop', e => {
-		fileInstance = [...e.dataTransfer.files]
+	const handlePhotosUpload = e => {
+		fileInstance = e.target.tagName === 'INPUT' ? [...e.target.files] : [...e.dataTransfer.files]
 
 		if( ! fileInstance.length ) return
 
@@ -41,7 +43,10 @@ export const uploadMediaPhotos = () => {
 			if( file.type.startsWith( 'image/' ) ) processingUploadMediaPhoto( file, droparea )
 			else console.error( `Тільки зображення - файл ${ file.name } не є зображенням` )
 		} )
-	} )
+	}
+
+	droparea.addEventListener( 'drop', handlePhotosUpload )
+	inputs.forEach( input => input.addEventListener( 'change', handlePhotosUpload ) )
 }
 
 /**
@@ -157,7 +162,7 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 					} )
 				}
 
-				imagesWrapper.insertAdjacentHTML( 'beforeend', imageHTML )
+				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
 				showNotification( `Фото ${ file.name } успішно завантажено` )
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ) ) )

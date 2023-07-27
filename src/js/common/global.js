@@ -289,8 +289,8 @@ export const showNotification = ( text = 'Please set the text', type = 'success'
 	}, 10 )
 	setTimeout( () => {
 		notification.classList.remove( 'show' )
-	}, 3000 )
+	}, 5000 )
 	setTimeout( () => {
 		notification.remove()
-	}, 3000 + TRANSITION_DURATION )
+	}, 5000 + TRANSITION_DURATION )
 }
