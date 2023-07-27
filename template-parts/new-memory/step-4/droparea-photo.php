@@ -2,7 +2,7 @@
 
 /**
  * New Memory page template.
- * Step 4, droparea.
+ * Step 4, photo droparea.
  *
  * @see Page Template: New Memory -> Step 4
  *

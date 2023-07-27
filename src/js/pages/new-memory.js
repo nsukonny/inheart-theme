@@ -13,7 +13,7 @@ import {
 	setActiveSectionContent
 } from '../new-memory/step-2'
 import { checkEpitaphContentLength } from '../new-memory/step-3'
-import { uploadMediaPhotos } from '../new-memory/step-4'
+import { uploadMediaPhotos, uploadMediaVideo } from '../new-memory/step-4'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -44,4 +44,5 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Step 4
 	uploadMediaPhotos()
+	uploadMediaVideo()
 } )

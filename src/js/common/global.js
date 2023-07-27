@@ -246,11 +246,11 @@ export const replaceUrlParam = ( paramName, paramValue ) => {
  * @param {function}			cancelCallback	Fires on popup cancel button click.
  * @param {function}			applyCallback	Fires on popup apply button click.
  */
-export const showAreYouSurePopup = ( container, cancelCallback, applyCallback ) => {
+export const showAreYouSurePopup = ( container, cancelCallback, applyCallback, question = 'Дійсно видалити фото?' ) => {
 	if( document.querySelector( '.popup-sure' ) ) return
 
 	const popup = `<div class="popup-sure">
-		<div class="popup-sure-text">Дійсно видалити фото?</div>
+		<div class="popup-sure-text">${ question }</div>
 		<div class="popup-sure-buttons flex flex-wrap">
 			<button class="popup-sure-cancel" type="button">Залишити</button>
 			<button class="popup-sure-apply" type="button">Видалити</button>
