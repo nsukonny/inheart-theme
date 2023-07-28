@@ -1,6 +1,5 @@
 export const ajaxUrl	= window.wpData.ajaxUrl,
 	TRANSITION_DURATION	= 350,
-	WINDOW_WIDTH_XL		= 1280,
 	BYTES_IN_MB			= 1048576
 
 let isAjaxWorking = false,

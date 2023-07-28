@@ -7,6 +7,8 @@
  * @subpackage inheart
  */
 
+require 'vendor/autoload.php';
+
 const THEME_NAME = 'inheart';
 define( 'THEME_URI', get_template_directory_uri() );
 define( 'THEME_DIR', get_template_directory() );

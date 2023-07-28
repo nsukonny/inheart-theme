@@ -82,16 +82,16 @@ add_action( 'wp_ajax_nopriv_ih_ajax_upload_memory_video', 'ih_ajax_upload_memory
  */
 function ih_ajax_upload_memory_video(): void
 {
-	$video = $_FILES['file'];
+	$file = $_FILES['file'];
 
 	// If data is not set - send error.
-	if( ! $video ) wp_send_json_error( ['success' => 0, 'msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if( ! $file ) wp_send_json_error( ['success' => 0, 'msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
-	$allowed_video_types	= ['video/mp4', 'video/mpeg', 'video/avi'];
-	$max_image_size			= 1_024_000_000;
+	$allowed_video_types	= ['video/mp4', 'video/mpeg', 'video/x-msvideo'];
+	$max_file_size			= 1_073_741_824;
 
 	// Check conditions for the image.
-	if( ! in_array( $video['type'], $allowed_video_types ) || ( int ) $video['size'] > $max_image_size )
+	if( ! in_array( $file['type'], $allowed_video_types ) || ( int ) $file['size'] > $max_file_size )
 		wp_send_json_error( [
 			'success'   => 0,
 			'msg'       => esc_html__( 'Тільки ( avi | mp4 | mpeg ) меньше 1 гб', 'inheart' )
@@ -109,11 +109,46 @@ function ih_ajax_upload_memory_video(): void
 			'msg'       => esc_html__( 'Помилка під час завантаження файлу', 'inheart' )
 		] );
 
+	$attach_url					= wp_get_attachment_url( $attach_id );
+	$attach_path				= get_attached_file( $attach_id );
+	$tmp_dir_name				= "{$file['name']}_{$file['size']}_" . time();
+	$_SESSION['tmp_dir_name']	= $tmp_dir_name;
+	$uploads_dir				= wp_get_upload_dir()['basedir'] . '/' . $tmp_dir_name;
+	$uploads_url				= wp_get_upload_dir()['baseurl'] . '/' . $tmp_dir_name;
+	$binaries_arr				= [
+		'ffmpeg.binaries'  => THEME_DIR . '/lib-php/ffmpeg.exe',
+		'ffprobe.binaries' => THEME_DIR . '/lib-php/ffprobe.exe'
+	];
+	$ffprobe			= FFMpeg\FFProbe::create( $binaries_arr );
+	$duration			= ( int ) $ffprobe->format( $attach_path )->get( 'duration' );
+	$duration_percent	= $duration / 100;
+	$ffmpeg				= FFMpeg\FFMpeg::create( $binaries_arr );
+	$video				= $ffmpeg->open( $attach_path );
+	$shots_arr			= [];
+
+	if( ! file_exists( $uploads_dir ) ){
+		if( ! wp_mkdir_p( $uploads_dir ) )
+			wp_send_json_error( [
+				'success'   => 0,
+				'msg'       => esc_html__( 'Помилка під час створення директорії', 'inheart' )
+			] );
+	}
+
+	// Get 3 screenshots between 15% and 85% of the duration.
+	for( $i = $duration_percent * 15; $i <= $duration - $duration_percent * 15; $i += $duration_percent * 30 ){
+		$sec = ( int ) $i;
+		$video
+			->frame( FFMpeg\Coordinate\TimeCode::fromSeconds( $sec ) )
+			->save( $uploads_dir . "/shot-{$sec}.jpg" );
+		$shots_arr[] = $uploads_url . "/shot-{$sec}.jpg";
+	}
+
 	wp_send_json_success( [
 		'success'	=> 1,
 		'msg'		=> esc_html__( 'Файл завантажено успішно', 'inheart' ),
 		'attachId'	=> $attach_id,
-		'url'		=> wp_get_attachment_url( $attach_id )
+		'url'		=> $attach_url,
+		'shots'		=> json_encode( $shots_arr )
 	] );
 }
 
