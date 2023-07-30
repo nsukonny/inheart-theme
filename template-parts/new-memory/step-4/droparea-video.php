@@ -33,7 +33,7 @@
 			<span class="label-button-text">
 				<?php esc_html_e( 'Завантажити з пристрою', 'inheart' ) ?>
 			</span>
-			<input id="file-video" class="file-video" type="file" name="file-video" />
+			<input id="file-video" class="file-video" type="file" name="file-video" accept="video/mp4, video/mpeg, video/x-msvideo, video/avi" />
 		</label>
 	</div><!-- .droparea-inner -->
 
@@ -90,7 +90,7 @@
 				<span class="droparea-thumb-load-text">
 					<?php esc_html_e( 'Завантажити обкладинку', 'inheart' ) ?>
 				</span>
-				<input id="file-load-poster" class="file-photo" type="file" name="file-load-poster" />
+				<input id="file-load-poster" class="file-photo" type="file" name="file-load-poster" accept="image/jpeg, image/png" />
 			</label>
 		</div>
 	</div><!-- .droparea-thumbs -->

@@ -8,6 +8,17 @@
  * @subpackage inheart
  */
 
+add_action( 'init', 'ih_register_session' );
+/**
+ * Enable sessions.
+ *
+ * @return void
+ */
+function ih_register_session(): void
+{
+	if( ! session_id() ) session_start();
+}
+
 /**
  * Clean incoming value from trash.
  *
@@ -106,7 +117,7 @@ function ih_load_template_part( string $template_name, string $part_name = null,
 }
 
 /**
- * Chec if account activation link is expired.
+ * Check if account activation link is expired.
  *
  * @param int $user_id
  * @return bool|null    true - already expired, false - still could be used.
@@ -121,5 +132,21 @@ function ih_is_activation_link_expired( int $user_id ): ?bool
 	$new_date   = time();
 
 	return ( $new_date - $old_date > $lifetime * 60 );
+}
+
+/**
+ * Delete folder with contents.
+ *
+ * @param string $path
+ * @return bool
+ */
+function ih_delete_folder( string $path ): bool
+{
+	$files = array_diff( scandir( $path ), ['.', '..'] );
+
+	foreach( $files as $file )
+		( is_dir( "$path/$file" ) ) ? ih_delete_folder( "$path/$file" ) : unlink( "$path/$file" );
+
+	return rmdir( $path );
 }
 

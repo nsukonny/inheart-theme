@@ -189,7 +189,9 @@ const cancelCBb = e => {
  * Upload media video.
  */
 export const uploadMediaVideo = () => {
-	const droparea = document.querySelector( '.droparea-video' )
+	const
+		droparea	= document.querySelector( '.droparea-video' ),
+		inputs		= document.querySelectorAll( '.file-video' )
 	let fileInstance
 
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach( event => {
@@ -223,6 +225,7 @@ export const uploadMediaVideo = () => {
 	}
 
 	droparea.addEventListener( 'drop', handleVideoUpload )
+	inputs.forEach( input => input.addEventListener( 'change', handleVideoUpload ) )
 }
 
 export const getPrettyVideoDuration = durationInSeconds => {
@@ -302,7 +305,7 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 
 			if( data.success == 1 ){
 				thumbsWrapper.classList.remove( 'hidden' )
-				showScreenshots( data.shots )
+				showScreenshots( thumbsWrapper.querySelector( '.droparea-thumbs-list' ), data.shots )
 				videoHTML = `<div class="droparea-img-loaded droparea-video-loaded">
 					<div class="droparea-video-wrapper">
 						<video src="${ data.url }"></video>
@@ -359,7 +362,7 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 				}
 
 				videosWrapper.querySelector( '.droparea-videos-load' ).insertAdjacentHTML( 'beforebegin', videoHTML )
-				showNotification( `Фото ${ file.name } успішно завантажено` )
+				showNotification( `Файл ${ file.name } успішно завантажено` )
 				videosWrapper
 					.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => {
@@ -390,7 +393,83 @@ const getFilename = filename => {
 	return filename.substring( 0, filename.length - extension.length - 1 )
 }
 
-const showScreenshots = shots => {
+/**
+ * Show screenshots from the uploaded video.
+ *
+ * @param {HTMLObjectElement}	container	Where to append screenshots.
+ * @param {string}				shots		JSON string from the server with the screenshots' data.
+ */
+const showScreenshots = ( container, shots ) => {
 	shots = JSON.parse( shots )
-	console.log( shots )
+
+	if( ! container || ! shots.length ) return
+
+	shots.forEach( shot => {
+		const shotHTML = `<div class="droparea-thumb">
+			<img class="droparea-thumb-img" src="${ shot }" alt="" />
+		</div>`
+		container.insertAdjacentHTML( 'beforeend', shotHTML )
+	} )
+}
+
+/**
+ * Make selected screenshot active.
+ */
+export const selectScreenshot = () => {
+	const shotsList = document.querySelector( '.droparea-thumbs-list' )
+
+	if( ! shotsList ) return
+
+	shotsList.addEventListener( 'click', e => {
+		const
+			target		= e.target,
+			prevActive	= document.querySelector( '.droparea-thumb.active' )
+
+		if( ! target.closest( '.droparea-thumb' ) ) return
+
+		if( prevActive ) prevActive.classList.remove( 'active' )
+
+		target.closest( '.droparea-thumb' ).classList.add( 'active' )
+	} )
+}
+
+/**
+ * Save selected video poster.
+ */
+export const saveVideoPoster = () => {
+	const button = document.querySelector( '.droparea-thumbs-save' )
+
+	if( ! button ) return
+
+	button.addEventListener( 'click', () => {
+		const activeShot = document.querySelector( '.droparea-thumb.active' )
+
+		if( ! activeShot || checkAjaxWorkingStatus() ) return
+
+		setAjaxWorkingStatus( true )
+
+		const
+			src			= activeShot.querySelector( '.droparea-thumb-img' ).src,
+			formData	= new FormData()
+
+		formData.append( 'action', 'ih_ajax_set_poster' )
+		formData.append( 'src', src )
+
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						showNotification( res.data.msg )
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						console.error( res.data.msg )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
+		} )
+	} )
 }

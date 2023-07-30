@@ -101,7 +101,7 @@ function ih_ajax_login(): void
 	if( is_wp_error( $sign_on ) ) wp_send_json_error( ['msg' => $sign_on->get_error_message()] );
 
 	wp_set_current_user( $user_id );
-	wp_set_auth_cookie( $user_id );
+	wp_set_auth_cookie( $user_id, true );
 
 	wp_send_json_success( [
 		'msg'		=> sprintf( esc_html__( 'Вітаємо, %s!', 'inheart' ), $user->display_name ),
