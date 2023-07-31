@@ -56,7 +56,7 @@ $logo_only	= get_field( 'logo_only' );
 		];
 		$ffprobe	= FFMpeg\FFProbe::create( $binaries_arr );
 		$duration	= ( int ) $ffprobe->format( get_attached_file( 181 ) )->get( 'duration' );
-		var_dump( $duration );
+		echo 'test - ', $duration;
 
 		if( $logo_only ) get_template_part( 'template-parts/header/logo-only' );
 		else get_template_part( 'template-parts/header/full' );
