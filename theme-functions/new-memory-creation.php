@@ -121,14 +121,13 @@ function ih_ajax_upload_memory_video(): void
 		'ffmpeg.binaries'  => THEME_DIR . '/lib-php/ffmpeg.exe',
 		'ffprobe.binaries' => THEME_DIR . '/lib-php/ffprobe.exe'
 	];
+	wp_send_json_error( ['success' => 0, 'msg' => 'TEST-4'] );
 	$ffprobe			= FFMpeg\FFProbe::create( $binaries_arr );
 	$duration			= ( int ) $ffprobe->format( $attach_path )->get( 'duration' );
 	$duration_percent	= $duration / 100;
 	$ffmpeg				= FFMpeg\FFMpeg::create( $binaries_arr );
 	$video				= $ffmpeg->open( $attach_path );
 	$shots_arr			= [];
-
-	wp_send_json_error( ['success' => 0, 'msg' => 'TEST-3!!!'] );
 
 	// Create temp dir for the screenshots.
 	if( ! file_exists( $uploads_dir ) ){
