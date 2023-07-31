@@ -109,6 +109,8 @@ function ih_ajax_upload_memory_video(): void
 			'msg'       => esc_html__( 'Помилка під час завантаження файлу', 'inheart' )
 		] );
 
+	wp_send_json_error( ['success' => 0, 'msg' => 'TEST!!!'] );
+
 	$attach_url						= wp_get_attachment_url( $attach_id );
 	$attach_path					= get_attached_file( $attach_id );
 	$tmp_dir_name					= "{$file['size']}_" . time();
@@ -136,8 +138,6 @@ function ih_ajax_upload_memory_video(): void
 				'msg'       => esc_html__( 'Помилка під час створення директорії', 'inheart' )
 			] );
 	}
-
-	wp_send_json_error( ['success' => 0, 'msg' => 'TEST!!!'] );
 
 	// Get 3 screenshots between 15% and 85% of the duration.
 	for( $i = $duration_percent * 15; $i <= $duration - $duration_percent * 15; $i += $duration_percent * 30 ){
