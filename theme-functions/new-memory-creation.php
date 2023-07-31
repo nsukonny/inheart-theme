@@ -137,6 +137,8 @@ function ih_ajax_upload_memory_video(): void
 			] );
 	}
 
+	wp_send_json_error( ['success' => 0, 'msg' => 'TEST!!!'] );
+
 	// Get 3 screenshots between 15% and 85% of the duration.
 	for( $i = $duration_percent * 15; $i <= $duration - $duration_percent * 15; $i += $duration_percent * 30 ){
 		$sec = ( int ) $i;
