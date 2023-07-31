@@ -1,0 +1,246 @@
+.new-memory {
+	.sections {
+		&-wrapper {
+			max-width: 955px;
+			padding: 53px 95px 53px 0;
+
+			button {
+				background-color: transparent;
+				padding: 0;
+				border: none;
+				cursor: pointer;
+				transition: opacity ease-out $tr;
+
+				&:hover {
+					opacity: 0.7
+				}
+
+				&.section-add,
+				&.section-remove {
+					color: $bright-yellow;
+					margin-left: auto
+				}
+
+				&.section-remove {
+					display: none
+				}
+
+				&.section-drag {
+					position: absolute;
+					top: 50%;
+					left: 100%;
+					transform: translateY(-50%);
+					color: #96AAAE;
+					cursor: grab;
+					opacity: 0;
+
+					&:active {
+						cursor: grabbing
+					}
+				}
+
+				svg {
+					display: block
+				}
+			}
+		}
+
+		&-sidebar {
+			width: 245px;
+			padding-right: 24px
+		}
+
+		&-added {
+			margin-bottom: 40px;
+
+			.section {
+				color: $very-dark-green;
+				background-color: $a-bit-blue-white;
+
+				&:hover button.section-drag {
+					opacity: 1
+				}
+
+				button.section-add {
+					display: none
+				}
+
+				button.section-remove {
+					display: block
+				}
+			}
+		}
+
+		&-list {
+			.section {
+				&.custom {
+					color: #76929C
+				}
+
+				&-drag {
+					display: none
+				}
+			}
+		}
+
+		&-content {
+			// Minus sidebar column width.
+			width: calc(100% - 245px);
+			padding-left: 55px
+		}
+
+		&-title {
+			font-size: $fs-sm;
+			margin-bottom: 8px
+		}
+	}
+
+	.section {
+		position: relative;
+		font-size: $fs-sm;
+		color: $a-bit-blue-white;
+		padding: 12px 11px 12px 20px;
+		border: 3px solid $a-bit-blue-white;
+		border-radius: $radius-langs;
+		background-color: $very-dark-green;
+
+		&:hover {
+			.section-drag {
+				opacity: 1
+			}
+		}
+
+		&:not(:last-child) {
+			margin-bottom: 2px
+		}
+
+		&-label {
+			width: calc(100% - 38px)
+		}
+
+		&-content {
+			position: relative;
+			width: 100%;
+			color: $black-for-text;
+			padding: 27px 59px 19px 25px;
+			border-radius: $radius-input;
+			cursor: pointer;
+			transition: background-color ease-out $tr;
+
+			&:not(:last-child) {
+				margin-bottom: 10px
+			}
+
+			&:hover {
+				background-color: $a-bit-blue-white;
+
+				button {
+					&.section-drag {
+						opacity: 1
+					}
+
+					&.section-remove {
+						display: block
+					}
+				}
+			}
+
+			&.active {
+				background-color: $a-bit-blue-white;
+
+				.section-content-text {
+					height: 180px
+				}
+
+				button.section-remove {
+					display: block
+				}
+			}
+
+			&.custom {
+				padding-bottom: 27px;
+
+				&:not(:last-child) {
+					margin-bottom: 70px
+				}
+			}
+
+			&-title {
+				font-size: 24px;
+				margin-bottom: 20px;
+
+				&-input {
+					width: 100%;
+					font-family: $ff;
+					font-size: 24px;
+					border: none;
+					background-color: transparent;
+					padding: 0;
+					caret-color: $bright-yellow;
+
+					&::placeholder {
+						font-size: 24px;
+						color: $black-for-text;
+						opacity: 0.5
+					}
+				}
+			}
+
+			&-text {
+				width: 100%;
+				height: 21px;
+				font-family: $ff;
+				font-size: $fs-md;
+				line-height: $lh-4;
+				border: none;
+				resize: none;
+				background-color: transparent;
+				padding: 0;
+				caret-color: $bright-yellow;
+				transition: height ease-out $tr;
+
+				&::placeholder {
+					color: #96AAAE
+				}
+
+				&::-webkit-scrollbar {
+					width: 3px
+				}
+
+				&::-webkit-scrollbar-track {
+					-webkit-box-shadow: none
+				}
+
+				&::-webkit-scrollbar-thumb {
+					background-color: $bright-yellow;
+					outline: none
+				}
+			}
+
+			&-thumb {
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				transform: translate(-50%, -28%);
+				display: block;
+				width: 66px
+			}
+
+			button {
+				&.section-drag {
+					top: 33px;
+					left: auto;
+					right: 100%;
+					transform: none
+				}
+
+				&.section-remove {
+					position: absolute;
+					top: 33px;
+					right: 29px;
+					color: #96AAAE
+				}
+			}
+		}
+	}
+}

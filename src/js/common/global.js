@@ -1,6 +1,6 @@
 export const ajaxUrl	= window.wpData.ajaxUrl,
 	TRANSITION_DURATION	= 350,
-	WINDOW_WIDTH_XL		= 1280
+	BYTES_IN_MB			= 1048576
 
 let isAjaxWorking = false,
 	targetElement
@@ -223,4 +223,73 @@ export const submitAuthForm = ( formSelector, action ) => {
 			setAjaxWorkingStatus( false )
 		} )
 	} )
+}
+
+/**
+ * Update URL parameter.
+ *
+ * @param {string} paramName
+ * @param {string|number} paramValue
+ */
+export const replaceUrlParam = ( paramName, paramValue ) => {
+	let url = new URL( window.location.href )
+
+	url.searchParams.set( paramName, paramValue )
+	window.history.pushState( `Step ${ paramValue }`, '', url.href )
+}
+
+/**
+ * Append popup.
+ *
+ * @param {HTMLObjectElement}	container		Where to add popup.
+ * @param {function}			cancelCallback	Fires on popup cancel button click.
+ * @param {function}			applyCallback	Fires on popup apply button click.
+ */
+export const showAreYouSurePopup = ( container, cancelCallback, applyCallback, question = 'Дійсно видалити фото?' ) => {
+	if( document.querySelector( '.popup-sure' ) ) return
+
+	const popup = `<div class="popup-sure">
+		<div class="popup-sure-text">${ question }</div>
+		<div class="popup-sure-buttons flex flex-wrap">
+			<button class="popup-sure-cancel" type="button">Залишити</button>
+			<button class="popup-sure-apply" type="button">Видалити</button>
+		</div>
+	</div>`
+
+	container.insertAdjacentHTML( 'beforeend', popup )
+	document.querySelector( '.popup-sure-cancel' ).addEventListener( 'click', cancelCallback )
+	document.querySelector( '.popup-sure-apply' ).addEventListener( 'click', applyCallback )
+}
+
+/**
+ * Remove popup.
+ */
+export const hideAreYouSurePopup = () => {
+	const popup = document.querySelector( '.popup-sure' )
+
+	if( popup ) popup.remove()
+}
+
+/**
+ * Show popup notification.
+ *
+ * @param {string} text Notification text.
+ * @param {string} type	'success' | 'error' | 'warning'
+ */
+export const showNotification = ( text = 'Please set the text', type = 'success' ) => {
+	const notification = document.createElement( 'div' )
+
+	notification.className 	= `notification ${ type }`
+	notification.innerText 	= text
+	document.body.querySelector( '.wrapper' ).appendChild( notification )
+
+	setTimeout( () => {
+		notification.classList.add( 'show' )
+	}, 10 )
+	setTimeout( () => {
+		notification.classList.remove( 'show' )
+	}, 5000 )
+	setTimeout( () => {
+		notification.remove()
+	}, 5000 + TRANSITION_DURATION )
 }

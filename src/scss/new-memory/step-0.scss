@@ -1,0 +1,52 @@
+.new-memory {
+	&-themes {
+		width: 100%;
+		max-width: 414px;
+		gap: 20px;
+
+		&-desc {
+			width: 100%;
+			max-width: 445px;
+			margin-bottom: 20px;
+			line-height: $lh-base
+		}
+	}
+
+	&-theme {
+		position: relative;
+		width: 100%;
+		background-color: transparent;
+		padding: 0;
+		border: none;
+		border-radius: $radius-theme;
+		cursor: pointer;
+
+		@media (min-width: $sm) {
+			width: calc(50% - 10px)
+		}
+
+		&.active::before {
+			opacity: 1
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: -8px;
+			left: -8px;
+			width: calc(100% + 16px);
+			height: calc(100% + 16px);
+			border: 1px solid $dark-yellow;
+			border-radius: $radius-theme-border;
+			opacity: 0;
+			transition: opacity ease-out $tr;
+			pointer-events: none
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			border-radius: $radius-theme
+		}
+	}
+}

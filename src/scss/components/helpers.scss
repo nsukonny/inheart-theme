@@ -44,8 +44,16 @@
 	}
 }
 
+.hidden {
+	display: none !important
+}
+
 .flex {
 	display: flex
+}
+
+.inline-flex {
+	display: inline-flex
 }
 
 .flex-wrap {
@@ -60,8 +68,20 @@
 	justify-content: center
 }
 
+.justify-end {
+	justify-content: flex-end
+}
+
 .align-center {
 	align-items: center
+}
+
+.align-start {
+	align-items: flex-start
+}
+
+.align-end {
+	align-items: flex-end
 }
 
 .note-with-icon {

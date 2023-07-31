@@ -1,0 +1,143 @@
+.new-memory {
+	&-langs {
+		position: relative;
+		border: 1px solid $very-dark-green;
+		border-radius: $radius-langs
+	}
+
+	&-lang {
+		position: relative;
+		width: 138px;
+		padding: 16px 0;
+		background-color: transparent;
+		border: none;
+		font-size: $fs-sm;
+		cursor: pointer;
+		z-index: 1;
+		transition: color ease-out $tr;
+
+		&:first-of-type.active ~ .new-memory-lang-bg {
+			left: 3px
+		}
+
+		&:nth-of-type(2).active ~ .new-memory-lang-bg {
+			left: 141px
+		}
+
+		&:last-of-type.active ~ .new-memory-lang-bg {
+			left: 279px
+		}
+
+		&.active {
+			color: $a-bit-blue-white
+		}
+
+		&-bg {
+			position: absolute;
+			top: 3px;
+			width: 132px;
+			height: calc(100% - 6px);
+			background-color: $very-dark-green;
+			border-radius: $radius-langs;
+			transition: left ease-out $tr
+		}
+	}
+
+	.popup {
+		display: flex;
+		padding: 100px $container-padding;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+		background-color: rgba(0, 0, 0, 0.81);
+		cursor: pointer;
+		overflow-y: auto;
+
+		&-inner {
+			width: 100%;
+			max-width: 800px;
+			margin: auto 0;
+			background-color: $white;
+			border-radius: $radius-theme;
+			overflow: hidden;
+			cursor: auto
+		}
+
+		&-photo-wrapper {
+			height: 662px;
+			overflow: hidden;
+
+			img {
+				max-width: 100%;
+				max-height: 100%
+			}
+		}
+
+		&-buttons {
+			padding: 42px 0 48px
+		}
+
+		.cropper-modal {
+			opacity: 0.6
+		}
+
+		.cropper-face,
+		.cropper-view-box {
+			border-radius: 200px
+		}
+
+		.cropper-view-box {
+			outline: none
+		}
+
+		.cropper-dashed,
+		.cropper-center,
+		.cropper-line,
+		.cropper-point.point-e,
+		.cropper-point.point-n,
+		.cropper-point.point-w,
+		.cropper-point.point-s {
+			display: none
+		}
+
+		.cropper-point {
+			width: 11px;
+			height: 11px;
+			background-color: transparent;
+			opacity: 1;
+
+			&.point-nw {	// Top-left
+				top: 0;
+				left: 0;
+				border-top: 2px solid $white;
+				border-left: 2px solid $white
+			}
+
+			&.point-ne {	// Top-right
+				top: 0;
+				right: 0;
+				border-top: 2px solid $white;
+				border-right: 2px solid $white
+			}
+
+			&.point-sw {	// Bottom-left
+				bottom: 0;
+				left: 0;
+				border-left: 2px solid $white;
+				border-bottom: 2px solid $white
+			}
+
+			&.point-se {	// Bottom-right
+				bottom: 0;
+				right: 0;
+				border-right: 2px solid $white;
+				border-bottom: 2px solid $white
+			}
+		}
+	}
+}
