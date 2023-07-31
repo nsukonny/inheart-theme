@@ -109,8 +109,6 @@ function ih_ajax_upload_memory_video(): void
 			'msg'       => esc_html__( 'Помилка під час завантаження файлу', 'inheart' )
 		] );
 
-	wp_send_json_error( ['success' => 0, 'msg' => 'TEST!!!'] );
-
 	$attach_url						= wp_get_attachment_url( $attach_id );
 	$attach_path					= get_attached_file( $attach_id );
 	$tmp_dir_name					= "{$file['size']}_" . time();
@@ -129,6 +127,8 @@ function ih_ajax_upload_memory_video(): void
 	$ffmpeg				= FFMpeg\FFMpeg::create( $binaries_arr );
 	$video				= $ffmpeg->open( $attach_path );
 	$shots_arr			= [];
+
+	wp_send_json_error( ['success' => 0, 'msg' => 'TEST-3!!!'] );
 
 	// Create temp dir for the screenshots.
 	if( ! file_exists( $uploads_dir ) ){
