@@ -50,14 +50,6 @@ $logo_only	= get_field( 'logo_only' );
 
 	<div class="wrapper">
 		<?php
-		$binaries_arr = [
-			'ffmpeg.binaries'  => THEME_DIR . '/lib-php/ffmpeg.exe',
-			'ffprobe.binaries' => THEME_DIR . '/lib-php/ffprobe.exe'
-		];
-		$ffprobe	= FFMpeg\FFProbe::create( $binaries_arr );
-		$duration	= ( int ) $ffprobe->format( get_attached_file( 181 ) )->get( 'duration' );
-		echo 'test - ', $duration;
-
 		if( $logo_only ) get_template_part( 'template-parts/header/logo-only' );
 		else get_template_part( 'template-parts/header/full' );
 		?>
