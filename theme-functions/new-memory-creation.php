@@ -111,7 +111,7 @@ function ih_ajax_upload_memory_video(): void
 
 	$attach_url						= wp_get_attachment_url( $attach_id );
 	$attach_path					= get_attached_file( $attach_id );
-	$tmp_dir_name					= "{$file['name']}_{$file['size']}_" . time();
+	$tmp_dir_name					= "{$file['size']}_" . time();
 	$uploads_dir					= wp_get_upload_dir()['basedir'] . '/tmp_uploads/' . $tmp_dir_name;
 	$uploads_url					= wp_get_upload_dir()['baseurl'] . '/tmp_uploads/' . $tmp_dir_name;
 	$_SESSION['step4']['tmp_url']	= $uploads_url;
