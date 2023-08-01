@@ -95,15 +95,15 @@ function ih_ajax_upload_custom_poster(): void
 		wp_send_json_error( ['msg' => esc_html__( 'Тільки ( png | jpg | jpeg ) меньше 5 мб', 'inheart' )] );
 
 	$filename	= ih_modify_filename( $image['name'] );
-	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['tmp_dir']}/{$filename}" );
+	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['video']['tmp_dir']}/{$filename}" );
 
 	if( ! $moved )
 		wp_send_json_error( ['msg' => esc_html__( 'Помилка під час завантаження зображення', 'inheart' )] );
 
-	$_SESSION['step4']['shots'][] = "{$_SESSION['step4']['tmp_url']}/{$filename}";
+	$_SESSION['step4']['video']['shots'][] = "{$_SESSION['step4']['video']['tmp_url']}/{$filename}";
 	wp_send_json_success( [
 		'msg'	=> esc_html__( 'Зображення завантажено успішно', 'inheart' ),
-		'url'	=> "{$_SESSION['step4']['tmp_url']}/{$filename}"
+		'url'	=> "{$_SESSION['step4']['video']['tmp_url']}/{$filename}"
 	] );
 }
 
@@ -143,15 +143,14 @@ function ih_ajax_upload_memory_video(): void
 			'msg'       => esc_html__( 'Помилка під час завантаження файлу', 'inheart' )
 		] );
 
-//	$attach_url						= wp_get_attachment_url( $attach_id );
-	$attach_path					= get_attached_file( $attach_id );
-	$tmp_dir_name					= "{$file['size']}_" . time();
-	$uploads_dir					= wp_get_upload_dir()['basedir'] . '/tmp_uploads/' . $tmp_dir_name;
-	$uploads_url					= wp_get_upload_dir()['baseurl'] . '/tmp_uploads/' . $tmp_dir_name;
-	$_SESSION['step4']['tmp_url']	= $uploads_url;
-	$_SESSION['step4']['tmp_dir']	= $uploads_dir;
-	$_SESSION['step4']['file_id']	= $attach_id;
-	$binaries_arr					= [
+	$attach_path							= get_attached_file( $attach_id );
+	$tmp_dir_name							= "{$file['size']}_" . time();
+	$uploads_dir							= wp_get_upload_dir()['basedir'] . '/tmp_uploads/' . $tmp_dir_name;
+	$uploads_url							= wp_get_upload_dir()['baseurl'] . '/tmp_uploads/' . $tmp_dir_name;
+	$_SESSION['step4']['video']['tmp_url']	= $uploads_url;
+	$_SESSION['step4']['video']['tmp_dir']	= $uploads_dir;
+	$_SESSION['step4']['video']['file_id']	= $attach_id;
+	$binaries_arr							= [
 		'ffmpeg.binaries'  => THEME_DIR . '/lib-php/ffmpeg.exe',
 		'ffprobe.binaries' => THEME_DIR . '/lib-php/ffprobe.exe'
 	];
@@ -180,12 +179,11 @@ function ih_ajax_upload_memory_video(): void
 		$shots_arr[] = $uploads_url . "/shot-{$sec}.jpg";
 	}
 
-	$_SESSION['step4']['shots'] = $shots_arr;
+	$_SESSION['step4']['video']['shots'] = $shots_arr;
 	wp_send_json_success( [
 		'success'	=> 1,
 		'msg'		=> esc_html__( 'Файл завантажено успішно', 'inheart' ),
 		'attachId'	=> $attach_id,
-//		'url'		=> $attach_url,
 		'shots'		=> json_encode( $shots_arr )
 	] );
 }
@@ -218,7 +216,7 @@ function ih_ajax_delete_memory_photo(): void
 		}
 	}
 
-	// Delete video file.
+	// Delete file.
 	wp_delete_attachment( $attach_id, true );
 
 	wp_send_json_success( ['msg' => esc_html__( 'Файл видалено успішно', 'inheart' )] );
@@ -238,7 +236,7 @@ function ih_ajax_set_poster(): void
 	// If data is not set - send error.
 	if( ! $src ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
-	$step_data		= $_SESSION['step4'] ?? null;
+	$step_data		= $_SESSION['step4']['video'] ?? null;
 	$poster_name	= ih_modify_filename( basename( $src ) );
 	$poster_src		= null;
 
@@ -270,10 +268,7 @@ function ih_ajax_set_poster(): void
 	ih_delete_folder( $step_data['tmp_dir'] );
 
 	// Delete data from the session.
-	unset( $_SESSION['step4']['file_id'] );
-	unset( $_SESSION['step4']['tmp_dir'] );
-	unset( $_SESSION['step4']['tmp_url'] );
-	unset( $_SESSION['step4']['shots'] );
+	unset( $_SESSION['step4']['video'] );
 
 	wp_send_json_success( [
 		'msg'		=> esc_html__( 'Обкладинку встановлено успішно', 'inheart' ),
