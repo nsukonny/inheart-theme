@@ -150,3 +150,14 @@ function ih_delete_folder( string $path ): bool
 	return rmdir( $path );
 }
 
+/**
+ * Replace symbols in filename.
+ *
+ * @param string $filename
+ * @return string
+ */
+function ih_modify_filename( string $filename = '' ): string
+{
+	return str_replace( ' ', '_', $filename );
+}
+

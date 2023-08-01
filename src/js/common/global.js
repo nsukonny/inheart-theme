@@ -293,3 +293,25 @@ export const showNotification = ( text = 'Please set the text', type = 'success'
 		notification.remove()
 	}, 5000 + TRANSITION_DURATION )
 }
+
+/**
+ * Show specific element by removing class '.hidden'.
+ *
+ * @param {HTMLObjectElement} el
+ */
+export const showElement = el => {
+	if( ! el || ! el.classList.contains( 'hidden' ) ) return
+
+	el.classList.remove( 'hidden' )
+}
+
+/**
+ * Hide specific element by adding class '.hidden'.
+ *
+ * @param {HTMLObjectElement} el
+ */
+export const hideElement = el => {
+	if( ! el || el.classList.contains( 'hidden' ) ) return
+
+	el.classList.add( 'hidden' )
+}

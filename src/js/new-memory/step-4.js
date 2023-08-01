@@ -6,7 +6,9 @@ import {
 	ihAjaxRequest,
 	setAjaxWorkingStatus,
 	showAreYouSurePopup,
-	showNotification
+	showNotification,
+	hideElement,
+	showElement
 } from '../common/global'
 
 let videoDuration = 0
@@ -228,7 +230,13 @@ export const uploadMediaVideo = () => {
 	inputs.forEach( input => input.addEventListener( 'change', handleVideoUpload ) )
 }
 
-export const getPrettyVideoDuration = durationInSeconds => {
+/**
+ * Pretty video duration output string.
+ *
+ * @param durationInSeconds
+ * @returns {string}
+ */
+const getPrettyVideoDuration = durationInSeconds => {
 	durationInSeconds = Math.floor( durationInSeconds )
 
 	if( ! durationInSeconds || durationInSeconds < 1 ) return
@@ -299,75 +307,12 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 		if( xhr.status == 200 ){
 			const
 				response	= JSON.parse( xhr.response ),
-				data		= response.data,
-				maskId		= `mask0_${ Math.random() * 10000 }_${ Math.random() * 10000 }`
-			let videoHTML	= ''
+				data		= response.data
 
 			if( data.success == 1 ){
 				thumbsWrapper.classList.remove( 'hidden' )
 				showScreenshots( thumbsWrapper.querySelector( '.droparea-thumbs-list' ), data.shots )
-				videoHTML = `<div class="droparea-img-loaded droparea-video-loaded">
-					<div class="droparea-video-wrapper">
-						<video src="${ data.url }"></video>
-						<div class="droparea-img-delete flex align-center justify-center" data-id="${ data.attachId }">
-							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<mask id="${ maskId }" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
-									<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
-								</mask>
-								<g mask="url(#${ maskId })">
-									<rect width="24" height="24" fill="currentColor"/>
-								</g>
-							</svg>
-						</div>
-					</div>
-					<div class="droparea-video-title">${ getFilename( file.name ) }</div>
-					<div class="droparea-video-duration">${ videoDuration }</div>
-				</div>`
-
-				const applyCBb = e => {
-					if( checkAjaxWorkingStatus() ) return
-
-					setAjaxWorkingStatus( true )
-
-					const
-						id			= e.target.closest( '.droparea-img-delete' ).dataset.id,
-						formData	= new FormData()
-
-					formData.append( 'action', 'ih_ajax_delete_memory_photo' )
-					formData.append( 'id', id )
-
-					ihAjaxRequest( formData ).then( res => {
-						if( res ){
-							switch( res.success ){
-								case true:
-									e.target.closest( '.droparea-img-loaded' ).remove()
-
-									// If there are no more images loaded.
-									if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
-										videosWrapper.classList.add( 'hidden' )
-										inner.classList.remove( 'hidden' )
-									}
-
-									break
-
-								case false:
-									console.error( res.data.msg )
-									break
-							}
-						}
-
-						setAjaxWorkingStatus( false )
-						hideAreYouSurePopup()
-					} )
-				}
-
-				videosWrapper.querySelector( '.droparea-videos-load' ).insertAdjacentHTML( 'beforebegin', videoHTML )
 				showNotification( `Файл ${ file.name } успішно завантажено` )
-				videosWrapper
-					.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
-					.addEventListener( 'click', e => {
-						showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ), 'Дійсно видалити відео?' )
-					} )
 			}
 		}else{
 			// If no videos loaded yet.
@@ -460,16 +405,174 @@ export const saveVideoPoster = () => {
 				switch( res.success ){
 					case true:
 						showNotification( res.data.msg )
+						hideElement( document.querySelector( '.droparea-thumbs' ) )
+						showElement( document.querySelector( '.droparea-videos' ) )
+						clearThumbsList()
+						outputVideoWithPoster( res.data, src )
 						break
 
 					case false:
 						showNotification( res.data.msg, 'error' )
-						console.error( res.data.msg )
 						break
 				}
 			}
 
 			setAjaxWorkingStatus( false )
 		} )
+	} )
+}
+
+/**
+ * Remove all video thumbs (posters).
+ */
+const clearThumbsList = () => {
+	const thumbs = document.querySelectorAll( '.droparea-thumb' )
+
+	if( ! thumbs.length ) return
+
+	thumbs.forEach( thumb => thumb.remove() )
+}
+
+/**
+ *
+ * @param videoData
+ */
+const outputVideoWithPoster = ( videoData, poster ) => {
+	const
+		maskId			= `mask0_${ Math.random() * 10000 }_${ Math.random() * 10000 }`,
+		videosWrapper	= document.querySelector( '.droparea-videos' ),
+		videoHTML		= `<div class="droparea-img-loaded droparea-video-loaded">
+		<div class="droparea-video-wrapper">
+			<video src="${ videoData.url }" poster="${ poster }"></video>
+			<div
+				class="droparea-img-delete flex align-center justify-center"
+				data-id="${ videoData.attachId }"
+				data-is-video="1"
+			>
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<mask id="${ maskId }" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
+					</mask>
+					<g mask="url(#${ maskId })">
+						<rect width="24" height="24" fill="currentColor"/>
+					</g>
+				</svg>
+			</div>
+		</div>
+		<div class="droparea-video-title">${ getFilename( videoData.filename ) }</div>
+		<div class="droparea-video-duration">${ videoDuration }</div>
+	</div>`
+
+	const applyCBb = e => {
+		if( checkAjaxWorkingStatus() ) return
+
+		setAjaxWorkingStatus( true )
+
+		const
+			id			= e.target.closest( '.droparea-img-delete' ).dataset.id,
+			isVideo		= e.target.closest( '.droparea-img-delete' ).dataset.isVideo,
+			formData	= new FormData()
+
+		formData.append( 'action', 'ih_ajax_delete_memory_photo' )
+		formData.append( 'id', id )
+		formData.append( 'video', isVideo )
+
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						e.target.closest( '.droparea-img-loaded' ).remove()
+
+						// If there are no more images loaded.
+						if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
+							hideElement( videosWrapper )
+							showElement( document.querySelector( '.droparea-video .droparea-inner' ) )
+						}
+
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
+			hideAreYouSurePopup()
+		} )
+	}
+
+	videosWrapper.querySelector( '.droparea-videos-load' ).insertAdjacentHTML( 'beforebegin', videoHTML )
+	videosWrapper
+		.querySelector( `.droparea-img-delete[data-id="${ videoData.attachId }"]` )
+		.addEventListener( 'click', e => {
+			showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ), 'Дійсно видалити відео?' )
+		} )
+}
+
+/**
+ * Upload custom poster from device.
+ */
+export const uploadCustomPoster = () => {
+	const
+		input		= document.querySelector( '.file-load-poster' ),
+		loadArea	= document.querySelector( '.droparea-thumbs-list' )
+
+	if( ! input || ! loadArea ) return
+
+	input.addEventListener( 'change', e => {
+		const fileInstance = [...e.target.files]
+
+		if( ! fileInstance.length ) return
+
+		const file = fileInstance[0]
+
+		if( file.size > 5 * BYTES_IN_MB ){
+			showNotification( 'Розмір повинен бути меньше 5 мб', 'error' )
+			return false
+		}
+
+		if( file.type.startsWith( 'image/' ) ) processingUploadCustomPoster( file, loadArea )
+		else showNotification( `Тільки зображення - файл ${ file.name } не є зображенням`, 'error' )
+	} )
+}
+
+/**
+ * Upload custom poster handler.
+ *
+ * @param file
+ * @param droparea
+ */
+const processingUploadCustomPoster = ( file, droparea ) => {
+	if( ! file || ! droparea ) return
+
+	const dropareaData = new FormData()
+
+	if( checkAjaxWorkingStatus() ) return
+
+	setAjaxWorkingStatus( true )
+
+	dropareaData.append( 'action', 'ih_ajax_upload_custom_poster' )
+	dropareaData.append( 'file', file )
+
+	ihAjaxRequest( dropareaData ).then( res => {
+		if( res ){
+			switch( res.success ){
+				case true:
+					const imageHTML = `<div class="droparea-thumb">
+						<img class="droparea-thumb-img" src="${ res.data.url }" alt="${ file.name }" />
+					</div>`
+
+					droparea.insertAdjacentHTML( 'beforeend', imageHTML )
+					showNotification( `Обкладинка ${ file.name } успішно завантажено` )
+					break
+
+				case false:
+					showNotification( res.data.msg, 'error' )
+					break
+			}
+		}
+
+		setAjaxWorkingStatus( false )
 	} )
 }

@@ -73,6 +73,40 @@ function ih_ajax_upload_memory_photo(): void
 	] );
 }
 
+add_action( 'wp_ajax_ih_ajax_upload_custom_poster', 'ih_ajax_upload_custom_poster' );
+add_action( 'wp_ajax_nopriv_ih_ajax_upload_custom_poster', 'ih_ajax_upload_custom_poster' );
+/**
+ * Upload custom poster from device.
+ *
+ * @return void
+ */
+function ih_ajax_upload_custom_poster(): void
+{
+	$image = $_FILES['file'];
+
+	// If data is not set - send error.
+	if( ! $image ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	$allowed_image_types    = ['image/jpeg', 'image/png'];
+	$max_image_size         = 5_000_000;
+
+	// Check conditions for the image.
+	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
+		wp_send_json_error( ['msg' => esc_html__( 'Тільки ( png | jpg | jpeg ) меньше 5 мб', 'inheart' )] );
+
+	$filename	= ih_modify_filename( $image['name'] );
+	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['tmp_dir']}/{$filename}" );
+
+	if( ! $moved )
+		wp_send_json_error( ['msg' => esc_html__( 'Помилка під час завантаження зображення', 'inheart' )] );
+
+	$_SESSION['step4']['shots'][] = "{$_SESSION['step4']['tmp_url']}/{$filename}";
+	wp_send_json_success( [
+		'msg'	=> esc_html__( 'Зображення завантажено успішно', 'inheart' ),
+		'url'	=> "{$_SESSION['step4']['tmp_url']}/{$filename}"
+	] );
+}
+
 add_action( 'wp_ajax_ih_ajax_upload_memory_video', 'ih_ajax_upload_memory_video' );
 add_action( 'wp_ajax_nopriv_ih_ajax_upload_memory_video', 'ih_ajax_upload_memory_video' );
 /**
@@ -109,7 +143,7 @@ function ih_ajax_upload_memory_video(): void
 			'msg'       => esc_html__( 'Помилка під час завантаження файлу', 'inheart' )
 		] );
 
-	$attach_url						= wp_get_attachment_url( $attach_id );
+//	$attach_url						= wp_get_attachment_url( $attach_id );
 	$attach_path					= get_attached_file( $attach_id );
 	$tmp_dir_name					= "{$file['size']}_" . time();
 	$uploads_dir					= wp_get_upload_dir()['basedir'] . '/tmp_uploads/' . $tmp_dir_name;
@@ -151,7 +185,7 @@ function ih_ajax_upload_memory_video(): void
 		'success'	=> 1,
 		'msg'		=> esc_html__( 'Файл завантажено успішно', 'inheart' ),
 		'attachId'	=> $attach_id,
-		'url'		=> $attach_url,
+//		'url'		=> $attach_url,
 		'shots'		=> json_encode( $shots_arr )
 	] );
 }
@@ -165,14 +199,29 @@ add_action( 'wp_ajax_nopriv_ih_ajax_delete_memory_photo', 'ih_ajax_delete_memory
  */
 function ih_ajax_delete_memory_photo(): void
 {
-	$attach_id = ih_clean( $_POST['id'] );
+	$attach_id	= ih_clean( $_POST['id'] );
+	$is_video	= ih_clean( $_POST['video'] );
 
 	// If data is not set - send error.
 	if( ! $attach_id ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
+	// If we are going to remove a video file - let's remove its attachments, like poster.
+	if( $is_video ){
+		$post = get_post( $attach_id );
+
+		if( $post->post_type === 'attachment' ){
+			$attachments = get_children( ['post_type' => 'attachment', 'post_parent' => $attach_id] );
+
+			if( $attachments ){
+				foreach( $attachments as $attachment ) wp_delete_attachment( $attachment->ID, true );
+			}
+		}
+	}
+
+	// Delete video file.
 	wp_delete_attachment( $attach_id, true );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Зображення видалено успішно', 'inheart' )] );
+	wp_send_json_success( ['msg' => esc_html__( 'Файл видалено успішно', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_set_poster', 'ih_ajax_set_poster' );
@@ -190,7 +239,7 @@ function ih_ajax_set_poster(): void
 	if( ! $src ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	$step_data		= $_SESSION['step4'] ?? null;
-	$poster_name	= basename( $src );
+	$poster_name	= ih_modify_filename( basename( $src ) );
 	$poster_src		= null;
 
 	// No file/screenshots data in current session.
@@ -214,7 +263,9 @@ function ih_ajax_set_poster(): void
 		wp_send_json_error( ['msg' => esc_html__( 'Не вдалося встановити обкладинку', 'inheart' )] );
 
 	// Set new poster for the video.
-	set_post_thumbnail( ( int ) $step_data['file_id'], $poster_id );
+	set_post_thumbnail( $step_data['file_id'], $poster_id );
+	$attach_id	= $step_data['file_id'];
+	$attach_url	= wp_get_attachment_url( $attach_id );
 	// Delete tmp dir with the screenshots.
 	ih_delete_folder( $step_data['tmp_dir'] );
 
@@ -224,6 +275,11 @@ function ih_ajax_set_poster(): void
 	unset( $_SESSION['step4']['tmp_url'] );
 	unset( $_SESSION['step4']['shots'] );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Обкладинку встановлено успішно', 'inheart' )] );
+	wp_send_json_success( [
+		'msg'		=> esc_html__( 'Обкладинку встановлено успішно', 'inheart' ),
+		'url'		=> $attach_url,
+		'attachId'	=> $attach_id,
+		'filename'	=> basename( get_attached_file( $attach_id ) )
+	] );
 }
 
