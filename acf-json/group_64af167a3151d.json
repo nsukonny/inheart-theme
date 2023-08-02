@@ -111,7 +111,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
@@ -125,6 +125,35 @@
                     "max_size": "",
                     "mime_types": "",
                     "preview_size": "medium",
+                    "parent_repeater": "field_64af17249ef38"
+                },
+                {
+                    "key": "field_64ca993d6eb88",
+                    "label": "Theme Value",
+                    "name": "theme_value",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "classic": "Класичний",
+                        "black": "Чорний",
+                        "red": "Червоний",
+                        "blue": "Блакитний"
+                    },
+                    "default_value": "classic",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
                     "parent_repeater": "field_64af17249ef38"
                 }
             ]
@@ -638,5 +667,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1690207951
+    "modified": 1690999150
 }

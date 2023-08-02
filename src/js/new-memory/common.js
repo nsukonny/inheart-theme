@@ -1,6 +1,7 @@
-import { replaceUrlParam } from '../common/global'
+import { checkAjaxWorkingStatus, replaceUrlParam, setAjaxWorkingStatus } from '../common/global'
 import { checkStep0 } from './step-0'
 import { checkStep1 } from './step-1'
+import { checkStep2 } from './step-2'
 
 let footer,
 	progressBar,
@@ -33,6 +34,9 @@ export const allowNextStep = ( nextStepId = 1 ) => {
 	nextStepBtn.dataset.next = `${ nextStepId }`
 }
 
+/**
+ * Disable next step button.
+ */
 export const disallowNextStep = () => {
 	nextStepBtn.setAttribute( 'disabled', 'true' )
 	nextStepBtn.dataset.next = ''
@@ -62,14 +66,30 @@ export const nextStep = () => {
 		const nextStepId = parseInt( nextStepBtn.dataset.next )
 
 		if( ! nextStepId ) return
+		/*if( ! nextStepId || checkAjaxWorkingStatus() ) return
 
-		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
-		document.querySelector( `#new-memory-step-${ nextStepId }` ).classList.add( 'active' )
-		replaceUrlParam( 'step', nextStepId )
-		prevStepBtn.classList.remove( 'hidden' )
-		prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
-		isStepFilled( nextStepId )
+		setAjaxWorkingStatus( true )
+
+		const formData = new FormData()
+
+		formData.append( 'action', `ih_ajax_save_data_step_${ nextStepId - 1 }` )*/
+
+		showNextStepSection( nextStepId )
 	} )
+}
+
+/**
+ * Hide current and show next step layout.
+ *
+ * @param {number} nextStepId
+ */
+const showNextStepSection = nextStepId => {
+	document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
+	document.querySelector( `#new-memory-step-${ nextStepId }` ).classList.add( 'active' )
+	replaceUrlParam( 'step', nextStepId )
+	prevStepBtn.classList.remove( 'hidden' )
+	prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
+	isStepFilled( nextStepId )
 }
 
 /**
@@ -110,10 +130,10 @@ export const isStepFilled = ( stepId = 0 ) => {
 			cb = checkStep1
 			break
 
-		// case 2:
-		// 	cb = checkStep2
-		// 	break
-		//
+		case 2:
+			cb = checkStep2
+			break
+
 		// case 3:
 		// 	cb = checkStep3
 		// 	break
@@ -137,8 +157,4 @@ export const isStepFilled = ( stepId = 0 ) => {
 		applyProgress( stepId, 0 )
 		disallowNextStep()
 	}
-}
-
-const checkStep = stepId => {
-
 }

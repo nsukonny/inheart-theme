@@ -7,12 +7,16 @@
  * @subpackage inheart
  */
 
+if( ! is_user_logged_in() ) wp_die( esc_html__( 'Тільки авторизовані користувачі', 'inheart' ) );
+
 get_header();
 
 wp_enqueue_style( 'new-memory', THEME_URI . '/static/css/pages/new-memory.min.css', [], THEME_VERSION );
 wp_enqueue_script( 'new-memory', THEME_URI . '/static/js/new-memory/new-memory.min.js', [], THEME_VERSION, true );
 
 $step = $_GET['step'] ?? 0;
+
+ih_create_new_memory_page();
 ?>
 
 <main class="main new-memory flex direction-column">

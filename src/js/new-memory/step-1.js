@@ -9,6 +9,7 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
+const stepData = { lang: 'uk' }	// Store all the data from the current step here, it will be pushed to the Local Storage.
 let cropper
 
 /**
@@ -23,6 +24,8 @@ export const selectLanguage = () => {
 		lang.addEventListener( 'click', () => {
 			document.querySelector( '.new-memory-lang.active' ).classList.remove( 'active' )
 			lang.classList.add( 'active' )
+			stepData.lang = lang.dataset.lang
+			localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 		} )
 	} )
 }
@@ -68,7 +71,10 @@ export const uploadMainPhoto = () => {
 	popup.addEventListener( 'click', e => {
 		const target = e.target
 
-		if( target.className && target.classList.contains( 'popup' ) ){
+		if(
+			target.className &&
+			( target.classList.contains( 'popup' ) || target.classList.contains( 'popup-discard-photo' ) )
+		){
 			popup.classList.add( 'hidden' )
 			enableBodyScroll( getTargetElement() )
 
@@ -96,7 +102,10 @@ export const uploadMainPhoto = () => {
 						case true:
 							mainPhotoNameEl.innerHTML = cutFilename( mainPhotoName )
 							mainPhotoNameEl.closest( '.label' ).classList.add( 'added' )
-							isMainFormValid()
+							stepData.cropped = res.data.url
+							localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
+
+							if( checkStep1() ) allowNextStep( 2 )
 							break
 
 						case false:
@@ -148,7 +157,10 @@ export const addMainFormValidation = () => {
 		if( ! value ) field.classList.add( 'error' )
 		else field.classList.remove( 'error' )
 
-		checkStep1()
+		stepData[field.name] = value
+		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
+
+		if( checkStep1() ) allowNextStep( 2 )
 	}
 }
 

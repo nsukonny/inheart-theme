@@ -52,10 +52,12 @@ $themes_desc	= get_field( 'themes_desc' );
 					<?php
 					while( have_rows( 'themes' ) ){
 						the_row();
+						$theme_image	= get_sub_field( 'theme_image' );
+						$theme_value	= get_sub_field( 'theme_value' );
 
-						if( ! $theme_image = get_sub_field( 'theme_image' ) ) continue;
+						if( ! $theme_image || ! $theme_value ) continue;
 						?>
-						<button class="new-memory-theme">
+						<button class="new-memory-theme" data-value="<?php echo esc_attr( $theme_value ) ?>">
 							<?php echo wp_get_attachment_image( $theme_image['id'], 'ih-theme' ) ?>
 						</button>
 						<?php

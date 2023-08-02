@@ -1,7 +1,28 @@
 <?php
 
+/**
+ * Create new memory_page draft post on process start.
+ *
+ * @return void
+ */
 function ih_create_new_memory_page(): void
-{}
+{
+	$author_id	= get_current_user_id();
+	$post_data	= [
+		'post_title'	=> "Новий пост від Користувача з ID $author_id",
+		'post_status'	=> 'draft',
+		'post_type'		=> 'memory_page',
+		'post_author'	=> $author_id
+	];
+	$post_id = wp_insert_post( wp_slash( $post_data ) );
+
+	if( is_wp_error( $post_id ) ){
+		esc_html_e( "Не вдалося створити нову сторінку пам'яті", 'inheart' );
+		return;
+	}
+
+	$_SESSION['memory_page_id'] = $post_id;	// Remember page ID in session.
+}
 
 /**
  * Create new memory AJAX functions.
@@ -28,7 +49,10 @@ function ih_ajax_upload_main_photo(): void
 	require_once( ABSPATH . 'wp-admin/includes/media.php' );
 	$attach_id = media_handle_upload( 'cropped', 0 );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Зображення успішно завантажено!', 'inheart' )] );
+	wp_send_json_success( [
+		'msg'	=> esc_html__( 'Зображення успішно завантажено!', 'inheart' ),
+		'url'	=> wp_get_attachment_image_url( $attach_id, 'full' )
+	] );
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );

@@ -1,6 +1,8 @@
 import Sortable from 'sortablejs'
 import { allowNextStep, disallowNextStep, applyProgress } from './common'
 
+const stepData = {}	// Store all the data from the current step here, it will be pushed to the Local Storage.
+
 /**
  * Add section to added sections list.
  */
@@ -90,7 +92,7 @@ export const removeSidebarAddedSection = () => {
 			targetSection.remove()
 
 			sectionContent.remove()
-			checkIfAllSectionsContentSet()
+			checkStep2()
 		}
 	} )
 }
@@ -130,7 +132,7 @@ export const removeContentSection = () => {
 			targetSection.remove()
 
 			targetContent.remove()
-			checkIfAllSectionsContentSet()
+			checkStep2()
 		}
 	} )
 }
@@ -203,6 +205,7 @@ export const dragOrderSections = () => {
 			else contentWrapper.append( cloned )
 
 			content.remove()
+			checkSectionsIndexes()
 		}
 	} )
 	Sortable.create( contentWrapper, {
@@ -222,8 +225,18 @@ export const dragOrderSections = () => {
 			else wrapper.append( cloned )
 
 			section.remove()
+			checkSectionsIndexes()
 		}
 	} )
+}
+
+const checkSectionsIndexes = () => {
+	const sections = document.querySelectorAll( '.section-content' )
+
+	if( ! sections.length ) return
+
+	sections.forEach( ( section, i ) => stepData[section.dataset.id].position = i )
+	localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
 }
 
 /**
@@ -238,25 +251,25 @@ export const sectionsContentInput = () => {
 		const titleInput = area.closest( '.section-content' ).querySelector( '.section-content-title-input' )
 
 		// Remove event listeners.
-		area.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
-		area.removeEventListener( 'change', checkIfAllSectionsContentSet )
-		area.removeEventListener( 'blur', checkIfAllSectionsContentSet )
+		area.removeEventListener( 'keyup', checkStep2 )
+		area.removeEventListener( 'change', checkStep2 )
+		area.removeEventListener( 'blur', checkStep2 )
 		// Add event listeners.
-		area.addEventListener( 'keyup', checkIfAllSectionsContentSet )
-		area.addEventListener( 'change', checkIfAllSectionsContentSet )
-		area.addEventListener( 'blur', checkIfAllSectionsContentSet )
+		area.addEventListener( 'keyup', checkStep2 )
+		area.addEventListener( 'change', checkStep2 )
+		area.addEventListener( 'blur', checkStep2 )
 
 		if( titleInput ){
 			// Remove event listeners.
-			titleInput.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
-			titleInput.removeEventListener( 'change', checkIfAllSectionsContentSet )
-			titleInput.removeEventListener( 'blur', checkIfAllSectionsContentSet )
+			titleInput.removeEventListener( 'keyup', checkStep2 )
+			titleInput.removeEventListener( 'change', checkStep2 )
+			titleInput.removeEventListener( 'blur', checkStep2 )
 			titleInput.removeEventListener( 'keyup', duplicateValueToSidebarSection )
 			titleInput.removeEventListener( 'change', duplicateValueToSidebarSection )
 			// Add event listeners.
-			titleInput.addEventListener( 'keyup', checkIfAllSectionsContentSet )
-			titleInput.addEventListener( 'change', checkIfAllSectionsContentSet )
-			titleInput.addEventListener( 'blur', checkIfAllSectionsContentSet )
+			titleInput.addEventListener( 'keyup', checkStep2 )
+			titleInput.addEventListener( 'change', checkStep2 )
+			titleInput.addEventListener( 'blur', checkStep2 )
 			titleInput.addEventListener( 'keyup', duplicateValueToSidebarSection )
 			titleInput.addEventListener( 'change', duplicateValueToSidebarSection )
 		}
@@ -266,17 +279,29 @@ export const sectionsContentInput = () => {
 /**
  * Check if all textareas are set. This means we can go further.
  */
-const checkIfAllSectionsContentSet = () => {
+export const checkStep2 = () => {
 	const textareas	= document.querySelectorAll( '.section-content-text' )
 	let allIsSet	= true
 
 	if( ! textareas.length ) return
 
-	textareas.forEach( area => {
-		const titleInput = area.closest( '.section-content' ).querySelector( '.section-content-title-input' )
+	textareas.forEach( ( area, i ) => {
+		const
+			section		= area.closest( '.section-content' ),
+			title		= section.querySelector( '.section-content-title' ),
+			titleInput	= title.querySelector( '.section-content-title-input' ),
+			value		= area.value,
+			index		= section.dataset.id
+
+		if( titleInput ) stepData[index] = { ...stepData[index], title: titleInput.value }
+		else stepData[index] = { ...stepData[index], title: title.innerText }
 
 		// If textarea or title input is not set.
-		if( ! area.value || ( titleInput && ! titleInput.value ) ) allIsSet = false
+		if( ! value || ( titleInput && ! titleInput.value ) ) allIsSet = false
+
+		stepData[index].text 		= value
+		stepData[index].position 	= i
+		localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
 	} )
 
 	if( allIsSet ){

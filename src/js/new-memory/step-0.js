@@ -15,6 +15,7 @@ export const selectTheme = () => {
 			if( alreadySelectedTheme ) alreadySelectedTheme.classList.remove( 'active' )
 
 			theme.classList.add( 'active' )
+			localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: theme.dataset.value } ) )
 			allowNextStep()
 		} )
 	} )
@@ -25,4 +26,4 @@ export const selectTheme = () => {
  *
  * @returns {boolean}
  */
-export const checkStep0 = () => !!document.querySelector( '.new-memory-theme.active' )
+export const checkStep0 = () => !! document.querySelector( '.new-memory-theme.active' )
