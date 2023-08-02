@@ -98,7 +98,7 @@ $desc		= get_field( 'desc_1' );
 				<img class="popup-photo" src="" alt="" />
 			</div>
 			<div class="popup-buttons flex flex-wrap align-center justify-center">
-				<button class="btn lg primary min-width popup-discard-photo">
+				<button class="btn simple min-width popup-discard-photo">
 					<?php esc_html_e( 'Скасувати', 'inheart' ) ?>
 				</button>
 				<button class="btn lg primary min-width popup-save-photo">

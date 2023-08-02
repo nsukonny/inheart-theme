@@ -1,5 +1,8 @@
 <?php
 
+function ih_create_new_memory_page(): void
+{}
+
 /**
  * Create new memory AJAX functions.
  *
@@ -8,7 +11,6 @@
  */
 
 add_action( 'wp_ajax_ih_ajax_upload_main_photo', 'ih_ajax_upload_main_photo' );
-add_action( 'wp_ajax_nopriv_ih_ajax_upload_main_photo', 'ih_ajax_upload_main_photo' );
 /**
  * Upload main photo.
  *
@@ -30,7 +32,6 @@ function ih_ajax_upload_main_photo(): void
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
-add_action( 'wp_ajax_nopriv_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
 /**
  * Upload other photos.
  *
@@ -74,7 +75,6 @@ function ih_ajax_upload_memory_photo(): void
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_custom_poster', 'ih_ajax_upload_custom_poster' );
-add_action( 'wp_ajax_nopriv_ih_ajax_upload_custom_poster', 'ih_ajax_upload_custom_poster' );
 /**
  * Upload custom poster from device.
  *
@@ -108,7 +108,6 @@ function ih_ajax_upload_custom_poster(): void
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_memory_video', 'ih_ajax_upload_memory_video' );
-add_action( 'wp_ajax_nopriv_ih_ajax_upload_memory_video', 'ih_ajax_upload_memory_video' );
 /**
  * Upload video.
  *
@@ -189,7 +188,6 @@ function ih_ajax_upload_memory_video(): void
 }
 
 add_action( 'wp_ajax_ih_ajax_delete_memory_photo', 'ih_ajax_delete_memory_photo' );
-add_action( 'wp_ajax_nopriv_ih_ajax_delete_memory_photo', 'ih_ajax_delete_memory_photo' );
 /**
  * Delete specific file by ID.
  *
@@ -223,7 +221,6 @@ function ih_ajax_delete_memory_photo(): void
 }
 
 add_action( 'wp_ajax_ih_ajax_set_poster', 'ih_ajax_set_poster' );
-add_action( 'wp_ajax_nopriv_ih_ajax_set_poster', 'ih_ajax_set_poster' );
 /**
  * Set video poster.
  *

@@ -19,3 +19,10 @@ export const selectTheme = () => {
 		} )
 	} )
 }
+
+/**
+ * Check if step is done.
+ *
+ * @returns {boolean}
+ */
+export const checkStep0 = () => !!document.querySelector( '.new-memory-theme.active' )

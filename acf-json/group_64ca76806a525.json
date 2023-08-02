@@ -1,0 +1,45 @@
+{
+    "key": "group_64ca76806a525",
+    "title": "Page Template: Login",
+    "fields": [
+        {
+            "key": "field_64ca768189aed",
+            "label": "Memory Page Creation Tip",
+            "name": "memory_page_creation_tip",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Please enter a notification text for those who are not authorized and tried to create a Memory page",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-templates\/login.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1690990320
+}

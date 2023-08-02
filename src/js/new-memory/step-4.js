@@ -10,6 +10,7 @@ import {
 	hideElement,
 	showElement
 } from '../common/global'
+import { allowNextStep, applyProgress } from './common'
 
 let videoDuration = 0
 
@@ -91,8 +92,11 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 		xhr.abort()
 		progress.value = 0
 		setTimeout( () => {
-			inner.classList.remove( 'hidden' )
 			loader.classList.add( 'hidden' )
+
+			// No images - just show inner.
+			if( ! document.querySelectorAll( '.droparea-img-loaded' ).length )
+				inner.classList.remove( 'hidden' )
 		}, 500 )
 	} )
 
@@ -166,6 +170,11 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 				showNotification( `Фото ${ file.name } успішно завантажено` )
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ) ) )
+
+				if( document.querySelectorAll( '.droparea-img-loaded' ).length > 3 ){
+					applyProgress( 4 )
+					allowNextStep( 5 )
+				}
 			}
 		}else{
 			// If no images loaded yet.
@@ -434,8 +443,10 @@ const clearThumbsList = () => {
 }
 
 /**
+ * Output HTML5 video after poster is set.
  *
- * @param videoData
+ * @param {object} videoData
+ * @param {string} poster
  */
 const outputVideoWithPoster = ( videoData, poster ) => {
 	const

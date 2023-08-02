@@ -1,4 +1,6 @@
 import { replaceUrlParam } from '../common/global'
+import { checkStep0 } from './step-0'
+import { checkStep1 } from './step-1'
 
 let footer,
 	progressBar,
@@ -66,7 +68,7 @@ export const nextStep = () => {
 		replaceUrlParam( 'step', nextStepId )
 		prevStepBtn.classList.remove( 'hidden' )
 		prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
-		disallowNextStep()
+		isStepFilled( nextStepId )
 	} )
 }
 
@@ -84,12 +86,59 @@ export const prevStep = () => {
 		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
 		document.querySelector( `#new-memory-step-${ prevStepId }` ).classList.add( 'active' )
 		replaceUrlParam( 'step', prevStepId )
-		allowNextStep( prevStepId + 1 )
-		applyProgress( prevStepId, 0 )
+		applyProgress( prevStepId + 1, 0 )
+
+		isStepFilled( prevStepId )
 
 		if( prevStepId == 0 ) prevStepBtn.classList.add( 'hidden' )
 		else prevStepBtn.setAttribute( 'data-prev', prevStepId - 1 )
 
 		nextStepBtn.setAttribute( 'data-next', prevStepId + 1 )
 	} )
+}
+
+/**
+ * Check if specific step is ready.
+ *
+ * @param {number} stepId
+ */
+export const isStepFilled = ( stepId = 0 ) => {
+	let cb
+
+	switch( stepId ){
+		case 1:
+			cb = checkStep1
+			break
+
+		// case 2:
+		// 	cb = checkStep2
+		// 	break
+		//
+		// case 3:
+		// 	cb = checkStep3
+		// 	break
+		//
+		// case 4:
+		// 	cb = checkStep4
+		// 	break
+		//
+		// case 5:
+		// 	cb = checkStep5
+		// 	break
+
+		default:
+			cb = checkStep0
+	}
+
+	if( cb() ){
+		applyProgress( stepId )
+		allowNextStep( stepId + 1 )
+	}else{
+		applyProgress( stepId, 0 )
+		disallowNextStep()
+	}
+}
+
+const checkStep = stepId => {
+
 }

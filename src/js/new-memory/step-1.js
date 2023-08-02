@@ -148,7 +148,7 @@ export const addMainFormValidation = () => {
 		if( ! value ) field.classList.add( 'error' )
 		else field.classList.remove( 'error' )
 
-		isMainFormValid()
+		checkStep1()
 	}
 }
 
@@ -157,7 +157,7 @@ export const addMainFormValidation = () => {
  *
  * @returns {boolean}
  */
-const isMainFormValid = () => {
+export const checkStep1 = () => {
 	const fields = document.querySelectorAll( '.new-memory-main-info input' )
 
 	if( ! fields.length ) return false
@@ -167,13 +167,6 @@ const isMainFormValid = () => {
 	fields.forEach( field => {
 		if( field.classList.contains( 'error' ) || ! field.value ) isFormValid = false
 	} )
-
-	if( isFormValid ){
-		allowNextStep( 2 )
-		applyProgress()
-	}else{
-		disallowNextStep()
-	}
 
 	return isFormValid
 }
