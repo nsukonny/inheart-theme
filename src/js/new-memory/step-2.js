@@ -1,7 +1,7 @@
 import Sortable from 'sortablejs'
 import { allowNextStep, disallowNextStep, applyProgress } from './common'
 
-const stepData = {}	// Store all the data from the current step here, it will be pushed to the Local Storage.
+const stepData = localStorage.getItem( 'ih-step-2' ) ? JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : {}
 
 /**
  * Add section to added sections list.
@@ -14,9 +14,7 @@ export const addSection = () => {
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
 	sectionsWrapper.addEventListener( 'click', e => {
-		const
-			target			= e.target,
-			sectionsCount	= sectionsWrapper.querySelectorAll( '.sections-added-list .section' ).length
+		const target = e.target
 
 		if( target.closest( '.section-add' ) || ( target.className && target.classList.contains( '.section-add' ) ) ){
 			const
@@ -25,7 +23,8 @@ export const addSection = () => {
 				imgUrl					= targetSection.dataset.thumb || null,
 				clonedSection			= targetSection.cloneNode( true ),
 				clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
-				clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' )
+				clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' ),
+				randomId				= Math.random() * 9999 + '_' + Math.random() * 9999
 
 			// Replace in sidebar.
 			targetSection.remove()
@@ -35,10 +34,10 @@ export const addSection = () => {
 			clonedSectionContent.querySelector( 'textarea' ).innerText = ''
 			clonedSectionContent.querySelector( '.section-content-title' ).innerText = clonedSection.querySelector( '.section-label' ).innerText
 			// Change SVG IDs and so on.
-			clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ sectionsCount }`
-			clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ sectionsCount })` )
-			clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ sectionsCount }`
-			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ sectionsCount })` )
+			clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ randomId }`
+			clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ randomId })` )
+			clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ randomId }`
+			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ randomId })` )
 			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
 			clonedTextarea.value = ''	// Clear value.
 			sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
@@ -52,7 +51,7 @@ export const addSection = () => {
 
 			setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
 			sectionsContentInput()	// Add event listeners.
-			disallowNextStep()	// New section added, it's empty, so next step is not allowed.
+			checkIfAllSectionsContentSet()
 		}
 	} )
 }
@@ -90,9 +89,14 @@ export const removeSidebarAddedSection = () => {
 
 			sectionsWrapper.append( clonedSection )
 			targetSection.remove()
-
 			sectionContent.remove()
-			checkStep2()
+
+			for( let key in stepData ){
+				if( key == sectionId ) delete stepData[key]
+			}
+
+			localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+			checkIfAllSectionsContentSet()
 		}
 	} )
 }
@@ -130,9 +134,14 @@ export const removeContentSection = () => {
 
 			sectionsWrapper.append( clonedSection )
 			targetSection.remove()
-
 			targetContent.remove()
-			checkStep2()
+
+			for( let key in stepData ){
+				if( key == sectionId ) delete stepData[key]
+			}
+
+			localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+			checkIfAllSectionsContentSet()
 		}
 	} )
 }
@@ -251,25 +260,25 @@ export const sectionsContentInput = () => {
 		const titleInput = area.closest( '.section-content' ).querySelector( '.section-content-title-input' )
 
 		// Remove event listeners.
-		area.removeEventListener( 'keyup', checkStep2 )
-		area.removeEventListener( 'change', checkStep2 )
-		area.removeEventListener( 'blur', checkStep2 )
+		area.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
+		area.removeEventListener( 'change', checkIfAllSectionsContentSet )
+		area.removeEventListener( 'blur', checkIfAllSectionsContentSet )
 		// Add event listeners.
-		area.addEventListener( 'keyup', checkStep2 )
-		area.addEventListener( 'change', checkStep2 )
-		area.addEventListener( 'blur', checkStep2 )
+		area.addEventListener( 'keyup', checkIfAllSectionsContentSet )
+		area.addEventListener( 'change', checkIfAllSectionsContentSet )
+		area.addEventListener( 'blur', checkIfAllSectionsContentSet )
 
 		if( titleInput ){
 			// Remove event listeners.
-			titleInput.removeEventListener( 'keyup', checkStep2 )
-			titleInput.removeEventListener( 'change', checkStep2 )
-			titleInput.removeEventListener( 'blur', checkStep2 )
+			titleInput.removeEventListener( 'keyup', checkIfAllSectionsContentSet )
+			titleInput.removeEventListener( 'change', checkIfAllSectionsContentSet )
+			titleInput.removeEventListener( 'blur', checkIfAllSectionsContentSet )
 			titleInput.removeEventListener( 'keyup', duplicateValueToSidebarSection )
 			titleInput.removeEventListener( 'change', duplicateValueToSidebarSection )
 			// Add event listeners.
-			titleInput.addEventListener( 'keyup', checkStep2 )
-			titleInput.addEventListener( 'change', checkStep2 )
-			titleInput.addEventListener( 'blur', checkStep2 )
+			titleInput.addEventListener( 'keyup', checkIfAllSectionsContentSet )
+			titleInput.addEventListener( 'change', checkIfAllSectionsContentSet )
+			titleInput.addEventListener( 'blur', checkIfAllSectionsContentSet )
 			titleInput.addEventListener( 'keyup', duplicateValueToSidebarSection )
 			titleInput.addEventListener( 'change', duplicateValueToSidebarSection )
 		}
@@ -277,7 +286,22 @@ export const sectionsContentInput = () => {
 }
 
 /**
- * Check if all textareas are set. This means we can go further.
+ * If all textareas are set - can go further.
+ */
+const checkIfAllSectionsContentSet = () => {
+	if( checkStep2() ){
+		allowNextStep( 3 )
+		applyProgress( 2 )
+	}else{
+		disallowNextStep()
+		applyProgress( 2, 0 )
+	}
+}
+
+/**
+ * Check if step 2 is ready.
+ *
+ * @returns {boolean}
  */
 export const checkStep2 = () => {
 	const textareas	= document.querySelectorAll( '.section-content-text' )
@@ -304,12 +328,7 @@ export const checkStep2 = () => {
 		localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
 	} )
 
-	if( allIsSet ){
-		allowNextStep( 3 )
-		applyProgress( 2 )
-	}else{
-		disallowNextStep()
-	}
+	return allIsSet
 }
 
 /**

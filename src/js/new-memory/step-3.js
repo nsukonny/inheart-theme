@@ -28,6 +28,8 @@ const onEpitaphChange = e => {
 
 	if( ! symbolsTyped || ! symbolsAllowed ) return
 
+	localStorage.setItem( 'ih-step-3', JSON.stringify( { epitaph: value } ) )
+
 	if( ! value ){
 		disallowNextStep()
 		applyProgress( 3, 0 )
@@ -41,3 +43,10 @@ const onEpitaphChange = e => {
 	applyProgress( 3 )
 	allowNextStep( 4 )
 }
+
+/**
+ * Check if step 3 is ready.
+ *
+ * @returns {boolean}
+ */
+export const checkStep3 = () => !! document.querySelector( '.epitaph-text' ).value

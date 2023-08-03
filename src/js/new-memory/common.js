@@ -1,7 +1,8 @@
-import { checkAjaxWorkingStatus, replaceUrlParam, setAjaxWorkingStatus } from '../common/global'
+import { replaceUrlParam } from '../common/global'
 import { checkStep0 } from './step-0'
 import { checkStep1 } from './step-1'
 import { checkStep2 } from './step-2'
+import { checkStep3 } from './step-3'
 
 let footer,
 	progressBar,
@@ -134,10 +135,10 @@ export const isStepFilled = ( stepId = 0 ) => {
 			cb = checkStep2
 			break
 
-		// case 3:
-		// 	cb = checkStep3
-		// 	break
-		//
+		case 3:
+			cb = checkStep3
+			break
+
 		// case 4:
 		// 	cb = checkStep4
 		// 	break

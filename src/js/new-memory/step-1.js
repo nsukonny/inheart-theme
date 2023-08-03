@@ -9,7 +9,7 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
-const stepData = { lang: 'uk' }	// Store all the data from the current step here, it will be pushed to the Local Storage.
+const stepData = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : { lang: 'uk' }
 let cropper
 
 /**
@@ -105,7 +105,13 @@ export const uploadMainPhoto = () => {
 							stepData.cropped = res.data.url
 							localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 
-							if( checkStep1() ) allowNextStep( 2 )
+							if( checkStep1() ){
+								allowNextStep( 2 )
+								applyProgress( 1 )
+							}else{
+								disallowNextStep()
+								applyProgress( 1, 0 )
+							}
 							break
 
 						case false:
@@ -152,15 +158,22 @@ export const addMainFormValidation = () => {
 	const checkFieldValue = e => {
 		const
 			field	= e.target,
-			value	= field.value
+			value	= field.value,
+			index	= field.name
 
 		if( ! value ) field.classList.add( 'error' )
 		else field.classList.remove( 'error' )
 
-		stepData[field.name] = value
+		stepData[index] = value
 		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 
-		if( checkStep1() ) allowNextStep( 2 )
+		if( checkStep1() ){
+			allowNextStep( 2 )
+			applyProgress( 1 )
+		}else{
+			disallowNextStep()
+			applyProgress( 1, 0 )
+		}
 	}
 }
 
