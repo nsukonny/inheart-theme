@@ -161,3 +161,17 @@ function ih_modify_filename( string $filename = '' ): string
 	return str_replace( ' ', '_', $filename );
 }
 
+/**
+ * Return shorter filename with extension.
+ *
+ * @param string $filename
+ * @return string
+ */
+function ih_get_shorter_filename( string $filename ): string
+{
+	$ext	= pathinfo( $filename, PATHINFO_EXTENSION );
+	$name	= substr( $filename, 0, strlen( $filename ) - strlen( $ext ) - 1 );
+
+	return ( strlen( $filename ) - strlen( $ext ) > 17 ) ? substr( $name, 0, 10 ) . '...' . $ext : $filename;
+}
+

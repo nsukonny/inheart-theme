@@ -1,8 +1,15 @@
-import { replaceUrlParam } from '../common/global'
+import {
+	checkAjaxWorkingStatus,
+	ihAjaxRequest,
+	replaceUrlParam,
+	setAjaxWorkingStatus,
+	showNotification
+} from '../common/global'
 import { checkStep0 } from './step-0'
 import { checkStep1 } from './step-1'
 import { checkStep2 } from './step-2'
 import { checkStep3 } from './step-3'
+import { checkStep4 } from './step-4'
 
 let footer,
 	progressBar,
@@ -58,7 +65,7 @@ export const applyProgress = ( partId = 1, percentage = 100 ) => {
 }
 
 /**
- * Go to the next step.
+ * Save current step data and go to the next step.
  */
 export const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
@@ -66,16 +73,31 @@ export const nextStep = () => {
 
 		const nextStepId = parseInt( nextStepBtn.dataset.next )
 
-		if( ! nextStepId ) return
-		/*if( ! nextStepId || checkAjaxWorkingStatus() ) return
+		if( ! nextStepId || checkAjaxWorkingStatus() ) return
 
 		setAjaxWorkingStatus( true )
 
 		const formData = new FormData()
 
-		formData.append( 'action', `ih_ajax_save_data_step_${ nextStepId - 1 }` )*/
+		formData.append( 'action', `ih_ajax_save_data_step_${ nextStepId - 1 }` )
+		formData.append( 'stepData', localStorage.getItem( `ih-step-${ nextStepId - 1 }` ) )
 
-		showNextStepSection( nextStepId )
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						showNotification( res.data.msg )
+						showNextStepSection( nextStepId )
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
+		} )
 	} )
 }
 
@@ -124,7 +146,7 @@ export const prevStep = () => {
  * @param {number} stepId
  */
 export const isStepFilled = ( stepId = 0 ) => {
-	let cb
+	let cb	// Callback function for each step, returns true if step is ready, otherwise - false.
 
 	switch( stepId ){
 		case 1:
@@ -139,10 +161,10 @@ export const isStepFilled = ( stepId = 0 ) => {
 			cb = checkStep3
 			break
 
-		// case 4:
-		// 	cb = checkStep4
-		// 	break
-		//
+		case 4:
+			cb = checkStep4
+			break
+
 		// case 5:
 		// 	cb = checkStep5
 		// 	break

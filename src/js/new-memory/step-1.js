@@ -9,7 +9,7 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
-const stepData = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : { lang: 'uk' }
+const stepData = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
 let cropper
 
 /**
@@ -100,7 +100,7 @@ export const uploadMainPhoto = () => {
 				if( res ){
 					switch( res.success ){
 						case true:
-							mainPhotoNameEl.innerHTML = cutFilename( mainPhotoName )
+							mainPhotoNameEl.innerHTML = res.data.short_filename
 							mainPhotoNameEl.closest( '.label' ).classList.add( 'added' )
 							stepData.cropped = res.data.url
 							localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
@@ -125,20 +125,6 @@ export const uploadMainPhoto = () => {
 			} )
 		} )
 	} )
-}
-
-/**
- * Return shorter filename.
- *
- * @param {string} filename
- * @returns {string}
- */
-const cutFilename = filename => {
-	const
-		extension	= /(?:\.([^.]+))?$/.exec( filename )[1],
-		firstPart	= filename.substring( 0, filename.length - extension.length - 2 )
-
-	return ( filename.length - extension.length > 17 ) ? firstPart.substring( 0, 10 ) + '...' + extension : filename
 }
 
 /**

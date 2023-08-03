@@ -9,6 +9,7 @@
 
 $step		= isset( $args['step'] ) ? ( int ) $args['step'] : 0;
 $prev_class	= $step ? '' : ' hidden';
+$allow_next	= ( $step && isset( $_SESSION["step{$step}"]['ready'] ) ) ? '' : 'disabled';
 ?>
 
 			<footer class="new-memory-footer">
@@ -36,7 +37,7 @@ $prev_class	= $step ? '' : ' hidden';
 						<button
 							class="btn lg primary min-width new-memory-next-step"
 							data-next="<?php echo esc_attr( $step + 1 ) ?>"
-							disabled
+							<?php echo esc_attr( $allow_next ) ?>
 						>
 							<?php esc_html_e( 'Далі', 'inheart' ) ?>
 						</button>

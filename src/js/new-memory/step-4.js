@@ -10,8 +10,9 @@ import {
 	hideElement,
 	showElement
 } from '../common/global'
-import { allowNextStep, applyProgress } from './common'
+import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
+const stepData = localStorage.getItem( 'ih-step-4' ) ? JSON.parse( localStorage.getItem( 'ih-step-4' ) ) : {}
 let videoDuration = 0
 
 /**
@@ -145,6 +146,7 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 						if( res ){
 							switch( res.success ){
 								case true:
+									showNotification( res.data.msg )
 									e.target.closest( '.droparea-img-loaded' ).remove()
 
 									// If there are no more images loaded.
@@ -153,10 +155,11 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 										inner.classList.remove( 'hidden' )
 									}
 
+									checkIfStepIsReady()
 									break
 
 								case false:
-									console.error( res.data.msg )
+									showNotification( res.data.msg, 'error' )
 									break
 							}
 						}
@@ -170,11 +173,7 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 				showNotification( `Фото ${ file.name } успішно завантажено` )
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ) ) )
-
-				if( document.querySelectorAll( '.droparea-img-loaded' ).length > 3 ){
-					applyProgress( 4 )
-					allowNextStep( 5 )
-				}
+				checkIfStepIsReady()
 			}
 		}else{
 			// If no images loaded yet.
@@ -586,4 +585,24 @@ const processingUploadCustomPoster = ( file, droparea ) => {
 
 		setAjaxWorkingStatus( false )
 	} )
+}
+
+/**
+ * Check if step 4 is ready.
+ *
+ * @returns {boolean}
+ */
+export const checkStep4 = () => document.querySelectorAll( '.droparea-img-loaded' ).length > 3
+
+/**
+ * Allow or disallow next step.
+ */
+const checkIfStepIsReady = () => {
+	if( checkStep4() ){
+		applyProgress( 4 )
+		allowNextStep( 5 )
+	}else{
+		disallowNextStep()
+		applyProgress( 4, 0 )
+	}
 }

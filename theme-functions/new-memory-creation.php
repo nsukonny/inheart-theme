@@ -7,7 +7,23 @@
  */
 function ih_create_new_memory_page(): void
 {
-	$author_id	= get_current_user_id();
+	// Memory page is already in creation process - exit.
+	if( isset( $_SESSION['memory_page_id'] ) ) return;
+
+	$author_id		= get_current_user_id();
+	$memory_pages	= get_posts( [
+		'post_type'		=> 'memory_page',
+		'author'		=> get_current_user_id(),
+		'post_status'	=> 'draft'
+	] );
+
+	// If current Author already has draft Memory page - set it in session and exit.
+	if( ! empty( $memory_pages ) ){
+		$_SESSION['memory_page_id'] = $memory_pages[0]->ID;
+		return;
+	}
+
+	// Create new draft Memory page.
 	$post_data	= [
 		'post_title'	=> "Новий пост від Користувача з ID $author_id",
 		'post_status'	=> 'draft',
@@ -31,6 +47,27 @@ function ih_create_new_memory_page(): void
  * @subpackage inheart
  */
 
+add_action( 'wp_ajax_ih_ajax_save_data_step_0', 'ih_ajax_save_data_step_0' );
+/**
+ * Step 0 - save data.
+ *
+ * @return void
+ */
+function ih_ajax_save_data_step_0(): void
+{
+	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+
+	if( ! $step_data || ! isset( $step_data['theme'] ) || ! $memory_page_id )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	update_field( 'theme', $step_data['theme'], $_SESSION['memory_page_id'] );
+	$_SESSION['step0']['theme']	= $step_data['theme'];
+	$_SESSION['step0']['ready']	= 1;
+
+	wp_send_json_success( ['msg' => esc_html__( 'Тему обрано успішно!', 'inheart' )] );
+}
+
 add_action( 'wp_ajax_ih_ajax_upload_main_photo', 'ih_ajax_upload_main_photo' );
 /**
  * Upload main photo.
@@ -39,20 +76,66 @@ add_action( 'wp_ajax_ih_ajax_upload_main_photo', 'ih_ajax_upload_main_photo' );
  */
 function ih_ajax_upload_main_photo(): void
 {
-	$cropped_image = $_FILES['cropped'];
+	$cropped_image	= $_FILES['cropped'];
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
 	// If data is not set - send error.
-	if( ! $cropped_image ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if( ! $cropped_image || ! $memory_page_id )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
 	require_once( ABSPATH . 'wp-admin/includes/media.php' );
-	$attach_id = media_handle_upload( 'cropped', 0 );
+	$attach_id							= media_handle_upload( 'cropped', $memory_page_id );
+	$_SESSION['step1']['cropped_id']	= $attach_id;
+	$_SESSION['step1']['cropped_url']	= wp_get_attachment_image_url( $attach_id, 'full' );
 
 	wp_send_json_success( [
-		'msg'	=> esc_html__( 'Зображення успішно завантажено!', 'inheart' ),
-		'url'	=> wp_get_attachment_image_url( $attach_id, 'full' )
+		'msg'			=> esc_html__( 'Зображення успішно завантажено!', 'inheart' ),
+		'url'			=> $_SESSION['step1']['cropped_url'],
+		'short_filename'=> ih_get_shorter_filename( basename( $_SESSION['step1']['cropped_url'] ) )
 	] );
+}
+
+add_action( 'wp_ajax_ih_ajax_save_data_step_1', 'ih_ajax_save_data_step_1' );
+/**
+ * Step 1 - save data.
+ *
+ * @return void
+ */
+function ih_ajax_save_data_step_1(): void
+{
+	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+
+	if(
+		! $step_data || ! $memory_page_id || ! $step_data['lang'] || ! $step_data['firstname'] ||
+		! $step_data['lastname'] || ! $step_data['fathername'] || ! $step_data['date-of-birth'] ||
+		! $step_data['date-of-death'] || ! $step_data['cropped']
+	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	update_field( 'language', $step_data['lang'], $memory_page_id );
+	update_field( 'first_name', $step_data['firstname'], $memory_page_id );
+	update_field( 'last_name', $step_data['lastname'], $memory_page_id );
+	update_field( 'middle_name', $step_data['fathername'], $memory_page_id );
+	update_field( 'born_at', $step_data['date-of-birth'], $memory_page_id );
+	update_field( 'died_at', $step_data['date-of-death'], $memory_page_id );
+
+	// Set Memory page thumbnail.
+	if(
+		isset( $step_data['cropped'] ) && isset( $_SESSION['step1']['cropped_id'] ) &&
+		$_SESSION['step1']['cropped_url'] === $step_data['cropped']
+	) set_post_thumbnail( $memory_page_id, $_SESSION['step1']['cropped_id'] );
+
+	$_SESSION['step1']['language']		= $step_data['lang'];
+	$_SESSION['step1']['first_name']	= $step_data['firstname'];
+	$_SESSION['step1']['last_name']		= $step_data['lastname'];
+	$_SESSION['step1']['middle_name']	= $step_data['fathername'];
+	$_SESSION['step1']['born_at']		= $step_data['date-of-birth'];
+	$_SESSION['step1']['died_at']		= $step_data['date-of-death'];
+	$_SESSION['step1']['ready']			= 1;
+
+	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1 збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
