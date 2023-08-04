@@ -12,8 +12,11 @@
 
 $title		= get_field( 'title_3' );
 $desc		= get_field( 'desc_3' );
-$init_text	= get_field( 'epitaph_init_text' );
+$init_text	= get_field( 'epitaph_init_text' ) ?? '';
 $max_length	= get_field( 'epitaph_max_length' ) ?: 500;
+$epitaph	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'epitaphy', $_SESSION['memory_page_id'] ) )
+			? get_field( 'epitaphy', $_SESSION['memory_page_id'] )
+			: $init_text;
 ?>
 
 <section id="new-memory-step-3" class="new-memory-step new-memory-step-3 direction-column">
@@ -49,7 +52,11 @@ $max_length	= get_field( 'epitaph_max_length' ) ?: 500;
 							<span class="symbols-count-typed"><?php echo esc_html( mb_strlen( $init_text, 'UTF-8' ) ) ?></span>/<span class="symbols-count-allowed"><?php echo esc_html( $max_length ) ?></span>
 						</span>
 					</legend>
-					<textarea class="epitaph-text" name="epitaph-text" placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"><?php echo esc_html( $init_text ) ?></textarea>
+					<textarea
+						class="epitaph-text"
+						name="epitaph-text"
+						placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"
+					><?php echo esc_html( $epitaph ) ?></textarea>
 				</fieldset>
 			</form>
 		</div><!-- .step-3-inner -->

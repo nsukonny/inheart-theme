@@ -138,6 +138,60 @@ function ih_ajax_save_data_step_1(): void
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1 збережено успішно!', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_save_data_step_2', 'ih_ajax_save_data_step_2' );
+/**
+ * Step 2 - save data.
+ *
+ * @return void
+ */
+function ih_ajax_save_data_step_2(): void
+{
+	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+	$sections		= [];
+
+	if( ! $memory_page_id || empty( $step_data ) )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	foreach( $step_data as $key => $section )
+		$sections[] = [
+			'category'	=> $section['title'],
+			'text'		=> $section['text'],
+			'position'	=> $section['position'],
+			'own_title'	=> ( bool ) $section['custom'],
+			'index'		=> $key
+		];
+
+	update_field( 'biography_sections', $sections, $memory_page_id );
+
+	$_SESSION['step2']['sections']	= $sections;
+	$_SESSION['step2']['ready']		= 1;
+
+	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 2 збережено успішно!', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_save_data_step_3', 'ih_ajax_save_data_step_3' );
+/**
+ * Step 3 - save data.
+ *
+ * @return void
+ */
+function ih_ajax_save_data_step_3(): void
+{
+	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+
+	if( ! $memory_page_id || ! isset( $step_data['epitaph'] ) )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	update_field( 'epitaphy', $step_data['epitaph'], $memory_page_id );
+
+	$_SESSION['step3']['epitaph']	= $step_data['epitaph'];
+	$_SESSION['step3']['ready']		= 1;
+
+	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
+}
+
 add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
 /**
  * Upload other photos.

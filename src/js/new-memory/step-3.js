@@ -8,6 +8,7 @@ export const checkEpitaphContentLength = () => {
 
 	if( ! textarea ) return
 
+	localStorage.setItem( 'ih-step-3', JSON.stringify( { epitaph: textarea.value } ) )
 	textarea.addEventListener( 'keyup', onEpitaphChange )
 	textarea.addEventListener( 'change', onEpitaphChange )
 	textarea.addEventListener( 'focus', onEpitaphChange )

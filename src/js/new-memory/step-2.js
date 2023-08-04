@@ -87,6 +87,7 @@ export const removeSidebarAddedSection = () => {
 
 			const clonedSection = targetSection.cloneNode( true )
 
+			clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
 			sectionsWrapper.append( clonedSection )
 			targetSection.remove()
 			sectionContent.remove()
@@ -315,7 +316,8 @@ export const checkStep2 = () => {
 			title		= section.querySelector( '.section-content-title' ),
 			titleInput	= title.querySelector( '.section-content-title-input' ),
 			value		= area.value,
-			index		= section.dataset.id
+			index		= section.dataset.id,
+			isCustom	= section.classList.contains( 'custom' ) ? 1 : ''
 
 		if( titleInput ) stepData[index] = { ...stepData[index], title: titleInput.value }
 		else stepData[index] = { ...stepData[index], title: title.innerText }
@@ -325,6 +327,7 @@ export const checkStep2 = () => {
 
 		stepData[index].text 		= value
 		stepData[index].position 	= i
+		stepData[index].custom 		= isCustom
 		localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
 	} )
 
