@@ -10,9 +10,8 @@
  * @subpackage inheart
  */
 
-$is_active	= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
-$title		= get_field( 'title_1' );
-$desc		= get_field( 'desc_1' );
+$title	= get_field( 'title_1' );
+$desc	= get_field( 'desc_1' );
 
 if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 	$language		= get_field( 'language', $memory_page_id );
@@ -28,7 +27,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 }
 ?>
 
-<section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column<?php echo esc_attr( $is_active ) ?>">
+<section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column">
 	<div class="container direction-column align-start">
 		<div class="new-memory-step-suptitle">
 			<?php esc_html_e( 'Крок 1', 'inheart' ) ?>
@@ -126,7 +125,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 					<span class="label-text flex-wrap align-center added">
 						<?php esc_html_e( "Змінити пам'ятну фотографію", 'inheart' ) ?>
 					</span>
-					<input id="photo" name="photo" type="file" required />
+					<input id="photo" name="photo" type="file"<?php echo ( $thumb_title ? '' : ' required' ) ?> />
 					<span class="filename"><?php echo esc_html( $thumb_title ) ?></span>
 				</label>
 			</fieldset>

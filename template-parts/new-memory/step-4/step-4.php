@@ -10,7 +10,6 @@
  * @subpackage inheart
  */
 
-$is_active		= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
 $title			= get_field( 'title_4' );
 $desc			= get_field( 'desc_4' );
 $photo_title	= get_field( 'photo_title' );
@@ -19,7 +18,7 @@ $video_title	= get_field( 'video_title' );
 $video_tip		= get_field( 'video_tip' );
 ?>
 
-<section id="new-memory-step-4" class="new-memory-step new-memory-step-4 step-media direction-column<?php echo esc_attr( $is_active ) ?>">
+<section id="new-memory-step-4" class="new-memory-step new-memory-step-4 step-media direction-column">
 	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
 			<?php esc_html_e( 'Крок 4', 'inheart' ) ?>

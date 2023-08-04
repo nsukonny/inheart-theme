@@ -10,14 +10,13 @@
  * @subpackage inheart
  */
 
-$is_active	= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
 $title		= get_field( 'title_3' );
 $desc		= get_field( 'desc_3' );
 $init_text	= get_field( 'epitaph_init_text' );
 $max_length	= get_field( 'epitaph_max_length' ) ?: 500;
 ?>
 
-<section id="new-memory-step-3" class="new-memory-step new-memory-step-3 direction-column<?php echo esc_attr( $is_active ) ?>">
+<section id="new-memory-step-3" class="new-memory-step new-memory-step-3 direction-column">
 	<div class="container direction-column">
 		<div class="epitaph-wrapper flex direction-column">
 			<div class="new-memory-step-suptitle">

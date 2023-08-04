@@ -176,7 +176,7 @@ export const checkStep1 = () => {
 	let isFormValid = true
 
 	fields.forEach( field => {
-		if( field.classList.contains( 'error' ) || ! field.value ) isFormValid = false
+		if( field.classList.contains( 'error' ) || ( field.required && ! field.value ) ) isFormValid = false
 	} )
 
 	return isFormValid

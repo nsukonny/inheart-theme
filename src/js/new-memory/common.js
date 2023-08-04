@@ -1,7 +1,6 @@
 import {
 	checkAjaxWorkingStatus,
 	ihAjaxRequest,
-	replaceUrlParam,
 	setAjaxWorkingStatus,
 	showNotification
 } from '../common/global'
@@ -26,8 +25,6 @@ export const defineGlobalStepsItems = () => {
 	progressBar	= document.querySelector( '.new-memory-progress-bar' )
 	prevStepBtn	= document.querySelector( '.new-memory-prev-step' )
 	nextStepBtn	= document.querySelector( '.new-memory-next-step' )
-
-	if( nextStepBtn ) nextStepBtn.disabled = true
 
 	return ! ( ! footer || ! progressBar || ! prevStepBtn || ! nextStepBtn )
 }
@@ -109,7 +106,6 @@ export const nextStep = () => {
 const showNextStepSection = nextStepId => {
 	document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
 	document.querySelector( `#new-memory-step-${ nextStepId }` ).classList.add( 'active' )
-	replaceUrlParam( 'step', nextStepId )
 	prevStepBtn.classList.remove( 'hidden' )
 	prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
 	isStepFilled( nextStepId )
@@ -128,7 +124,6 @@ export const prevStep = () => {
 
 		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
 		document.querySelector( `#new-memory-step-${ prevStepId }` ).classList.add( 'active' )
-		replaceUrlParam( 'step', prevStepId )
 		applyProgress( prevStepId + 1, 0 )
 
 		isStepFilled( prevStepId )
