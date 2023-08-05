@@ -111,7 +111,7 @@ function ih_ajax_save_data_step_1(): void
 	if(
 		! $step_data || ! $memory_page_id || ! $step_data['lang'] || ! $step_data['firstname'] ||
 		! $step_data['lastname'] || ! $step_data['fathername'] || ! $step_data['date-of-birth'] ||
-		! $step_data['date-of-death'] || ! $step_data['cropped']
+		! $step_data['date-of-death'] || ( ! $step_data['cropped'] && ! has_post_thumbnail( $memory_page_id ) )
 	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'language', $step_data['lang'], $memory_page_id );
@@ -381,7 +381,7 @@ function ih_ajax_delete_memory_photo(): void
 		}
 	}
 
-	// Delete file.
+	// Check if file is attached to current Memory page to avoid deletion of any file by any passed ID.
 	$attachment_post	= get_post( $attach_id );
 	$attachment_parent	= $attachment_post->post_parent;
 
@@ -457,23 +457,15 @@ function ih_ajax_save_data_step_4(): void
 {
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
-	$sections		= [];
 
-	if( ! $memory_page_id || empty( $step_data ) )
+	if( ! $memory_page_id || empty( $step_data['photos'] ) )
 		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
-	foreach( $step_data as $key => $section )
-		$sections[] = [
-			'category'	=> $section['title'],
-			'text'		=> $section['text'],
-			'position'	=> $section['position'],
-			'own_title'	=> ( bool ) $section['custom'],
-			'index'		=> $key
-		];
+	if( count( $step_data['photos'] ) < 4 )
+		wp_send_json_error( ['msg' => esc_html__( 'Не меньше 4 фото', 'inheart' )] );
 
-	update_field( 'biography_sections', $sections, $memory_page_id );
-
-	$_SESSION['step4']['sections']	= $sections;
+	update_field( 'photo', $step_data['photos'], $memory_page_id );
+	$_SESSION['step4']['photos']	= $step_data['photos'];
 	$_SESSION['step4']['ready']		= 1;
 
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );

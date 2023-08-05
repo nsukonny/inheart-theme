@@ -1,5 +1,5 @@
 // Common functions for all steps.
-import { defineGlobalStepsItems, nextStep, prevStep } from '../new-memory/common'
+import { defineGlobalStepsItems, isStepFilled, nextStep, prevStep } from '../new-memory/common'
 
 // Steps one-by-one.
 import { selectTheme } from '../new-memory/step-0'
@@ -18,7 +18,8 @@ import {
 	uploadMediaVideo,
 	uploadCustomPoster,
 	selectScreenshot,
-	saveVideoPoster
+	saveVideoPoster,
+	setDefaultDelete
 } from '../new-memory/step-4'
 
 document.addEventListener( 'DOMContentLoaded', () => {
@@ -28,6 +29,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	if( ! defineGlobalStepsItems() ) return
 
 	// Step 0.
+	isStepFilled()
 	selectTheme()
 	nextStep()
 
@@ -49,6 +51,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	checkEpitaphContentLength()
 
 	// Step 4
+	setDefaultDelete( document.querySelector( '.droparea-photo' ) )
+	setDefaultDelete( document.querySelector( '.droparea-video' ) )
 	uploadMediaPhotos()
 	uploadMediaVideo()
 	uploadCustomPoster()

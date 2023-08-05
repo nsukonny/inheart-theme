@@ -169,15 +169,23 @@ export const addMainFormValidation = () => {
  * @returns {boolean}
  */
 export const checkStep1 = () => {
-	const fields = document.querySelectorAll( '.new-memory-main-info input' )
+	const fields	= document.querySelectorAll( '.new-memory-main-info input' )
+	let isFormValid	= true
 
 	if( ! fields.length ) return false
 
-	let isFormValid = true
-
+	// Fill stepData again in the case localStorage was cleared.
+	stepData.lang = document.querySelector( '.new-memory-lang.active' ).dataset.lang
 	fields.forEach( field => {
-		if( field.classList.contains( 'error' ) || ( field.required && ! field.value ) ) isFormValid = false
+		const
+			index	= field.name,
+			value	= field.value
+
+		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ) isFormValid = false
+
+		stepData[index] = value
 	} )
+	localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 
 	return isFormValid
 }

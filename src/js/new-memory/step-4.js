@@ -12,7 +12,10 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
-const stepData = localStorage.getItem( 'ih-step-4' ) ? JSON.parse( localStorage.getItem( 'ih-step-4' ) ) : []
+const
+	stepData = localStorage.getItem( 'ih-step-4' ) ?
+	JSON.parse( localStorage.getItem( 'ih-step-4' ) ) :
+	{ photos: [], videos: [] }
 let videoDuration = 0
 
 /**
@@ -130,58 +133,13 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 					</div>
 				</div>`
 
-				const applyCBb = e => {
-					if( checkAjaxWorkingStatus() ) return
-
-					setAjaxWorkingStatus( true )
-
-					const
-						id			= e.target.closest( '.droparea-img-delete' ).dataset.id,
-						formData	= new FormData()
-
-					formData.append( 'action', 'ih_ajax_delete_memory_photo' )
-					formData.append( 'id', id )
-
-					ihAjaxRequest( formData ).then( res => {
-						if( res ){
-							switch( res.success ){
-								case true:
-									showNotification( res.data.msg )
-									e.target.closest( '.droparea-img-loaded' ).remove()
-
-									// If there are no more images loaded.
-									if( ! imagesWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
-										imagesWrapper.classList.add( 'hidden' )
-										inner.classList.remove( 'hidden' )
-									}
-
-									checkIfStepIsReady()
-
-									stepData.forEach( ( data, i ) => {
-										if( data.id == id ) stepData.splice( i, 1 )
-									} )
-
-									localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
-									break
-
-								case false:
-									showNotification( res.data.msg, 'error' )
-									break
-							}
-						}
-
-						setAjaxWorkingStatus( false )
-						hideAreYouSurePopup()
-					} )
-				}
-
 				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
 				showNotification( `Фото ${ file.name } успішно завантажено` )
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
-					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ) ) )
+					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) ) )
 				checkIfStepIsReady()
 
-				stepData.push( { id: data.attachId } )
+				stepData.photos.push( data.attachId )
 				localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 			}
 		}else{
@@ -202,6 +160,76 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 const cancelCBb = e => {
 	e.stopPropagation()
 	hideAreYouSurePopup()
+}
+
+/**
+ * Apply are you sure popup.
+ *
+ * @param {Event} e
+ * @param {HTMLObjectElement} droparea
+ */
+const applyCBb = ( e, droparea ) => {
+	if( checkAjaxWorkingStatus() ) return
+
+	setAjaxWorkingStatus( true )
+
+	const
+		inner			= droparea.querySelector( '.droparea-inner' ),
+		imagesWrapper	= droparea.querySelector( '.droparea-images' ),
+		id			= e.target.closest( '.droparea-img-delete' ).dataset.id,
+		formData	= new FormData()
+
+	formData.append( 'action', 'ih_ajax_delete_memory_photo' )
+	formData.append( 'id', id )
+
+	ihAjaxRequest( formData ).then( res => {
+		if( res ){
+			switch( res.success ){
+				case true:
+					showNotification( res.data.msg )
+					e.target.closest( '.droparea-img-loaded' ).remove()
+
+					// If there are no more images loaded.
+					if( ! imagesWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
+						imagesWrapper.classList.add( 'hidden' )
+						inner.classList.remove( 'hidden' )
+					}
+
+					checkIfStepIsReady()
+
+					stepData.photos.forEach( ( photoId, i ) => {
+						if( photoId == id ) stepData.photos.splice( i, 1 )
+					} )
+
+					localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+					break
+
+				case false:
+					showNotification( res.data.msg, 'error' )
+					break
+			}
+		}
+
+		setAjaxWorkingStatus( false )
+		hideAreYouSurePopup()
+	} )
+}
+
+/**
+ * Set click listener by default to media delete buttons.
+ *
+ * @param droparea
+ */
+export const setDefaultDelete = droparea => {
+	const buttons = document.querySelectorAll( '.droparea-img-delete' )
+
+	if( ! buttons.length ) return
+
+	buttons.forEach( btn => {
+		btn.addEventListener( 'click', e => {
+			showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) )
+		} )
+	} )
 }
 
 /**
@@ -601,7 +629,17 @@ const processingUploadCustomPoster = ( file, droparea ) => {
  *
  * @returns {boolean}
  */
-export const checkStep4 = () => document.querySelectorAll( '.droparea-img-loaded' ).length > 3
+export const checkStep4 = () => {
+	const photos = document.querySelectorAll( '.droparea-img-loaded' )
+
+	if( photos.length < 4 ) return false
+
+	stepData.photos = []
+	photos.forEach( photo => stepData.photos.push( photo.querySelector( '.droparea-img-delete' ).dataset.id ) )
+	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+
+	return true
+}
 
 /**
  * Allow or disallow next step.
