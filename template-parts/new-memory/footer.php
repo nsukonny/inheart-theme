@@ -15,10 +15,9 @@ $allow_next = ( isset( $_SESSION['memory_page_id'] ) && get_field( 'theme', $_SE
 				<div class="new-memory-progress-bar flex flex-wrap">
 					<?php
 					for( $i = 1; $i <= 5; $i++ ){
-						$progress = ( $i === 1 && $allow_next ) ? ' style="width: 100%"' : '';
 						?>
 						<div class="new-memory-progress-part" data-part="<?php echo esc_attr( $i ) ?>">
-							<div class="new-memory-progress-inner"<?php echo $progress ?>></div>
+							<div class="new-memory-progress-inner"></div>
 						</div>
 						<?php
 					}

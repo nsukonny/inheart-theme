@@ -12,7 +12,7 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
-const stepData = localStorage.getItem( 'ih-step-4' ) ? JSON.parse( localStorage.getItem( 'ih-step-4' ) ) : {}
+const stepData = localStorage.getItem( 'ih-step-4' ) ? JSON.parse( localStorage.getItem( 'ih-step-4' ) ) : []
 let videoDuration = 0
 
 /**
@@ -47,7 +47,7 @@ export const uploadMediaPhotos = () => {
 			}
 
 			if( file.type.startsWith( 'image/' ) ) processingUploadMediaPhoto( file, droparea )
-			else console.error( `Тільки зображення - файл ${ file.name } не є зображенням` )
+			else showNotification( `Тільки зображення - файл ${ file.name } не є зображенням`, 'warning' )
 		} )
 	}
 
@@ -156,6 +156,12 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 									}
 
 									checkIfStepIsReady()
+
+									stepData.forEach( ( data, i ) => {
+										if( data.id == id ) stepData.splice( i, 1 )
+									} )
+
+									localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 									break
 
 								case false:
@@ -174,6 +180,9 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ) ) )
 				checkIfStepIsReady()
+
+				stepData.push( { id: data.attachId } )
+				localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 			}
 		}else{
 			// If no images loaded yet.

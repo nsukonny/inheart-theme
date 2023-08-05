@@ -124,12 +124,13 @@ if( $ready_sections ){
 								null,
 								['sections' => $sections, 'section' => $section]
 							);
+					}else{
+						get_template_part(
+							'template-parts/new-memory/step-2/section-content',
+							null,
+							[ 'section' => [ 'category' => $sections[0]['title'] ] ]
+						);
 					}
-					get_template_part(
-						'template-parts/new-memory/step-2/section-content',
-						null,
-						['section' => ['category' => $sections[0]['title']]]
-					);
 					?>
 				</div>
 			</div><!-- .sections-wrapper -->
