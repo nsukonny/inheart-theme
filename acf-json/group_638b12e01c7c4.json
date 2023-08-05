@@ -424,7 +424,7 @@
             "label": "Відео",
             "name": "video",
             "aria-label": "",
-            "type": "gallery",
+            "type": "repeater",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -433,19 +433,83 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "array",
-            "library": "uploadedTo",
-            "min": "",
-            "max": "",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "insert": "append",
-            "preview_size": "medium"
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_64ceb7e25dadb",
+                    "label": "Відеофайл",
+                    "name": "file",
+                    "aria-label": "",
+                    "type": "file",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "34",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "min_size": "",
+                    "max_size": "",
+                    "mime_types": "avi,mp4,mpeg",
+                    "parent_repeater": "field_638b12fcbe72b"
+                },
+                {
+                    "key": "field_64ceba1e3ad1a",
+                    "label": "Постер",
+                    "name": "poster",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "33",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "preview_size": "medium",
+                    "parent_repeater": "field_638b12fcbe72b"
+                },
+                {
+                    "key": "field_64ceba483ad1b",
+                    "label": "Посилання",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "33",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_638b12fcbe72b"
+                }
+            ]
         },
         {
             "key": "field_63a16b6567b55",
@@ -802,5 +866,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1691254292
+    "modified": 1691269728
 }

@@ -263,12 +263,12 @@ export const uploadMediaVideo = () => {
 		video.ondurationchange = () => videoDuration = getPrettyVideoDuration( video.duration )
 
 		if( fileInstance[0].size > 1024 * BYTES_IN_MB ){
-			showNotification( `Не вдалося завантажити відео ${ fileInstance[0].name }`, 'error' )
+			showNotification( 'Не більше 1 гб', 'error' )
 			return false
 		}
 
 		if( fileInstance[0].type.startsWith( 'video/' ) ) processingUploadMediaVideo( fileInstance[0], droparea )
-		else console.error( `Тільки зображення - файл ${ fileInstance[0].name } не є зображенням` )
+		else console.error( `Тільки відеофайли - файл ${ fileInstance[0].name } не відео` )
 	}
 
 	droparea.addEventListener( 'drop', handleVideoUpload )
@@ -510,7 +510,7 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 		<div class="droparea-video-duration">${ videoDuration }</div>
 	</div>`
 
-	const applyCBb = e => {
+	const applyVideoCBb = e => {
 		if( checkAjaxWorkingStatus() ) return
 
 		setAjaxWorkingStatus( true )
@@ -536,6 +536,11 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 							showElement( document.querySelector( '.droparea-video .droparea-inner' ) )
 						}
 
+						stepData.videos.forEach( ( videoId, i ) => {
+							if( videoId == id ) stepData.videos.splice( i, 1 )
+						} )
+
+						localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 						break
 
 					case false:
@@ -553,8 +558,11 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 	videosWrapper
 		.querySelector( `.droparea-img-delete[data-id="${ videoData.attachId }"]` )
 		.addEventListener( 'click', e => {
-			showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e ), 'Дійсно видалити відео?' )
+			showAreYouSurePopup( e.target, cancelCBb, () => applyVideoCBb( e ), 'Дійсно видалити відео?' )
 		} )
+
+	stepData.videos.push( { id: videoData.attachId, poster, link: '' } )
+	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 }
 
 /**
@@ -626,16 +634,36 @@ const processingUploadCustomPoster = ( file, droparea ) => {
 
 /**
  * Check if step 4 is ready.
+ * Update local storage if it was cleared.
  *
  * @returns {boolean}
  */
 export const checkStep4 = () => {
-	const photos = document.querySelectorAll( '.droparea-img-loaded' )
+	const
+		photos	= document.querySelectorAll( '.droparea-img-loaded' ),
+		videos	= document.querySelectorAll( '.droparea-video-loaded' )
 
 	if( photos.length < 4 ) return false
 
 	stepData.photos = []
 	photos.forEach( photo => stepData.photos.push( photo.querySelector( '.droparea-img-delete' ).dataset.id ) )
+
+	if( videos.length ){
+		stepData.videos = []
+		videos.forEach( video => {
+			const
+				videoTag	= video.querySelector( 'video' ),
+				poster		= videoTag && videoTag.poster,
+				link		= video.querySelector( '.droparea-video-loaded-link' )
+
+			stepData.videos.push( {
+				id		: video.querySelector( '.droparea-img-delete' ).dataset.id,
+				poster	: poster || '',
+				link	: link && link.innerText
+			} )
+		} )
+	}
+
 	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 
 	return true

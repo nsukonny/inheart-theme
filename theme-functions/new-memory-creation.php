@@ -468,6 +468,21 @@ function ih_ajax_save_data_step_4(): void
 	$_SESSION['step4']['photos']	= $step_data['photos'];
 	$_SESSION['step4']['ready']		= 1;
 
+	// Videos.
+	if( ! empty( $step_data['videos'] ) ){
+		$videos = [];
+
+		foreach( $step_data['videos'] as $video )
+			$videos[] = [
+				'file'		=> $video['id'],
+				'poster'	=> $video['poster'],
+				'link'		=> $video['link']
+			];
+
+		update_field( 'video', $videos, $memory_page_id );
+		$_SESSION['step4']['videos'] = $videos;
+	}
+
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }
 
