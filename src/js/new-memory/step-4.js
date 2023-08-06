@@ -216,18 +216,35 @@ const applyCBb = ( e, droparea ) => {
 }
 
 /**
- * Set click listener by default to media delete buttons.
- *
- * @param droparea
+ * Set click listener by default to photo delete buttons.
  */
-export const setDefaultDelete = droparea => {
-	const buttons = document.querySelectorAll( '.droparea-img-delete' )
+export const setDefaultDeletePhoto = () => {
+	const
+		droparea	= document.querySelector( '.droparea-photo' ),
+		buttons		= droparea.querySelectorAll( '.droparea-img-delete' )
 
 	if( ! buttons.length ) return
 
 	buttons.forEach( btn => {
 		btn.addEventListener( 'click', e => {
 			showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) )
+		} )
+	} )
+}
+
+/**
+ * Set click listener by default to video delete buttons.
+ */
+export const setDefaultDeleteVideo = () => {
+	const
+		droparea	= document.querySelector( '.droparea-video' ),
+		buttons		= droparea.querySelectorAll( '.droparea-img-delete' )
+
+	if( ! buttons.length ) return
+
+	buttons.forEach( btn => {
+		btn.addEventListener( 'click', e => {
+			showAreYouSurePopup( e.target, cancelCBb, () => applyVideoCb( e ) )
 		} )
 	} )
 }
@@ -510,59 +527,60 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 		<div class="droparea-video-duration">${ videoDuration }</div>
 	</div>`
 
-	const applyVideoCBb = e => {
-		if( checkAjaxWorkingStatus() ) return
-
-		setAjaxWorkingStatus( true )
-
-		const
-			id			= e.target.closest( '.droparea-img-delete' ).dataset.id,
-			isVideo		= e.target.closest( '.droparea-img-delete' ).dataset.isVideo,
-			formData	= new FormData()
-
-		formData.append( 'action', 'ih_ajax_delete_memory_photo' )
-		formData.append( 'id', id )
-		formData.append( 'video', isVideo )
-
-		ihAjaxRequest( formData ).then( res => {
-			if( res ){
-				switch( res.success ){
-					case true:
-						e.target.closest( '.droparea-img-loaded' ).remove()
-
-						// If there are no more images loaded.
-						if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
-							hideElement( videosWrapper )
-							showElement( document.querySelector( '.droparea-video .droparea-inner' ) )
-						}
-
-						stepData.videos.forEach( ( videoId, i ) => {
-							if( videoId == id ) stepData.videos.splice( i, 1 )
-						} )
-
-						localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
-						break
-
-					case false:
-						showNotification( res.data.msg, 'error' )
-						break
-				}
-			}
-
-			setAjaxWorkingStatus( false )
-			hideAreYouSurePopup()
-		} )
-	}
-
 	videosWrapper.querySelector( '.droparea-videos-load' ).insertAdjacentHTML( 'beforebegin', videoHTML )
 	videosWrapper
 		.querySelector( `.droparea-img-delete[data-id="${ videoData.attachId }"]` )
 		.addEventListener( 'click', e => {
-			showAreYouSurePopup( e.target, cancelCBb, () => applyVideoCBb( e ), 'Дійсно видалити відео?' )
+			showAreYouSurePopup( e.target, cancelCBb, () => applyVideoCb( e ), 'Дійсно видалити відео?' )
 		} )
 
-	stepData.videos.push( { id: videoData.attachId, poster, link: '' } )
+	stepData.videos.push( { id: videoData.attachId, poster: videoData.posterId, link: '' } )
 	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+}
+
+const applyVideoCb = e => {
+	if( checkAjaxWorkingStatus() ) return
+
+	setAjaxWorkingStatus( true )
+
+	const
+		id				= e.target.closest( '.droparea-img-delete' ).dataset.id,
+		isVideo			= e.target.closest( '.droparea-img-delete' ).dataset.isVideo,
+		formData		= new FormData(),
+		videosWrapper	= document.querySelector( '.droparea-videos' )
+
+	formData.append( 'action', 'ih_ajax_delete_memory_photo' )
+	formData.append( 'id', id )
+	formData.append( 'video', isVideo )
+
+	ihAjaxRequest( formData ).then( res => {
+		if( res ){
+			switch( res.success ){
+				case true:
+					e.target.closest( '.droparea-img-loaded' ).remove()
+
+					// If there are no more images loaded.
+					if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
+						hideElement( videosWrapper )
+						showElement( document.querySelector( '.droparea-video .droparea-inner' ) )
+					}
+
+					stepData.videos.forEach( ( video, i ) => {
+						if( video.id == id ) stepData.videos.splice( i, 1 )
+					} )
+
+					localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+					break
+
+				case false:
+					showNotification( res.data.msg, 'error' )
+					break
+			}
+		}
+
+		setAjaxWorkingStatus( false )
+		hideAreYouSurePopup()
+	} )
 }
 
 /**
@@ -653,7 +671,7 @@ export const checkStep4 = () => {
 		videos.forEach( video => {
 			const
 				videoTag	= video.querySelector( 'video' ),
-				poster		= videoTag && videoTag.poster,
+				poster		= videoTag && videoTag.dataset.posterId,
 				link		= video.querySelector( '.droparea-video-loaded-link' )
 
 			stepData.videos.push( {

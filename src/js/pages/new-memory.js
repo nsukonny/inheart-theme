@@ -19,8 +19,10 @@ import {
 	uploadCustomPoster,
 	selectScreenshot,
 	saveVideoPoster,
-	setDefaultDelete
+	setDefaultDeletePhoto,
+	setDefaultDeleteVideo
 } from '../new-memory/step-4'
+import { addCoordsFormValidation, legendTipClick } from '../new-memory/step-5'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -51,11 +53,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	checkEpitaphContentLength()
 
 	// Step 4
-	setDefaultDelete( document.querySelector( '.droparea-photo' ) )
-	setDefaultDelete( document.querySelector( '.droparea-video' ) )
+	setDefaultDeletePhoto()
+	setDefaultDeleteVideo()
 	uploadMediaPhotos()
 	uploadMediaVideo()
 	uploadCustomPoster()
 	selectScreenshot()
 	saveVideoPoster()
+
+	// Step 5
+	addCoordsFormValidation()
+	legendTipClick()
 } )

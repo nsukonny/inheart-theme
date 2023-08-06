@@ -175,3 +175,25 @@ function ih_get_shorter_filename( string $filename ): string
 	return ( strlen( $filename ) - strlen( $ext ) > 17 ) ? substr( $name, 0, 10 ) . '...' . $ext : $filename;
 }
 
+/**
+ * Turn seconds into pretty duration string.
+ *
+ * @param int $seconds
+ * @return string
+ */
+function ih_prettify_duration( int $seconds ): string
+{
+	if( $seconds < 10 ) $seconds = "0$seconds";
+
+	if( $seconds < 60 ) return "00:00:$seconds";
+
+	$hours		= floor( $seconds / ( 60 * 60 ) );
+	$hours		= $hours < 10 ? "0$hours" : $hours;
+	$minutes	= floor( ( $seconds / 60 ) % 60 );
+	$minutes	= $minutes < 10 ? "0$minutes" : $minutes;
+	$seconds	= floor( $seconds % 60 );
+	$seconds	= $seconds < 10 ? "0$seconds" : $seconds;
+
+	return "$hours:$minutes:$seconds";
+}
+

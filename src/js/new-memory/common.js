@@ -9,6 +9,7 @@ import { checkStep1 } from './step-1'
 import { checkStep2 } from './step-2'
 import { checkStep3 } from './step-3'
 import { checkStep4 } from './step-4'
+import { checkStep5 } from './step-5'
 
 let footer,
 	progressBar,
@@ -160,9 +161,9 @@ export const isStepFilled = ( stepId = 0 ) => {
 			cb = checkStep4
 			break
 
-		// case 5:
-		// 	cb = checkStep5
-		// 	break
+		case 5:
+			cb = checkStep5
+			break
 
 		default:
 			cb = checkStep0

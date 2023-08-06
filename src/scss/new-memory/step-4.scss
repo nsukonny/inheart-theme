@@ -1,0 +1,306 @@
+.new-memory {
+	.step-media {
+		.form-white {
+			max-width: 738px;
+			padding: 45px 108px 47px 0;
+			margin-top: 0
+		}
+
+		fieldset {
+			margin-bottom: 40px
+		}
+	}
+}
+
+.droparea {
+	position: relative;
+	width: 100%;
+	min-height: 300px;
+	background-color: $white;
+	border: 0.5px solid $very-dark-green;
+	border-radius: 28px;
+	padding: 10px 10px 28px;
+
+	&.dragover {
+		border: 1px solid $dark-yellow;
+		background-color: #FCF9F3
+	}
+
+	&-icon {
+		width: 100%;
+		margin-bottom: 9px;
+
+		svg {
+			display: block
+		}
+	}
+
+	&-title {
+		width: 100%;
+		font-size: $fs-lg;
+		color: $very-dark-green;
+		text-align: center;
+		margin-bottom: 6px
+	}
+
+	&-desc {
+		width: 100%;
+		margin-bottom: 36px;
+
+		p {
+			font-size: $fs-sm;
+			color: $green;
+			text-align: center;
+
+			&:not(:last-child) {
+				margin-bottom: 4px
+			}
+		}
+	}
+
+	&-loader {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: $white;
+		border-radius: inherit;
+		padding-bottom: 21px;
+		z-index: 5;
+
+		&-percents {
+			font-size: 32px;
+			color: $very-dark-green;
+			margin-bottom: 9px
+		}
+
+		&-note {
+			font-size: $fs-lg;
+			color: $very-dark-green;
+			margin-bottom: 6px
+		}
+
+		&-cancel.btn {
+			color: $red;
+			padding: 14px 16px
+		}
+
+		progress {
+			margin-bottom: 20px
+		}
+	}
+
+	&-images,
+	&-videos {
+		width: 100%;
+		gap: 20px;
+
+		&-load {
+			width: calc(50% - 10px);
+			height: 240px;
+			border-radius: 28px;
+			border: 0.5px solid $very-dark-green;
+			padding: 10px 10px 28px;
+
+			svg {
+				width: 48px;
+				height: 48px;
+				margin-bottom: 46px
+			}
+		}
+	}
+
+	&-img,
+	&-video {
+		&-loaded {
+			position: relative;
+			width: calc(50% - 10px);
+			height: 240px;
+			border-radius: 28px;
+
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center;
+				border-radius: 28px
+			}
+
+			video {
+				display: block;
+				width: 100%;
+				height: 100%;
+				object-fit: cover
+			}
+		}
+
+		&-delete {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			width: 34px;
+			height: 34px;
+			border-radius: 50%;
+			color: #96AAAE;
+			background-color: $white;
+			cursor: pointer;
+			transition: ease-out color $tr;
+
+			svg {
+				width: 24px;
+				height: auto;
+				pointer-events: none
+			}
+
+			&:hover {
+				color: $red
+			}
+		}
+	}
+
+	&-video {
+		&-wrapper {
+			width: 100%;
+			height: 180px;
+			border-radius: 28px 28px 0 0;
+			margin-bottom: 16px;
+
+			video {
+				border-radius: inherit
+			}
+		}
+
+		&-title {
+			margin-bottom: 2px
+		}
+
+		&-duration {
+			font-size: $fs-sm;
+			color: $green;
+			padding-bottom: 4px
+		}
+	}
+
+	&-thumbs {
+		width: 100%;
+		border-radius: inherit;
+		background-color: $white;
+		padding-top: 72px;
+
+		&-text {
+			font-size: $fs-lg;
+			line-height: $lh-2;
+			color: $very-dark-green;
+			margin-bottom: 8px
+		}
+
+		&-list {
+			width: 100%;
+			min-height: 100px;
+			margin-top: 20px;
+			gap: 10px
+		}
+	}
+
+	&-thumb,
+	&-thumb-load {
+		position: relative;
+		width: calc((100% - 30px) / 4);
+		height: 100px;
+		padding: 10px;
+		border: 0.5px solid $very-dark-green;
+		border-radius: 16px;
+		cursor: pointer;
+		transition:
+			border-width ease-out $tr,
+			border-color ease-out $tr,
+			opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.75
+		}
+	}
+
+	&-thumb {
+		overflow: hidden;
+
+		&.active {
+			border: 2px solid $bright-yellow
+		}
+
+		&-load {
+			cursor: pointer;
+			transition: opacity ease-out $tr;
+
+			&:hover {
+				opacity: 0.7
+			}
+
+			&-text {
+				display: block;
+				font-size: $fs-xs;
+				line-height: $lh-2;
+				text-align: center;
+				margin-top: 10px
+			}
+
+			svg {
+				width: 24px;
+				height: 24px
+			}
+		}
+
+		&-img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center
+		}
+	}
+
+	progress {
+		width: 100%;
+		max-width: 245px;
+		height: 8px;
+		border: none;
+		background-color: #EEF0F1;
+		border-radius: 4px;
+		color: $dark-yellow;
+
+		// Chrome
+		&::-webkit-progress-bar {
+			background-color: #EEF0F1;
+			border-radius: 4px
+		}
+
+		&::-webkit-progress-value {
+			background-color: $dark-yellow;
+			border-radius: 4px
+		}
+
+		// WebKit / Safari
+		&[value] {
+			background-color: #EEF0F1;
+			border-radius: 4px;
+			-webkit-appearance: none;
+
+			&::-webkit-progress-value {
+				background-color: $dark-yellow;
+				border-radius: 4px
+			}
+		}
+
+		// Firefox
+		&::-moz-progress-bar {
+			background-color: $dark-yellow;
+			border-radius: 4px
+		}
+	}
+}

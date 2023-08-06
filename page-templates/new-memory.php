@@ -24,6 +24,7 @@ ih_create_new_memory_page();
 	get_template_part( 'template-parts/new-memory/step-2/step', '2' );
 	get_template_part( 'template-parts/new-memory/step-3/step', '3' );
 	get_template_part( 'template-parts/new-memory/step-4/step', '4' );
+	get_template_part( 'template-parts/new-memory/step-5/step', '5' );
 	?>
 </main>
 
