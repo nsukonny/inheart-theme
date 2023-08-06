@@ -99,7 +99,7 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 			loader.classList.add( 'hidden' )
 
 			// No images - just show inner.
-			if( ! document.querySelectorAll( '.droparea-img-loaded' ).length )
+			if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
 				inner.classList.remove( 'hidden' )
 		}, 500 )
 	} )
@@ -113,25 +113,12 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 		if( xhr.status == 200 ){
 			const
 				response	= JSON.parse( xhr.response ),
-				data		= response.data,
-				maskId		= `mask0_${ Math.random() * 10000 }_${ Math.random() * 10000 }`
+				data		= response.data
 			let imageHTML	= ''
 
 			if( data.success == 1 ){
 				imagesWrapper.classList.remove( 'hidden' )
-				imageHTML = `<div class="droparea-img-loaded">
-					<img src="${ data.url }" alt="${ file.name }" />
-					<div class="droparea-img-delete flex align-center justify-center" data-id="${ data.attachId }">
-						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<mask id="${ maskId }" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
-								<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
-							</mask>
-							<g mask="url(#${ maskId })">
-								<rect width="24" height="24" fill="currentColor"/>
-							</g>
-						</svg>
-					</div>
-				</div>`
+				imageHTML = getPhotoHTML( data, file.name )
 
 				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
 				showNotification( `Фото ${ file.name } успішно завантажено` )
@@ -144,12 +131,38 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 			}
 		}else{
 			// If no images loaded yet.
-			if( ! document.querySelectorAll( '.droparea-img-loaded' ).length ) inner.classList.remove( 'hidden' )
+			if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
+				inner.classList.remove( 'hidden' )
 			else imagesWrapper.classList.remove( 'hidden' )
 
 			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
 		}
 	}
+}
+
+/**
+ * Get photo item HTML layout.
+ *
+ * @param {object}	data		Photo data object from the backend.
+ * @param {string}	filename	Photo file name.
+ * @returns {string}			Photo item HTML layout.
+ */
+const getPhotoHTML = ( data, filename ) => {
+	const maskId = `mask0_${ Math.random() * 10000 }_${ Math.random() * 10000 }`
+
+	return `<div class="droparea-img-loaded">
+		<img src="${ data.url }" alt="${ filename }" />
+		<div class="droparea-img-delete flex align-center justify-center" data-id="${ data.attachId }">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<mask id="${ maskId }" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
+				</mask>
+				<g mask="url(#${ maskId })">
+					<rect width="24" height="24" fill="currentColor"/>
+				</g>
+			</svg>
+		</div>
+	</div>`
 }
 
 /**
@@ -190,7 +203,7 @@ const applyCBb = ( e, droparea ) => {
 					e.target.closest( '.droparea-img-loaded' ).remove()
 
 					// If there are no more images loaded.
-					if( ! imagesWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
+					if( ! imagesWrapper.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length ){
 						imagesWrapper.classList.add( 'hidden' )
 						inner.classList.remove( 'hidden' )
 					}
@@ -496,16 +509,16 @@ const clearThumbsList = () => {
 }
 
 /**
- * Output HTML5 video after poster is set.
+ * Get video item HTML layout.
  *
- * @param {object} videoData
- * @param {string} poster
+ * @param {object}	videoData	Video data object.
+ * @param {string}	poster		Video poster URL.
+ * @returns {string}			Video item HTML layout.
  */
-const outputVideoWithPoster = ( videoData, poster ) => {
-	const
-		maskId			= `mask0_${ Math.random() * 10000 }_${ Math.random() * 10000 }`,
-		videosWrapper	= document.querySelector( '.droparea-videos' ),
-		videoHTML		= `<div class="droparea-img-loaded droparea-video-loaded">
+const getVideoHTML = ( videoData, poster ) => {
+	const maskId = `mask0_${ Math.random() * 10000 }_${ Math.random() * 10000 }`
+
+	return `<div class="droparea-img-loaded droparea-video-loaded">
 		<div class="droparea-video-wrapper">
 			<video src="${ videoData.url }" poster="${ poster }"></video>
 			<div
@@ -526,6 +539,18 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 		<div class="droparea-video-title">${ getFilename( videoData.filename ) }</div>
 		<div class="droparea-video-duration">${ videoDuration }</div>
 	</div>`
+}
+
+/**
+ * Output HTML5 video after poster is set.
+ *
+ * @param {object} videoData
+ * @param {string} poster
+ */
+const outputVideoWithPoster = ( videoData, poster ) => {
+	const
+		videosWrapper	= document.querySelector( '.droparea-videos' ),
+		videoHTML		= getVideoHTML( videoData, poster )
 
 	videosWrapper.querySelector( '.droparea-videos-load' ).insertAdjacentHTML( 'beforebegin', videoHTML )
 	videosWrapper
@@ -560,7 +585,7 @@ const applyVideoCb = e => {
 					e.target.closest( '.droparea-img-loaded' ).remove()
 
 					// If there are no more images loaded.
-					if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded' ).length ){
+					if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length ){
 						hideElement( videosWrapper )
 						showElement( document.querySelector( '.droparea-video .droparea-inner' ) )
 					}
@@ -658,7 +683,7 @@ const processingUploadCustomPoster = ( file, droparea ) => {
  */
 export const checkStep4 = () => {
 	const
-		photos	= document.querySelectorAll( '.droparea-img-loaded' ),
+		photos	= document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ),
 		videos	= document.querySelectorAll( '.droparea-video-loaded' )
 
 	if( photos.length < 4 ) return false
