@@ -512,95 +512,6 @@
             ]
         },
         {
-            "key": "field_63a16b6567b55",
-            "label": "Посилання",
-            "name": "links",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Додати рядок",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_63a16b8a67b57",
-                    "label": "Посилання",
-                    "name": "url",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_63a16b6567b55"
-                },
-                {
-                    "key": "field_63a180f3394b9",
-                    "label": "Назва посилання",
-                    "name": "title",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_63a16b6567b55"
-                },
-                {
-                    "key": "field_63d38e1e05a78",
-                    "label": "Позиція",
-                    "name": "position",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": "",
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_63a16b6567b55"
-                }
-            ]
-        },
-        {
             "key": "field_63d8da4f5ad44",
             "label": "Відео посилання",
             "name": "video_links",
@@ -632,7 +543,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
@@ -653,7 +564,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
@@ -663,9 +574,75 @@
                     "prepend": "",
                     "append": "",
                     "parent_repeater": "field_63d8da4f5ad44"
+                }
+            ]
+        },
+        {
+            "key": "field_63a16b6567b55",
+            "label": "Посилання",
+            "name": "links",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_63a16b8a67b57",
+                    "label": "Посилання",
+                    "name": "url",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "34",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_63a16b6567b55"
                 },
                 {
-                    "key": "field_63d8dab75ad47",
+                    "key": "field_63a180f3394b9",
+                    "label": "Назва посилання",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "33",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_63a16b6567b55"
+                },
+                {
+                    "key": "field_64d16d19419a5",
                     "label": "Позиція",
                     "name": "position",
                     "aria-label": "",
@@ -674,18 +651,18 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "33",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": 0,
-                    "min": "",
+                    "default_value": "",
+                    "min": 0,
                     "max": "",
                     "placeholder": "",
-                    "step": "",
+                    "step": 1,
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_63d8da4f5ad44"
+                    "parent_repeater": "field_63a16b6567b55"
                 }
             ]
         },
@@ -825,5 +802,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1691333514
+    "modified": 1691446591
 }

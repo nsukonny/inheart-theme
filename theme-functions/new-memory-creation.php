@@ -452,21 +452,51 @@ function ih_ajax_save_data_step_4(): void
 	update_field( 'photo', $step_data['photos'], $memory_page_id );
 
 	// Videos.
+	$videos = null;
+
 	if( ! empty( $step_data['videos'] ) ){
 		$videos = [];
 
-		foreach( $step_data['videos'] as $video )
-			$videos[] = [
-				'file'		=> $video['id'],
-				'poster'	=> $video['poster'],
-				'link'		=> $video['link']
-			];
+		foreach( $step_data['videos'] as $video ){
+			$file	= $video['id'];
+			$poster	= $video['poster'];
+			$link	= $video['link'];
 
-		update_field( 'video', $videos, $memory_page_id );
-		$_SESSION['step4']['videos'] = $videos;
-	}else{
-		update_field( 'video', [], $memory_page_id );
+			if( ! $file && ! $poster && ! $link ) continue;
+
+			$videos[] = ['file' => $file, 'poster' => $poster, 'link' => $link];
+		}
+
+		$videos = empty( $videos ) ? null : $videos;
 	}
+
+	update_field( 'video', $videos, $memory_page_id );
+
+	// External links.
+	$links = null;
+
+	if( ! empty( $step_data['links'] ) ){
+		$links = [];
+
+		foreach( $step_data['links'] as $link ){
+			$url		= $link['url'];
+			$title		= $link['title'];
+			$position	= $link['position'];
+
+			// Save only if both fields are set.
+			if( ! $url || ! $title ) continue;
+
+			$links[] = [
+				'url'		=> $link['url'],
+				'title'		=> $link['title'],
+				'position'	=> $position
+			];
+		}
+
+		$links = empty( $links ) ? null : $links;
+	}
+
+	update_field( 'links', $links, $memory_page_id );
 
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }

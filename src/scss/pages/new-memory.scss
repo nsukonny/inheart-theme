@@ -77,6 +77,50 @@
 		padding: 0;
 		margin-bottom: 19px
 	}
+
+	.step-media-link {
+		position: relative;
+
+		&.filled {
+			padding-right: 36px
+		}
+	}
+
+	.media-links-add {
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		color: $dark-yellow;
+		cursor: pointer;
+		font-family: $ff;
+		transition: color ease-out $tr;
+
+		&:hover {
+			color: $bright-yellow
+		}
+
+		svg {
+			margin-right: 5px
+		}
+	}
+
+	.media-link-delete {
+		position: absolute;
+		top: 40px;
+		right: 0;
+		width: 24px;
+		height: 24px;
+		background-color: transparent;
+		padding: 0;
+		border: none;
+		color: #96AAAE;
+		cursor: pointer;
+		transition: color ease-out $tr;
+
+		&:hover {
+			color: $red
+		}
+	}
 }
 
 .form-white {

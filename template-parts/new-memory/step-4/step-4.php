@@ -60,6 +60,8 @@ $video_tip		= get_field( 'video_tip' );
 
 				<?php get_template_part( 'template-parts/new-memory/step-4/droparea', 'video' ) ?>
 			</fieldset>
+
+			<?php get_template_part( 'template-parts/new-memory/step-4/links' ) ?>
 		</form>
 	</div><!-- .container -->
 </section><!-- #new-memory-step-4 -->

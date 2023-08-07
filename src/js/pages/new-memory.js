@@ -20,7 +20,8 @@ import {
 	selectScreenshot,
 	saveVideoPoster,
 	setDefaultDeletePhoto,
-	setDefaultDeleteVideo
+	setDefaultDeleteVideo,
+	externalLinksFieldsInput, checkStep4, externalLinkDelete
 } from '../new-memory/step-4'
 import { addCoordsFormValidation, legendTipClick } from '../new-memory/step-5'
 
@@ -60,6 +61,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	uploadCustomPoster()
 	selectScreenshot()
 	saveVideoPoster()
+	externalLinksFieldsInput()
+	externalLinkDelete()
 
 	// Step 5
 	addCoordsFormValidation()

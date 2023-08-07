@@ -15,7 +15,7 @@ import { allowNextStep, applyProgress, disallowNextStep } from './common'
 const
 	stepData = localStorage.getItem( 'ih-step-4' ) ?
 	JSON.parse( localStorage.getItem( 'ih-step-4' ) ) :
-	{ photos: [], videos: [] }
+	{ photos: [], videos: [], links: [] }
 let videoDuration = 0
 
 /**
@@ -676,6 +676,124 @@ const processingUploadCustomPoster = ( file, droparea ) => {
 }
 
 /**
+ * Listen to external links fields.
+ */
+export const externalLinksFieldsInput = () => {
+	const fields = document.querySelectorAll( '.step-media-link' )
+
+	if( ! fields.length ) return
+
+	fields.forEach( field => {
+		const
+			urlField	= field.querySelector( 'input[id^="media-link-"]' ),
+			urlTitle	= field.querySelector( 'input[id^="media-name-link-"]' )
+
+		if( ! urlField || ! urlTitle ) return
+
+		urlField.removeEventListener( 'keyup', onExternalLinkFieldInput )
+		urlField.removeEventListener( 'change', onExternalLinkFieldInput )
+		urlField.removeEventListener( 'blur', onExternalLinkFieldInput )
+		urlField.addEventListener( 'change', onExternalLinkFieldInput )
+		urlField.addEventListener( 'keyup', onExternalLinkFieldInput )
+		urlField.addEventListener( 'blur', onExternalLinkFieldInput )
+
+		urlTitle.removeEventListener( 'keyup', onExternalLinkFieldInput )
+		urlTitle.removeEventListener( 'change', onExternalLinkFieldInput )
+		urlTitle.removeEventListener( 'blur', onExternalLinkFieldInput )
+		urlTitle.addEventListener( 'change', onExternalLinkFieldInput )
+		urlTitle.addEventListener( 'keyup', onExternalLinkFieldInput )
+		urlTitle.addEventListener( 'blur', onExternalLinkFieldInput )
+	} )
+}
+
+/**
+ * Handle external links input.
+ *
+ * @param {Event} e
+ */
+const onExternalLinkFieldInput = e => {
+	const
+		target	= e.target,
+		value	= target.value,
+		label	= target.closest( 'label' ),
+		index	= target.closest( '.step-media-link' ).dataset.id,
+		type	= target.type === 'url' ? 'url' : 'title'
+
+	if( ! value ) label.classList.add( 'error' )
+	else label.classList.remove( 'error' )
+
+	stepData.links[index][type] = value
+	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+}
+
+/**
+ * Delete external link.
+ */
+export const externalLinkDelete = () => {
+	const buttons = document.querySelectorAll( '.media-link-delete' )
+
+	if( ! buttons.length ) return
+
+	buttons.forEach( btn => {
+		btn.removeEventListener( 'click', onExternalLinkDelete )
+		btn.addEventListener( 'click', onExternalLinkDelete )
+	} )
+}
+
+/**
+ * Handle external link deletion.
+ */
+const onExternalLinkDelete = e => {
+	const link = e.target.closest( '.step-media-link' )
+
+	stepData.links.splice( link.dataset.id, 1 )
+	link.remove()
+	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+
+	// No more links
+	if( ! document.querySelectorAll( '.step-media-link' ).length ){
+		document.querySelector( '.step-media-links' ).innerHTML = `<div class="step-media-link flex flex-wrap" data-id="0">
+			<label for="media-link-0" class="label dark half">
+				<span class="label-text">Посилання</span>
+				<input
+					id="media-link-0"
+					name="media-link-0"
+					type="url"
+					pattern="https://.*"
+					placeholder="Додати посилання"
+					required
+				/>
+			</label>
+			<label for="media-name-link-0" class="label dark half end">
+				<span class="label-text">Назва посилання</span>
+				<input
+					id="media-name-link-0"
+					name="media-name-link-0"
+					type="text"
+					placeholder="Додати посилання"
+					required
+				/>
+			</label>
+			<button class="media-link-delete hidden" title="Видалити посилання" type="button">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<mask id="mask_link_0" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
+					</mask>
+					<g mask="url(#mask_link_0)">
+						<rect width="24" height="24" fill="currentColor"/>
+					</g>
+				</svg>
+			</button>
+		</div>`
+
+		externalLinksFieldsInput()
+		externalLinkDelete()
+		checkStep4()
+		document.querySelector( '.media-links-add' ).classList.add( 'hidden' )
+	}
+}
+
+/**
  * Check if step 4 is ready.
  * Update local storage if it was cleared.
  *
@@ -684,7 +802,8 @@ const processingUploadCustomPoster = ( file, droparea ) => {
 export const checkStep4 = () => {
 	const
 		photos	= document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ),
-		videos	= document.querySelectorAll( '.droparea-video-loaded' )
+		videos	= document.querySelectorAll( '.droparea-video-loaded' ),
+		links	= document.querySelectorAll( '.step-media-link' )
 
 	if( photos.length < 4 ) return false
 
@@ -703,6 +822,23 @@ export const checkStep4 = () => {
 				id		: video.querySelector( '.droparea-img-delete' ).dataset.id,
 				poster	: poster || '',
 				link	: link && link.innerText
+			} )
+		} )
+	}
+
+	if( links.length ){
+		stepData.links = []
+		links.forEach( field => {
+			const
+				urlField	= field.querySelector( 'input[id^="media-link-"]' ),
+				urlTitle	= field.querySelector( 'input[id^="media-name-link-"]' )
+
+			if( ! urlField || ! urlTitle ) return
+
+			stepData.links.push( {
+				url		: urlField.value,
+				title	: urlTitle.value,
+				position: field.dataset.id
 			} )
 		} )
 	}
