@@ -14,10 +14,8 @@ if( $link = $args['link'] ?? null ){
 	$link_url		= $link['url'];
 	$link_title		= $link['title'];
 	$wrapper_class	= ' filled';
-	$delete_class	= '';
 }else{
 	$link_url		= $link_title = '';
-	$delete_class	= ' hidden';
 	$wrapper_class	= '';
 }
 
@@ -30,8 +28,8 @@ $key = $args['key'] ?? 0;
 		<input
 			id="media-link-<?php echo esc_attr( $key ) ?>"
 			name="media-link-<?php echo esc_attr( $key ) ?>"
-			type="url"
-			pattern="https://.*"
+			type="text"
+			data-type="url"
 			placeholder="<?php esc_attr_e( 'Додати посилання', 'inheart' ) ?>"
 			value="<?php echo esc_attr( $link_url ) ?>"
 			required
@@ -43,13 +41,14 @@ $key = $args['key'] ?? 0;
 			id="media-name-link-<?php echo esc_attr( $key ) ?>"
 			name="media-name-link-<?php echo esc_attr( $key ) ?>"
 			type="text"
+			data-type="title"
 			placeholder="<?php esc_attr_e( 'Додати посилання', 'inheart' ) ?>"
 			value="<?php echo esc_attr( $link_title ) ?>"
 			required
 		/>
 	</label>
 	<button
-		class="media-link-delete<?php echo esc_attr( $delete_class ) ?>"
+		class="media-link-delete"
 		title="<?php esc_attr_e( 'Видалити посилання', 'inheart' ) ?>"
 		type="button"
 	>

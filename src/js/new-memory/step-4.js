@@ -713,17 +713,95 @@ export const externalLinksFieldsInput = () => {
  */
 const onExternalLinkFieldInput = e => {
 	const
-		target	= e.target,
-		value	= target.value,
-		label	= target.closest( 'label' ),
-		index	= target.closest( '.step-media-link' ).dataset.id,
-		type	= target.type === 'url' ? 'url' : 'title'
+		target		= e.target,
+		value		= target.value,
+		label		= target.closest( 'label' ),
+		link		= target.closest( '.step-media-link' ),
+		index		= link.dataset.id,
+		type		= target.dataset.type === 'url' ? 'url' : 'title',
+		secondField	= type === 'url' ?
+			link.querySelector( 'input[data-type="title"]' ) :
+			link.querySelector( 'input[data-type="url"]' ),
+		addLinkBtn	= document.querySelector( '.media-links-add' )
 
 	if( ! value ) label.classList.add( 'error' )
 	else label.classList.remove( 'error' )
 
+	// Both fields are set - show buttons.
+	if( value && secondField.value ){
+		link.classList.add( 'filled' )
+		addLinkBtn.classList.remove( 'hidden' )
+	}else{
+		if( document.querySelectorAll( '.step-media-link' ).length === 1 ){
+			link.classList.remove( 'filled' )
+			addLinkBtn.classList.add( 'hidden' )
+		}
+	}
+
 	stepData.links[index][type] = value
 	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+}
+
+/**
+ * Get External link HTML structure.
+ *
+ * @param index
+ */
+const getExternalLinkHTML = ( index = 0 ) => {
+	const linkClass = index ? ' filled' : ''
+
+	return `<div class="step-media-link flex flex-wrap${ linkClass }" data-id="${ index }">
+			<label for="media-link-${ index }" class="label dark half">
+				<span class="label-text">Посилання</span>
+				<input
+					id="media-link-${ index }"
+					name="media-link-${ index }"
+					type="text"
+					data-type="url"
+					placeholder="Додати посилання"
+					required
+				/>
+			</label>
+			<label for="media-name-link-${ index }" class="label dark half end">
+				<span class="label-text">Назва посилання</span>
+				<input
+					id="media-name-link-${ index }"
+					name="media-name-link-${ index }"
+					type="text"
+					data-type="title"
+					placeholder="Додати посилання"
+					required
+				/>
+			</label>
+			<button class="media-link-delete" title="Видалити посилання" type="button">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<mask id="mask_link_${ index }" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
+					</mask>
+					<g mask="url(#mask_link_${ index })">
+						<rect width="24" height="24" fill="currentColor"/>
+					</g>
+				</svg>
+			</button>
+		</div>`
+}
+
+/**
+ * Add external link.
+ */
+export const externalLinkAdd = () => {
+	const button = document.querySelector( '.media-links-add' )
+
+	if( ! button ) return
+
+	button.addEventListener( 'click', () => {
+		const id = document.querySelectorAll( '.step-media-link' ).length
+
+		document.querySelector( '.step-media-links' ).insertAdjacentHTML( 'beforeend', getExternalLinkHTML( id ) )
+		externalLinksFieldsInput()
+		externalLinkDelete()
+		checkStep4()
+	} )
 }
 
 /**
@@ -752,40 +830,7 @@ const onExternalLinkDelete = e => {
 
 	// No more links
 	if( ! document.querySelectorAll( '.step-media-link' ).length ){
-		document.querySelector( '.step-media-links' ).innerHTML = `<div class="step-media-link flex flex-wrap" data-id="0">
-			<label for="media-link-0" class="label dark half">
-				<span class="label-text">Посилання</span>
-				<input
-					id="media-link-0"
-					name="media-link-0"
-					type="url"
-					pattern="https://.*"
-					placeholder="Додати посилання"
-					required
-				/>
-			</label>
-			<label for="media-name-link-0" class="label dark half end">
-				<span class="label-text">Назва посилання</span>
-				<input
-					id="media-name-link-0"
-					name="media-name-link-0"
-					type="text"
-					placeholder="Додати посилання"
-					required
-				/>
-			</label>
-			<button class="media-link-delete hidden" title="Видалити посилання" type="button">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<mask id="mask_link_0" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
-						<path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
-					</mask>
-					<g mask="url(#mask_link_0)">
-						<rect width="24" height="24" fill="currentColor"/>
-					</g>
-				</svg>
-			</button>
-		</div>`
-
+		document.querySelector( '.step-media-links' ).innerHTML = getExternalLinkHTML()
 		externalLinksFieldsInput()
 		externalLinkDelete()
 		checkStep4()
