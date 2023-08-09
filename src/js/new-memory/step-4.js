@@ -284,7 +284,9 @@ export const uploadMediaVideo = () => {
 	const handleVideoUpload = e => {
 		fileInstance = e.target.tagName === 'INPUT' ? [...e.target.files] : [...e.dataTransfer.files]
 
-		if( ! fileInstance.length ) return
+		if( ! fileInstance.length || checkAjaxWorkingStatus() ) return
+
+		setAjaxWorkingStatus( true )
 
 		// Create video element to check duration.
 		const video = document.createElement( 'video' )
@@ -298,7 +300,7 @@ export const uploadMediaVideo = () => {
 		}
 
 		if( fileInstance[0].type.startsWith( 'video/' ) ) processingUploadMediaVideo( fileInstance[0], droparea )
-		else console.error( `Тільки відеофайли - файл ${ fileInstance[0].name } не відео` )
+		else showNotification( `Тільки відеофайли - файл ${ fileInstance[0].name } не відео`, 'error' )
 	}
 
 	droparea.addEventListener( 'drop', handleVideoUpload )
@@ -385,8 +387,21 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 				data		= response.data
 
 			if( data.success == 1 ){
-				thumbsWrapper.classList.remove( 'hidden' )
-				showScreenshots( thumbsWrapper.querySelector( '.droparea-thumbs-list' ), data.shots )
+				// If there are already loaded videos.
+				if( document.querySelectorAll( '.droparea-video-loaded' ).length ){
+					const thumbsWrapperCloned = thumbsWrapper.cloneNode( true )
+
+					document.querySelector( '.droparea-videos-load' ).append( thumbsWrapperCloned )
+					uploadCustomPoster()
+					hideElement( document.querySelector( '.droparea-videos-load-inner' ) )
+					showElement( thumbsWrapperCloned )
+					thumbsWrapper.remove()
+					showScreenshots( thumbsWrapperCloned.querySelector( '.droparea-thumbs-list' ), data.shots )
+				}else{
+					thumbsWrapper.classList.remove( 'hidden' )
+					showScreenshots( thumbsWrapper.querySelector( '.droparea-thumbs-list' ), data.shots )
+				}
+
 				showNotification( `Файл ${ file.name } успішно завантажено` )
 			}
 		}else{
@@ -396,6 +411,8 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 
 			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
 		}
+
+		setAjaxWorkingStatus( false )
 	}
 }
 
@@ -436,7 +453,7 @@ const showScreenshots = ( container, shots ) => {
  * Make selected screenshot active.
  */
 export const selectScreenshot = () => {
-	const shotsList = document.querySelector( '.droparea-thumbs-list' )
+	const shotsList = document.querySelector( '.droparea-video' )
 
 	if( ! shotsList ) return
 
@@ -457,14 +474,19 @@ export const selectScreenshot = () => {
  * Save selected video poster.
  */
 export const saveVideoPoster = () => {
-	const button = document.querySelector( '.droparea-thumbs-save' )
+	const area = document.querySelector( '.droparea-video' )
 
-	if( ! button ) return
+	if( ! area ) return
 
-	button.addEventListener( 'click', () => {
-		const activeShot = document.querySelector( '.droparea-thumb.active' )
+	area.addEventListener( 'click', e => {
+		const
+			target		= e.target,
+			activeShot = document.querySelector( '.droparea-thumb.active' )
 
-		if( ! activeShot || checkAjaxWorkingStatus() ) return
+		if(
+			! activeShot || checkAjaxWorkingStatus() ||
+			! target.className || ! target.classList.contains( 'droparea-thumbs-save' )
+		) return
 
 		setAjaxWorkingStatus( true )
 
@@ -481,9 +503,13 @@ export const saveVideoPoster = () => {
 					case true:
 						showNotification( res.data.msg )
 						hideElement( document.querySelector( '.droparea-thumbs' ) )
-						showElement( document.querySelector( '.droparea-videos' ) )
 						clearThumbsList()
 						outputVideoWithPoster( res.data, src )
+
+						if( document.querySelectorAll( '.droparea-video-loaded' ).length > 1 )
+							showElement( document.querySelector( '.droparea-videos-load-inner' ) )
+						else
+							showElement( document.querySelector( '.droparea-videos' ) )
 						break
 
 					case false:
@@ -563,6 +589,11 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 }
 
+/**
+ * Delete video.
+ *
+ * @param {Event} e
+ */
 const applyVideoCb = e => {
 	if( checkAjaxWorkingStatus() ) return
 
@@ -582,12 +613,20 @@ const applyVideoCb = e => {
 		if( res ){
 			switch( res.success ){
 				case true:
-					e.target.closest( '.droparea-img-loaded' ).remove()
+					e.target.closest( '.droparea-video-loaded' ).remove()
 
-					// If there are no more images loaded.
-					if( ! videosWrapper.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length ){
+					// If there are no more video loaded.
+					if( ! videosWrapper.querySelectorAll( '.droparea-video-loaded' ).length ){
 						hideElement( videosWrapper )
 						showElement( document.querySelector( '.droparea-video .droparea-inner' ) )
+
+						const
+							thumbsWrapper		= document.querySelector( '.droparea-thumbs' ),
+							thumbsWrapperCloned	= thumbsWrapper.cloneNode( true )
+
+						document.querySelector( '.droparea-video' ).append( thumbsWrapperCloned )
+						uploadCustomPoster()
+						thumbsWrapper.remove()
 					}
 
 					stepData.videos.forEach( ( video, i ) => {
@@ -612,27 +651,36 @@ const applyVideoCb = e => {
  * Upload custom poster from device.
  */
 export const uploadCustomPoster = () => {
+	const input = document.querySelector( '.file-load-poster' )
+
+	if( ! input ) return
+
+	input.removeEventListener( 'change', onCustomPosterInputChange )
+	input.addEventListener( 'change', onCustomPosterInputChange )
+}
+
+/**
+ * Upload custom poster input change handler.
+ *
+ * @param {Event} e
+ * @returns {boolean}
+ */
+const onCustomPosterInputChange = e => {
 	const
-		input		= document.querySelector( '.file-load-poster' ),
-		loadArea	= document.querySelector( '.droparea-thumbs-list' )
+		fileInstance	= [...e.target.files],
+		loadArea		= document.querySelector( '.droparea-thumbs-list' )
 
-	if( ! input || ! loadArea ) return
+	if( ! fileInstance.length ) return
 
-	input.addEventListener( 'change', e => {
-		const fileInstance = [...e.target.files]
+	const file = fileInstance[0]
 
-		if( ! fileInstance.length ) return
+	if( file.size > 5 * BYTES_IN_MB ){
+		showNotification( 'Розмір повинен бути меньше 5 мб', 'error' )
+		return false
+	}
 
-		const file = fileInstance[0]
-
-		if( file.size > 5 * BYTES_IN_MB ){
-			showNotification( 'Розмір повинен бути меньше 5 мб', 'error' )
-			return false
-		}
-
-		if( file.type.startsWith( 'image/' ) ) processingUploadCustomPoster( file, loadArea )
-		else showNotification( `Тільки зображення - файл ${ file.name } не є зображенням`, 'error' )
-	} )
+	if( file.type.startsWith( 'image/' ) ) processingUploadCustomPoster( file, loadArea )
+	else showNotification( `Тільки зображення - файл ${ file.name } не є зображенням`, 'error' )
 }
 
 /**
