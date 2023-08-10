@@ -15,7 +15,23 @@ export const selectTheme = () => {
 			if( alreadySelectedTheme ) alreadySelectedTheme.classList.remove( 'active' )
 
 			theme.classList.add( 'active' )
+			localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: theme.dataset.value } ) )
 			allowNextStep()
 		} )
 	} )
+}
+
+/**
+ * Check if step is done.
+ *
+ * @returns {boolean}
+ */
+export const checkStep0 = () => {
+	const activeTheme = document.querySelector( '.new-memory-theme.active' )
+
+	if( ! activeTheme ) return false
+
+	localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: activeTheme.dataset.value } ) )
+
+	return true
 }

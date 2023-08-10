@@ -150,3 +150,50 @@ function ih_delete_folder( string $path ): bool
 	return rmdir( $path );
 }
 
+/**
+ * Replace symbols in filename.
+ *
+ * @param string $filename
+ * @return string
+ */
+function ih_modify_filename( string $filename = '' ): string
+{
+	return str_replace( ' ', '_', $filename );
+}
+
+/**
+ * Return shorter filename with extension.
+ *
+ * @param string $filename
+ * @return string
+ */
+function ih_get_shorter_filename( string $filename ): string
+{
+	$ext	= pathinfo( $filename, PATHINFO_EXTENSION );
+	$name	= substr( $filename, 0, strlen( $filename ) - strlen( $ext ) - 1 );
+
+	return ( strlen( $filename ) - strlen( $ext ) > 17 ) ? substr( $name, 0, 10 ) . '...' . $ext : $filename;
+}
+
+/**
+ * Turn seconds into pretty duration string.
+ *
+ * @param int $seconds
+ * @return string
+ */
+function ih_prettify_duration( int $seconds ): string
+{
+	if( $seconds < 10 ) $seconds = "0$seconds";
+
+	if( $seconds < 60 ) return "00:00:$seconds";
+
+	$hours		= floor( $seconds / ( 60 * 60 ) );
+	$hours		= $hours < 10 ? "0$hours" : $hours;
+	$minutes	= floor( ( $seconds / 60 ) % 60 );
+	$minutes	= $minutes < 10 ? "0$minutes" : $minutes;
+	$seconds	= floor( $seconds % 60 );
+	$seconds	= $seconds < 10 ? "0$seconds" : $seconds;
+
+	return "$hours:$minutes:$seconds";
+}
+

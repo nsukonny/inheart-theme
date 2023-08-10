@@ -9,6 +9,7 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
 
+const stepData = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
 let cropper
 
 /**
@@ -23,6 +24,8 @@ export const selectLanguage = () => {
 		lang.addEventListener( 'click', () => {
 			document.querySelector( '.new-memory-lang.active' ).classList.remove( 'active' )
 			lang.classList.add( 'active' )
+			stepData.lang = lang.dataset.lang
+			localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 		} )
 	} )
 }
@@ -68,7 +71,10 @@ export const uploadMainPhoto = () => {
 	popup.addEventListener( 'click', e => {
 		const target = e.target
 
-		if( target.className && target.classList.contains( 'popup' ) ){
+		if(
+			target.className &&
+			( target.classList.contains( 'popup' ) || target.classList.contains( 'popup-discard-photo' ) )
+		){
 			popup.classList.add( 'hidden' )
 			enableBodyScroll( getTargetElement() )
 
@@ -94,9 +100,18 @@ export const uploadMainPhoto = () => {
 				if( res ){
 					switch( res.success ){
 						case true:
-							mainPhotoNameEl.innerHTML = cutFilename( mainPhotoName )
+							mainPhotoNameEl.innerHTML = res.data.short_filename
 							mainPhotoNameEl.closest( '.label' ).classList.add( 'added' )
-							isMainFormValid()
+							stepData.cropped = res.data.url
+							localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
+
+							if( checkStep1() ){
+								allowNextStep( 2 )
+								applyProgress( 1 )
+							}else{
+								disallowNextStep()
+								applyProgress( 1, 0 )
+							}
 							break
 
 						case false:
@@ -110,20 +125,6 @@ export const uploadMainPhoto = () => {
 			} )
 		} )
 	} )
-}
-
-/**
- * Return shorter filename.
- *
- * @param {string} filename
- * @returns {string}
- */
-const cutFilename = filename => {
-	const
-		extension	= /(?:\.([^.]+))?$/.exec( filename )[1],
-		firstPart	= filename.substring( 0, filename.length - extension.length - 2 )
-
-	return ( filename.length - extension.length > 17 ) ? firstPart.substring( 0, 10 ) + '...' + extension : filename
 }
 
 /**
@@ -143,12 +144,22 @@ export const addMainFormValidation = () => {
 	const checkFieldValue = e => {
 		const
 			field	= e.target,
-			value	= field.value
+			value	= field.value,
+			index	= field.name
 
 		if( ! value ) field.classList.add( 'error' )
 		else field.classList.remove( 'error' )
 
-		isMainFormValid()
+		stepData[index] = value
+		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
+
+		if( checkStep1() ){
+			allowNextStep( 2 )
+			applyProgress( 1 )
+		}else{
+			disallowNextStep()
+			applyProgress( 1, 0 )
+		}
 	}
 }
 
@@ -157,23 +168,24 @@ export const addMainFormValidation = () => {
  *
  * @returns {boolean}
  */
-const isMainFormValid = () => {
-	const fields = document.querySelectorAll( '.new-memory-main-info input' )
+export const checkStep1 = () => {
+	const fields	= document.querySelectorAll( '.new-memory-main-info input' )
+	let isFormValid	= true
 
 	if( ! fields.length ) return false
 
-	let isFormValid = true
-
+	// Fill stepData again in the case localStorage was cleared.
+	stepData.lang = document.querySelector( '.new-memory-lang.active' ).dataset.lang
 	fields.forEach( field => {
-		if( field.classList.contains( 'error' ) || ! field.value ) isFormValid = false
-	} )
+		const
+			index	= field.name,
+			value	= field.value
 
-	if( isFormValid ){
-		allowNextStep( 2 )
-		applyProgress()
-	}else{
-		disallowNextStep()
-	}
+		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ) isFormValid = false
+
+		stepData[index] = value
+	} )
+	localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 
 	return isFormValid
 }

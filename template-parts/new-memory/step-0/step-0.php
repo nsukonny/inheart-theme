@@ -10,13 +10,13 @@
  * @subpackage inheart
  */
 
-$is_active		= ( isset( $args['is_active'] ) && $args['is_active'] == 'true' ) ? ' active' : '';
 $title			= get_field( 'title_0' );
 $desc			= get_field( 'desc_0' );
 $themes_desc	= get_field( 'themes_desc' );
+$selected		= isset( $_SESSION['memory_page_id'] ) ? get_field( 'theme', $_SESSION['memory_page_id'] ) : '';
 ?>
 
-<section id="new-memory-step-0" class="new-memory-step new-memory-step-0 direction-column<?php echo esc_attr( $is_active ) ?>">
+<section id="new-memory-step-0" class="new-memory-step new-memory-step-0 direction-column active">
 	<div class="container direction-column">
 		<?php
 		if( $title ){
@@ -52,10 +52,16 @@ $themes_desc	= get_field( 'themes_desc' );
 					<?php
 					while( have_rows( 'themes' ) ){
 						the_row();
+						$theme_image	= get_sub_field( 'theme_image' );
+						$theme_value	= get_sub_field( 'theme_value' );
+						$is_selected	= $selected == $theme_value ? ' active' : '';
 
-						if( ! $theme_image = get_sub_field( 'theme_image' ) ) continue;
+						if( ! $theme_image || ! $theme_value ) continue;
 						?>
-						<button class="new-memory-theme">
+						<button
+							class="new-memory-theme<?php echo esc_attr( $is_selected ) ?>"
+							data-value="<?php echo esc_attr( $theme_value ) ?>"
+						>
 							<?php echo wp_get_attachment_image( $theme_image['id'], 'ih-theme' ) ?>
 						</button>
 						<?php
@@ -65,7 +71,7 @@ $themes_desc	= get_field( 'themes_desc' );
 				<?php
 			}
 			?>
-		</div>
-	</div>
+		</div><!-- .new-memory-themes-wrapper -->
+	</div><!-- .container -->
 </section><!-- #new-memory-step-0 -->
 

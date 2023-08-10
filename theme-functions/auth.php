@@ -25,6 +25,14 @@ function ih_block_admin_access(): void
 		wp_redirect( get_the_permalink( 10 ) );	// To Login page.
 		exit;
 	}
+
+	// Redirect not logged Visitors to Login page from url with 'stvorennya-storinki-pamyati' in it.
+	$uri = $_SERVER['REQUEST_URI'];
+
+	if( $uri && str_contains( $uri, 'stvorennya-storinki-pamyati' ) && ! is_user_logged_in() ){
+		wp_redirect( get_the_permalink( 10 ) . '?memory=1' );	// To Login page.
+		exit;
+	}
 }
 
 add_action( 'wp_ajax_nopriv_ih_ajax_login', 'ih_ajax_login' );

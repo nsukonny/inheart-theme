@@ -1,5 +1,5 @@
 // Common functions for all steps.
-import { defineGlobalStepsItems, nextStep, prevStep } from '../new-memory/common'
+import { defineGlobalStepsItems, isStepFilled, nextStep, prevStep } from '../new-memory/common'
 
 // Steps one-by-one.
 import { selectTheme } from '../new-memory/step-0'
@@ -13,7 +13,20 @@ import {
 	setActiveSectionContent
 } from '../new-memory/step-2'
 import { checkEpitaphContentLength } from '../new-memory/step-3'
-import { uploadMediaPhotos, uploadMediaVideo, selectScreenshot, saveVideoPoster } from '../new-memory/step-4'
+import {
+	uploadMediaPhotos,
+	uploadMediaVideo,
+	uploadCustomPoster,
+	selectScreenshot,
+	saveVideoPoster,
+	setDefaultDeletePhoto,
+	setDefaultDeleteVideo,
+	externalLinksFieldsInput,
+	externalLinkDelete,
+	externalLinkAdd,
+	videoLinkInput, uploadVideoLink
+} from '../new-memory/step-4'
+import { addCoordsFormValidation, legendTipClick } from '../new-memory/step-5'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -22,6 +35,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	if( ! defineGlobalStepsItems() ) return
 
 	// Step 0.
+	isStepFilled()
 	selectTheme()
 	nextStep()
 
@@ -43,8 +57,22 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	checkEpitaphContentLength()
 
 	// Step 4
+	setDefaultDeletePhoto()
+	setDefaultDeleteVideo()
 	uploadMediaPhotos()
+
 	uploadMediaVideo()
+	videoLinkInput()
+	uploadVideoLink()
+	uploadCustomPoster()
 	selectScreenshot()
 	saveVideoPoster()
+
+	externalLinksFieldsInput()
+	externalLinkAdd()
+	externalLinkDelete()
+
+	// Step 5
+	addCoordsFormValidation()
+	legendTipClick()
 } )

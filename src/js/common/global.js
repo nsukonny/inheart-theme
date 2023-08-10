@@ -226,19 +226,6 @@ export const submitAuthForm = ( formSelector, action ) => {
 }
 
 /**
- * Update URL parameter.
- *
- * @param {string} paramName
- * @param {string|number} paramValue
- */
-export const replaceUrlParam = ( paramName, paramValue ) => {
-	let url = new URL( window.location.href )
-
-	url.searchParams.set( paramName, paramValue )
-	window.history.pushState( `Step ${ paramValue }`, '', url.href )
-}
-
-/**
  * Append popup.
  *
  * @param {HTMLObjectElement}	container		Where to add popup.
@@ -292,4 +279,26 @@ export const showNotification = ( text = 'Please set the text', type = 'success'
 	setTimeout( () => {
 		notification.remove()
 	}, 5000 + TRANSITION_DURATION )
+}
+
+/**
+ * Show specific element by removing class '.hidden'.
+ *
+ * @param {HTMLObjectElement} el
+ */
+export const showElement = el => {
+	if( ! el || ! el.classList.contains( 'hidden' ) ) return
+
+	el.classList.remove( 'hidden' )
+}
+
+/**
+ * Hide specific element by adding class '.hidden'.
+ *
+ * @param {HTMLObjectElement} el
+ */
+export const hideElement = el => {
+	if( ! el || el.classList.contains( 'hidden' ) ) return
+
+	el.classList.add( 'hidden' )
 }

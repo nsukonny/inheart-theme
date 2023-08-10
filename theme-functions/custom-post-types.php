@@ -12,7 +12,6 @@
 	'search_item'   => __( 'Пошук', 'inheart' ),
 	'menu_item'     => __( 'Спогади', 'inheart' ),
 );
-
 $args = array(
 	'labels'             => $labels,
 	'public'             => true,
@@ -26,37 +25,35 @@ $args = array(
 	'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
 );
 
-register_post_type( 'memory', $args );
+register_post_type( 'memory', $args );*/
 
-
-$labels = array(
-	'name'          => __( 'Сторінка пам`яті', 'inheart' ),
-	'singular_name' => __( 'Сторінки пам`яті', 'inheart' ),
-	'add_new'       => __( 'Додати сторінку', 'inheart' ),
-	'add_new_item'  => __( 'Додати нову сторінку', 'inheart' ),
-	'edit_item'     => __( 'Редагувати', 'inheart' ),
-	'new_item'      => __( 'Нова сторінка', 'inheart' ),
-	'all_item'      => __( 'Усі сторінкі пам`яті', 'inheart' ),
-	'view_item'     => __( 'Дивитись', 'inheart' ),
-	'search_item'   => __( 'Пошук', 'inheart' ),
-	'menu_item'     => __( 'Сторінки пам`яті', 'inheart' ),
-);
-
-$args = array(
-	'labels'             => $labels,
-	'public'             => true,
-	'publicly_queryable' => false,
-	'show_ui'            => true,
-	'hierarchical'       => false,
-	'menu_icon'          => 'dashicons-image-filter',
-	'menu_position'      => 6,
-	'has_archive'        => true,
-	'show_in_rest'       => true,
-	'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
-
+$labels = [
+	'name'			=> __( 'Сторінка пам`яті', 'inheart' ),
+	'singular_name'	=> __( 'Сторінки пам`яті', 'inheart' ),
+	'add_new'		=> __( 'Додати сторінку', 'inheart' ),
+	'add_new_item'	=> __( 'Додати нову сторінку', 'inheart' ),
+	'edit_item'		=> __( 'Редагувати', 'inheart' ),
+	'new_item'		=> __( 'Нова сторінка', 'inheart' ),
+	'all_item'		=> __( 'Усі сторінкі пам`яті', 'inheart' ),
+	'view_item'		=> __( 'Дивитись', 'inheart' ),
+	'search_item'	=> __( 'Пошук', 'inheart' ),
+	'menu_item'		=> __( 'Сторінки пам`яті', 'inheart' )
+];
+$args = [
+	'labels'				=> $labels,
+	'public'				=> true,
+	'publicly_queryable'	=> false,
+	'show_ui'				=> true,
+	'hierarchical'			=> false,
+	'menu_icon'				=> 'dashicons-image-filter',
+	'menu_position'			=> 6,
+	'has_archive'			=> true,
+	'show_in_rest'			=> true,
+	'supports'				=> ['title', 'author', 'thumbnail']
+];
 register_post_type( 'memory_page', $args );
 
+/*
 $labels = array(
 	'name'          => __( 'Промокоди', 'inheart' ),
 	'singular_name' => __( 'Промокоди', 'inheart' ),

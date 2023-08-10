@@ -3,11 +3,11 @@
     "title": "Сторінка пам'яті",
     "fields": [
         {
-            "key": "field_638b15dd42c99",
-            "label": "Ім'я",
-            "name": "first_name",
+            "key": "field_64ca98a8c1dcc",
+            "label": "Step 0",
+            "name": "",
             "aria-label": "",
-            "type": "text",
+            "type": "tab",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -16,251 +16,8 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_638b15e642c9a",
-            "label": "Прізвище",
-            "name": "last_name",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_638b15ed42c9b",
-            "label": "По батькові",
-            "name": "middle_name",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_63bc7c0d78e5f",
-            "label": "Головна фотографія",
-            "name": "main_image",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_63d384baabe68",
-            "label": "Головна фотографія (обрізана)",
-            "name": "main_image_cropped",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "",
-            "library": "",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_63d3858c51949",
-            "label": "Координати обрізки головної фотографії",
-            "name": "main_image_crop_coordinates",
-            "aria-label": "",
-            "type": "group",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "",
-            "sub_fields": [
-                {
-                    "key": "field_63d386005194a",
-                    "label": "Top",
-                    "name": "top",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": "",
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63d386115194b",
-                    "label": "Left",
-                    "name": "left",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": "",
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63d3861e5194c",
-                    "label": "Width",
-                    "name": "width",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": "",
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63d386325194d",
-                    "label": "Height",
-                    "name": "height",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": "",
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": ""
-                }
-            ]
-        },
-        {
-            "key": "field_638c725267918",
-            "label": "Дата народження",
-            "name": "born_at",
-            "aria-label": "",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": 0,
-            "min": "",
-            "max": "",
-            "placeholder": "",
-            "step": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_638c727d67919",
-            "label": "Дата смерті",
-            "name": "died_at",
-            "aria-label": "",
-            "type": "number",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": 0,
-            "min": "",
-            "max": "",
-            "placeholder": "",
-            "step": "",
-            "prepend": "",
-            "append": ""
+            "placement": "top",
+            "endpoint": 0
         },
         {
             "key": "field_63bc142f19734",
@@ -282,13 +39,126 @@
                 "red": "Червоний",
                 "blue": "Блакитний"
             },
-            "default_value": false,
+            "default_value": "classic",
             "return_format": "value",
             "multiple": 0,
             "allow_null": 0,
-            "ui": 0,
+            "ui": 1,
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_64ca9915c1dcd",
+            "label": "Step 1",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_638b15dd42c99",
+            "label": "Ім'я",
+            "name": "first_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_638b15e642c9a",
+            "label": "Прізвище",
+            "name": "last_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_638b15ed42c9b",
+            "label": "По батькові",
+            "name": "middle_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_638c725267918",
+            "label": "Дата народження",
+            "name": "born_at",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d\/m\/Y",
+            "return_format": "d\/m\/Y",
+            "first_day": 1
+        },
+        {
+            "key": "field_638c727d67919",
+            "label": "Дата смерті",
+            "name": "died_at",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d\/m\/Y",
+            "return_format": "d\/m\/Y",
+            "first_day": 1
         },
         {
             "key": "field_63d38520abe69",
@@ -300,22 +170,39 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
             "choices": {
                 "uk": "Українська",
-                "ru": "Русский",
-                "en": "English"
+                "ru-RU": "Русский",
+                "en-US": "English"
             },
-            "default_value": false,
+            "default_value": "uk",
             "return_format": "value",
             "multiple": 0,
             "allow_null": 0,
-            "ui": 0,
+            "ui": 1,
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_64ca9a86c1dce",
+            "label": "Step 2",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
         },
         {
             "key": "field_63d386a9fffdb",
@@ -349,7 +236,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "20",
                         "class": "",
                         "id": ""
                     },
@@ -370,7 +257,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "20",
                         "class": "",
                         "id": ""
                     },
@@ -391,7 +278,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "20",
                         "class": "",
                         "id": ""
                     },
@@ -403,8 +290,69 @@
                     "prepend": "",
                     "append": "",
                     "parent_repeater": "field_63d386a9fffdb"
+                },
+                {
+                    "key": "field_64ccfe139532e",
+                    "label": "Свій заголовок",
+                    "name": "own_title",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "ui": 1,
+                    "parent_repeater": "field_63d386a9fffdb"
+                },
+                {
+                    "key": "field_64cd683c5dd8c",
+                    "label": "Індекс",
+                    "name": "index",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "min": 0,
+                    "max": "",
+                    "placeholder": "",
+                    "step": 1,
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_63d386a9fffdb"
                 }
             ]
+        },
+        {
+            "key": "field_64ca9a8ec1dcf",
+            "label": "Step 3",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
         },
         {
             "key": "field_638c72ba19713",
@@ -427,6 +375,23 @@
             "append": ""
         },
         {
+            "key": "field_64ca9a97c1dd0",
+            "label": "Step 4",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
             "key": "field_638b128cbe72a",
             "label": "Фотографії",
             "name": "photo",
@@ -440,7 +405,7 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "array",
+            "return_format": "id",
             "library": "uploadedTo",
             "min": "",
             "max": "",
@@ -459,34 +424,6 @@
             "label": "Відео",
             "name": "video",
             "aria-label": "",
-            "type": "gallery",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "library": "uploadedTo",
-            "min": "",
-            "max": "",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "insert": "append",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_63a16b6567b55",
-            "label": "Посилання",
-            "name": "links",
-            "aria-label": "",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -501,73 +438,55 @@
             "min": 0,
             "max": 0,
             "collapsed": "",
-            "button_label": "Додати рядок",
+            "button_label": "Add Row",
             "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_63a16b8a67b57",
-                    "label": "Посилання",
-                    "name": "url",
+                    "key": "field_64ceb7e25dadb",
+                    "label": "Відеофайл",
+                    "name": "file",
                     "aria-label": "",
-                    "type": "text",
+                    "type": "file",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_63a16b6567b55"
+                    "return_format": "id",
+                    "library": "all",
+                    "min_size": "",
+                    "max_size": "",
+                    "mime_types": "avi,mp4,mpeg",
+                    "parent_repeater": "field_638b12fcbe72b"
                 },
                 {
-                    "key": "field_63a180f3394b9",
-                    "label": "Назва посилання",
-                    "name": "title",
+                    "key": "field_64ceba1e3ad1a",
+                    "label": "Постер",
+                    "name": "poster",
                     "aria-label": "",
-                    "type": "text",
+                    "type": "image",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_63a16b6567b55"
-                },
-                {
-                    "key": "field_63d38e1e05a78",
-                    "label": "Позиція",
-                    "name": "position",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": "",
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_63a16b6567b55"
+                    "return_format": "id",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "preview_size": "medium",
+                    "parent_repeater": "field_638b12fcbe72b"
                 }
             ]
         },
@@ -613,9 +532,54 @@
                     "prepend": "",
                     "append": "",
                     "parent_repeater": "field_63d8da4f5ad44"
+                }
+            ]
+        },
+        {
+            "key": "field_63a16b6567b55",
+            "label": "Посилання",
+            "name": "links",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_63a16b8a67b57",
+                    "label": "Посилання",
+                    "name": "url",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "34",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_63a16b6567b55"
                 },
                 {
-                    "key": "field_63d8da9e5ad46",
+                    "key": "field_63a180f3394b9",
                     "label": "Назва посилання",
                     "name": "title",
                     "aria-label": "",
@@ -624,7 +588,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "33",
                         "class": "",
                         "id": ""
                     },
@@ -633,10 +597,10 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_63d8da4f5ad44"
+                    "parent_repeater": "field_63a16b6567b55"
                 },
                 {
-                    "key": "field_63d8dab75ad47",
+                    "key": "field_64d16d19419a5",
                     "label": "Позиція",
                     "name": "position",
                     "aria-label": "",
@@ -645,27 +609,27 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "33",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": 0,
-                    "min": "",
+                    "default_value": "",
+                    "min": 0,
                     "max": "",
                     "placeholder": "",
-                    "step": "",
+                    "step": 1,
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_63d8da4f5ad44"
+                    "parent_repeater": "field_63a16b6567b55"
                 }
             ]
         },
         {
-            "key": "field_63c19c6e1fd26",
-            "label": "Спогади",
-            "name": "memories",
+            "key": "field_64ca9aa9c1dd1",
+            "label": "Step 5",
+            "name": "",
             "aria-label": "",
-            "type": "post_object",
+            "type": "tab",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -674,151 +638,108 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "memory"
-            ],
-            "taxonomy": "",
-            "return_format": "",
-            "multiple": 1,
-            "allow_null": 0,
-            "ui": 1
+            "placement": "top",
+            "endpoint": 0
         },
         {
-            "key": "field_638b14914b3f4",
-            "label": "Розташування",
-            "name": "location",
+            "key": "field_63a16bc23624e",
+            "label": "Адреса",
+            "name": "address",
             "aria-label": "",
-            "type": "group",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_63a16bc23624e",
-                    "label": "Адреса",
-                    "name": "address",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63a16bd83624f",
-                    "label": "Детальна адреса",
-                    "name": "detail_address",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63a0b8ce3f398",
-                    "label": "Координати - довгота",
-                    "name": "longitude",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63a0b8e33f399",
-                    "label": "Координати - широта",
-                    "name": "latitude",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
-                },
-                {
-                    "key": "field_63a16be736250",
-                    "label": "Як знайти",
-                    "name": "how_to_find",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": ""
-                }
-            ]
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
-            "key": "field_63bc17a6c6ab1",
-            "label": "Створено користувачем",
-            "name": "author",
+            "key": "field_63a16bd83624f",
+            "label": "Детальна адреса",
+            "name": "detail_address",
             "aria-label": "",
-            "type": "user",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
-            "role": "",
-            "return_format": "object",
-            "multiple": 0,
-            "allow_null": 0
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_63a0b8ce3f398",
+            "label": "Координати - довгота",
+            "name": "longitude",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_63a0b8e33f399",
+            "label": "Координати - широта",
+            "name": "latitude",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_63a16be736250",
+            "label": "Як знайти",
+            "name": "how_to_find",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -839,5 +760,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1686509139
+    "modified": 1691702793
 }
