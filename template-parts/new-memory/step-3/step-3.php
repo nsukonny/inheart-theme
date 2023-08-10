@@ -49,7 +49,7 @@ $epitaph	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'epitaphy', $_SE
 					<legend class="flex flex-wrap align-end">
 						<span class="legend-title"><?php esc_html_e( 'Епітафія', 'inheart' ) ?></span>
 						<span class="legend-subtitle">
-							<span class="symbols-count-typed"><?php echo esc_html( mb_strlen( $init_text, 'UTF-8' ) ) ?></span>/<span class="symbols-count-allowed"><?php echo esc_html( $max_length ) ?></span>
+							<span class="symbols-count-typed"><?php echo esc_html( mb_strlen( $epitaph, 'UTF-8' ) ) ?></span>/<span class="symbols-count-allowed"><?php echo esc_html( $max_length ) ?></span>
 						</span>
 					</legend>
 					<textarea
