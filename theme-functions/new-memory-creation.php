@@ -298,14 +298,16 @@ function ih_ajax_upload_memory_video(): void
 	$_SESSION['step4']['video']['tmp_url']	= $uploads_url;
 	$_SESSION['step4']['video']['tmp_dir']	= $uploads_dir;
 	$_SESSION['step4']['video']['file_id']	= $attach_id;
-	$binaries_arr							= [
-		'ffmpeg.binaries'  => THEME_DIR . '/lib-php/ffmpeg.exe',
-		'ffprobe.binaries' => THEME_DIR . '/lib-php/ffprobe.exe'
-	];
-	$ffprobe			= FFMpeg\FFProbe::create( $binaries_arr );
+//	$binaries_arr							= [
+//		'ffmpeg.binaries'  => THEME_DIR . '/lib-php/ffmpeg.exe',
+//		'ffprobe.binaries' => THEME_DIR . '/lib-php/ffprobe.exe'
+//	];
+//	$ffprobe			= FFMpeg\FFProbe::create( $binaries_arr );
+	$ffprobe			= FFMpeg\FFProbe::create();
 	$duration			= ( int ) $ffprobe->format( $attach_path )->get( 'duration' );
 	$duration_percent	= $duration / 100;
-	$ffmpeg				= FFMpeg\FFMpeg::create( $binaries_arr );
+//	$ffmpeg				= FFMpeg\FFMpeg::create( $binaries_arr );
+	$ffmpeg				= FFMpeg\FFMpeg::create();
 	$video				= $ffmpeg->open( $attach_path );
 	$shots_arr			= [];
 
