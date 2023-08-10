@@ -462,11 +462,10 @@ function ih_ajax_save_data_step_4(): void
 		foreach( $step_data['videos'] as $video ){
 			$file	= $video['id'];
 			$poster	= $video['poster'];
-			$link	= $video['link'];
 
-			if( ! $file && ! $poster && ! $link ) continue;
+			if( ! $file && ! $poster ) continue;
 
-			$videos[] = ['file' => $file, 'poster' => $poster, 'link' => $link];
+			$videos[] = ['file' => $file, 'poster' => $poster];
 		}
 
 		$videos = empty( $videos ) ? null : $videos;
