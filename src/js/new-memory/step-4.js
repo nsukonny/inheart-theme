@@ -417,6 +417,81 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 }
 
 /**
+ * Upload video links.
+ */
+export const videoLinkInput = () => {
+	const inputs = document.querySelectorAll( 'input[name="video-link"]' )
+
+	if( ! inputs.length ) return
+
+	inputs.forEach( input => {
+		input.addEventListener( 'change', onVideoLinkInput )
+		input.addEventListener( 'keyup', onVideoLinkInput )
+		input.addEventListener( 'blur', onVideoLinkInput )
+	} )
+}
+
+/**
+ * Video link input change handler.
+ *
+ * @param {Event} e
+ */
+const onVideoLinkInput = e => {
+	const
+		target	= e.target,
+		value	= target.value,
+		button	= target.closest( '.video-link-row' ).querySelector( '.video-link-upload' )
+
+	if( value ) button.disabled = false
+	else button.disabled = true
+}
+
+/**
+ * Upload video link.
+ */
+export const uploadVideoLink = () => {
+	const buttons = document.querySelectorAll( '.video-link-upload' )
+
+	if( ! buttons.length ) return
+
+	buttons.forEach( btn => {
+		btn.addEventListener( 'click', e => {
+			if( checkAjaxWorkingStatus() ) return
+
+			setAjaxWorkingStatus( true )
+
+			const
+				input		= e.target.closest( '.video-link-row' ).querySelector( 'input' ),
+				link		= input.value,
+				formData	= new FormData()
+
+			if( ! link ) return
+
+			formData.append( 'action', 'ih_ajax_upload_video_link' )
+			formData.append( 'link', link )
+
+			ihAjaxRequest( formData ).then( res => {
+				if( res ){
+					switch( res.success ){
+						case true:
+							input.value 	= ''
+							btn.disabled 	= true
+							showNotification( res.data.msg )
+							break
+
+						case false:
+							showNotification( res.data.msg, 'error' )
+							break
+					}
+				}
+
+				setAjaxWorkingStatus( false )
+			} )
+		} )
+	} )
+}
+
+/**
  * Return shorter filename.
  *
  * @param {string} filename
@@ -585,7 +660,7 @@ const outputVideoWithPoster = ( videoData, poster ) => {
 			showAreYouSurePopup( e.target, cancelCBb, () => applyVideoCb( e ), 'Дійсно видалити відео?' )
 		} )
 
-	stepData.videos.push( { id: videoData.attachId, poster: videoData.posterId, link: '' } )
+	stepData.videos.push( { id: videoData.attachId, poster: videoData.posterId } )
 	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 }
 
@@ -908,7 +983,7 @@ export const checkStep4 = () => {
 		videos.forEach( video => {
 			const
 				videoTag	= video.querySelector( 'video' ),
-				poster		= videoTag && videoTag.dataset.posterId,
+				poster		= videoTag ? videoTag.dataset.posterId : '',
 				link		= video.querySelector( '.droparea-video-loaded-link' )
 
 			stepData.videos.push( {

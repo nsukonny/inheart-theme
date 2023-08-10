@@ -501,6 +501,26 @@ function ih_ajax_save_data_step_4(): void
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_upload_video_link', 'ih_ajax_upload_video_link' );
+/**
+ * Step 4 - save video link.
+ *
+ * @return void
+ */
+function ih_ajax_upload_video_link(): void
+{
+	$link			= isset( $_POST['link'] ) ? esc_url( $_POST['link'] ) : '';
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+
+	if( ! $link ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	$video_links	= get_field( 'video_links', $memory_page_id ) ?: [];
+	$video_links[]	= ['url' => $link];
+	update_field( 'video_links', $video_links, $memory_page_id );
+
+	wp_send_json_success( ['msg' => esc_html__( 'Посилання на відео збережено успішно!', 'inheart' )] );
+}
+
 add_action( 'wp_ajax_ih_ajax_save_data_step_5', 'ih_ajax_save_data_step_5' );
 /**
  * Step 5 - save data.

@@ -108,3 +108,32 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 	</div><!-- .droparea-thumbs -->
 </div><!-- .droparea -->
 
+<div class="video-link-wrapper">
+	<div class="video-link-marker flex align-center">
+		<span class="video-link-marker-line before"></span>
+		<span class="video-link-marker-text"><?php esc_html_e( 'Або', 'inheart' ) ?></span>
+		<span class="video-link-marker-line after"></span>
+	</div>
+
+	<div class="video-link-row flex flex-wrap align-center">
+		<label for="video-link" class="label dark">
+			<input
+				id="video-link"
+				name="video-link"
+				type="text"
+				placeholder="<?php esc_attr_e( 'Додати посилання на відео youtube, googledocs, dropbox', 'inheart' ) ?>"
+				value=""
+				required
+			/>
+		</label>
+		<button
+			class="video-link-upload btn lg primary"
+			title="<?php esc_attr_e( 'Застосувати', 'inheart' ) ?>"
+			type="button"
+			disabled
+		>
+			<?php esc_attr_e( 'Застосувати', 'inheart' ) ?>
+		</button>
+	</div><!-- .video-link-row -->
+</div><!-- .video-link-wrapper -->
+

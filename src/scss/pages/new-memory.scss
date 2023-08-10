@@ -270,3 +270,34 @@
 		z-index: -1
 	}
 }
+
+.video-link {
+	&-marker {
+		font-size: $fs-sm;
+		color: $green;
+		margin: 16px 0;
+
+		&-line {
+			width: auto;
+			height: 0.5px;
+			flex-grow: 1;
+			background-color: $light-blue
+		}
+
+		&-text {
+			padding: 0 8px
+		}
+	}
+
+	&-row {
+		label {
+			width: auto;
+			flex-grow: 1;
+			margin: 0 12px 0 0
+		}
+
+		input::placeholder {
+			font-size: $fs-sm
+		}
+	}
+}
