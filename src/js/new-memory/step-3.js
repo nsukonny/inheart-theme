@@ -31,6 +31,12 @@ const onEpitaphChange = e => {
 
 	localStorage.setItem( 'ih-step-3', JSON.stringify( { epitaph: value } ) )
 
+	// This is the first time textarea focused - clean it from the "placeholder" text.
+	if( textarea.classList.contains( 'clear-on-focus' ) ){
+		textarea.value = ''
+		textarea.classList.remove( 'clear-on-focus' )
+	}
+
 	if( ! value ){
 		disallowNextStep()
 		applyProgress( 3, 0 )

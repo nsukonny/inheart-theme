@@ -84,7 +84,6 @@ export const nextStep = () => {
 			if( res ){
 				switch( res.success ){
 					case true:
-						showNotification( res.data.msg )
 						showNextStepSection( nextStepId )
 						break
 

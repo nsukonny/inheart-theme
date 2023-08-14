@@ -13,10 +13,10 @@
 $title		= get_field( 'title_3' );
 $desc		= get_field( 'desc_3' );
 $init_text	= get_field( 'epitaph_init_text' ) ?? '';
+$saved_text	= get_field( 'epitaphy', $_SESSION['memory_page_id'] );
 $max_length	= get_field( 'epitaph_max_length' ) ?: 500;
-$epitaph	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'epitaphy', $_SESSION['memory_page_id'] ) )
-			? get_field( 'epitaphy', $_SESSION['memory_page_id'] )
-			: $init_text;
+$epitaph	= ( isset( $_SESSION['memory_page_id'] ) && $saved_text ) ? $saved_text : $init_text;
+$class		= $saved_text ? '' : ' clear-on-focus';
 ?>
 
 <section id="new-memory-step-3" class="new-memory-step new-memory-step-3 direction-column">
@@ -53,7 +53,7 @@ $epitaph	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'epitaphy', $_SE
 						</span>
 					</legend>
 					<textarea
-						class="epitaph-text"
+						class="epitaph-text<?php echo esc_attr( $class ) ?>"
 						name="epitaph-text"
 						placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"
 					><?php echo esc_html( $epitaph ) ?></textarea>

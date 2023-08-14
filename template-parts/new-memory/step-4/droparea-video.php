@@ -121,7 +121,7 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 				id="video-link"
 				name="video-link"
 				type="text"
-				placeholder="<?php esc_attr_e( 'Додати посилання на відео youtube, googledocs, dropbox', 'inheart' ) ?>"
+				placeholder="<?php esc_attr_e( 'Додати посилання на відео YouTube, Google Docs, Dropbox', 'inheart' ) ?>"
 				value=""
 				required
 			/>

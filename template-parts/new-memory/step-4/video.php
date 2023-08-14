@@ -13,10 +13,11 @@
 if( ! $video = $args['video'] ?? null ) return;
 
 // If this is uploaded video file.
-if( $file_id = $video['file'] ){
+if( $file_id = $video['file'] ?? null ){
+	if( ! $file_meta = wp_get_attachment_metadata( $file_id ) ?? null ) return;
+
 	$poster		= has_post_thumbnail( $file_id ) ? get_the_post_thumbnail_url( $file_id, 'ih-profile-media' ) : '';
 	$poster_id	= $video['poster'] ?? '';
-	$file_meta	= wp_get_attachment_metadata( $file_id );
 	$duration	= ih_prettify_duration( $file_meta['length'] );
 	?>
 	<div class="droparea-img-loaded droparea-video-loaded">
@@ -46,7 +47,7 @@ if( $file_id = $video['file'] ){
 	</div>
 	<?php
 }else{
-	if( $external_url = $video['link'] ){
+	if( $external_url = $video['link'] ?? null ){
 		$key = $args['key'] ?? 0;
 		?>
 		<div class="droparea-img-loaded droparea-video-loaded">
