@@ -85,6 +85,18 @@ export const nextStep = () => {
 				switch( res.success ){
 					case true:
 						showNextStepSection( nextStepId )
+
+						// 6th step is the last, need to clean all the data and redirect.
+						if( nextStepId === 6 ){
+							document.querySelector( '.new-memory-footer' ).classList.add( 'hidden' )
+							localStorage.removeItem( 'ih-step-0' )
+							localStorage.removeItem( 'ih-step-1' )
+							localStorage.removeItem( 'ih-step-2' )
+							localStorage.removeItem( 'ih-step-3' )
+							localStorage.removeItem( 'ih-step-4' )
+							localStorage.removeItem( 'ih-step-5' )
+							// setTimeout( () => window.location.href = res.data.redirect, 3000 )
+						}
 						break
 
 					case false:

@@ -544,6 +544,25 @@ function ih_ajax_save_data_step_5(): void
 	update_field( 'latitude', $step_data['latitude'], $memory_page_id );
 	update_field( 'how_to_find', $step_data['how_to_find'], $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 5 збережено успішно!', 'inheart' )] );
+	// This is the last step. Clean session data and publish memory page.
+	unset( $_SESSION['memory_page_id'] );
+	unset( $_SESSION['step1'] );
+	unset( $_SESSION['step4'] );
+	$first_name		= get_field( 'first_name', $memory_page_id );
+	$last_name		= get_field( 'last_name', $memory_page_id );
+	$middle_name	= get_field( 'middle_name', $memory_page_id );
+	$born_at		= get_field( 'born_at', $memory_page_id );
+	$died_at		= get_field( 'died_at', $memory_page_id );
+	$new_title		= "$last_name $first_name $middle_name, " . str_replace( '/', '.', $born_at ) . '-' . str_replace( '/', '.', $died_at );
+	wp_update_post( [
+		'ID'			=> $memory_page_id,
+		'post_title'	=> $new_title,
+		'post_status'	=> 'publish'
+	] );
+
+	wp_send_json_success( [
+		'msg'		=> esc_html__( 'Дані Кроку 5 збережено успішно!', 'inheart' ),
+		'redirect'	=> home_url( '/' )
+	] );
 }
 
