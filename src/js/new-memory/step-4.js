@@ -15,7 +15,7 @@ import { allowNextStep, applyProgress, disallowNextStep } from './common'
 const
 	stepData = localStorage.getItem( 'ih-step-4' ) ?
 	JSON.parse( localStorage.getItem( 'ih-step-4' ) ) :
-	{ photos: [], videos: [], links: [] }
+	{ photos: [], videos: [], links: [{url: '', title: '', position: 0}] }
 let videoDuration = 0
 
 /**
