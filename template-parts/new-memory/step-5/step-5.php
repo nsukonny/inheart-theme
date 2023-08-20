@@ -4,7 +4,7 @@
  * New Memory page template.
  * Step 5.
  *
- * @see Page Template: New Memory -> Step 1
+ * @see Page Template: New Memory -> Step 5
  *
  * @package WordPress
  * @subpackage inheart
