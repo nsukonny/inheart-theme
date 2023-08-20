@@ -197,3 +197,14 @@ function ih_prettify_duration( int $seconds ): string
 	return "$hours:$minutes:$seconds";
 }
 
+/**
+ * Delete all attachments of deleted Memory page.
+ */
+add_action( 'before_delete_post', function( $id ){
+	if( get_post_type( $id ) !== 'memory_page' ) return;
+
+	$attachments = get_attached_media( '', $id );
+
+	foreach( $attachments as $attachment ) wp_delete_attachment( $attachment->ID, 'true' );
+} );
+

@@ -88,13 +88,7 @@ export const nextStep = () => {
 
 						// 6th step is the last, need to clean all the data and redirect.
 						if( nextStepId === 6 ){
-							document.querySelector( '.new-memory-footer' ).classList.add( 'hidden' )
-							localStorage.removeItem( 'ih-step-0' )
-							localStorage.removeItem( 'ih-step-1' )
-							localStorage.removeItem( 'ih-step-2' )
-							localStorage.removeItem( 'ih-step-3' )
-							localStorage.removeItem( 'ih-step-4' )
-							localStorage.removeItem( 'ih-step-5' )
+							theLastStep()
 							// setTimeout( () => window.location.href = res.data.redirect, 3000 )
 						}
 						break
@@ -187,4 +181,46 @@ export const isStepFilled = ( stepId = 0 ) => {
 		applyProgress( stepId, 0 )
 		disallowNextStep()
 	}
+}
+
+/**
+ * Do some actions on the last step.
+ */
+const theLastStep = () => {
+	const step1 = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : null
+
+	if( ! step1 ) return
+
+	const
+		thumb		= step1.cropped || '',
+		firstName	= step1.firstname,
+		middleName	= step1.fathername,
+		lastName	= step1.lastname,
+		bornAtObj	= new Date( step1['date-of-birth'] ),
+		bornDay		= bornAtObj.getDate() < 10 ? `0${ bornAtObj.getDate() }` : bornAtObj.getDate(),
+		bornMonth	= ( bornAtObj.getMonth() + 1 ) < 10 ? `0${ bornAtObj.getMonth() + 1 }` : bornAtObj.getMonth() + 1,
+		bornAt		= `${ bornDay }.${ bornMonth }.${ bornAtObj.getFullYear() }`,
+		diedAtObj	= new Date( step1['date-of-death'] ),
+		diedDay		= diedAtObj.getDate() < 10 ? `0${ diedAtObj.getDate() }` : diedAtObj.getDate(),
+		diedMonth	= ( diedAtObj.getMonth() + 1 ) < 10 ? `0${ diedAtObj.getMonth() + 1 }` : diedAtObj.getMonth() + 1,
+		diedAt		= `${ diedDay }.${ diedMonth }.${ diedAtObj.getFullYear() }`
+
+	// Push data to HTML.
+	if( thumb ){
+		document.querySelector( '.page-created-thumb-img' )
+			.innerHTML = `<img src="${ thumb }" alt="${ firstName } ${ middleName } ${ lastName }" />`
+	}
+
+	document.querySelector( '.page-created-firstname' ).innerHTML	= `${ firstName} ${ middleName }`
+	document.querySelector( '.page-created-lastname' ).innerHTML	= lastName
+	document.querySelector( '.page-created-dates' ).innerHTML		= `${ bornAt} - ${ diedAt }`
+
+	// Hide footer, clean localStorage.
+	document.querySelector( '.new-memory-footer' ).classList.add( 'hidden' )
+	localStorage.removeItem( 'ih-step-0' )
+	localStorage.removeItem( 'ih-step-1' )
+	localStorage.removeItem( 'ih-step-2' )
+	localStorage.removeItem( 'ih-step-3' )
+	localStorage.removeItem( 'ih-step-4' )
+	localStorage.removeItem( 'ih-step-5' )
 }
