@@ -14,12 +14,6 @@ if( ! $memory_page_id = $_SESSION['memory_page_id'] ?? null ) return;
 
 $image	= get_field( 'page_created_img' );
 $text	= get_field( 'page_created_text' );
-
-$first_name		= get_field( 'first_name', $memory_page_id );
-$last_name		= get_field( 'last_name', $memory_page_id );
-$middle_name	= get_field( 'middle_name', $memory_page_id );
-$born_at		= get_field( 'born_at', $memory_page_id );
-$died_at		= get_field( 'died_at', $memory_page_id );
 ?>
 
 <section id="new-memory-step-6" class="new-memory-step new-memory-step-6 page-created direction-column justify-center">
@@ -36,18 +30,19 @@ $died_at		= get_field( 'died_at', $memory_page_id );
 			<div class="page-created-thumb flex justify-center align-center">
 				<div class="page-created-thumb-border"></div>
 				<div class="page-created-thumb-img">
-					<?php echo get_the_post_thumbnail( $memory_page_id, 'full' ) ?>
+					<?php
+					if( has_post_thumbnail( $memory_page_id ) )
+						echo get_the_post_thumbnail( $memory_page_id, 'full' );
+					?>
 				</div>
 			</div>
 
 			<div class="page-created-fullname flex direction-column align-center">
-				<div><?php echo esc_html( $first_name ), ' ', esc_html( $middle_name ) ?></div>
-				<div><?php echo esc_html( $last_name ) ?></div>
+				<div class="page-created-firstname"></div>
+				<div class="page-created-lastname"></div>
 			</div>
 
-			<div class="page-created-dates">
-				<?php echo str_replace( '/', '.', $born_at ) . ' - ' . str_replace( '/', '.', $died_at ) ?>
-			</div>
+			<div class="page-created-dates"></div>
 		</div>
 
 		<?php
