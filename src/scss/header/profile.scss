@@ -1,0 +1,29 @@
+.header-profile {
+	&-icon {
+		margin-right: 6px
+	}
+
+	&-name {
+		font-size: $fs-sm;
+		line-height: 1.6;
+		color: $very-dark-green
+	}
+
+	&-button {
+		background-color: transparent;
+		padding: 0;
+		margin-left: 2px;
+		border: none;
+		border-radius: 3px;
+		cursor: pointer;
+		transition: background-color ease-out $tr;
+
+		&:hover {
+			background-color: $bright-yellow
+		}
+	}
+
+	svg {
+		display: block
+	}
+}

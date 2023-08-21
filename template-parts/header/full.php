@@ -16,7 +16,11 @@ $logo = get_field( 'header_logo_dark', 'option' );
 	<div class="container fluid">
 		<div class="header-inner flex flex-wrap align-center">
 			<div class="header-menu">
-				<button class="header-menu-button flex align-center" type="button">
+				<button
+					class="header-menu-button flex align-center"
+					type="button"
+					aria-label="<?php esc_attr_e( 'Відкрити меню', 'inheart' ) ?>"
+				>
 					<span class="header-menu-button-lines">
 						<span></span>
 						<span></span>
@@ -36,6 +40,8 @@ $logo = get_field( 'header_logo_dark', 'option' );
 				</div>
 				<?php
 			}
+
+			get_template_part( 'template-parts/header/profile' );
 			?>
 		</div><!-- .header-inner -->
 	</div><!-- .container -->

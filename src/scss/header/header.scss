@@ -5,6 +5,27 @@
 		padding: 42px 99px
 	}
 
+	&.full {
+		@media (min-width: $lg) {
+			padding: 0 99px
+		}
+
+		.header-inner {
+			border-bottom: 1px solid $light-blue;
+
+			@media (min-width: $lg) {
+				padding: 16px 0
+			}
+		}
+
+		.header-logo {
+			@media (min-width: $lg) {
+				height: 68px;
+				margin: 0 auto
+			}
+		}
+	}
+
 	&-logo {
 		width: 104px;
 		height: 68px;
