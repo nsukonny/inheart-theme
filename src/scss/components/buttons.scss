@@ -56,6 +56,10 @@
 		&:active {
 			background-color: $darkest-yellow
 		}
+
+		svg {
+			margin-right: 7px
+		}
 	}
 
 	&.secondary {
@@ -92,6 +96,10 @@
 		&:hover {
 			opacity: 0.7
 		}
+
+		svg {
+			margin-right: 9px
+		}
 	}
 
 	&.gray {
@@ -101,6 +109,10 @@
 		&:hover {
 			background-color: #EEF0F1
 		}
+	}
+
+	&.border-gold {
+		border-color: $bright-yellow
 	}
 
 	&.br-24 {
@@ -116,5 +128,11 @@
 			background-color: $disabled;
 			color: $disabled-text;
 		}
+	}
+
+	svg {
+		display: block;
+		width: 16px;
+		height: auto
 	}
 }

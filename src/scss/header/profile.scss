@@ -1,29 +1,83 @@
 .header-profile {
+	position: relative;
+
+	&.opened {
+		.header-profile-dropdown {
+			display: block
+		}
+
+		.header-profile-arrow {
+			transform: rotate(180deg)
+		}
+	}
+
 	&-icon {
 		margin-right: 6px
 	}
 
-	&-name {
-		font-size: $fs-sm;
-		line-height: 1.6;
-		color: $very-dark-green
-	}
-
 	&-button {
 		background-color: transparent;
+		font-family: $ff;
+		font-size: $fs-sm;
+		line-height: 1.6;
+		color: $very-dark-green;
 		padding: 0;
-		margin-left: 2px;
 		border: none;
-		border-radius: 3px;
 		cursor: pointer;
-		transition: background-color ease-out $tr;
+		transition: opacity ease-out $tr;
 
 		&:hover {
-			background-color: $bright-yellow
+			opacity: 0.7
 		}
 	}
 
-	svg {
-		display: block
+	&-arrow {
+		display: block;
+		margin-left: 2px;
+		transition: transform ease-out $tr
+	}
+
+	&-dropdown {
+		display: none;
+		position: absolute;
+		top: 120%;
+		right: 0;
+		width: 200px;
+		background-color: $white;
+		padding: 15px 18px 13px;
+		border-radius: $radius-input;
+		box-shadow: 3px 3px 6px 0 rgba(102, 119, 131, 0.10);
+
+		&-item {
+			&:not(:last-child) {
+				margin-bottom: 22px
+			}
+
+			a {
+				font-size: $fs-sm;
+				color: $very-dark-green;
+
+				&:hover {
+					color: $bright-yellow
+				}
+
+				&.logout:hover {
+					color: $error-primary
+				}
+			}
+		}
+
+		&-icon {
+			display: block;
+			width: 20px;
+			margin-right: 9px;
+			text-align: center;
+
+			svg {
+				display: block;
+				width: 100%;
+				height: auto
+			}
+		}
 	}
 }
