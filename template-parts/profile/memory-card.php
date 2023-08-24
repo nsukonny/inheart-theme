@@ -14,6 +14,8 @@ $middlename	= get_field( 'middle_name', $id );
 $lastname	= get_field( 'last_name', $id );
 $born_at	= get_field( 'born_at', $id );
 $died_at	= get_field( 'died_at', $id );
+
+if( ! $firstname && ! $lastname ) return;
 ?>
 
 <div class="memory-card">

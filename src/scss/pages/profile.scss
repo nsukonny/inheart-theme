@@ -80,6 +80,8 @@
 
 .memory-card {
 	width: 100%;
+	background-color: $white;
+	border-radius: 30px;
 
 	@media (min-width: $md) {
 		width: calc(50% - 10px)
@@ -87,6 +89,32 @@
 
 	@media (min-width: $lg) {
 		width: calc((100% - 40px) / 3)
+	}
+
+	&.create {
+		padding: 20px
+	}
+
+	&-create-text {
+		height: 100%;
+		font-size: $fs-xl;
+		line-height: normal;
+		color: $very-dark-green;
+		padding: 20px;
+		border: 1px solid $bright-yellow;
+		border-radius: 19px;
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+
+		svg {
+			display: block;
+			width: 24px;
+			height: 24px;
+			margin-bottom: 12px
+		}
 	}
 
 	&-date {
@@ -107,9 +135,7 @@
 	}
 
 	&-bottom {
-		background-color: $white;
-		padding: 23px 30px 30px;
-		border-radius: 0 0 30px 30px
+		padding: 23px 30px 30px
 	}
 
 	&-title {

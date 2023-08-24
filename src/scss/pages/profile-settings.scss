@@ -1,0 +1,74 @@
+@import '../components/vars';
+@import '../components/forms';
+
+.page-template-profile-settings {
+	background-color: $a-bit-blue-white
+}
+
+.profile-settings {
+	padding-bottom: 69px;
+
+	&-header {
+		padding: 47px 0 38px;
+
+		&-buttons {
+			margin-left: auto;
+
+			.btn:not(:last-child) {
+				margin-right: 20px
+			}
+		}
+	}
+
+	&-back {
+		font-size: $fs-sm;
+		color: $very-dark-green;
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+
+		svg {
+			display: block;
+			width: 20px;
+			margin-right: 7px
+		}
+	}
+
+	&-title {
+		margin-top: 15px;
+
+		h1 {
+			font-size: 40px
+		}
+	}
+
+	&-form {
+		width: 100%;
+		max-width: 847px;
+
+		fieldset {
+			background-color: $white;
+			border-radius: $radius-theme;
+			padding: 30px;
+
+			&:not(:last-child) {
+				margin-bottom: 57px
+			}
+		}
+
+		legend {
+			display: block;
+			width: 100%;
+			font-family: $ff-title;
+			font-size: 30px;
+			font-weight: $fw-semibold;
+			line-height: 1;
+			color: $very-dark-green;
+			padding: 0;
+			margin: 0 0 20px;
+			float: left
+		}
+	}
+}

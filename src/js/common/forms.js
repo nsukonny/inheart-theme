@@ -40,7 +40,7 @@ const hideFieldsErrors = () => {
 			inputs	= form.querySelectorAll( 'input' ),
 			note	= form.querySelector( '.note' )
 
-		if( ! inputs.length ) return
+		if( ! inputs.length || ! note ) return
 
 		inputs.forEach( input => {
 			const type = input.type
