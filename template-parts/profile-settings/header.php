@@ -24,12 +24,12 @@
 	<div class="profile-settings-title flex flex-wrap align-center">
 		<h1><?php esc_html_e( 'Налаштування', 'inheart' ) ?></h1>
 		<div class="profile-settings-header-buttons flex align-center">
-			<button class="btn lg outlined">
+			<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg outlined">
 				<?php esc_html_e( 'Скасувати', 'inheart' ) ?>
-			</button>
-			<button class="btn lg primary">
+			</a>
+			<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg primary save-changes">
 				<?php esc_html_e( 'Зберегти', 'inheart' ) ?>
-			</button>
+			</a>
 		</div>
 	</div>
 </div><!-- .profile-settings-header -->

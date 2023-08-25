@@ -8,7 +8,12 @@
  * @subpackage inheart
  */
 
-$author_id = get_current_user_id();
+$author_id	= get_current_user_id();
+$meta		= get_user_meta( $author_id );
+$data		= get_userdata( $author_id );
+$first_name	= $meta['first_name'][0] ?? '';
+$last_name	= $meta['last_name'][0] ?? '';
+$email		= $data->user_email;
 ?>
 
 <form class="profile-settings-form">
@@ -21,7 +26,7 @@ $author_id = get_current_user_id();
 					id="lastname"
 					name="lastname"
 					type="text"
-					value="<?php echo esc_attr( '' ) ?>"
+					value="<?php echo esc_attr( $last_name ) ?>"
 					required
 				/>
 			</span>
@@ -33,31 +38,19 @@ $author_id = get_current_user_id();
 					id="firstname"
 					name="firstname"
 					type="text"
-					value="<?php echo esc_attr( '' ) ?>"
+					value="<?php echo esc_attr( $first_name ) ?>"
 					required
 				/>
 			</span>
 		</label>
-		<label for="middlename" class="label dark half">
-			<span class="label-text"><?php esc_html_e( "По-батькові", 'inheart' ) ?></span>
-			<span class="input-date-wrapper">
-				<input
-					id="middlename"
-					name="middlename"
-					type="text"
-					value="<?php echo esc_attr( '' ) ?>"
-					required
-				/>
-			</span>
-		</label>
-		<label for="email" class="label dark half end">
+		<label for="email" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Email', 'inheart' ) ?></span>
 			<span class="input-date-wrapper">
 				<input
 					id="email"
 					name="email"
 					type="email"
-					value="<?php echo esc_attr( '' ) ?>"
+					value="<?php echo esc_attr( $email ) ?>"
 					required
 				/>
 			</span>
