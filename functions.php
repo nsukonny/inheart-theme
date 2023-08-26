@@ -22,8 +22,9 @@ function ih_load_theme_dependencies(): void
 {
 	// Register theme menus.
 	register_nav_menus( [
-		'header_menu'	=> esc_html__( 'Header Menu', 'inheart' ),
-		'footer_menu'	=> esc_html__( 'Footer Menu', 'inheart' )
+		'header_menu'		=> esc_html__( 'Header Menu', 'inheart' ),
+		'footer_menu'		=> esc_html__( 'Footer Menu', 'inheart' ),
+		'footer_bottom_menu'=> esc_html__( 'Footer Bottom Menu', 'inheart' )
 	] );
 
 	// Hide admin bar for everyone on the frontend.
