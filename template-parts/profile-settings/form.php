@@ -21,39 +21,33 @@ $email		= $data->user_email;
 		<legend><?php esc_html_e( 'Головна інформація', 'inheart' ) ?></legend>
 		<label for="lastname" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Ваше прізвище', 'inheart' ) ?></span>
-			<span class="input-date-wrapper">
-				<input
-					id="lastname"
-					name="lastname"
-					type="text"
-					value="<?php echo esc_attr( $last_name ) ?>"
-					required
-				/>
-			</span>
+			<input
+				id="lastname"
+				name="lastname"
+				type="text"
+				value="<?php echo esc_attr( $last_name ) ?>"
+				required
+			/>
 		</label>
 		<label for="firstname" class="label dark half end">
 			<span class="label-text"><?php esc_html_e( "Ваше ім'я", 'inheart' ) ?></span>
-			<span class="input-date-wrapper">
-				<input
-					id="firstname"
-					name="firstname"
-					type="text"
-					value="<?php echo esc_attr( $first_name ) ?>"
-					required
-				/>
-			</span>
+			<input
+				id="firstname"
+				name="firstname"
+				type="text"
+				value="<?php echo esc_attr( $first_name ) ?>"
+				required
+			/>
 		</label>
 		<label for="email" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Email', 'inheart' ) ?></span>
-			<span class="input-date-wrapper">
-				<input
-					id="email"
-					name="email"
-					type="email"
-					value="<?php echo esc_attr( $email ) ?>"
-					required
-				/>
-			</span>
+			<input
+				id="email"
+				name="email"
+				type="email"
+				value="<?php echo esc_attr( $email ) ?>"
+				required
+			/>
 		</label>
 	</fieldset>
 

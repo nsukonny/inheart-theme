@@ -20,6 +20,7 @@ wp_enqueue_script( 'profile-settings', THEME_URI . '/static/js/profile-settings/
 		<?php
 		get_template_part( 'template-parts/profile-settings/header' );
 		get_template_part( 'template-parts/profile-settings/form' );
+		get_template_part( 'template-parts/profile-settings/plan' );
 		?>
 	</div>
 </main>
