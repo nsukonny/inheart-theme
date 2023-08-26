@@ -17,11 +17,24 @@ wp_enqueue_script( 'profile-settings', THEME_URI . '/static/js/profile-settings/
 
 <main class="main profile-settings">
 	<div class="container">
-		<?php
-		get_template_part( 'template-parts/profile-settings/header' );
-		get_template_part( 'template-parts/profile-settings/form' );
-		get_template_part( 'template-parts/profile-settings/plan' );
-		?>
+		<div class="profile-settings-inner flex flex-wrap">
+			<div class="profile-settings-left">
+				<?php
+				get_template_part( 'template-parts/profile-settings/header' );
+				get_template_part( 'template-parts/profile-settings/form' );
+				get_template_part( 'template-parts/profile-settings/plan' );
+				?>
+			</div>
+
+			<div class="profile-settings-right flex flex-wrap align-start justify-end">
+				<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg outlined">
+					<?php esc_html_e( 'Скасувати', 'inheart' ) ?>
+				</a>
+				<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg primary save-changes">
+					<?php esc_html_e( 'Зберегти', 'inheart' ) ?>
+				</a>
+			</div>
+		</div>
 	</div>
 </main>
 

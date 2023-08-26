@@ -21,16 +21,8 @@
 		<?php esc_html_e( 'Назад', 'inheart' ) ?>
 	</a>
 
-	<div class="profile-settings-title flex flex-wrap align-center">
+	<div class="profile-settings-title">
 		<h1><?php esc_html_e( 'Налаштування', 'inheart' ) ?></h1>
-		<div class="profile-settings-header-buttons flex align-center">
-			<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg outlined">
-				<?php esc_html_e( 'Скасувати', 'inheart' ) ?>
-			</a>
-			<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg primary save-changes">
-				<?php esc_html_e( 'Зберегти', 'inheart' ) ?>
-			</a>
-		</div>
 	</div>
 </div><!-- .profile-settings-header -->
 

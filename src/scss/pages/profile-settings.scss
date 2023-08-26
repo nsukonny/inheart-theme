@@ -9,15 +9,7 @@
 	padding-bottom: 69px;
 
 	&-header {
-		padding: 47px 0 38px;
-
-		&-buttons {
-			margin-left: auto;
-
-			.btn:not(:last-child) {
-				margin-right: 20px
-			}
-		}
+		padding: 47px 0 38px
 	}
 
 	&-back {
@@ -44,9 +36,51 @@
 		}
 	}
 
+	&-left {
+		width: 100%;
+
+		@media (min-width: $xl) {
+			max-width: 847px
+		}
+	}
+
+	&-right {
+		flex-direction: column-reverse;
+		width: 100%;
+		margin-top: 30px;
+
+		@media (min-width: $md) {
+			flex-direction: row
+		}
+
+		@media (min-width: $xl) {
+			max-width: calc(100% - 847px);
+			padding-top: 93px;
+			margin-top: 0
+		}
+
+		.btn {
+			width: 100%;
+			margin-bottom: 18px;
+
+			&:first-child {
+				margin-bottom: 0
+			}
+
+			@media (min-width: $md) {
+				width: auto
+			}
+
+			&:not(:last-child) {
+				@media (min-width: $md) {
+					margin-right: 20px
+				}
+			}
+		}
+	}
+
 	&-form {
 		width: 100%;
-		max-width: 847px;
 
 		fieldset {
 			background-color: $white;
@@ -75,7 +109,6 @@
 
 	&-plan {
 		width: 100%;
-		max-width: 847px;
 		background-color: $white;
 		border-radius: $radius-theme;
 		padding: 30px
@@ -149,7 +182,14 @@
 	}
 
 	&-type {
+		width: 100%;
 		font-size: $fs-sm;
-		line-height: 1.6
+		line-height: 1.6;
+		margin-bottom: 12px;
+
+		@media (min-width: $sm) {
+			width: auto;
+			margin-bottom: 0
+		}
 	}
 }
