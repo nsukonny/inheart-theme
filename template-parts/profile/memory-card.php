@@ -36,6 +36,11 @@ if( ! $firstname && ! $lastname ) return;
 				<span><?php echo esc_html( $lastname ) ?></span>
 				<div class="memory-card-date died"><?php echo esc_attr( str_replace( '/', '.', $died_at ) ) ?></div>
 			</div>
+			<div class="page-created-dates flex align-center justify-center">
+				<div class="memory-card-date born"><?php echo esc_attr( str_replace( '/', '.', $born_at ) ) ?></div>
+				<span>–</span>
+				<div class="memory-card-date died"><?php echo esc_attr( str_replace( '/', '.', $died_at ) ) ?></div>
+			</div>
 		</div>
 	</div><!-- .memory-card-top -->
 
@@ -68,7 +73,7 @@ if( ! $firstname && ! $lastname ) return;
 						</clipPath>
 					</defs>
 				</svg>
-				<?php esc_html_e( 'Редагувати', 'inheart' ) ?>
+				<span><?php esc_html_e( 'Редагувати', 'inheart' ) ?></span>
 			</button>
 		</div>
 	</div><!-- .memory-card-bottom -->
