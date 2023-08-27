@@ -49,7 +49,7 @@ if( ! $firstname && ! $lastname ) return;
 			<?php esc_html_e( "Коротка сторінка пам'яті", 'inheart' ) ?>
 		</div>
 		<div class="memory-card-actions flex flex-wrap align-center">
-			<button class="btn lg primary outlined border-gold">
+			<button class="btn lg primary outlined border-gold expand-to-full">
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g clip-path="url(#clip0_1566_33476)">
 						<path d="M7.10433 0.899231C7.47114 0.155983 8.53099 0.155988 8.8978 0.899232L10.8282 4.81073L15.1448 5.43797C15.9651 5.55715 16.2926 6.56513 15.699 7.14366L12.5755 10.1883L13.3129 14.4875C13.453 15.3044 12.5956 15.9274 11.8619 15.5417L8.00106 13.5119L4.14018 15.5417C3.40655 15.9274 2.54913 15.3044 2.68924 14.4875L3.4266 10.1883L0.303081 7.14366C-0.290438 6.56512 0.0370772 5.55715 0.857295 5.43797L5.17389 4.81073L7.10433 0.899231Z" fill="#F7B941"/>

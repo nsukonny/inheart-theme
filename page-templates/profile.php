@@ -23,10 +23,12 @@ $memory_pages	= get_posts( [
 
 <main class="main profile">
 	<?php
-	if( ! empty( $memory_pages ) )
-		get_template_part( 'template-parts/profile/memory-pages', 'exist', ['pages' => $memory_pages] );
-	else
+	if( ! empty( $memory_pages ) ){
+		get_template_part( 'template-parts/profile/memory-pages', 'exist', [ 'pages' => $memory_pages ] );
+		get_template_part( 'template-parts/profile/expand-to-full-popup' );
+	}else{
 		get_template_part( 'template-parts/profile/memory-pages', 'none' );
+	}
 	?>
 </main>
 
