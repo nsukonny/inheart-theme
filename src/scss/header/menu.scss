@@ -1,1 +1,37 @@
-// Header menu styles.
+.header-menu-button {
+	font-family: $ff;
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	transition: opacity ease-out $tr;
+
+	&:hover {
+		opacity: 0.7
+	}
+
+	&-lines {
+		position: relative;
+		display: block;
+		width: 14px;
+		height: 13px;
+		margin-right: 13px;
+
+		span {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 1px;
+			background-color: $dark-yellow;
+
+			&:nth-child(2) {
+				top: 6px
+			}
+
+			&:last-child {
+				top: 12px
+			}
+		}
+	}
+}

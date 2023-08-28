@@ -22,8 +22,9 @@ function ih_load_theme_dependencies(): void
 {
 	// Register theme menus.
 	register_nav_menus( [
-		'header_menu'	=> esc_html__( 'Header Menu', 'inheart' ),
-		'footer_menu'	=> esc_html__( 'Footer Menu', 'inheart' )
+		'header_menu'		=> esc_html__( 'Header Menu', 'inheart' ),
+		'footer_menu'		=> esc_html__( 'Footer Menu', 'inheart' ),
+		'footer_bottom_menu'=> esc_html__( 'Footer Bottom Menu', 'inheart' )
 	] );
 
 	// Hide admin bar for everyone on the frontend.
@@ -33,6 +34,7 @@ function ih_load_theme_dependencies(): void
 	require_once( 'theme-functions/theme-functions.php' );	// Please place all custom functions declarations in this file.
 	require_once( 'theme-functions/auth.php' );	// Authorization.
 	require_once( 'theme-functions/new-memory-creation.php' );	// Create new memory.
+	require_once( 'theme-functions/profile-actions.php' );	// Profile pages functions.
 }
 
 add_action( 'init', 'ih_init_theme' );

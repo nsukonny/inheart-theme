@@ -1,7 +1,12 @@
 <?php
 
 /**
- * aasdas
+ * Header template logo only.
+ *
+ * @see Options -> Header.
+ *
+ * @package WordPress
+ * @subpackage inheart
  */
 
 if( ! $logo = get_field( 'header_logo_light', 'option' ) ) return;

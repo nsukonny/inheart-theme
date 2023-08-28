@@ -1,0 +1,195 @@
+@import '../components/vars';
+@import '../components/forms';
+
+.page-template-profile-settings {
+	background-color: $a-bit-blue-white
+}
+
+.profile-settings {
+	padding-bottom: 69px;
+
+	&-header {
+		padding: 47px 0 38px
+	}
+
+	&-back {
+		font-size: $fs-sm;
+		color: $very-dark-green;
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+
+		svg {
+			display: block;
+			width: 20px;
+			margin-right: 7px
+		}
+	}
+
+	&-title {
+		margin-top: 15px;
+
+		h1 {
+			font-size: 40px
+		}
+	}
+
+	&-left {
+		width: 100%;
+
+		@media (min-width: $xl) {
+			max-width: 847px
+		}
+	}
+
+	&-right {
+		flex-direction: column-reverse;
+		width: 100%;
+		margin-top: 30px;
+
+		@media (min-width: $md) {
+			flex-direction: row
+		}
+
+		@media (min-width: $xl) {
+			max-width: calc(100% - 847px);
+			padding-top: 93px;
+			margin-top: 0
+		}
+
+		.btn {
+			width: 100%;
+			margin-bottom: 18px;
+
+			&:first-child {
+				margin-bottom: 0
+			}
+
+			@media (min-width: $md) {
+				width: auto
+			}
+
+			&:not(:last-child) {
+				@media (min-width: $md) {
+					margin-right: 20px
+				}
+			}
+		}
+	}
+
+	&-form {
+		width: 100%;
+
+		fieldset {
+			background-color: $white;
+			border-radius: $radius-theme;
+			padding: 30px;
+			margin-bottom: 57px;
+
+			&:last-child {
+				margin-bottom: 20px
+			}
+		}
+
+		legend {
+			display: block;
+			width: 100%;
+			font-family: $ff-title;
+			font-size: 30px;
+			font-weight: $fw-semibold;
+			line-height: 1;
+			color: $very-dark-green;
+			padding: 0;
+			margin: 0 0 20px;
+			float: left
+		}
+	}
+
+	&-plan {
+		width: 100%;
+		background-color: $white;
+		border-radius: $radius-theme;
+		padding: 30px
+	}
+
+	&-heading {
+		display: block;
+		width: 100%;
+		font-family: $ff-title;
+		font-size: 30px;
+		font-weight: $fw-semibold;
+		line-height: 1;
+		color: $very-dark-green;
+		margin: 0 0 20px
+	}
+
+	&-pages {
+		column-gap: 20px;
+		row-gap: 28px
+	}
+}
+
+.profile-memory-preview {
+	width: 100%;
+	padding-bottom: 28px;
+	border-bottom: 1px solid #8FB7C5;
+
+	@media (min-width: $md) {
+		width: calc(50% - 10px)
+	}
+
+	&-thumb {
+		position: relative;
+		width: 70px;
+		height: 90px;
+		border-radius: 35px;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient( 2deg, $very-dark-green 0%, rgba(1, 28, 26, 0.00) 100%), transparent 50%
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover
+		}
+	}
+
+	&-info {
+		width: calc(100% - 70px);	// Minus thumb width.
+		padding-left: 20px;
+		color: $very-dark-green
+	}
+
+	&-name {
+		font-family: $ff-title;
+		font-size: $fs-lg;
+		font-weight: $fw-semibold;
+		margin-bottom: 13px
+	}
+
+	&-bottom .btn {
+		margin-left: auto
+	}
+
+	&-type {
+		width: 100%;
+		font-size: $fs-sm;
+		line-height: 1.6;
+		margin-bottom: 12px;
+
+		@media (min-width: $sm) {
+			width: auto;
+			margin-bottom: 0
+		}
+	}
+}

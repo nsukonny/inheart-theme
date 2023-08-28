@@ -1,1 +1,74 @@
-// Footer menu styles.
+.footer {
+	&-nav {
+		@media (min-width: $md) {
+			margin-left: 60px
+		}
+
+		@media (min-width: $lg) {
+			margin-left: 119px
+		}
+
+		.menu {
+			display: flex;
+			flex-direction: column;
+			margin-top: 20px;
+
+			@media (min-width: $md) {
+				margin-top: 0;
+				flex-direction: row;
+				align-items: center
+			}
+
+			&-item {
+				text-align: center;
+				padding: 10px 0;
+
+				@media (min-width: $md) {
+					text-align: left;
+					padding: 0
+				}
+
+				&:not(:last-child) {
+					@media (min-width: $md) {
+						margin-right: 39px
+					}
+				}
+
+				a {
+					font-size: $fs-sm;
+					color: $white;
+
+					&:hover {
+						color: $bright-yellow
+					}
+				}
+			}
+		}
+	}
+
+	&-bottom-nav {
+		margin-left: 6px;
+
+		.menu {
+			display: flex;
+			align-items: center;
+
+			&-item {
+				&:not(:last-child) {
+					margin-right: 8px
+				}
+
+				a {
+					display: block;
+					font-size: 10px;
+					line-height: 2;
+					color: $dark-green;
+
+					&:hover {
+						color: $white
+					}
+				}
+			}
+		}
+	}
+}

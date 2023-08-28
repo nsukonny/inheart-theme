@@ -1,1 +1,71 @@
-// Footer common styles.
+.footer {
+	background-color: $black;
+
+	&-top {
+		flex-direction: column;
+		padding: 30px 0;
+
+		@media (min-width: $md) {
+			flex-direction: row;
+			padding: 69px 0
+		}
+	}
+
+	&-logo {
+		display: block;
+		width: 98px;
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+
+		img {
+			width: 100%
+		}
+	}
+
+	&-links {
+		margin-top: 20px;
+
+		@media (min-width: $md) {
+			margin: 0 0 0 auto
+		}
+	}
+
+	&-link {
+		display: block;
+		height: 19px;
+		transition: opacity ease-out $tr;
+
+		&:not(:last-child) {
+			margin-right: 31px
+		}
+
+		&:hover {
+			opacity: 0.7
+		}
+
+		img {
+			height: 100%;
+			width: auto;
+			max-width: none
+		}
+	}
+
+	&-bottom {
+		flex-direction: column;
+		padding: 13px 0;
+		border-top: 1px solid $very-dark-green;
+
+		@media (min-width: $md) {
+			flex-direction: row
+		}
+	}
+
+	&-copyright {
+		font-size: 10px;
+		line-height: 2;
+		color: $bright-yellow
+	}
+}

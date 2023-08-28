@@ -9,9 +9,11 @@
 @import 'components/base';
 @import 'components/forms';
 @import 'components/buttons';
+@import 'components/notifications';
 
 // Theme common styles.
 @import 'header/header';
 @import 'header/menu';
+@import 'header/profile';
 @import 'footer/footer';
 @import 'footer/menu';

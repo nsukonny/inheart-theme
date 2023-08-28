@@ -13,7 +13,7 @@ function ih_create_new_memory_page(): void
 	$author_id		= get_current_user_id();
 	$memory_pages	= get_posts( [
 		'post_type'		=> 'memory_page',
-		'author'		=> get_current_user_id(),
+		'author'		=> $author_id,
 		'post_status'	=> 'draft'
 	] );
 
