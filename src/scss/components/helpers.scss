@@ -117,3 +117,21 @@
 		}
 	}
 }
+
+.hide-after {
+	&-lg {
+		@media (min-width: $lg) {
+			display: none
+		}
+	}
+}
+
+.hide-before {
+	&-lg {
+		display: none;
+
+		@media (min-width: $lg) {
+			display: block
+		}
+	}
+}

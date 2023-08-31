@@ -79,10 +79,17 @@ function ih_inclusion_enqueue(): void
 	}
 
 	// Styles.
-	wp_enqueue_style( 'main', THEME_URI . '/static/css/main.min.css', [], THEME_VERSION, 'all' );
+	wp_enqueue_style( 'main', THEME_URI . '/static/css/main.min.css', [], THEME_VERSION );
 
 	// Scripts.
 	wp_enqueue_script( 'scripts', THEME_URI . '/static/js/main.min.js', ['jquery'], THEME_VERSION, true );
+
+	/**
+	 * Additional pages.
+	 */
+
+	if( is_singular( 'memory_page' ) )
+		wp_enqueue_style( 'memory', THEME_URI . '/static/css/pages/memory.min.css', [], THEME_VERSION );
 }
 
 add_action( 'acf/init', 'ih_acf_init' );

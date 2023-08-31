@@ -9,7 +9,8 @@
  * @subpackage inheart
  */
 
-$logo = get_field( 'header_logo_dark', 'option' );
+$logo_dark	= get_field( 'header_logo_dark', 'option' );
+$logo_light	= get_field( 'header_logo_light', 'option' );
 ?>
 
 <header class="header full">
@@ -30,19 +31,16 @@ $logo = get_field( 'header_logo_dark', 'option' );
 				</button>
 			</div>
 
-			<?php
-			if( $logo ){
-				?>
-				<div class="header-logo flex align-center">
-					<a href="<?php echo home_url( '/' ) ?>">
-						<?php echo wp_get_attachment_image( $logo['id'], 'ih-logo' ) ?>
-					</a>
-				</div>
-				<?php
-			}
+			<div class="header-logo flex align-center">
+				<a href="<?php echo home_url( '/' ) ?>">
+					<?php
+					echo wp_get_attachment_image( $logo_dark['id'], 'ih-logo', false, ['class' => 'dark'] );
+					echo wp_get_attachment_image( $logo_light['id'], 'ih-logo', false, ['class' => 'light'] );
+					?>
+				</a>
+			</div>
 
-			get_template_part( 'template-parts/header/profile' );
-			?>
+			<?php get_template_part( 'template-parts/header/profile' ) ?>
 		</div><!-- .header-inner -->
 	</div><!-- .container -->
 </header><!-- .header -->

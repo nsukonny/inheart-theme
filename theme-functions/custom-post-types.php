@@ -42,14 +42,15 @@ $labels = [
 $args = [
 	'labels'				=> $labels,
 	'public'				=> true,
-	'publicly_queryable'	=> false,
+	'publicly_queryable'	=> true,
 	'show_ui'				=> true,
 	'hierarchical'			=> false,
 	'menu_icon'				=> 'dashicons-image-filter',
 	'menu_position'			=> 6,
 	'has_archive'			=> true,
 	'show_in_rest'			=> true,
-	'supports'				=> ['title', 'author', 'thumbnail']
+	'supports'				=> ['title', 'author', 'thumbnail'],
+	'rewrite'				=> ['slug' => 'memory']
 ];
 register_post_type( 'memory_page', $args );
 

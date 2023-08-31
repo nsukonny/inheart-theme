@@ -57,3 +57,17 @@
 		padding: 0
 	}
 }
+
+body {
+	&.theme-light {
+		.header-logo img.light {
+			display: none
+		}
+	}
+
+	&.theme-dark {
+		.header-logo img.dark {
+			display: none
+		}
+	}
+}
