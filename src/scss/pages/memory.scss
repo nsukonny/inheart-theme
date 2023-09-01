@@ -2,6 +2,11 @@
 
 body.single-memory_page {
 	background-color: $very-dark-green;
+	transition: background-color ease-out $tr;
+
+	&.light {
+		background-color: $white
+	}
 
 	&.theme-light {
 		.header-logo img {
@@ -26,7 +31,7 @@ body.single-memory_page {
 
 .single-memory {
 	&-top {
-		padding-top: 156px
+		padding: 156px 0 177px
 	}
 
 	&-thumb {
@@ -88,5 +93,38 @@ body.single-memory_page {
 
 	&-lastname .single-memory-name {
 		padding: 0 50px
+	}
+
+	&-heading {
+		width: 100%;
+		line-height: 2.5;
+		text-align: center;
+		color: $light-green;
+		transition: color ease-out $tr
+	}
+
+	// BIO SECTION STYLES
+
+	&-bio {
+		padding: 84px 0 178px;
+
+		> .container {
+			max-width: 630px
+		}
+
+		&-section {
+			color: $light-green;
+			transition: color ease-out $tr;
+
+			&:not(:last-child) {
+				margin-bottom: 36px
+			}
+		}
+
+		&-title {
+			font-size: 24px;
+			line-height: normal;
+			margin-bottom: 19px
+		}
 	}
 }
