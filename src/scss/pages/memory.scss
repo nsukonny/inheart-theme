@@ -4,10 +4,6 @@ body.single-memory_page {
 	background-color: $very-dark-green;
 	transition: background-color ease-out $tr;
 
-	&.light {
-		background-color: $white
-	}
-
 	&.theme-light {
 		.header-logo img {
 			&.dark {
@@ -26,6 +22,36 @@ body.single-memory_page {
 
 	.header-menu-button {
 		color: $white
+	}
+
+	// BODY CHANGED BG TO LIGHT:
+
+	&.light {
+		background-color: $white;
+
+		.single-memory-heading {
+			color: $black-for-text
+		}
+
+		.single-memory-bio-section,
+		.single-memory-no-memories {
+			color: $black-for-text
+		}
+
+		.single-memory-no-memories-btn {
+			background-color: transparent;
+			border-color: $very-dark-green;
+
+			&:hover,
+			&:active {
+				background-color: $light-green;
+				border-color: $light-green
+			}
+		}
+
+		.single-memory-memories {
+			background-color: $a-bit-blue-white
+		}
 	}
 }
 
@@ -132,16 +158,13 @@ body.single-memory_page {
 	// MEMORIES SECTION STYLES
 
 	&-memories {
-		background-color: $a-bit-blue-white;
 		padding: 103px 0;
-
-		.single-memory-heading {
-			color: $black-for-text
-		}
+		transition: background-color ease-out $tr
 	}
 
 	&-no-memories {
 		line-height: normal;
+		color: $light-green;
 
 		&-img {
 			width: 352px;
@@ -161,5 +184,16 @@ body.single-memory_page {
 			color: $green;
 			margin-bottom: 28px
 		}
+
+		&-btn.btn.outlined {
+			background-color: $light-green;
+			border-color: $light-green
+		}
+	}
+
+	// MEDIA SECTION STYLES
+
+	&-media {
+		padding: 103px 0 110px
 	}
 }

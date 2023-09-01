@@ -88,8 +88,10 @@ function ih_inclusion_enqueue(): void
 	 * Additional pages.
 	 */
 
-	if( is_singular( 'memory_page' ) )
+	if( is_singular( 'memory_page' ) ){
 		wp_enqueue_style( 'memory', THEME_URI . '/static/css/pages/memory.min.css', [], THEME_VERSION );
+		wp_enqueue_script( 'memory', THEME_URI . '/static/js/single-memory/single-memory.min.js', [ 'jquery' ], THEME_VERSION, true );
+	}
 }
 
 add_action( 'acf/init', 'ih_acf_init' );
