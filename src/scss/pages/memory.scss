@@ -100,7 +100,8 @@ body.single-memory_page {
 		line-height: 2.5;
 		text-align: center;
 		color: $light-green;
-		transition: color ease-out $tr
+		transition: color ease-out $tr;
+		margin-bottom: 30px
 	}
 
 	// BIO SECTION STYLES
@@ -125,6 +126,40 @@ body.single-memory_page {
 			font-size: 24px;
 			line-height: normal;
 			margin-bottom: 19px
+		}
+	}
+
+	// MEMORIES SECTION STYLES
+
+	&-memories {
+		background-color: $a-bit-blue-white;
+		padding: 103px 0;
+
+		.single-memory-heading {
+			color: $black-for-text
+		}
+	}
+
+	&-no-memories {
+		line-height: normal;
+
+		&-img {
+			width: 352px;
+			margin-bottom: 44px;
+
+			img {
+				width: 100%
+			}
+		}
+
+		&-title {
+			font-size: 30px;
+			margin-bottom: 19px
+		}
+
+		&-desc {
+			color: $green;
+			margin-bottom: 28px
 		}
 	}
 }

@@ -46,6 +46,14 @@
 		padding: 12px 24px 13px
 	}
 
+	&.xl {
+		min-height: 70px;
+		font-size: $fs-md;
+		line-height: $lh-4;
+		padding: 23px 98px;
+		border-radius: 20px
+	}
+
 	&.primary {
 		background-color: $dark-yellow;
 
