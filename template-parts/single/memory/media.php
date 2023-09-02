@@ -7,8 +7,6 @@
  * @package WordPress
  * @subpackage inheart
  */
-
-if( ! $id = $args['id'] ?? null ) return;
 ?>
 
 <section class="single-memory-media">
@@ -16,6 +14,10 @@ if( ! $id = $args['id'] ?? null ) return;
 		<h2 class="single-memory-heading">
 			<?php esc_html_e( 'Медiа-файли', 'inheart' ) ?>
 		</h2>
+
+		<?php
+		get_template_part( 'template-parts/single/memory/media', 'photos', ['id' => $args['id']] );
+		?>
 	</div>
 </section>
 

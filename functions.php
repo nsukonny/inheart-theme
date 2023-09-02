@@ -60,6 +60,7 @@ function ih_init_theme(): void
 	add_image_size( 'ih-illustration-alt', 571 );
 	add_image_size( 'ih-theme', 197, 197 );
 	add_image_size( 'ih-smartphone', 252 );
+	add_image_size( 'ih-memory-photo', 306, 460 );
 
 	require_once( 'theme-functions/custom-post-types.php' );
 }
@@ -90,7 +91,7 @@ function ih_inclusion_enqueue(): void
 
 	if( is_singular( 'memory_page' ) ){
 		wp_enqueue_style( 'memory', THEME_URI . '/static/css/pages/memory.min.css', [], THEME_VERSION );
-		wp_enqueue_script( 'memory', THEME_URI . '/static/js/single-memory/single-memory.min.js', [ 'jquery' ], THEME_VERSION, true );
+		wp_enqueue_script( 'memory', THEME_URI . '/static/js/single-memory/single-memory.min.js', ['jquery'], THEME_VERSION, true );
 	}
 }
 
