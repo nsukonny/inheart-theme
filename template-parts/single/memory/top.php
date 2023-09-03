@@ -59,7 +59,6 @@ $hours	= floor( $diff / ( 60 * 60 ) );
 										$years, $months, $weeks, $days, $hours
 									);
 									?>
-									<animate attributeName="startOffset" from="-100%" to="3%" begin="0s" dur="20s" repeatCount="indefinite"/>
 								</textPath>
 							</text>
 						</svg>
