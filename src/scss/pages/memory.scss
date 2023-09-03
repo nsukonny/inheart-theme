@@ -421,4 +421,76 @@ body.single-memory_page {
 			object-fit: cover
 		}
 	}
+
+	.media-links {
+		margin-top: 75px;
+
+		&-title {
+			width: 100%;
+			font-size: 24px;
+			line-height: $lh-4;
+			color: $black-for-text;
+			margin-bottom: 19px;
+
+			@media (min-width: $lg) {
+				width: 542px;
+				padding: 19px 148px 0 0;
+				margin-bottom: 0
+			}
+		}
+
+		&-list {
+			width: 100%;
+
+			@media (min-width: $lg) {
+				width: calc(100% - 542px)
+			}
+		}
+	}
+
+	.media-link {
+		position: relative;
+		width: 100%;
+		color: $very-dark-green;
+		line-height: 2.06;
+		padding: 28px 0;
+		border-bottom: 0.5px solid $very-dark-green;
+		overflow: hidden;
+
+		&:first-child {
+			border-top: 0.5px solid $very-dark-green
+		}
+
+		&:hover {
+			cursor: none;
+
+			.media-photo-cursor-text {
+				opacity: 1
+			}
+
+			.media-link-url {
+				color: $very-dark-green
+			}
+		}
+
+		&-title {
+			width: 41%
+		}
+
+		&-url {
+			width: calc(59% - 47px);
+			font-size: $fs-sm;
+			line-height: normal;
+			color: $green;
+			transition: color ease-out $tr;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap
+		}
+
+		svg {
+			width: 24px;
+			margin-left: auto
+		}
+	}
 }

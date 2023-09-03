@@ -22,7 +22,8 @@ const lightboxGalleryInit = () => {
 const textFollowsTheCursor = () => {
 	const
 		overlaysPhoto	= document.querySelectorAll( '.media-photo' ),
-		overlaysVideo	= document.querySelectorAll( '.media-video-top' )
+		overlaysVideo	= document.querySelectorAll( '.media-video-top' ),
+		overlaysLink	= document.querySelectorAll( '.media-link' )
 
 	const overlayOnMousemove = overlay => {
 		const text = overlay.querySelector( '.media-photo-cursor-text' )
@@ -66,6 +67,8 @@ const textFollowsTheCursor = () => {
 			} )
 		} )
 	}
+
+	if( overlaysLink.length ) overlaysLink.forEach( overlayOnMousemove )
 }
 
 const showHiddenVideos = () => {
