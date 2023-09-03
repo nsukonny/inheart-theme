@@ -1,0 +1,496 @@
+@import '../../../node_modules/lightbox2/dist/css/lightbox.css';
+@import '../components/vars';
+
+body.single-memory_page {
+	background-color: $very-dark-green;
+	transition: background-color ease-out $tr;
+
+	&.theme-light {
+		.header-logo img {
+			&.dark {
+				display: none
+			}
+
+			&.light {
+				display: block
+			}
+		}
+	}
+
+	.header.full .header-inner {
+		border-bottom-color: rgba(13, 81, 76, 0.60)
+	}
+
+	.header-menu-button {
+		color: $white
+	}
+
+	// BODY CHANGED BG TO LIGHT:
+
+	&.light {
+		background-color: $white;
+
+		.single-memory-heading {
+			color: $black-for-text
+		}
+
+		.single-memory-bio-section,
+		.single-memory-no-memories {
+			color: $black-for-text
+		}
+
+		.single-memory-no-memories-btn {
+			background-color: transparent;
+			border-color: $very-dark-green;
+
+			&:hover,
+			&:active {
+				background-color: $light-green;
+				border-color: $light-green
+			}
+		}
+
+		.single-memory-memories {
+			background-color: $a-bit-blue-white
+		}
+	}
+}
+
+.single-memory {
+	&-top {
+		padding: 156px 0 177px
+	}
+
+	&-thumb {
+		position: relative;
+
+		&-border {
+			position: absolute;
+			top: -89px;
+			left: 50%;
+			width: calc(100% + 154px);
+			height: calc(100% + 200px);
+			transform: translateX(-50%) rotate(180deg);
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 1px;
+				left: -1px;
+				width: calc(100% + 2px);
+				height: 100%;
+				background: linear-gradient(2deg, rgba(1, 28, 26, 0.00) 0%, $very-dark-green 100%)
+			}
+
+			svg text {
+				font-family: $ff;
+				fill: $white;
+				font-size: $fs-lg
+			}
+		}
+
+		img {
+			display: block;
+			width: 406px;
+			height: 515px;
+			border-radius: 200px
+		}
+	}
+
+	&-info {
+		position: relative;
+		margin-top: -70px
+	}
+
+	&-name {
+		font-family: $ff-title;
+		font-size: 90px;
+		line-height: $lh-1;
+		font-weight: $fw-semibold;
+		color: $light-green;
+		text-align: center
+	}
+
+	&-date {
+		font-size: $fs-xl;
+		color: $bright-yellow;
+		line-height: normal;
+		padding-bottom: 20px
+	}
+
+	&-lastname .single-memory-name {
+		padding: 0 50px
+	}
+
+	&-heading {
+		width: 100%;
+		line-height: 2.5;
+		text-align: center;
+		color: $light-green;
+		transition: color ease-out $tr;
+		margin-bottom: 30px
+	}
+
+	// BIO SECTION STYLES
+
+	&-bio {
+		padding: 84px 0 178px;
+
+		> .container {
+			max-width: 630px
+		}
+
+		&-section {
+			color: $light-green;
+			transition: color ease-out $tr;
+
+			&:not(:last-child) {
+				margin-bottom: 36px
+			}
+		}
+
+		&-title {
+			font-size: 24px;
+			line-height: normal;
+			margin-bottom: 19px
+		}
+	}
+
+	// MEMORIES SECTION STYLES
+
+	&-memories {
+		padding: 103px 0;
+		transition: background-color ease-out $tr
+	}
+
+	&-no-memories {
+		line-height: normal;
+		color: $light-green;
+
+		&-img {
+			width: 352px;
+			margin-bottom: 44px;
+
+			img {
+				width: 100%
+			}
+		}
+
+		&-title {
+			font-size: 30px;
+			margin-bottom: 19px
+		}
+
+		&-desc {
+			color: $green;
+			margin-bottom: 28px
+		}
+
+		&-btn.btn.outlined {
+			background-color: $light-green;
+			border-color: $light-green
+		}
+	}
+
+	// MEDIA SECTION STYLES
+
+	&-media {
+		padding: 103px 0 110px;
+
+		&-title {
+			font-size: 24px;
+			line-height: normal;
+			color: $black-for-text;
+			margin-bottom: 80px;
+
+			@media (min-width: $lg) {
+				margin-bottom: 158px
+			}
+		}
+	}
+
+	.media-photos {
+		&-list {
+			column-gap: 20px;
+			row-gap: 30px
+		}
+
+		&-more {
+			margin-top: 24px;
+
+			button {
+				font-family: $ff;
+				font-size: $fs-md;
+				line-height: normal;
+				text-decoration: underline;
+				color: $black-for-text;
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+
+				&:hover {
+					text-decoration: none
+				}
+			}
+		}
+	}
+
+	.media-photo {
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+
+		@media (min-width: $sm) {
+			width: calc(50% - 10px)
+		}
+
+		@media (min-width: $lg) {
+			width: calc((100% - 60px) / 4)
+		}
+
+		&-inner {
+			position: relative;
+			width: 100%;
+			height: 400px;
+
+			@media (min-width: $md) {
+				height: 460px
+			}
+		}
+
+		&:hover {
+			cursor: none;
+
+			.media-photo-overlay,
+			.media-photo-cursor-text {
+				opacity: 1
+			}
+		}
+
+		&-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(0deg, rgba(1, 28, 26, 0.50) 0%, rgba(1, 28, 26, 0.50) 100%);
+			opacity: 0;
+			transition: opacity ease-out $tr;
+			pointer-events: none
+		}
+
+		&-cursor-text {
+			position: absolute;
+			font-family: $ff-title;
+			font-size: 40px;
+			line-height: 2.5;
+			font-weight: $fw-semibold;
+			color: $bright-yellow;
+			opacity: 0;
+			pointer-events: none
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover
+		}
+	}
+
+	.media-videos {
+		margin-top: 79px;
+
+		&-list {
+			column-gap: 20px;
+			row-gap: 30px
+		}
+	}
+
+	.media-video {
+		width: 100%;
+
+		@media (min-width: $md) {
+			width: calc(50% - 10px)
+		}
+
+		@media (min-width: $lg) {
+			width: calc((100% - 40px) / 3)
+		}
+
+		&-top {
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+
+			&:hover {
+				cursor: none;
+
+				.media-photo-overlay,
+				.media-photo-cursor-text {
+					opacity: 1
+				}
+			}
+
+			&.playing {
+				cursor: auto;
+
+				.media-photo-overlay,
+				.media-photo-cursor-text {
+					opacity: 0
+				}
+			}
+		}
+
+		&-bottom {
+			margin-top: 19px
+		}
+
+		&-name {
+			color: $black-for-text;
+			line-height: normal;
+			margin-bottom: 2px
+		}
+
+		&-more {
+			.media-video-top {
+				&:hover {
+					cursor: pointer;
+
+					.media-video-more-text {
+						opacity: 0.7
+					}
+				}
+			}
+
+			&-text {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				color: $green;
+				line-height: normal;
+				transition: opacity ease-out $tr;
+
+				.count {
+					font-family: $ff-title;
+					font-size: 60px;
+					line-height: $lh-1;
+					font-weight: $fw-semibold;
+					color: $light-green;
+					margin: 9px 0 6px;
+
+					@media (min-width: $xl) {
+						font-size: 90px
+					}
+				}
+
+				div:last-child {
+					color: $bright-yellow
+				}
+			}
+
+			.media-photo-overlay {
+				background-color: $very-dark-green;
+				opacity: 1
+			}
+		}
+
+		.media-photo-inner {
+			position: relative;
+			width: 100%;
+			height: 50vw;
+
+			@media (min-width: $md) {
+				height: 24vw
+			}
+
+			@media (min-width: $lg) {
+				height: 16vw
+			}
+
+			@media (min-width: $xl) {
+				height: 240px
+			}
+		}
+
+		video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover
+		}
+	}
+
+	.media-links {
+		margin-top: 75px;
+
+		&-title {
+			width: 100%;
+			font-size: 24px;
+			line-height: $lh-4;
+			color: $black-for-text;
+			margin-bottom: 19px;
+
+			@media (min-width: $lg) {
+				width: 542px;
+				padding: 19px 148px 0 0;
+				margin-bottom: 0
+			}
+		}
+
+		&-list {
+			width: 100%;
+
+			@media (min-width: $lg) {
+				width: calc(100% - 542px)
+			}
+		}
+	}
+
+	.media-link {
+		position: relative;
+		width: 100%;
+		color: $very-dark-green;
+		line-height: 2.06;
+		padding: 28px 0;
+		border-bottom: 0.5px solid $very-dark-green;
+		overflow: hidden;
+
+		&:first-child {
+			border-top: 0.5px solid $very-dark-green
+		}
+
+		&:hover {
+			cursor: none;
+
+			.media-photo-cursor-text {
+				opacity: 1
+			}
+
+			.media-link-url {
+				color: $very-dark-green
+			}
+		}
+
+		&-title {
+			width: 41%
+		}
+
+		&-url {
+			width: calc(59% - 47px);
+			font-size: $fs-sm;
+			line-height: normal;
+			color: $green;
+			transition: color ease-out $tr;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap
+		}
+
+		svg {
+			width: 24px;
+			margin-left: auto
+		}
+	}
+}

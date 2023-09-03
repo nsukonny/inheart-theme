@@ -89,7 +89,7 @@ export const nextStep = () => {
 						// 6th step is the last, need to clean all the data and redirect.
 						if( nextStepId === 6 ){
 							theLastStep()
-							// setTimeout( () => window.location.href = res.data.redirect, 3000 )
+							setTimeout( () => window.location.href = res.data.redirect, 3000 )
 						}
 						break
 
