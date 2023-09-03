@@ -984,12 +984,8 @@ export const checkStep4 = () => {
 			const
 				videoTag	= video.querySelector( 'video' ),
 				poster		= videoTag ? videoTag.dataset.posterId : ''
-				// link		= video.querySelector( '.droparea-video-loaded-link' )
 
-			stepData.videos.push( {
-				id		: video.querySelector( '.droparea-img-delete' ).dataset.id,
-				poster	: poster || ''
-			} )
+			stepData.videos.push( { poster: poster || '', id: video.querySelector( '.droparea-img-delete' ).dataset.id } )
 		} )
 	}
 
