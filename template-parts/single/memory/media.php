@@ -17,6 +17,7 @@
 
 		<?php
 		get_template_part( 'template-parts/single/memory/media', 'photos', ['id' => $args['id']] );
+		get_template_part( 'template-parts/single/memory/media', 'videos', ['id' => $args['id']] );
 		?>
 	</div>
 </section>

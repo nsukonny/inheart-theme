@@ -21,6 +21,11 @@ $sections = get_field( 'biography_sections', $id );
 
 		<?php
 		if( ! empty( $sections ) ){
+			usort( $sections, function( $a, $b ){
+				if( $a['position'] === $b['position'] ) return 0;
+
+				return ( $a['position'] < $b['position'] ) ? -1 : 1;
+			} );
 			?>
 			<div class="single-memory-bio-sections">
 				<?php
