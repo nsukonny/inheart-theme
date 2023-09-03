@@ -471,7 +471,7 @@ function ih_ajax_save_data_step_4(): void
 		$videos = empty( $videos ) ? null : $videos;
 	}
 
-	update_field( 'video', $videos, $memory_page_id );
+	update_field( 'field_638b12fcbe72b', $videos, $memory_page_id );
 
 	// External links.
 	$links = null;
@@ -497,7 +497,7 @@ function ih_ajax_save_data_step_4(): void
 		$links = empty( $links ) ? null : $links;
 	}
 
-	update_field( 'links', $links, $memory_page_id );
+	update_field( 'field_63a16b6567b55', $links, $memory_page_id );
 
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }

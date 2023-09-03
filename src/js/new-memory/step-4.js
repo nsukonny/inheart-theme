@@ -983,13 +983,12 @@ export const checkStep4 = () => {
 		videos.forEach( video => {
 			const
 				videoTag	= video.querySelector( 'video' ),
-				poster		= videoTag ? videoTag.dataset.posterId : '',
-				link		= video.querySelector( '.droparea-video-loaded-link' )
+				poster		= videoTag ? videoTag.dataset.posterId : ''
+				// link		= video.querySelector( '.droparea-video-loaded-link' )
 
 			stepData.videos.push( {
 				id		: video.querySelector( '.droparea-img-delete' ).dataset.id,
-				poster	: poster || '',
-				link	: link && link.innerText
+				poster	: poster || ''
 			} )
 		} )
 	}
