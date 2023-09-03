@@ -472,7 +472,6 @@ function ih_ajax_save_data_step_4(): void
 	}
 
 	update_field( 'field_638b12fcbe72b', $videos, $memory_page_id );
-	wp_die($memory_page_id . ' --- ' . print_r($videos, 1));
 
 	// External links.
 	$links = null;
