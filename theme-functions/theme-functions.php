@@ -205,6 +205,9 @@ add_action( 'before_delete_post', function( $id ){
 
 	$attachments = get_attached_media( '', $id );
 
+	if( isset( $_SESSION['memory_page_id'] ) && $_SESSION['memory_page_id'] === $id )
+		unset( $_SESSION['memory_page_id'] );
+
 	foreach( $attachments as $attachment ) wp_delete_attachment( $attachment->ID, 'true' );
 } );
 
