@@ -48,7 +48,7 @@ $hours	= floor( $diff / ( 60 * 60 ) );
 								fill="transparent"
 							></path>
 							<text>
-								<textPath xlink:href="#curve" startOffset="1000">
+								<textPath xlink:href="#curve" startOffset="0">
 									<?php
 									printf(
 										esc_html__( '%d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %s років ~ %s місяців ~ %d тижнів ~ %d днів ~ %d годин %s років ~ %s місяців ~ %d тижнів ~ %d днів ~ %d годин', 'inheart' ),
