@@ -9,12 +9,14 @@ document.addEventListener( 'DOMContentLoaded', () => {
 } )
 
 const lightboxGalleryInit = () => {
+	const moreButton = document.querySelector( '.media-photos-more button' )
+
 	lightbox.option( {
 		'resizeDuration': 200,
 		'wrapAround': true
-	} )
+	} );
 
-	document.querySelector( '.media-photos-more button' ).addEventListener( 'click', () => {
+	if( moreButton ) moreButton.addEventListener( 'click', () => {
 		document.querySelector( '.media-photo' ).click()
 	} )
 }
