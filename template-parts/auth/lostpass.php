@@ -30,14 +30,14 @@ if( $user_id && $send === 1 ){
 // User doesn't exist.
 if( ! get_user_by( 'id', $user_id ) ){
 	echo '<div class="activation-inner">'
-		. esc_html__( 'Account does not exist.', 'inheart' ) .
-		'</div>';
+		. esc_html__( 'Акаунт не існує', 'inheart' ) .
+	'</div>';
 	return;
 }
 
 // User has no field with code.
 if( ! $original_code = get_user_meta( $user_id, 'pass_recovery_code', true ) ){
-	echo '<div class="activation-inner">' . esc_html__( 'This User did not ask for a new password.', 'inheart' ) . '</div>';
+	echo '<div class="activation-inner">' . esc_html__( 'Цей Користувач не просив оновлення паролю', 'inheart' ) . '</div>';
 	return;
 }
 
@@ -54,10 +54,10 @@ if( $code === $original_code ){
 ?>
 
 <div class="activation-inner wrap-gray">
-	<?php esc_html_e( 'Change password parameters are invalid or account password is already changed.', 'inheart' ) ?>
+	<?php esc_html_e( 'Параметри зміни паролю невірні або пароль вже змінено.', 'inheart' ) ?>
 	<div class="btn-wrap">
 		<a href="<?php get_the_permalink( 10 ) ?>" class="btn md">
-			<?php esc_html_e( 'Login', 'inheart' ) ?>
+			<?php esc_html_e( 'Увійти', 'inheart' ) ?>
 		</a>
 	</div>
 </div>
