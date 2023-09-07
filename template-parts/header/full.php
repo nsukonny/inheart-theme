@@ -16,7 +16,7 @@ $logo_light	= get_field( 'header_logo_light', 'option' );
 <header class="header full">
 	<div class="container fluid">
 		<div class="header-inner flex flex-wrap align-center">
-			<div class="header-menu">
+			<div class="header-menu flex align-center">
 				<button
 					class="header-menu-button flex align-center"
 					type="button"
@@ -29,6 +29,10 @@ $logo_light	= get_field( 'header_logo_light', 'option' );
 					</span>
 					<?php esc_html_e( 'Меню', 'inheart' ) ?>
 				</button>
+
+				<ul class="header-langs flex">
+					<?php pll_the_languages() ?>
+				</ul>
 			</div>
 
 			<div class="header-logo flex align-center">

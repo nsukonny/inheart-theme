@@ -22,15 +22,22 @@ function ih_block_admin_access(): void
 		&& ! current_user_can( 'editor' )
 		&& ! ( defined( 'DOING_AJAX' ) && DOING_AJAX )
 	){
-		wp_redirect( get_the_permalink( 10 ) );	// To Login page.
+		wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );	// To Login page.
 		exit;
 	}
 
 	// Redirect not logged Visitors to Login page from url with 'stvorennya-storinki-pamyati' in it.
 	$uri = $_SERVER['REQUEST_URI'];
 
-	if( $uri && str_contains( $uri, 'stvorennya-storinki-pamyati' ) && ! is_user_logged_in() ){
-		wp_redirect( get_the_permalink( 10 ) . '?memory=1' );	// To Login page.
+	if(
+		$uri && ! is_user_logged_in() &&
+		(
+			str_contains( $uri, 'stvorennya-storinki-pamyati' ) ||
+			str_contains( $uri, 'sozdanie-straniczy-pamyati' ) ||
+			str_contains( $uri, 'creating-a-new-memory-page' )
+		)
+	){
+		wp_redirect( get_the_permalink( pll_get_post( 10 ) ) . '?memory=1' );	// To Login page.
 		exit;
 	}
 }
@@ -92,7 +99,8 @@ function ih_ajax_login(): void
 		$msg = '
 			Акаунт не активований.<br />
 			Будь ласка, перевірте свою пошту та розділ Спам.<br />
-			Або спробуйте надіслати посилання на активацію ще раз <a href="' . get_the_permalink( 529 ) .  '?user=' . $user_id . '&code=fail">тут</a>. 
+			Або спробуйте надіслати посилання на активацію ще раз 
+			<a href="' . get_the_permalink( pll_get_post( 529 ) ) .  '?user=' . $user_id . '&code=fail">тут</a>. 
 		';
 		wp_send_json_error( ['msg' => $msg] );
 	}
@@ -248,7 +256,7 @@ function ih_ajax_register(): void
 
 	wp_send_json_success( [
 		'msg'       => esc_html__( 'Успішно. Вітаємо!', 'inheart' ),
-		'redirect'	=> get_the_permalink( 16 ) . "?user=$new_user_id&registered=1"
+		'redirect'	=> get_the_permalink( pll_get_post( 16 ) ) . "?user=$new_user_id&registered=1"
 	] );
 }
 
@@ -294,7 +302,7 @@ function ih_ajax_resend_activation_link(): void
 
 	wp_send_json_success( [
 		'msg'       => esc_html__( 'Успішно. Вітаємо!', 'inheart' ),
-		'redirect'	=> get_the_permalink( 16 ) . "?user=$user_id&registered=1"
+		'redirect'	=> get_the_permalink( pll_get_post( 16 ) ) . "?user=$user_id&registered=1"
 	] );
 }
 
@@ -359,7 +367,7 @@ function ih_ajax_lost_password(): void
 
 	wp_send_json_success( [
 		'msg'       => esc_html__( 'Успішно, вітаємо!', 'inheart' ),
-		'redirect'	=> get_the_permalink( 14 ) . "?user=$user_id&send=1"
+		'redirect'	=> get_the_permalink( pll_get_post( 14 ) ) . "?user=$user_id&send=1"
 	] );
 }
 
@@ -410,7 +418,7 @@ function ih_ajax_new_password(): void
 	// Success!
 	wp_send_json_success( [
 		'msg'		=> esc_html__( 'Успішно, пароль змінено!', 'inheart' ),
-		'redirect'	=> get_the_permalink( 10 )	// To Login page.
+		'redirect'	=> get_the_permalink( pll_get_post( 10 ) )	// To Login page.
 	] );
 }
 

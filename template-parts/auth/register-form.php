@@ -86,7 +86,7 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 			<?php
 			printf(
 				__( 'Я вже маю акаунт %sУвійти%s', 'inheart' ),
-				'<a href="' . get_the_permalink( 10 ) . '">', '</a>'
+				'<a href="' . get_the_permalink( pll_get_post( 10 ) ) . '">', '</a>'
 			);
 			?>
 		</div>

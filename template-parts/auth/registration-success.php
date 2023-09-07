@@ -13,7 +13,7 @@ if( ! $user_id = $args['user_id'] ?? null ) return;
 if( ! get_user_meta( $user_id, 'activation_code', true ) ){
 	esc_html_e( 'Цей акаунт вже активований!', 'inheart' );
 	?>
-	<a href="<?php echo get_the_permalink( 10 ) ?>" class="btn md">
+	<a href="<?php echo get_the_permalink( pll_get_post( 10 ) ) ?>" class="btn md">
 		<?php esc_html_e( 'Увійти', 'inheart' ) ?>
 	</a>
 	<?php

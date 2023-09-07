@@ -22,7 +22,7 @@ $title	= get_field( 'no_memory_pages_title' );
 				echo '<h1 class="profile-memories-title">' . esc_html( $title ) . '</h1>';
 			?>
 
-			<a href="<?php echo get_the_permalink( 167 ) ?>" class="btn lg primary">
+			<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="btn lg primary">
 				<?php esc_html_e( "Створити сторінку пам'яті", 'inheart' ) ?>
 			</a>
 		</div>

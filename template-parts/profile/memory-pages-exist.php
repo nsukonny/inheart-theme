@@ -25,7 +25,7 @@ $title = get_field( 'memory_pages_title' );
 
 				<div class="memory-card create flex direction-column">
 					<a
-						href="<?php echo get_the_permalink( 167 ) ?>"
+						href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>"
 						class="memory-card-create-text flex direction-column align-center justify-center"
 						title="<?php esc_attr_e( "Створити нову сторінку пам'яті", 'inheart' ) ?>"
 					>

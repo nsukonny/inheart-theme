@@ -7,7 +7,7 @@
  * @subpackage inheart
  */
 
-if( ! is_user_logged_in() ) wp_redirect( get_the_permalink( 10 ) );
+if( ! is_user_logged_in() ) wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );
 
 get_header();
 

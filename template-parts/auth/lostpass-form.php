@@ -52,7 +52,7 @@
 			<?php
 			printf(
 				__( 'Ще не зареєстровані? %sСтворити акаунт %s', 'inheart' ),
-				'<a href="' . get_the_permalink( 12 ) . '">', '</a>'
+				'<a href="' . get_the_permalink( pll_get_post( 12 ) ) . '">', '</a>'
 			);
 			?>
 		</div>

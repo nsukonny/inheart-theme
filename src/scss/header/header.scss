@@ -53,6 +53,31 @@
 		}
 	}
 
+	&-langs {
+		margin-left: 25px;
+
+		.lang-item {
+			&:not(:last-child) {
+				margin-right: 9px
+			}
+
+			&.current-lang a {
+				opacity: 1
+			}
+
+			a {
+				font-size: $fs-sm;
+				color: $light-blue;
+				opacity: 0.4;
+				transition: opacity ease-out $tr;
+
+				&:hover {
+					opacity: 1
+				}
+			}
+		}
+	}
+
 	.container {
 		padding: 0
 	}
@@ -62,6 +87,10 @@ body {
 	&.theme-light {
 		.header-logo img.light {
 			display: none
+		}
+
+		.header-langs .lang-item a {
+			color: $very-dark-green
 		}
 	}
 

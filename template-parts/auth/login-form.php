@@ -45,7 +45,7 @@ $memory_tip			= get_field( 'memory_page_creation_tip' );
 					<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-light.svg' ?>" alt="" />
 				</span>
 				<span class="lostpass-wrapper">
-					<a class="link bright-yellow" href="<?php echo get_the_permalink( 14 ) ?>">
+					<a class="link bright-yellow" href="<?php echo get_the_permalink( pll_get_post( 14 ) ) ?>">
 						<?php esc_html_e( "Не пам'ятаю пароль", 'inheart' ) ?>
 					</a>
 				</span>
@@ -86,7 +86,7 @@ $memory_tip			= get_field( 'memory_page_creation_tip' );
 			<?php
 			printf(
 				__( 'Ще не зареєстровані? %sСтворити акаунт %s', 'inheart' ),
-				'<a href="' . get_the_permalink( 12 ) . '">', '</a>'
+				'<a href="' . get_the_permalink( pll_get_post( 12 ) ) . '">', '</a>'
 			);
 			?>
 		</div>

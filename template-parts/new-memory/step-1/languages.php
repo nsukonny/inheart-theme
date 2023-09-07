@@ -10,7 +10,7 @@
  * @subpackage inheart
  */
 
-$language	= $args['language'] ?? '';
+$language	= $args['language'] ?? get_locale();
 $lang_uk	= ( ! $language || $language === 'uk' ) ? ' active' : '';
 ?>
 
@@ -18,10 +18,10 @@ $lang_uk	= ( ! $language || $language === 'uk' ) ? ' active' : '';
 	<button class="new-memory-lang<?php echo $lang_uk ?>" data-lang="uk">
 		<?php esc_html_e( 'Українська', 'inheart' ) ?>
 	</button>
-	<button class="new-memory-lang<?php echo ( $language === 'ru-RU' ? ' active' : '' ) ?>" data-lang="ru-RU">
+	<button class="new-memory-lang<?php echo ( $language === 'ru_RU' ? ' active' : '' ) ?>" data-lang="ru_RU">
 		<?php esc_html_e( 'Російська', 'inheart' ) ?>
 	</button>
-	<button class="new-memory-lang<?php echo ( $language === 'en-US' ? ' active' : '' ) ?>" data-lang="en-US">
+	<button class="new-memory-lang<?php echo ( $language === 'en_US' ? ' active' : '' ) ?>" data-lang="en_US">
 		<?php esc_html_e( 'Англійська', 'inheart' ) ?>
 	</button>
 	<div class="new-memory-lang-bg"></div>

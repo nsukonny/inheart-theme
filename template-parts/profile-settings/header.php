@@ -12,7 +12,7 @@
 <div class="profile-settings-header flex direction-column">
 	<a
 		class="profile-settings-back flex align-center"
-		href="<?php echo get_the_permalink( 951 ) ?>"
+		href="<?php echo get_the_permalink( pll_get_post( 951 ) ) ?>"
 		title="<?php esc_attr_e( 'Повернутись до Профілю', 'inheart' ) ?>"
 	>
 		<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

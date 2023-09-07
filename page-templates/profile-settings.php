@@ -7,7 +7,7 @@
  * @subpackage inheart
  */
 
-if( ! is_user_logged_in() ) wp_redirect( get_the_permalink( 10 ) );
+if( ! is_user_logged_in() ) wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );
 
 get_header();
 
@@ -27,10 +27,10 @@ wp_enqueue_script( 'profile-settings', THEME_URI . '/static/js/profile-settings/
 			</div>
 
 			<div class="profile-settings-right flex flex-wrap align-start justify-end">
-				<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg outlined">
+				<a href="<?php echo get_the_permalink( pll_get_post( 951 ) ) ?>" class="btn lg outlined">
 					<?php esc_html_e( 'Скасувати', 'inheart' ) ?>
 				</a>
-				<a href="<?php echo get_the_permalink( 951 ) ?>" class="btn lg primary save-changes">
+				<a href="<?php echo get_the_permalink( pll_get_post( 951 ) ) ?>" class="btn lg primary save-changes">
 					<?php esc_html_e( 'Зберегти', 'inheart' ) ?>
 				</a>
 			</div>
