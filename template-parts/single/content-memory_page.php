@@ -18,6 +18,7 @@ $id = get_the_ID();
 	get_template_part( 'template-parts/single/memory/biography', null, ['id' => $id] );
 	get_template_part( 'template-parts/single/memory/memories', null, ['id' => $id] );
 	get_template_part( 'template-parts/single/memory/media', null, ['id' => $id] );
+	get_template_part( 'template-parts/single/memory/map', null, ['id' => $id] );
 	?>
-</article><!-- .memory-single -->
+</article>
 

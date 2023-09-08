@@ -35,7 +35,14 @@ body.single-memory_page {
 		}
 
 		.single-memory-bio-section,
-		.single-memory-no-memories {
+		.single-memory-no-memories,
+		.single-memory-media-title,
+		.media-video-name,
+		.media-video-duration,
+		.media-links-title,
+		.media-link,
+		.media-link:hover .media-link-url,
+		.map-desc-title {
 			color: $black-for-text
 		}
 
@@ -200,8 +207,9 @@ body.single-memory_page {
 		&-title {
 			font-size: 24px;
 			line-height: normal;
-			color: $black-for-text;
+			color: $light-blue;
 			margin-bottom: 80px;
+			transition: color ease-out $tr;
 
 			@media (min-width: $lg) {
 				margin-bottom: 158px
@@ -347,9 +355,15 @@ body.single-memory_page {
 		}
 
 		&-name {
-			color: $black-for-text;
+			color: $light-blue;
 			line-height: normal;
-			margin-bottom: 2px
+			margin-bottom: 2px;
+			transition: color ease-out $tr
+		}
+
+		&-duration {
+			color: $light-blue;
+			transition: color ease-out $tr
 		}
 
 		&-more {
@@ -429,7 +443,7 @@ body.single-memory_page {
 			width: 100%;
 			font-size: 24px;
 			line-height: $lh-4;
-			color: $black-for-text;
+			color: $light-blue;
 			margin-bottom: 19px;
 
 			@media (min-width: $lg) {
@@ -451,14 +465,15 @@ body.single-memory_page {
 	.media-link {
 		position: relative;
 		width: 100%;
-		color: $very-dark-green;
+		color: $light-blue;
 		line-height: 2.06;
 		padding: 28px 0;
-		border-bottom: 0.5px solid $very-dark-green;
+		border-bottom: 0.5px solid;
 		overflow: hidden;
+		transition: border-color ease-out $tr;
 
 		&:first-child {
-			border-top: 0.5px solid $very-dark-green
+			border-top: 0.5px solid
 		}
 
 		&:hover {
@@ -469,7 +484,7 @@ body.single-memory_page {
 			}
 
 			.media-link-url {
-				color: $very-dark-green
+				color: $light-blue
 			}
 		}
 
@@ -491,6 +506,70 @@ body.single-memory_page {
 		svg {
 			width: 24px;
 			margin-left: auto
+		}
+	}
+
+	// MAP SECTION STYLES
+
+	&-place {
+		padding: 114px 0 97px;
+
+		.single-memory-heading {
+			text-align: left
+		}
+	}
+
+	.map {
+		width: 630px;
+		height: 450px;
+
+		iframe {
+			width: 100%;
+			height: 100%
+		}
+
+		&-desc {
+			width: calc(100% - 630px);
+			color: $light-blue;
+			padding-left: 129px;
+			transition: color ease-out $tr;
+
+			&-title {
+				font-size: 24px;
+				color: $light-green;
+				margin-bottom: 17px;
+			}
+		}
+
+		&-address-detail {
+			color: $green;
+			margin-bottom: 50px;
+
+			svg {
+				display: block;
+				width: 24px;
+				margin-right: 4px
+			}
+
+			span {
+				display: block;
+				width: calc(100% - 28px)
+			}
+		}
+
+		&-howto {
+			color: $green;
+			margin-bottom: 50px
+		}
+
+		&-coords {
+			color: $light-green;
+
+			span {
+				font-size: $fs-sm;
+				color: $green;
+				margin-right: 2px
+			}
 		}
 	}
 }
