@@ -88,7 +88,13 @@ const showHiddenVideos = () => {
 
 window.initMap = function(){
 	const styledMapType = new google.maps.StyledMapType( { name: "Styled Map" } )
-	const mapArgs = {
+	const
+		mapEl	= document.getElementById( 'map' ),
+		lat		= mapEl.dataset.lat,
+		lng		= mapEl.dataset.long
+	const map = new google.maps.Map( mapEl, {
+		center					: { lat: parseFloat( lat ), lng: parseFloat( lng ) },
+		zoom					: 8,
 		disableDefaultUI		: true,
 		mapTypeId				: google.maps.MapTypeId.ROADMAP,
 		zoomControl				: true,
@@ -97,39 +103,9 @@ window.initMap = function(){
 		mapTypeControlOptions	: {
 			mapTypeIds: ["roadmap", "satellite", "hybrid", "terrain", "styled_map"]
 		}
-	}
-	const map = new google.maps.Map( document.getElementById( 'map' ), mapArgs )
-
-	// Associate the styled map with the MapTypeId and set it to display.
-	map.mapTypes.set( 'styled_map', styledMapType )
-	map.setMapTypeId( 'styled_map' )
-
-	// Add markers.
-	map.markers = [initMarker( map )]
-
-	// Set map's zoom and center.
-	map.setZoom( 8 )
-	map.setCenter( map.markers[0].getPosition() )
+	} )
 
 	return map
-}
-
-const initMarker = map => {
-	const
-		lat = document.querySelector( '#map' ).dataset.lat,
-		lng = document.querySelector( '#map' ).dataset.long,
-		latLng = {
-			lat: parseFloat( lat ),
-			lng: parseFloat( lng )
-		}
-
-	// Create marker instance.
-	return new google.maps.Marker( {
-		id			: 'marker',
-		position	: latLng,
-		map			: map,
-		is_active	: true
-	} )
 }
 
 window.addEventListener( 'scroll', () => {
@@ -137,13 +113,14 @@ window.addEventListener( 'scroll', () => {
 		topContent		= document.querySelector( '.single-memory-top-inner' ),
 		contentBottom	= topContent.getBoundingClientRect().bottom,
 		mapSection		= document.querySelector( '.single-memory-place' ),
-		mapSectionTop	= mapSection.getBoundingClientRect().top
+		mapSectionTop	= mapSection.getBoundingClientRect().top,
+		apiKey			= mapSection.querySelector( '#map' ).dataset.key
 
 	if( window.scrollY > 0 && ! mapSection.classList.contains( 'loaded' ) ){
 		const script	= document.createElement( 'script' )
 
 		mapSection.classList.add( 'loaded' )
-		script.src		= 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAw82kHiqky3qjTcbYY3wG_3FHrBirrbNc&callback=initMap'
+		script.src		= `https://maps.googleapis.com/maps/api/js?key=${ apiKey }&callback=initMap`
 		script.async	= true
 		document.head.appendChild( script )
 	}

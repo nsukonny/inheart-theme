@@ -15,6 +15,7 @@ $detail_address	= get_field( 'detail_address', $id );
 $longitude		= get_field( 'longitude', $id );
 $latitude		= get_field( 'latitude', $id );
 $how_to_find	= get_field( 'how_to_find', $id );
+$key			= get_field( 'google_maps_api_key', 'option' );
 ?>
 
 <section class="single-memory-place">
@@ -24,7 +25,13 @@ $how_to_find	= get_field( 'how_to_find', $id );
 		</h2>
 
 		<div class="single-memory-place-inner flex flex-wrap">
-			<div id="map" class="map" data-long="<?php echo esc_attr( $longitude ) ?>" data-lat="<?php echo esc_attr( $latitude ) ?>"></div>
+			<div
+				id="map"
+				class="map"
+				data-long="<?php echo esc_attr( $longitude ) ?>"
+				data-lat="<?php echo esc_attr( $latitude ) ?>"
+				data-key="<?php echo esc_attr( $key ) ?>"
+			></div>
 
 			<div class="map-desc">
 				<?php
