@@ -46,6 +46,10 @@ body.single-memory_page {
 			color: $black-for-text
 		}
 
+		.media-video-duration {
+			color: $green
+		}
+
 		.single-memory-no-memories-btn {
 			background-color: transparent;
 			border-color: $very-dark-green;
@@ -65,19 +69,37 @@ body.single-memory_page {
 
 .single-memory {
 	&-top {
-		padding: 156px 0 177px
+		padding: 100px 0 150px;
+
+		@media (min-width: $md) {
+			padding: 156px 0 177px
+		}
 	}
 
 	&-thumb {
 		position: relative;
+		width: 72%;
+		max-width: 300px;
+
+		@media (min-width: $md) {
+			width: auto;
+			max-width: none
+		}
 
 		&-border {
 			position: absolute;
-			top: -89px;
+			top: -53px;
 			left: 50%;
-			width: calc(100% + 154px);
-			height: calc(100% + 200px);
+			width: calc(100% + 94px);
+			height: calc(100% + 110px);
 			transform: translateX(-50%) rotate(180deg);
+
+			@media (min-width: $md) {
+				top: -89px;
+				left: 50%;
+				width: calc(100% + 154px);
+				height: calc(100% + 200px)
+			}
 
 			&::after {
 				content: '';
@@ -98,31 +120,58 @@ body.single-memory_page {
 
 		img {
 			display: block;
-			width: 406px;
-			height: 515px;
-			border-radius: 200px
+			width: 100%;
+			border-radius: 120px;
+
+			@media (min-width: $md) {
+				width: 406px;
+				height: 515px;
+				border-radius: 200px
+			}
 		}
 	}
 
 	&-info {
 		position: relative;
-		margin-top: -70px
+		margin-top: -25px;
+
+		@media (min-width: $md) {
+			margin-top: -70px
+		}
 	}
 
 	&-name {
 		font-family: $ff-title;
-		font-size: 90px;
+		font-size: 40px;
 		line-height: $lh-1;
 		font-weight: $fw-semibold;
 		color: $light-green;
-		text-align: center
+		text-align: center;
+
+		@media (min-width: $md) {
+			font-size: 90px
+		}
 	}
 
 	&-date {
-		font-size: $fs-xl;
+		font-size: $fs-md;
 		color: $bright-yellow;
 		line-height: normal;
-		padding-bottom: 20px
+		margin-top: 30px;
+
+		@media (min-width: $md) {
+			font-size: $fs-xl;
+			padding-bottom: 20px;
+			margin-top: 0
+		}
+
+		span {
+			position: relative;
+			display: block;
+			width: 20px;
+			height: 1px;
+			background-color: $bright-yellow
+		}
 	}
 
 	&-lastname .single-memory-name {
@@ -131,17 +180,25 @@ body.single-memory_page {
 
 	&-heading {
 		width: 100%;
-		line-height: 2.5;
+		line-height: $lh-1;
 		text-align: center;
 		color: $light-green;
 		transition: color ease-out $tr;
-		margin-bottom: 30px
+		margin-bottom: 30px;
+
+		@media (min-width: $md) {
+			line-height: 2.5
+		}
 	}
 
 	// BIO SECTION STYLES
 
 	&-bio {
-		padding: 84px 0 178px;
+		padding: 100px 0;
+
+		@media (min-width: $md) {
+			padding: 84px 0 178px
+		}
 
 		> .container {
 			max-width: 630px
@@ -166,7 +223,7 @@ body.single-memory_page {
 	// MEMORIES SECTION STYLES
 
 	&-memories {
-		padding: 103px 0;
+		padding: 100px 0;
 		transition: background-color ease-out $tr
 	}
 
@@ -185,31 +242,47 @@ body.single-memory_page {
 
 		&-title {
 			font-size: 30px;
-			margin-bottom: 19px
+			margin-bottom: 19px;
+			text-align: center
 		}
 
 		&-desc {
 			color: $green;
-			margin-bottom: 28px
+			margin-bottom: 28px;
+			text-align: center
 		}
 
 		&-btn.btn.outlined {
+			width: 100%;
 			background-color: $light-green;
-			border-color: $light-green
+			border-color: $light-green;
+
+			@media (min-width: $sm) {
+				width: auto
+			}
 		}
 	}
 
 	// MEDIA SECTION STYLES
 
 	&-media {
-		padding: 103px 0 110px;
+		padding: 100px 0;
+
+		@media (min-width: $md) {
+			padding: 103px 0 110px
+		}
 
 		&-title {
-			font-size: 24px;
+			font-size: $fs-md;
 			line-height: normal;
 			color: $light-blue;
-			margin-bottom: 80px;
+			margin-bottom: 40px;
 			transition: color ease-out $tr;
+
+			@media (min-width: $md) {
+				font-size: 24px;
+				margin-bottom: 80px
+			}
 
 			@media (min-width: $lg) {
 				margin-bottom: 158px
@@ -219,8 +292,13 @@ body.single-memory_page {
 
 	.media-photos {
 		&-list {
-			column-gap: 20px;
-			row-gap: 30px
+			column-gap: 4px;
+			row-gap: 5px;
+
+			@media (min-width: $xl) {
+				column-gap: 20px;
+				row-gap: 30px
+			}
 		}
 
 		&-more {
@@ -246,23 +324,24 @@ body.single-memory_page {
 
 	.media-photo {
 		position: relative;
-		width: 100%;
+		width: calc(50% - 2px);
 		overflow: hidden;
 
-		@media (min-width: $sm) {
-			width: calc(50% - 10px)
+		@media (min-width: $lg) {
+			width: calc((100% - 12px) / 4)
 		}
 
-		@media (min-width: $lg) {
+		@media (min-width: $xl) {
 			width: calc((100% - 60px) / 4)
 		}
 
 		&-inner {
 			position: relative;
 			width: 100%;
-			height: 400px;
+			aspect-ratio: 166 / 124;
 
-			@media (min-width: $md) {
+			@media (min-width: $xl) {
+				aspect-ratio: unset;
 				height: 460px
 			}
 		}
@@ -300,6 +379,7 @@ body.single-memory_page {
 		}
 
 		img {
+			display: block;
 			width: 100%;
 			height: 100%;
 			object-fit: cover
@@ -351,10 +431,15 @@ body.single-memory_page {
 		}
 
 		&-bottom {
-			margin-top: 19px
+			margin-top: 14px;
+
+			@media (min-width: $md) {
+				margin-top: 19px
+			}
 		}
 
 		&-name {
+			font-size: $fs-md;
 			color: $light-blue;
 			line-height: normal;
 			margin-bottom: 2px;
@@ -362,8 +447,13 @@ body.single-memory_page {
 		}
 
 		&-duration {
+			font-size: 13px;
 			color: $light-blue;
-			transition: color ease-out $tr
+			transition: color ease-out $tr;
+
+			@media (min-width: $md) {
+				font-size: $fs-sm
+			}
 		}
 
 		&-more {
@@ -414,22 +504,16 @@ body.single-memory_page {
 		.media-photo-inner {
 			position: relative;
 			width: 100%;
-			height: 50vw;
-
-			@media (min-width: $md) {
-				height: 24vw
-			}
-
-			@media (min-width: $lg) {
-				height: 16vw
-			}
+			aspect-ratio: 335 / 195;
 
 			@media (min-width: $xl) {
+				aspect-ratio: unset;
 				height: 240px
 			}
 		}
 
 		video {
+			display: block;
 			width: 100%;
 			height: 100%;
 			object-fit: cover
@@ -437,14 +521,23 @@ body.single-memory_page {
 	}
 
 	.media-links {
-		margin-top: 75px;
+		margin-top: 40px;
+
+		@media (min-width: $md) {
+			margin-top: 75px
+		}
 
 		&-title {
 			width: 100%;
-			font-size: 24px;
+			font-size: $fs-md;
 			line-height: $lh-4;
 			color: $light-blue;
-			margin-bottom: 19px;
+			margin-bottom: 40px;
+
+			@media (min-width: $md) {
+				font-size: 24px;
+				margin-bottom: 19px
+			}
 
 			@media (min-width: $lg) {
 				width: 542px;
@@ -467,10 +560,14 @@ body.single-memory_page {
 		width: 100%;
 		color: $light-blue;
 		line-height: 2.06;
-		padding: 28px 0;
+		padding: 20px 40px 20px 0;
 		border-bottom: 0.5px solid;
 		overflow: hidden;
 		transition: border-color ease-out $tr;
+
+		@media (min-width: $md) {
+			padding: 28px 0
+		}
 
 		&:first-child {
 			border-top: 0.5px solid
@@ -489,23 +586,43 @@ body.single-memory_page {
 		}
 
 		&-title {
-			width: 41%
+			width: 100%;
+			font-size: $fs-md;
+
+			@media (min-width: $md) {
+				width: 41%
+			}
 		}
 
 		&-url {
-			width: calc(59% - 47px);
-			font-size: $fs-sm;
+			width: 100%;
+			font-size: 13px;
 			line-height: normal;
 			color: $green;
 			transition: color ease-out $tr;
 			text-overflow: ellipsis;
 			overflow: hidden;
-			white-space: nowrap
+			white-space: nowrap;
+
+			@media (min-width: $md) {
+				width: calc(59% - 47px);
+				font-size: $fs-sm
+			}
 		}
 
 		svg {
+			position: absolute;
+			top: 50%;
+			right: 0;
 			width: 24px;
-			margin-left: auto
+			transform: translateY(-50%);
+
+			@media (min-width: $md) {
+				position: relative;
+				right: auto;
+				top: auto;
+				margin-left: auto
+			}
 		}
 	}
 
@@ -515,13 +632,21 @@ body.single-memory_page {
 		padding: 114px 0 97px;
 
 		.single-memory-heading {
-			text-align: left
+			@media (min-width: $md) {
+				text-align: left
+			}
 		}
 	}
 
 	.map {
-		width: 630px;
+		width: 100%;
 		height: 450px;
+		order: 2;
+
+		@media (min-width: $xl) {
+			width: 630px;
+			order: 1
+		}
 
 		iframe {
 			width: 100%;
@@ -529,15 +654,25 @@ body.single-memory_page {
 		}
 
 		&-desc {
-			width: calc(100% - 630px);
+			width: 100%;
 			color: $light-blue;
-			padding-left: 129px;
 			transition: color ease-out $tr;
+			order: 1;
+
+			@media (min-width: $xl) {
+				width: calc(100% - 630px);
+				padding-left: 129px;
+				order: 2
+			}
 
 			&-title {
-				font-size: 24px;
+				font-size: 22px;
 				color: $light-green;
 				margin-bottom: 17px;
+
+				@media (min-width: $md) {
+					font-size: 24px
+				}
 			}
 		}
 
@@ -558,17 +693,117 @@ body.single-memory_page {
 		}
 
 		&-howto {
+			font-size: $fs-md;
 			color: $green;
 			margin-bottom: 50px
 		}
 
 		&-coords {
+			font-size: $fs-md;
 			color: $light-green;
+			margin-bottom: 40px;
+
+			@media (min-width: $xl) {
+				margin-bottom: 0
+			}
 
 			span {
-				font-size: $fs-sm;
 				color: $green;
-				margin-right: 2px
+				margin-right: 2px;
+
+				@media (min-width: $md) {
+					font-size: $fs-sm
+				}
+			}
+		}
+	}
+
+	// CTA SECTION STYLES
+
+	&-cta {
+		padding: 100px 0 0;
+		margin-bottom: 86px;
+		background-color: $black;
+
+		@media (min-width: $xl) {
+			padding: 0;
+			margin-bottom: 97px;
+			background-color: transparent
+		}
+
+		&-inner {
+			position: relative;
+			justify-content: center;
+
+			@media (min-width: $xl) {
+				justify-content: flex-start;
+				border-radius: 30px;
+				border: 0.5px solid $dark-yellow;
+				background-color: $black;
+				padding: 81px 73px 81px 80px
+			}
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			max-width: 297px;
+
+			@media (min-width: $xl) {
+				position: absolute;
+				bottom: -18px;
+				right: 73px;
+				width: auto;
+				max-width: 100%;
+				height: 120%
+			}
+		}
+	}
+
+	.cta {
+		&-title {
+			color: $dark-yellow;
+			margin-bottom: 20px;
+			text-align: center;
+
+			@media (min-width: $xl) {
+				margin-bottom: 15px;
+				text-align: left
+			}
+		}
+
+		&-desc {
+			font-size: $fs-md;
+			color: $light-green;
+			margin-bottom: 30px;
+			text-align: center;
+
+			@media (min-width: $xl) {
+				font-size: $fs-lg;
+				margin-bottom: 27px;
+				text-align: left
+			}
+		}
+
+		&-left {
+			align-items: center;
+
+			@media (min-width: $xl) {
+				align-items: flex-start;
+				width: 52%
+			}
+
+			.btn {
+				width: 100%;
+				margin-bottom: 29px;
+
+				@media (min-width: $sm) {
+					width: auto
+				}
+
+				@media (min-width: $xl) {
+					margin-bottom: 0
+				}
 			}
 		}
 	}

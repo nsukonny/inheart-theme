@@ -35,7 +35,7 @@ $hours	= floor( $diff / ( 60 * 60 ) );
 				<div class="single-memory-thumb">
 					<?php echo get_the_post_thumbnail( $id, 'full' ) ?>
 					<div class="single-memory-thumb-border">
-						<svg viewBox="-20 -20 560 800" width="560" class="page-head-portrait-text">
+						<svg viewBox="-20 -20 560 800" class="page-head-portrait-text">
 							<path
 								id="curve"
 								d="M250.6289 0.9102h16s249.5
@@ -73,18 +73,18 @@ $hours	= floor( $diff / ( 60 * 60 ) );
 					<?php echo esc_html( "$first_name $middle_name" ) ?>
 				</div>
 				<div class="single-memory-lastname flex align-end justify-center">
-					<div class="single-memory-date hide-before-lg">
+					<div class="single-memory-date hide-before-md">
 						<?php echo esc_html( $born_at ) ?>
 					</div>
 					<div class="single-memory-name">
 						<?php echo esc_html( $last_name ) ?>
 					</div>
-					<div class="single-memory-date hide-before-lg">
+					<div class="single-memory-date hide-before-md">
 						<?php echo esc_html( $died_at ) ?>
 					</div>
 				</div>
-				<div class="single-memory-date hide-after-lg">
-					<?php echo esc_html( "$born_at - $died_at" ) ?>
+				<div class="single-memory-date hide-after-md flex flex-wrap align-center justify-between">
+					<?php echo esc_html( $born_at ), '<span></span>', esc_html( $died_at ) ?>
 				</div>
 			</div>
 		</div>

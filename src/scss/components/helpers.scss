@@ -72,6 +72,10 @@
 	justify-content: flex-end
 }
 
+.justify-between {
+	justify-content: space-between
+}
+
 .align-center {
 	align-items: center
 }
@@ -119,6 +123,12 @@
 }
 
 .hide-after {
+	&-md {
+		@media (min-width: $md) {
+			display: none
+		}
+	}
+
 	&-lg {
 		@media (min-width: $lg) {
 			display: none
@@ -127,6 +137,14 @@
 }
 
 .hide-before {
+	&-md {
+		display: none;
+
+		@media (min-width: $md) {
+			display: block
+		}
+	}
+
 	&-lg {
 		display: none;
 

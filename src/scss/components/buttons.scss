@@ -15,6 +15,7 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	text-align: center;
 	font-family: $ff;
 	font-size: $fs-sm;
 	color: $very-dark-green;
@@ -47,11 +48,18 @@
 	}
 
 	&.xl {
-		min-height: 70px;
-		font-size: $fs-md;
+		min-height: 48px;
+		font-size: 13px;
 		line-height: $lh-4;
-		padding: 23px 98px;
-		border-radius: 20px
+		padding: 13px 50px;
+		border-radius: $radius-input;
+
+		@media (min-width: $md) {
+			min-height: 70px;
+			font-size: $fs-md;
+			padding: 23px 98px;
+			border-radius: 20px
+		}
 	}
 
 	&.primary {
