@@ -19,7 +19,7 @@
 				<div class="cta-desc">
 					<?php esc_html_e( 'Створіть вічну сторінку спогадів про людину, яка вам була близька. Збережіть спогади для майбутніх поколінь', 'inheart' ) ?>
 				</div>
-				<a href="/" class="btn lg primary">
+				<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="btn lg primary">
 					<?php esc_html_e( 'Створити сторінку спогадів', 'inheart' ) ?>
 				</a>
 			</div>
