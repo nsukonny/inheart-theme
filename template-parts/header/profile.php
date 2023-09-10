@@ -26,7 +26,7 @@ $fullname	= "{$meta['first_name'][0]} {$meta['last_name'][0]}";
 					</g>
 				</mask>
 				<g mask="url(#mask0_1564_33234)">
-					<rect id="Color Fill" x="24" y="24" width="24" height="24" transform="rotate(-180 24 24)" fill="#011C1A"/>
+					<rect id="Color Fill" x="24" y="24" width="24" height="24" transform="rotate(-180 24 24)" fill="currentColor"/>
 				</g>
 			</g>
 		</svg>
