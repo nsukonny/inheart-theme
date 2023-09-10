@@ -5,7 +5,86 @@ body.single-memory_page {
 	background-color: $very-dark-green;
 	transition: background-color ease-out $tr;
 
+	.header.full .header-inner {
+		border-bottom-color: rgba(13, 81, 76, 0.60)
+	}
+
+	.header-menu-button {
+		color: $white
+	}
+
+	// BODY CHANGED BG TO LIGHT
+
 	&.theme-light {
+		background-color: $white;
+
+		// MEMORY THEMES WHEN THEME BECOME LIGHT ON SCROLL
+		&.black,
+		&.red,
+		&.blue {
+			background-color: $white;
+
+			.single-memory {
+				&-thumb-border {
+					&::after {
+						background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $white 100%)
+					}
+
+					svg text {
+						fill: $black-for-text
+					}
+				}
+
+				&-name,
+				&-date {
+					color: $black-for-text
+				}
+
+			}
+		}
+
+		&.black {
+			.single-memory {
+				&-heading,
+				&-bio-title,
+				&-bio-text,
+				&-no-memories-title,
+				&-media-title,
+				.media-links-title,
+				.media-link-title {
+					color: $theme-black
+				}
+			}
+		}
+
+		&.red {
+			.single-memory {
+				&-heading,
+				&-bio-title,
+				&-bio-text,
+				&-no-memories-title,
+				&-media-title,
+				.media-links-title,
+				.media-link-title {
+					color: $theme-red
+				}
+			}
+		}
+
+		&.blue {
+			.single-memory {
+				&-heading,
+				&-bio-title,
+				&-bio-text,
+				&-no-memories-title,
+				&-media-title,
+				.media-links-title,
+				.media-link-title {
+					color: $theme-blue
+				}
+			}
+		}
+
 		.header-logo img {
 			&.dark {
 				display: none
@@ -15,20 +94,6 @@ body.single-memory_page {
 				display: block
 			}
 		}
-	}
-
-	.header.full .header-inner {
-		border-bottom-color: rgba(13, 81, 76, 0.60)
-	}
-
-	.header-menu-button {
-		color: $white
-	}
-
-	// BODY CHANGED BG TO LIGHT:
-
-	&.light {
-		background-color: $white;
 
 		.single-memory-heading {
 			color: $black-for-text
@@ -63,6 +128,66 @@ body.single-memory_page {
 
 		.single-memory-memories {
 			background-color: $a-bit-blue-white
+		}
+	}
+
+	// MEMORY BLACK THEME
+
+	&.black {
+		background-color: $theme-black;
+
+		.single-memory {
+			&-thumb-border::after {
+				background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $theme-black 100%)
+			}
+
+			&-name {
+				color: $bright-yellow
+			}
+
+			&-date {
+				color: $white
+			}
+		}
+	}
+
+	// MEMORY RED THEME
+
+	&.red {
+		background-color: $theme-red;
+
+		.single-memory {
+			&-thumb-border::after {
+				background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $theme-red 100%)
+			}
+
+			&-name {
+				color: $bright-yellow
+			}
+
+			&-date {
+				color: $white
+			}
+		}
+	}
+
+	// MEMORY BLUE THEME
+
+	&.blue {
+		background-color: $theme-blue;
+
+		.single-memory {
+			&-thumb-border::after {
+				background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $theme-blue 100%)
+			}
+
+			&-name {
+				color: $light-blue
+			}
+
+			&-date {
+				color: #4D78AA
+			}
 		}
 	}
 }

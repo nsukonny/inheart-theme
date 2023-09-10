@@ -27,7 +27,9 @@ $logo_light	= get_field( 'header_logo_light', 'option' );
 						<span></span>
 						<span></span>
 					</span>
-					<?php esc_html_e( 'Меню', 'inheart' ) ?>
+					<span class="header-menu-button-label">
+						<?php esc_html_e( 'Меню', 'inheart' ) ?>
+					</span>
 				</button>
 
 				<ul class="header-langs flex">
@@ -44,7 +46,10 @@ $logo_light	= get_field( 'header_logo_light', 'option' );
 				</a>
 			</div>
 
-			<?php get_template_part( 'template-parts/header/profile' ) ?>
+			<?php
+			if( is_user_logged_in() ) get_template_part( 'template-parts/header/profile' );
+			else get_template_part( 'template-parts/header/actions' );
+			?>
 		</div><!-- .header-inner -->
 	</div><!-- .container -->
 </header><!-- .header -->

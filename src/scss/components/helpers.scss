@@ -141,7 +141,11 @@
 		display: none;
 
 		@media (min-width: $md) {
-			display: block
+			display: block;
+
+			&.flex {
+				display: flex
+			}
 		}
 	}
 
@@ -149,7 +153,11 @@
 		display: none;
 
 		@media (min-width: $lg) {
-			display: block
+			display: block;
+
+			&.flex {
+				display: flex
+			}
 		}
 	}
 }

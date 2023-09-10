@@ -127,11 +127,11 @@ window.addEventListener( 'scroll', () => {
 
 	if( contentBottom < -100 ){
 		if( mapSectionTop < window.innerHeight ){
-			if( document.body.classList.contains( 'light' ) ) document.body.classList.remove( 'light' )
+			if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
 		}else{
-			if( ! document.body.classList.contains( 'light' ) ) document.body.classList.add( 'light' )
+			if( ! document.body.classList.contains( 'theme-light' ) ) document.body.classList.add( 'theme-light' )
 		}
 	}else{
-		if( document.body.classList.contains( 'light' ) ) document.body.classList.remove( 'light' )
+		if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
 	}
 } )

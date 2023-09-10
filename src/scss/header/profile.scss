@@ -1,6 +1,10 @@
 .header-profile {
 	position: relative;
 
+	@media (min-width: $xl) {
+		width: 350px
+	}
+
 	&.opened {
 		.header-profile-dropdown {
 			display: block

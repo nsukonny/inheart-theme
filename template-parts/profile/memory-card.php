@@ -19,7 +19,7 @@ if( ! $firstname && ! $lastname ) return;
 ?>
 
 <div class="memory-card">
-	<div class="memory-card-top page-created-info flex direction-column align-center">
+	<a href="<?php echo get_the_permalink( $id ) ?>" class="memory-card-top page-created-info flex direction-column align-center">
 		<div class="page-created-thumb flex justify-center align-center">
 			<div class="page-created-thumb-border">
 				<span><?php esc_html_e( 'In memory of', 'inheart' ) ?></span>
@@ -42,7 +42,7 @@ if( ! $firstname && ! $lastname ) return;
 				<div class="memory-card-date died"><?php echo esc_attr( str_replace( '/', '.', $died_at ) ) ?></div>
 			</div>
 		</div>
-	</div><!-- .memory-card-top -->
+	</a><!-- .memory-card-top -->
 
 	<div class="memory-card-bottom">
 		<div class="memory-card-title">

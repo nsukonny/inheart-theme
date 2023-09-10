@@ -9,8 +9,10 @@
  * @subpackage inheart
  */
 
-$page_theme	= get_field( 'page_theme' ) ?: 'light';
-$logo_only	= get_field( 'logo_only' );
+$page_theme		= get_field( 'page_theme' ) ?: 'light';
+$page_theme		= is_singular( 'memory_page' ) ? 'dark' : 'light';
+$memory_theme	= is_singular( 'memory_page' ) ? get_field( 'theme' ) : 'classic';
+$logo_only		= get_field( 'logo_only' );
 ?>
 
 <!doctype html>
@@ -45,7 +47,7 @@ $logo_only	= get_field( 'logo_only' );
 	<?php wp_head() ?>
 </head>
 
-<body <?php body_class( "theme-$page_theme" ) ?>>
+<body <?php body_class( "theme-$page_theme $memory_theme" ) ?>>
 	<?php wp_body_open() ?>
 
 	<div class="wrapper">

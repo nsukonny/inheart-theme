@@ -1,8 +1,8 @@
 .header {
-	padding: 20px;
+	padding: 0 20px;
 
 	@media (min-width: $lg) {
-		padding: 42px 99px
+		padding: 0 99px
 	}
 
 	&.full {
@@ -11,6 +11,7 @@
 		}
 
 		.header-inner {
+			padding: 20px 0;
 			border-bottom: 1px solid $light-blue;
 
 			@media (min-width: $lg) {
@@ -19,9 +20,21 @@
 		}
 
 		.header-logo {
-			@media (min-width: $lg) {
+			height: 18px;
+			margin: 0 0 0 25px;
+
+			@media (min-width: $xl) {
 				height: 68px;
 				margin: 0 auto
+			}
+
+			a {
+				height: 100%
+			}
+
+			img, svg {
+				height: 100%;
+				width: auto
 			}
 		}
 	}
@@ -53,12 +66,32 @@
 		}
 	}
 
+	&-actions {
+		@media (min-width: $xl) {
+			width: 350px
+		}
+	}
+
+	&-sign-in {
+		font-size: $fs-sm;
+		color: $black;
+		margin-right: 27px;
+
+		&:hover {
+			color: $bright-yellow
+		}
+	}
+
 	&-langs {
 		margin-left: 25px;
 
 		.lang-item {
 			&:not(:last-child) {
-				margin-right: 9px
+				margin-right: 15px;
+
+				@media (min-width: $xl) {
+					margin-right: 9px
+				}
 			}
 
 			&.current-lang a {
@@ -66,10 +99,14 @@
 			}
 
 			a {
-				font-size: $fs-sm;
+				font-size: $fs-lg;
 				color: $light-blue;
 				opacity: 0.4;
 				transition: opacity ease-out $tr;
+
+				@media (min-width: $xl) {
+					font-size: $fs-sm
+				}
 
 				&:hover {
 					opacity: 1
@@ -97,6 +134,10 @@ body {
 	&.theme-dark {
 		.header-logo img.dark {
 			display: none
+		}
+
+		.header-sign-in {
+			color: $light-blue
 		}
 	}
 }
