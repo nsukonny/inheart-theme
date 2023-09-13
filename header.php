@@ -10,8 +10,8 @@
  */
 
 $page_theme		= get_field( 'page_theme' ) ?: 'light';
-$page_theme		= is_singular( 'memory_page' ) ? 'dark' : 'light';
-$memory_theme	= is_singular( 'memory_page' ) ? get_field( 'theme' ) : 'classic';
+$page_theme		= is_singular( 'memory_page' ) ? 'dark' : $page_theme;
+$memory_theme	= is_singular( 'memory_page' ) ? get_field( 'theme' ) : '';
 $logo_only		= get_field( 'logo_only' );
 ?>
 

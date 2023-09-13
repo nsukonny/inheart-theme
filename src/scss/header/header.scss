@@ -1,11 +1,24 @@
 .header {
-	padding: 0 20px;
+	padding: 20px;
 
 	@media (min-width: $lg) {
-		padding: 0 99px
+		padding: 42px 20px
+	}
+
+	@media (min-width: $xl) {
+		padding: 42px 99px
+	}
+
+	&.logo-only {
+		.header-langs {
+			position: relative;
+			z-index: 1
+		}
 	}
 
 	&.full {
+		padding: 0 20px;
+
 		@media (min-width: $lg) {
 			padding: 0 99px
 		}
@@ -42,12 +55,10 @@
 	&-logo {
 		width: 104px;
 		height: 68px;
-		margin: 0 auto;
 
 		@media (min-width: $lg) {
 			width: 98px;
-			height: auto;
-			margin: 0
+			height: auto
 		}
 
 		a {
