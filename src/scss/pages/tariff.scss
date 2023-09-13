@@ -1,0 +1,87 @@
+@import '../components/vars';
+
+.tariff {
+	&-wrapper {
+		color: $very-dark-green;
+		padding-top: 38px
+	}
+
+	&-left {
+		width: 630px
+	}
+
+	&-title {
+		margin-bottom: 40px
+	}
+
+	&-duration {
+		margin-bottom: 30px
+	}
+
+	&-plan {
+		border: 1px solid #8FB7C5;
+		border-radius: 30px;
+		padding: 30px;
+		margin-bottom: 24px;
+
+		&-header {
+			margin-bottom: 17px
+		}
+
+		&-title {
+			font-family: $ff-title;
+			font-size: 24px;
+			font-weight: $fw-semibold
+		}
+
+		&-optimal {
+			font-size: $fs-sm;
+			color: $dark-yellow;
+			padding: 0 10px 3px 5px
+		}
+
+		&-price {
+			font-family: $ff-title;
+			font-size: 30px;
+			font-weight: $fw-semibold;
+			color: $dark-yellow;
+			margin-left: auto
+		}
+	}
+}
+
+.switch {
+	position: relative;
+	display: block;
+	width: 44px;
+	height: 24px;
+	border: 1px solid $very-dark-green;
+	border-radius: $radius-langs;
+	margin: 0 10px;
+	cursor: pointer;
+	transition: border-color ease-out $tr;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 3px;
+		width: 18px;
+		height: 18px;
+		background-color: $very-dark-green;
+		border-radius: 50%;
+		transition:
+			left ease-out $tr,
+			background-color ease-out $tr
+	}
+
+	&.active {
+		border-color: $bright-yellow;
+
+		&::before {
+			left: calc(100% - 21px);
+			background-color: $bright-yellow
+		}
+	}
+}
