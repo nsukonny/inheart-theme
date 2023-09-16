@@ -56,7 +56,7 @@ function ih_ajax_login(): void
 
 	$login		= ih_clean( $_POST['email'] );
 	$pass		= trim( str_replace( ' ', '', $_POST['pass'] ) );
-	$referer	= ih_clean( $_POST['referer'] );
+//	$referer	= ih_clean( $_POST['referer'] );
 	$errors		= [];
 
 	// If data is not set - send error.
@@ -121,7 +121,7 @@ function ih_ajax_login(): void
 
 	wp_send_json_success( [
 		'msg'		=> sprintf( esc_html__( 'Вітаємо, %s!', 'inheart' ), $user->display_name ),
-		'redirect'	=> $referer ?: home_url( '/' )
+		'redirect'	=> get_field( 'redirect_after_login', 'option' ) ?: home_url( '/' )
 	] );
 }
 
