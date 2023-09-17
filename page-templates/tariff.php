@@ -19,7 +19,7 @@ wp_enqueue_script( 'tariff', THEME_URI . '/static/js/tariff/tariff.min.js', [], 
 <main class="main tariff flex direction-column">
 	<section class="tariff-wrapper">
 		<div class="container direction-column align-start">
-			<div class="tariff-inner flex flex-wrap">
+			<div class="tariff-inner flex flex-wrap justify-between">
 				<div class="tariff-left">
 					<h1 class="h2 tariff-title">
 						<?php the_title() ?>
@@ -34,7 +34,13 @@ wp_enqueue_script( 'tariff', THEME_URI . '/static/js/tariff/tariff.min.js', [], 
 					<?php get_template_part( 'template-parts/tariff/plans', null, ['id' => $memory_page_id] ) ?>
 				</div>
 
-				<div class="tariff-right"></div>
+				<div class="tariff-right">
+					<h2 class="h2 tariff-title right">
+						<?php _e( 'Ваше замовлення', 'inheart' ) ?>
+					</h2>
+
+					<?php get_template_part( 'template-parts/tariff/order', null, ['id' => $memory_page_id] ) ?>
+				</div>
 			</div>
 		</div>
 	</section>

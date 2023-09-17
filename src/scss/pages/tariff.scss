@@ -1,31 +1,66 @@
 @import '../components/vars';
 
 .tariff {
+	background-color: $a-bit-blue-white;
+
 	&-wrapper {
 		color: $very-dark-green;
 		padding-top: 38px
+	}
+
+	&-inner {
+		margin-bottom: 30px
 	}
 
 	&-left {
 		width: 630px
 	}
 
+	&-right {
+		width: 572px
+	}
+
 	&-title {
-		margin-bottom: 40px
+		margin-bottom: 37px;
+
+		&.right {
+			margin-bottom: 28px
+		}
 	}
 
 	&-duration {
-		margin-bottom: 30px
+		font-size: $fs-lg;
+		padding-left: 7px;
+		margin-bottom: 32px
 	}
 
 	&-plan {
 		border: 1px solid #8FB7C5;
 		border-radius: 30px;
-		padding: 30px;
+		padding: 16px 23px 28px 28px;
 		margin-bottom: 24px;
+		cursor: pointer;
+		background-color: transparent;
+		transition:
+			opacity ease-out $tr,
+			background-color ease-out $tr,
+			border-color ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+
+		&.active {
+			background-color: $white;
+			border-color: $dark-yellow;
+
+			.tariff-plan-feature.highlighted {
+				background-color: #E6FFF6
+			}
+		}
 
 		&-header {
-			margin-bottom: 17px
+			margin-bottom: 16px
 		}
 
 		&-title {
@@ -46,6 +81,124 @@
 			font-weight: $fw-semibold;
 			color: $dark-yellow;
 			margin-left: auto
+		}
+
+		&-features {
+			column-gap: 8.5px;
+			row-gap: 7px
+		}
+
+		&-feature {
+			font-size: $fs-sm;
+			line-height: 2.21;
+			padding: 0 12px;
+			color: $very-dark-green;
+			border-radius: $radius-theme;
+			background-color: $a-bit-blue-white;
+			transition: background-color ease-out $tr;
+
+			&.highlighted {
+				background-color: $white
+			}
+		}
+	}
+
+	&-order {
+		background-color: $white;
+		border-radius: $radius-theme;
+		padding: 30px;
+
+		&-thumb {
+			position: relative;
+			width: 70px;
+			height: 90px;
+			border-radius: 35px;
+			overflow: hidden;
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(1deg, $very-dark-green 1.14%, rgba(1, 28, 26, 0.00) 63.47%)
+			}
+		}
+
+		&-header {
+			border-bottom: 0.5px solid #8FB7C5;
+			padding-bottom: 30px;
+			margin-bottom: 30px;
+
+			&-info {
+				width: calc(100% - 70px);
+				font-family: $ff-title;
+				font-size: $fs-lg;
+				font-weight: $fw-semibold;
+				padding-left: 20px
+			}
+		}
+
+		&-dates {
+			font-size: $fs-sm;
+			font-weight: $fw-regular;
+			color: $dark-yellow;
+			margin-top: 2px
+		}
+
+		&-rust {
+			background-color: $a-bit-blue-white;
+			border-radius: 30px;
+			overflow: hidden;
+
+			&-image {
+				width: 190px;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover
+				}
+			}
+
+			&-body {
+				width: calc(100% - 190px);
+				padding: 34px 22px 30px 30px
+			}
+
+			&-text {
+				margin-bottom: 22px;
+
+				h1, h2, h3, h4, h5, h6 {
+					line-height: 1;
+					margin-bottom: 7px
+				}
+
+				p {
+					color: #344948
+				}
+			}
+
+			&-qr {
+				position: relative;
+				border-radius: 16px;
+				padding: 27px 52px 26px;
+				overflow: hidden;
+				z-index: 0;
+
+				&::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					background: linear-gradient(74deg, $light-green 2.48%, rgba(195, 218, 226, 0) 55.6%);
+					opacity: 0.5;
+					z-index: -1
+				}
+			}
 		}
 	}
 }

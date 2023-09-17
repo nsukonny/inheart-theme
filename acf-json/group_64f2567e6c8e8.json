@@ -45,6 +45,51 @@
             "preview_size": "medium"
         },
         {
+            "key": "field_65072f4c023aa",
+            "label": "Зображення \"Пам'ять не іржавіє\"",
+            "name": "rust_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_65072fa0023ab",
+            "label": "Текст \"Пам'ять не іржавіє\"",
+            "name": "rust_text",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
             "key": "field_64fcdfbcc229d",
             "label": "Gogole Maps API",
             "name": "",
@@ -134,5 +179,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1694897436
+    "modified": 1694969797
 }

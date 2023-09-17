@@ -88,7 +88,7 @@
         },
         {
             "key": "field_63cab1d183464",
-            "label": "Ціна за 10 років",
+            "label": "Ціна за рік (10 років)",
             "name": "price_per_ten_years",
             "aria-label": "",
             "type": "number",
@@ -377,6 +377,28 @@
             "ui_on_text": "",
             "ui_off_text": "",
             "ui": 1
+        },
+        {
+            "key": "field_650758acdac3f",
+            "label": "Ціна QR-коду на металевій пластині",
+            "name": "qr_metal_price",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -397,5 +419,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1694554029
+    "modified": 1694980445
 }
