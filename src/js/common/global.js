@@ -302,3 +302,13 @@ export const hideElement = el => {
 
 	el.classList.add( 'hidden' )
 }
+
+/**
+ * Format number value.
+ *
+ * @param {string|number} number	Parameter value will be turned to float anyway.
+ * @returns {string}
+ */
+export const formatNumber = number => {
+	return parseFloat( number ).toLocaleString( 'us' )
+}

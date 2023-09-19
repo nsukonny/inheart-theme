@@ -1,3 +1,5 @@
+import { formatNumber } from '../common/global'
+
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
@@ -135,7 +137,7 @@ const updateTotal = () => {
 
 	if( ! totalPlace ) return
 
-	totalPlace.innerHTML = calculateTotal()
+	totalPlace.innerHTML = formatNumber( calculateTotal() )
 }
 
 /**
