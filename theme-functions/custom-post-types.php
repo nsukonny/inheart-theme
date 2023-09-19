@@ -49,9 +49,35 @@ $args = [
 	'menu_position'      => 7,
 	'has_archive'        => true,
 	'show_in_rest'       => true,
-	'supports'           => array( 'title' )
+	'supports'           => ['title']
 ];
 register_post_type( 'subscription_plan', $args );
+
+$labels = [
+	'name'          => __( 'Промокоди', 'inheart' ),
+	'singular_name' => __( 'Промокоди', 'inheart' ),
+	'add_new'       => __( 'Додати промокод', 'inheart' ),
+	'add_new_item'  => __( 'Додати новий промокод', 'inheart' ),
+	'edit_item'     => __( 'Редагувати', 'inheart' ),
+	'new_item'      => __( 'Новий промокод', 'inheart' ),
+	'all_item'      => __( 'Усі промокоди', 'inheart' ),
+	'view_item'     => __( 'Дивитись', 'inheart' ),
+	'search_item'   => __( 'Пошук', 'inheart' ),
+	'menu_item'     => __( 'Промокоди', 'inheart' ),
+];
+$args = [
+	'labels'             => $labels,
+	'public'             => true,
+	'publicly_queryable' => false,
+	'show_ui'            => true,
+	'hierarchical'       => false,
+	'menu_icon'          => 'dashicons-tickets',
+	'menu_position'      => 8,
+	'has_archive'        => true,
+	'show_in_rest'       => true,
+	'supports'           => ['title']
+];
+register_post_type( 'promocode', $args );
 
 /*
 $labels = array(
@@ -80,34 +106,6 @@ $args = array(
 );
 
 register_post_type( 'memory', $args );
-
-$labels = array(
-	'name'          => __( 'Промокоди', 'inheart' ),
-	'singular_name' => __( 'Промокоди', 'inheart' ),
-	'add_new'       => __( 'Додати промокод', 'inheart' ),
-	'add_new_item'  => __( 'Додати новий промокод', 'inheart' ),
-	'edit_item'     => __( 'Редагувати', 'inheart' ),
-	'new_item'      => __( 'Новий промокод', 'inheart' ),
-	'all_item'      => __( 'Усі промокоди', 'inheart' ),
-	'view_item'     => __( 'Дивитись', 'inheart' ),
-	'search_item'   => __( 'Пошук', 'inheart' ),
-	'menu_item'     => __( 'Промокоди', 'inheart' ),
-);
-
-$args = array(
-	'labels'             => $labels,
-	'public'             => true,
-	'publicly_queryable' => false,
-	'show_ui'            => true,
-	'hierarchical'       => false,
-	'menu_icon'          => 'dashicons-tickets',
-	'menu_position'      => 6,
-	'has_archive'        => true,
-	'show_in_rest'       => true,
-	'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
-
-register_post_type( 'promocode', $args );
 
 $labels = array(
 	'name'          => __( 'Підписки', 'inheart' ),

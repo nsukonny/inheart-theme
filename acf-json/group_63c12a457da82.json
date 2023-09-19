@@ -3,26 +3,6 @@
     "title": "Промокоди",
     "fields": [
         {
-            "key": "field_63c12a4701266",
-            "label": "Код",
-            "name": "code",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_63c12b0e01269",
             "label": "Тип",
             "name": "type",
@@ -187,5 +167,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1686509138
+    "modified": 1695158870
 }
