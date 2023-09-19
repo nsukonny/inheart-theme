@@ -34,7 +34,7 @@ wp_enqueue_script( 'tariff', THEME_URI . '/static/js/tariff/tariff.min.js', [], 
 					<?php get_template_part( 'template-parts/tariff/plans', null, ['id' => $memory_page_id] ) ?>
 				</div>
 
-				<div class="tariff-right">
+				<div class="tariff-right hidden">
 					<h2 class="h2 tariff-title right">
 						<?php _e( 'Ваше замовлення', 'inheart' ) ?>
 					</h2>
