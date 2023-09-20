@@ -1,6 +1,7 @@
 export const ajaxUrl	= window.wpData.ajaxUrl,
 	TRANSITION_DURATION	= 350,
-	BYTES_IN_MB			= 1048576
+	BYTES_IN_MB			= 1048576,
+	WINDOW_LG			= 992
 
 let isAjaxWorking = false,
 	targetElement
@@ -94,9 +95,19 @@ export const hideFormFieldError = label => {
  * @returns	{Boolean}				True if element is set, false if not.
  */
 export const setTargetElement = elementId => {
-	targetElement = document.querySelector( elementId )
+	if( ! elementId ){
+		targetElement = null
+		return false
+	}
 
-	return targetElement;
+	const el = document.querySelector( elementId )
+
+	if( el ){
+		targetElement = el
+		return true
+	}
+
+	return false
 }
 
 /**

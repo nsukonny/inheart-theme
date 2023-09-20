@@ -29,9 +29,9 @@ $price_ten_years	= get_field( 'price_per_ten_years' );
 			echo '<span class="tariff-plan-optimal">' . esc_html__( 'Оптимальна', 'inheart' ) . '</span>';
 		?>
 
-		<span class="tariff-plan-price">
+		<span class="tariff-plan-price hide-before-lg">
 			<span class="tariff-plan-price-amount"><?php echo number_format( $price_year, 0, '', ' ' ) ?></span>
-			<span class="tariff-plan-price-currency"><?php esc_html_e( 'грн / рік', 'inheart' ) ?></span>
+			<span class="tariff-plan-price-currency"><?php esc_html_e( 'грн/рік', 'inheart' ) ?></span>
 		</span>
 	</span>
 
@@ -79,6 +79,14 @@ $price_ten_years	= get_field( 'price_per_ten_years' );
 		if( get_field( 'epitaph_writing' ) )
 			echo '<span class="tariff-plan-feature highlighted epitaph-writing">' . __( 'Написання епітафії та біографії професійним автором', 'inheart' ) . '</span>';
 		?>
+	</span>
+
+	<span class="tariff-plan-footer flex align-center hide-after-lg">
+		<span class="btn lg outlined border-gold hover-gold"><?php _e( 'Далі', 'inheart' ) ?></span>
+		<span class="tariff-plan-price">
+			<span class="tariff-plan-price-amount"><?php echo number_format( $price_year, 0, '', ' ' ) ?></span>
+			<span class="tariff-plan-price-currency"><?php esc_html_e( 'грн/рік', 'inheart' ) ?></span>
+		</span>
 	</span>
 </button>
 

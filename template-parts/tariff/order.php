@@ -65,7 +65,7 @@ $rust_text	= get_field( 'rust_text', 'option' );
 	</div>
 
 	<form class="tariff-order-promo">
-		<fieldset class="flex align-end">
+		<fieldset class="flex flex-wrap align-end">
 			<label for="promo" class="label dark">
 				<span class="label-text"><?php esc_html_e( 'Промо-код', 'inheart' ) ?></span>
 				<input

@@ -13,38 +13,92 @@
 	}
 
 	&-left {
-		width: 630px
+		width: 100%;
+
+		@media (min-width: $lg) {
+			width: 48%
+		}
+
+		@media (min-width: $xl) {
+			width: 630px
+		}
 	}
 
 	&-right {
-		width: 572px
+		position: fixed;
+		top: 68px;
+		left: 0;
+		width: 100%;
+		height: calc(100vh - 68px);
+		overflow-y: auto;
+		background-color: $a-bit-blue-white;
+		padding-top: 30px;
+
+		@media (min-width: $lg) {
+			position: relative;
+			top: auto;
+			left: auto;
+			width: 48%;
+			height: auto;
+			overflow-y: visible;
+			background-color: transparent
+		}
+
+		@media (min-width: $xl) {
+			width: 572px
+		}
 	}
 
 	&-title {
-		margin-bottom: 37px;
+		text-align: center;
+		margin-bottom: 20px;
+
+		@media (min-width: $lg) {
+			text-align: left;
+			margin-bottom: 37px
+		}
 
 		&.right {
-			margin-bottom: 28px
+			position: relative;
+			padding: 0 40px;
+			margin-bottom: 20px;
+
+			@media (min-width: $lg) {
+				margin-bottom: 28px
+			}
 		}
 	}
 
 	&-duration {
-		font-size: $fs-lg;
-		padding-left: 7px;
-		margin-bottom: 31px
+		justify-content: center;
+		font-size: $fs-md;
+		margin-bottom: 40px;
+
+		@media (min-width: $lg) {
+			justify-content: flex-start;
+			font-size: $fs-lg;
+			padding-left: 7px;
+			margin-bottom: 31px
+		}
 	}
 
 	&-plan {
 		border: 1px solid #8FB7C5;
 		border-radius: 30px;
-		padding: 17px 23px 28px 28px;
-		margin-bottom: 25px;
+		padding: 20px 20px 0;
+		margin-bottom: 20px;
 		cursor: pointer;
 		background-color: transparent;
 		transition:
 			opacity ease-out $tr,
 			background-color ease-out $tr,
 			border-color ease-out $tr;
+		overflow: hidden;
+
+		@media (min-width: $lg) {
+			padding: 17px 23px 28px 28px;
+			margin-bottom: 25px
+		}
 
 		&:hover {
 			opacity: 0.7
@@ -60,7 +114,11 @@
 		}
 
 		&-header {
-			margin-bottom: 16px
+			margin-bottom: 13px;
+
+			@media (min-width: $lg) {
+				margin-bottom: 16px
+			}
 		}
 
 		&-title {
@@ -70,17 +128,26 @@
 		}
 
 		&-optimal {
+			display: block;
 			font-size: $fs-sm;
 			color: $dark-yellow;
-			padding: 0 10px 3px 5px
+
+			@media (min-width: $lg) {
+				display: inline-block;
+				padding: 0 10px 3px 5px
+			}
 		}
 
 		&-price {
 			font-family: $ff-title;
 			font-size: 30px;
-			font-weight: $fw-medium;
+			font-weight: $fw-semibold;
 			color: $dark-yellow;
-			margin-left: auto
+			margin-left: auto;
+
+			@media (min-width: $lg) {
+				font-weight: $fw-medium
+			}
 		}
 
 		&-features {
@@ -96,10 +163,40 @@
 			color: $very-dark-green;
 			border-radius: $radius-theme;
 			background-color: $a-bit-blue-white;
+			text-align: left;
 			transition: background-color ease-out $tr;
 
 			&.highlighted {
 				background-color: $white
+			}
+		}
+
+		&-footer {
+			position: relative;
+			padding: 24px 0;
+			margin-top: 20px;
+			background-color: $white;
+			z-index: 0;
+
+			&::before,
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: calc(100% + 60px)
+			}
+
+			&::before {
+				height: 100%;
+				background-color: $white;
+				z-index: -1
+			}
+
+			&::after {
+				height: 1px;
+				background-color: #8FB7C5;
 			}
 		}
 	}
@@ -107,7 +204,11 @@
 	&-order {
 		background-color: $white;
 		border-radius: $radius-theme;
-		padding: 30px;
+		padding: 30px 30px 100px;
+
+		@media (min-width: $lg) {
+			padding: 30px
+		}
 
 		&-thumb {
 			position: relative;
@@ -157,7 +258,15 @@
 
 			&-image {
 				position: relative;
-				width: 190px;
+				width: 100%;
+				height: 246px;
+				order: 2;
+
+				@media (min-width: $lg) {
+					width: 190px;
+					height: auto;
+					order: 1
+				}
 
 				img {
 					position: absolute;
@@ -165,17 +274,30 @@
 					left: 0;
 					width: 100%;
 					height: 100%;
-					object-fit: cover
+					object-fit: cover;
+					object-position: top left
 				}
 			}
 
 			&-body {
-				width: calc(100% - 190px);
-				padding: 35px 22px 30px 27px
+				width: 100%;
+				padding: 30px 20px 20px;
+				order: 1;
+
+				@media (min-width: $lg) {
+					width: calc(100% - 190px);
+					padding: 35px 22px 30px 27px;
+					order: 2
+				}
 			}
 
 			&-text {
+				text-align: center;
 				margin-bottom: 21px;
+
+				@media (min-width: $lg) {
+					text-align: left
+				}
 
 				h1, h2, h3, h4, h5, h6 {
 					line-height: 1;
@@ -184,17 +306,28 @@
 
 				p {
 					color: #344948;
-					line-height: $lh-3
+					line-height: 20px;
+					padding: 0 32px;
+
+					@media (min-width: $lg) {
+						line-height: $lh-3;
+						padding: 0
+					}
 				}
 			}
 
 			&-qr {
 				position: relative;
+				font-size: $fs-md;
 				border-radius: 16px;
-				padding: 28px 53px 24px;
+				padding: 27px 53px 26px 77px;
 				overflow: hidden;
 				z-index: 0;
 				cursor: pointer;
+
+				@media (min-width: $lg) {
+					padding: 28px 53px 24px
+				}
 
 				&::before {
 					content: '';
@@ -217,12 +350,16 @@
 				&-checkbox {
 					position: absolute;
 					top: 29px;
-					left: 29px;
+					left: 52px;
 					display: flex;
 					align-items: center;
 					justify-content: center;
 					width: 20px;
 					height: 20px;
+
+					@media (min-width: $lg) {
+						left: 29px
+					}
 
 					&::before {
 						content: '';
@@ -250,7 +387,11 @@
 
 			.label {
 				max-width: 338px;
-				margin-bottom: 0;
+				margin-bottom: 20px;
+
+				@media (min-width: $lg) {
+					margin-bottom: 0
+				}
 
 				&-text {
 					padding: 0 0 11px
@@ -258,8 +399,13 @@
 			}
 
 			.btn {
-				min-width: 154px;
-				margin-left: auto
+				width: 100%;
+
+				@media (min-width: $lg) {
+					width: auto;
+					min-width: 154px;
+					margin-left: auto
+				}
 			}
 		}
 
@@ -286,6 +432,16 @@
 		&-purchase {
 			margin-top: 24px
 		}
+	}
+
+	&-back {
+		position: absolute;
+		top: 10px;
+		left: 20px;
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		cursor: pointer
 	}
 }
 

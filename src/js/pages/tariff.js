@@ -1,4 +1,5 @@
-import { formatNumber } from '../common/global'
+import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { formatNumber, getTargetElement, setTargetElement, WINDOW_LG } from '../common/global'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -25,12 +26,14 @@ const switchDuration = () => {
 			const
 				singleYearPrice	= plan.dataset.price,
 				tenYearsPrice	= plan.dataset.priceTen,
-				amountEl		= plan.querySelector( '.tariff-plan-price-amount' )
+				amounts			= plan.querySelectorAll( '.tariff-plan-price-amount' )
 
-			if( ! singleYearPrice || ! tenYearsPrice || ! amountEl ) return
+			if( ! singleYearPrice || ! tenYearsPrice || ! amounts.length ) return
 
-			if( switcher.classList.contains( 'active' ) ) amountEl.innerHTML = tenYearsPrice
-			else amountEl.innerHTML = singleYearPrice
+			amounts.forEach( amountEl => {
+				if( switcher.classList.contains( 'active' ) ) amountEl.innerHTML = tenYearsPrice
+				else amountEl.innerHTML = singleYearPrice
+			} )
 		} )
 
 		const activePlan = document.querySelector( '.tariff-plan.active' )
@@ -50,7 +53,9 @@ const switchDuration = () => {
 const planSelection = () => {
 	const
 		plans			= document.querySelectorAll( '.tariff-plan' ),
-		qrMetalPriceEl	= document.querySelector( '.tariff-order-rust-qr-price' )
+		qrMetalPriceEl	= document.querySelector( '.tariff-order-rust-qr-price' ),
+		orderPart		= document.querySelector( '#tariff-right' ),
+		backButton		= document.querySelector( '.tariff-back' )
 
 	if( ! plans.length ) return
 
@@ -62,8 +67,13 @@ const planSelection = () => {
 				planName		= plan.querySelector( '.tariff-plan-title' ).innerHTML,
 				planPrice		= plan.querySelector( '.tariff-plan-price-amount' ).innerHTML,
 				planNamePlace	= document.querySelector( '.tariff-order-col.plan-name' ),
-				planPricePlace	= document.querySelector( '.tariff-order-col.plan-price span' ),
-				orderPart		= document.querySelector( '.tariff-right' )
+				planPricePlace	= document.querySelector( '.tariff-order-col.plan-price span' )
+
+			if( window.innerWidth < WINDOW_LG ){
+				window.scrollTo(0, 0 )
+				setTargetElement( '#tariff-right' )
+				disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
+			}
 
 			if( activePlan ) activePlan.classList.remove( 'active' )
 
@@ -78,6 +88,20 @@ const planSelection = () => {
 
 			updateTotal()
 		} )
+	} )
+
+	// Back to plans, hide order part.
+	if( backButton ){
+		backButton.addEventListener( 'click', () => {
+			enableBodyScroll( getTargetElement() )
+			setTargetElement( '' )
+			orderPart.classList.add( 'hidden' )
+		} )
+	}
+
+	// Window resize event.
+	window.addEventListener( 'resize', () => {
+		if( window.innerWidth > WINDOW_LG ) clearAllBodyScrollLocks()
 	} )
 }
 
