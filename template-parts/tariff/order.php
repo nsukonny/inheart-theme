@@ -64,6 +64,8 @@ $rust_text	= get_field( 'rust_text', 'option' );
 		</div>
 	</div>
 
+	<?php
+	/*
 	<form class="tariff-order-promo">
 		<fieldset class="flex flex-wrap align-end">
 			<label for="promo" class="label dark">
@@ -85,6 +87,8 @@ $rust_text	= get_field( 'rust_text', 'option' );
 			</button>
 		</fieldset>
 	</form>
+	*/
+	?>
 
 	<div class="tariff-order-table">
 		<div class="tariff-order-row plan flex flex-wrap justify-between align-center">
