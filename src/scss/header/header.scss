@@ -35,6 +35,7 @@
 		.header-logo {
 			height: 18px;
 			margin: 0 0 0 25px;
+			z-index: 10;
 
 			@media (min-width: $xl) {
 				height: 68px;
@@ -78,6 +79,8 @@
 	}
 
 	&-actions {
+		z-index: 10;
+
 		@media (min-width: $xl) {
 			width: 350px
 		}
@@ -94,15 +97,30 @@
 	}
 
 	&-langs {
-		margin-left: 25px;
+		margin-bottom: 60px;
+		column-gap: 30px;
+		z-index: 10;
+
+		@media (min-width: $md) {
+			column-gap: 15px;
+			margin: 0 0 0 25px;
+
+			@media (min-width: $xl) {
+				column-gap: 9px
+			}
+		}
 
 		.lang-item {
-			&:not(:last-child) {
-				margin-right: 15px;
+			opacity: 0;
+			transform: translateY(25px);
+			transition:
+				opacity ease-out $tr,
+				transform ease-out $tr;
+			transition-delay: $tr;
 
-				@media (min-width: $xl) {
-					margin-right: 9px
-				}
+			@media (min-width: $md) {
+				opacity: 1;
+				transform: none
 			}
 
 			&.current-lang a {
@@ -135,6 +153,13 @@ body {
 	&.theme-light {
 		.header-logo img.light {
 			display: none
+		}
+
+		.header.menu-opened,
+		.header-nav-wrap {
+			.header-langs .lang-item a {
+				color: $light-blue
+			}
 		}
 
 		.header-langs .lang-item a {

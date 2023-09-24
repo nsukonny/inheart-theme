@@ -1,50 +1,194 @@
-.header-menu {
-	@media (min-width: $xl) {
-		width: 350px
+.header {
+	&.menu-visible .header-nav-wrap {
+		visibility: visible;
+		z-index: 10;
+		pointer-events: auto
 	}
 
-	&-button {
-		font-family: $ff;
-		background-color: transparent;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		transition: opacity ease-out $tr;
-
-		&:hover {
-			opacity: 0.7
+	&.menu-opened {
+		.header-nav-wrap {
+			opacity: 1
 		}
 
-		&-lines {
-			position: relative;
-			display: block;
-			width: 14px;
-			height: 13px;
+		.menu-item,
+		.header-nav-icons a,
+		.lang-item {
+			opacity: 1;
+			transform: translateY(0)
+		}
 
-			span {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 1px;
-				background-color: $dark-yellow;
+		.header-menu-button {
+			color: $dark-yellow;
+
+			&-lines span {
+				top: 6px;
+
+				&:first-child {
+					transform: rotate(45deg)
+				}
 
 				&:nth-child(2) {
-					top: 6px
+					opacity: 0
 				}
 
 				&:last-child {
-					top: 12px
+					transform: rotate(-45deg)
 				}
 			}
 		}
 
-		&-label {
+		.header-logo img {
 			display: none;
 
-			@media (min-width: $xl) {
+			&.light {
+				display: block
+			}
+		}
+
+		.header-profile-button {
+			color: $dark-yellow
+		}
+	}
+
+	&-nav {
+		&-wrap {
+			opacity: 0;
+			visibility: hidden;
+			z-index: -10;
+			pointer-events: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: $very-dark-green;
+			padding: 150px 30px 100px;
+			overflow-y: auto;
+			transition: opacity ease-out $tr
+		}
+
+		&-icons {
+			column-gap: 30px;
+			margin-top: 60px;
+
+			a {
+				opacity: 0;
+				transform: translateY(25px);
+				transition:
+					opacity ease-out $tr,
+					transform ease-out $tr;
+				transition-delay: $tr;
+
+				&:hover {
+					opacity: 0.7
+				}
+
+				svg {
+					display: block;
+					height: 24px;
+					width: auto
+				}
+			}
+		}
+
+		.menu {
+			display: flex;
+			flex-direction: column;
+			row-gap: 2.222vw;
+			counter-reset: item;
+			margin: 0 auto;
+
+			&-item {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				row-gap: 0.833vw;
+				counter-increment: item;
+				opacity: 0;
+				transform: translateY(25px);
+				transition:
+					opacity ease-out $tr,
+					transform ease-out $tr;
+				transition-delay: $tr;
+
+				&::before {
+					content: counter(item, decimal-leading-zero);
+					counter-increment: li;
+					font-size: 1.111em;
+					color: #849da6
+				}
+
+				a {
+					font-family: $ff-title;
+					color: $dark-yellow;
+					font-size: 4.167em;
+					line-height: 113%;
+					text-align: center;
+
+					&:hover {
+						color: $bright-yellow
+					}
+				}
+			}
+		}
+	}
+
+	&-menu {
+		@media (min-width: $xl) {
+			width: 350px
+		}
+
+		&-button {
+			position: relative;
+			font-family: $ff;
+			background-color: transparent;
+			border: none;
+			padding: 0;
+			cursor: pointer;
+			z-index: 10;
+			transition:
+				opacity ease-out $tr,
+				color ease-out $tr;
+
+			&:hover {
+				opacity: 0.7
+			}
+
+			&-lines {
+				position: relative;
 				display: block;
-				margin-left: 13px
+				width: 14px;
+				height: 13px;
+
+				span {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 1px;
+					background-color: $dark-yellow;
+					transition:
+						transform ease-out $tr,
+						top ease-out $tr,
+						opacity ease-out $tr;
+
+					&:nth-child(2) {
+						top: 6px
+					}
+
+					&:last-child {
+						top: 12px
+					}
+				}
+			}
+
+			&-label {
+				display: none;
+
+				@media (min-width: $xl) {
+					display: block;
+					margin-left: 13px
+				}
 			}
 		}
 	}

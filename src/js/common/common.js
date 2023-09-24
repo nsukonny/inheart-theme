@@ -1,8 +1,37 @@
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { getTargetElement, setTargetElement } from './global'
+
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
+	toggleMenu()
 	toggleProfileMenu()
 } )
+
+const toggleMenu = () => {
+	const
+		menuButton	= document.querySelector( '.header-menu-button' ),
+		menuWrap	= document.querySelector( '#header-nav-wrap' ),
+		header		= document.querySelector( '.header' )
+
+	if( ! header || ! menuButton || ! menuWrap ) return
+
+	menuButton.addEventListener( 'click', () => {
+		setTargetElement( '#header-nav-wrap' )
+
+		if( ! header.classList.contains( 'menu-opened' ) ){
+			window.scrollTo(0, 0 )
+			header.classList.add( 'menu-visible', 'menu-opened' )
+			disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
+		}else{
+			header.classList.remove( 'menu-opened' )
+			setTimeout( () => {
+				header.classList.remove( 'menu-visible' )
+				enableBodyScroll( getTargetElement() )
+			}, 350 )
+		}
+	} )
+}
 
 /**
  * Show/hide header profile dropdown menu.

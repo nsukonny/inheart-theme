@@ -11,12 +11,46 @@
 
 $logo_dark	= get_field( 'header_logo_dark', 'option' );
 $logo_light	= get_field( 'header_logo_light', 'option' );
+$socials	= get_field( 'social_icons', 'option' );
 ?>
 
 <header class="header full">
 	<div class="container fluid">
 		<div class="header-inner flex flex-wrap align-center">
 			<div class="header-menu flex align-center">
+				<div id="header-nav-wrap" class="header-nav-wrap">
+					<ul class="header-langs flex align-center justify-center hide-after-md">
+						<?php pll_the_languages() ?>
+					</ul>
+
+					<?php
+					wp_nav_menu( [
+						'theme_location'	=> 'header_menu',
+						'container'			=> 'nav',
+						'container_class'	=> 'header-nav',
+						'container_id'		=> 'header-nav'
+					] );
+
+					if( ! empty( $socials ) ){
+						echo '<div class="header-nav-icons flex align-center justify-center">';
+
+						foreach(  $socials as $soc ){
+							$icon	= $soc['icon'];
+							$url	= $soc['url'];
+
+							if( ! $icon || ! $url ) continue;
+							?>
+							<a href="<?php echo esc_url( $url ) ?>" target="_blank">
+								<?php echo wp_get_attachment_image( $icon['id'], 'icon', false, ['loading' => 'lazy', 'class' => 'style-svg'] ) ?>
+							</a>
+							<?php
+						}
+
+						echo '</div>';
+					}
+					?>
+				</div>
+
 				<button
 					class="header-menu-button flex align-center"
 					type="button"
@@ -32,7 +66,7 @@ $logo_light	= get_field( 'header_logo_light', 'option' );
 					</span>
 				</button>
 
-				<ul class="header-langs flex">
+				<ul class="header-langs flex hide-before-md">
 					<?php pll_the_languages() ?>
 				</ul>
 			</div>
