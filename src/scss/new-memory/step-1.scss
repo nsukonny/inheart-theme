@@ -1,33 +1,56 @@
 .new-memory {
 	&-langs {
 		position: relative;
+		width: 100%;
 		border: 1px solid $very-dark-green;
-		border-radius: $radius-langs
+		border-radius: $radius-langs;
+
+		@media (min-width: $md) {
+			width: auto
+		}
 	}
 
 	&-lang {
 		position: relative;
-		width: 138px;
-		padding: 16px 0;
+		width: calc(100% / 3);
 		background-color: transparent;
 		border: none;
-		font-size: $fs-sm;
+		font-size: 13px;
 		color: $very-dark-green;
+		padding: 13px 0;
 		cursor: pointer;
 		text-align: center;
 		z-index: 1;
 		transition: color ease-out $tr;
 
+		@media (min-width: $md) {
+			width: 138px;
+			font-size: $fs-sm;
+			padding: 16px 0
+		}
+
 		&:first-of-type.active ~ .new-memory-lang-bg {
-			left: 3px
+			left: 2px;
+
+			@media (min-width: $md) {
+				left: 3px
+			}
 		}
 
 		&:nth-of-type(2).active ~ .new-memory-lang-bg {
-			left: 141px
+			left: calc(100% / 3);
+
+			@media (min-width: $md) {
+				left: 141px
+			}
 		}
 
 		&:last-of-type.active ~ .new-memory-lang-bg {
-			left: 279px
+			left: calc((100% / 3) * 2);
+
+			@media (min-width: $md) {
+				left: 279px
+			}
 		}
 
 		&.active {
@@ -36,12 +59,18 @@
 
 		&-bg {
 			position: absolute;
-			top: 3px;
-			width: 132px;
-			height: calc(100% - 6px);
+			top: 2px;
+			width: calc(100% / 3);
+			height: 41px;
 			background-color: $very-dark-green;
 			border-radius: $radius-langs;
-			transition: left ease-out $tr
+			transition: left ease-out $tr;
+
+			@media (min-width: $md) {
+				top: 3px;
+				width: 132px;
+				height: 42px
+			}
 		}
 	}
 

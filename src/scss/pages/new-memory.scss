@@ -20,8 +20,12 @@
 
 	&-step {
 		display: none;
-		padding-top: 39px;
+		padding-top: 20px;
 		transition: opacity ease-out $tr;
+
+		@media (min-width: $md) {
+			padding-top: 39px
+		}
 
 		&.active {
 			display: flex;
@@ -34,15 +38,34 @@
 		}
 
 		&-0 {
-			padding-top: 76px;
+			@media (min-width: $md) {
+				padding-top: 76px
+			}
 
 			.new-memory-step-desc {
-				font-size: $fs-lg
+				font-size: 16px;
+				margin-bottom: 16px;
+
+				@media (min-width: $md) {
+					font-size: $fs-lg;
+					margin-bottom: 54px
+				}
 			}
 		}
 
-		&-1 .new-memory-step-desc {
-			margin-bottom: 20px
+		&-1 {
+			.new-memory-step-title {
+				margin-bottom: 20px
+			}
+
+			.new-memory-step-desc {
+				font-size: $fs-md;
+				margin-bottom: 8px;
+
+				@media (min-width: $md) {
+					margin-bottom: 20px
+				}
+			}
 		}
 
 		&-2 .new-memory-step-desc,
@@ -58,13 +81,22 @@
 		}
 
 		&-suptitle {
-			font-size: $fs-lg;
+			font-size: 13px;
 			color: $green;
-			margin-bottom: 12px
+			margin-bottom: 8px;
+
+			@media (min-width: $md) {
+				font-size: $fs-lg;
+				margin-bottom: 12px
+			}
 		}
 
 		&-title {
-			margin-bottom: 19px;
+			margin-bottom: 8px;
+
+			@media (min-width: $md) {
+				margin-bottom: 19px
+			}
 
 			h1 {
 				@extend .h2
@@ -122,23 +154,27 @@
 	max-width: 522px;
 	flex-grow: 1;
 	background-color: $white;
-	padding: 40px 109px 51px 0;
+	padding: 20px 20px 36px;
 	border-top-right-radius: $radius-theme;
-	margin-top: 40px;
+	margin-top: 20px;
+
+	@media (min-width: $md) {
+		padding: 40px 109px 51px 0;
+		margin-top: 40px
+	}
 
 	&::before {
-		display: none;
 		content: '';
 		position: absolute;
 		top: 0;
 		right: 100%;
-		width: calc((100vw - 720px) / 2);
+		width: 100px;
 		height: 100%;
 		background-color: $white;
 		border-bottom-left-radius: $radius-theme;
 
 		@media (min-width: $md) {
-			display: block
+			width: calc((100vw - 720px) / 2)
 		}
 
 		@media (min-width: $lg) {

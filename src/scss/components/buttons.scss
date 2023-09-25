@@ -29,7 +29,11 @@
 	}
 
 	&.min-width {
-		min-width: 190px
+		min-width: 128px;
+
+		@media (min-width: $md) {
+			min-width: 190px
+		}
 	}
 
 	&.sm {

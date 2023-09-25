@@ -51,7 +51,11 @@ label.label {
 	position: relative;
 	display: block;
 	width: 100%;
-	margin-bottom: 21px;
+	margin-bottom: 16px;
+
+	@media (min-width: $md) {
+		margin-bottom: 21px
+	}
 
 	&-checkbox {
 		position: relative;
@@ -98,15 +102,29 @@ label.label {
 
 	&-file {
 		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		@media (min-width: $md) {
+			flex-direction: row;
+			align-items: center
+		}
 
 		.label-text {
-			display: inline-flex;
+			display: flex;
+			width: 100%;
 			padding: 11px 16px;
-			margin-right: 22px;
+			margin-bottom: 2px;
 			border: 0.5px solid $white;
 			border-radius: $radius-input;
 			cursor: pointer;
 			transition: background-color ease-out $tr;
+
+			@media (min-width: $md) {
+				display: inline-flex;
+				width: auto;
+				margin: 0 22px 0 0
+			}
 
 			&::before {
 				content: '';
@@ -154,11 +172,11 @@ label.label {
 
 	&.error {
 		input {
-			&[type="text"],
-			&[type="password"],
-			input[type="date"],
-			input[type="url"],
-			&[type="email"] {
+			&[type='text'],
+			&[type='password'],
+			input[type='date'],
+			input[type='url'],
+			&[type='email'] {
 				color: $error-primary;
 				border-color: $error-primary
 			}
@@ -187,11 +205,11 @@ label.label {
 		}
 
 		textarea,
-		input[type="text"],
-		input[type="password"],
-		input[type="date"],
-		input[type="url"],
-		input[type="email"] {
+		input[type='text'],
+		input[type='password'],
+		input[type='date'],
+		input[type='url'],
+		input[type='email'] {
 			color: $very-dark-green;
 			border-color: $very-dark-green;
 
@@ -204,17 +222,22 @@ label.label {
 
 .label-text {
 	display: block;
-	font-size: $fs-sm;
+	font-size: 13px;
 	color: $light-green;
-	padding: 0 16px 10px
+	padding: 0 16px 4px;
+
+	@media (min-width: $md) {
+		font-size: $fs-sm;
+		padding-bottom: 10px
+	}
 }
 
 textarea,
-input[type="text"],
-input[type="password"],
-input[type="date"],
-input[type="url"],
-input[type="email"] {
+input[type='text'],
+input[type='password'],
+input[type='date'],
+input[type='url'],
+input[type='email'] {
 	width: 100%;
 	height: 48px;
 	font-family: $ff;
@@ -234,7 +257,11 @@ input[type="email"] {
 	&::placeholder {
 		font-family: $ff;
 		font-size: $fs-md;
-		color: rgba(156, 180, 186, 0.51)
+		color: $very-dark-green !important;
+
+		@media (min-width: $md) {
+			color: rgba(156, 180, 186, 0.51) !important
+		}
 	}
 }
 
@@ -245,7 +272,7 @@ textarea {
 }
 
 input {
-	&[type="checkbox"] {
+	&[type='checkbox'] {
 		position: absolute;
 		width: 0;
 		height: 0;
@@ -264,7 +291,7 @@ input {
 		}
 	}
 
-	&[type="file"] {
+	&[type='file'] {
 		position: absolute;
 		width: 0;
 		height: 0;
