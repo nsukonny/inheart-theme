@@ -90,6 +90,7 @@
 		font-size: $fs-sm;
 		color: $black;
 		margin-right: 27px;
+		transition: color ease-out $tr;
 
 		&:hover {
 			color: $bright-yellow
@@ -160,6 +161,10 @@ body {
 			.header-langs .lang-item a {
 				color: $light-blue
 			}
+		}
+
+		.header.menu-opened .header-sign-in {
+			color: $light-blue
 		}
 
 		.header-langs .lang-item a {
