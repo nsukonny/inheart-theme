@@ -10,13 +10,14 @@
  * @subpackage inheart
  */
 
+$class			= isset( $args['hidden'] ) && $args['hidden'] ? '' : ' active';
 $title			= get_field( 'title_0' );
 $desc			= get_field( 'desc_0' );
 $themes_desc	= get_field( 'themes_desc' );
 $selected		= isset( $_SESSION['memory_page_id'] ) ? get_field( 'theme', $_SESSION['memory_page_id'] ) : '';
 ?>
 
-<section id="new-memory-step-0" class="new-memory-step new-memory-step-0 direction-column active">
+<section id="new-memory-step-0" class="new-memory-step new-memory-step-0 direction-column<?php echo esc_attr( $class ) ?>">
 	<div class="container direction-column">
 		<?php
 		if( $title ){

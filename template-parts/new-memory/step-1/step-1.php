@@ -10,11 +10,11 @@
  * @subpackage inheart
  */
 
+$class	= isset( $args['active'] ) && $args['active'] ? ' active' : '';
 $title	= get_field( 'title_1' );
 $desc	= get_field( 'desc_1' );
 
 if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
-	$language		= get_field( 'language', $memory_page_id );
 	$first_name		= get_field( 'first_name', $memory_page_id );
 	$last_name		= get_field( 'last_name', $memory_page_id );
 	$middle_name	= get_field( 'middle_name', $memory_page_id );
@@ -23,11 +23,11 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 	$thumb_title	= has_post_thumbnail( $memory_page_id )
 					? ih_get_shorter_filename( basename( get_the_post_thumbnail_url( $memory_page_id, 'full' ) ) ) : '';
 }else{
-	$language = $first_name = $last_name = $middle_name = $born_at = $died_at = $thumb_title = '';
+	$first_name = $last_name = $middle_name = $born_at = $died_at = $thumb_title = '';
 }
 ?>
 
-<section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column">
+<section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column<?php echo esc_attr( $class ) ?>">
 	<div class="container direction-column align-start">
 		<div class="new-memory-step-suptitle">
 			<?php esc_html_e( 'Крок 1', 'inheart' ) ?>
@@ -50,7 +50,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 			<?php
 		}
 
-		get_template_part( 'template-parts/new-memory/step-1/languages', null, ['language' => $language] );
+		get_template_part( 'template-parts/new-memory/step-1/languages' );
 		?>
 
 		<form class="form-white new-memory-main-info" enctype="multipart/form-data">

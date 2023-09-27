@@ -53,7 +53,7 @@ if( $ready_sections ){
 			?>
 			<div class="form-white sections-wrapper flex flex-wrap">
 				<div class="sections-sidebar">
-					<div class="sections-added">
+					<div class="sections-added hide-before-md">
 						<?php
 						if( $added_sections_title ){
 							?>
@@ -95,7 +95,7 @@ if( $ready_sections ){
 						<?php
 						if( $sections_title ){
 							?>
-							<div class="sections-title">
+							<div class="sections-title hide-before-md">
 								<?php echo esc_html( $sections_title ) ?>
 							</div>
 							<?php

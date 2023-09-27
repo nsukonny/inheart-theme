@@ -34,8 +34,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Exit if something is missing.
 	if( ! defineGlobalStepsItems() ) return
 
+	const initialStep = parseInt( document.querySelector( '.main.new-memory' ).dataset.initialStep )
+
 	// Step 0.
-	isStepFilled()
+	isStepFilled( initialStep )
 	selectTheme()
 	nextStep()
 
