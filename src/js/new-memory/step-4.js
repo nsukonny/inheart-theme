@@ -131,8 +131,12 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 
 				// Show images wrapper if the last images was loaded.
 				if( index === count - 1 ){
-					loader.classList.add( 'hidden' )
-					imagesWrapper.classList.remove( 'hidden' )
+					console.log('start')
+					setTimeout( () => {
+						loader.classList.add( 'hidden' )
+						imagesWrapper.classList.remove( 'hidden' )
+						console.log('end after 3s')
+					}, 3000 )
 				}
 			}
 		}else{
