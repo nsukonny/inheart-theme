@@ -43,15 +43,17 @@ export const uploadMediaPhotos = () => {
 		if( ! fileInstance.length ) return
 
 		// Loop through all files.
-		fileInstance.forEach( file => {
-			if( file.size > 50 * BYTES_IN_MB ){
-				console.error( `Не вдалося завантажити фото ${ file.name }` )
+		for( let i = 0; i < fileInstance.length; i++ ){
+			if( fileInstance[i].size > 50 * BYTES_IN_MB ){
+				showNotification( `Не вдалося завантажити фото ${ fileInstance[i].name }`, 'error' )
 				return false
 			}
 
-			if( file.type.startsWith( 'image/' ) ) processingUploadMediaPhoto( file, droparea )
-			else showNotification( `Тільки зображення - файл ${ file.name } не є зображенням`, 'warning' )
-		} )
+			if( fileInstance[i].type.startsWith( 'image/' ) )
+				processingUploadMediaPhoto( fileInstance[i], i, droparea, fileInstance.length )
+			else
+				showNotification( `Тільки зображення - файл ${ fileInstance[i].name } не є зображенням`, 'warning' )
+		}
 	}
 
 	droparea.addEventListener( 'drop', handlePhotosUpload )
@@ -62,9 +64,10 @@ export const uploadMediaPhotos = () => {
  * Processing photos uploading.
  *
  * @param file
+ * @param index
  * @param droparea
  */
-const processingUploadMediaPhoto = ( file, droparea ) => {
+const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 	if( ! file || ! droparea ) return
 
 	const
@@ -108,8 +111,6 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 	xhr.send( dropareaData )
 
 	xhr.onload = () => {
-		loader.classList.add( 'hidden' )
-
 		if( xhr.status == 200 ){
 			const
 				response	= JSON.parse( xhr.response ),
@@ -117,7 +118,6 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 			let imageHTML	= ''
 
 			if( data.success == 1 ){
-				imagesWrapper.classList.remove( 'hidden' )
 				imageHTML = getPhotoHTML( data, file.name )
 
 				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
@@ -128,6 +128,12 @@ const processingUploadMediaPhoto = ( file, droparea ) => {
 
 				stepData.photos.push( data.attachId )
 				localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+
+				// Show images wrapper if the last images was loaded.
+				if( index === count - 1 ){
+					loader.classList.add( 'hidden' )
+					imagesWrapper.classList.remove( 'hidden' )
+				}
 			}
 		}else{
 			// If no images loaded yet.

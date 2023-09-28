@@ -16,8 +16,8 @@ if( ! $user = wp_get_current_user() ) return;
 			<p>
 				<?php
 				printf(
-					esc_html__( 'Вітаємо, %s! Ви вже зайшли на сайт. %sНа Головну%s', 'inheart' ),
-					$user->display_name, '<a href="' . home_url( '/' ) . '">', '</a>'
+					esc_html__( 'Вітаємо, %s! Ви вже зайшли на сайт. %sДо Профілю%s', 'inheart' ),
+					$user->display_name, '<a href="' . get_the_permalink( pll_get_post( 951 ) ) . '">', '</a>'
 				);
 				?>
 			</p>
