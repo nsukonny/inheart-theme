@@ -108,6 +108,8 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 	</div><!-- .droparea-thumbs -->
 </div><!-- .droparea -->
 
+<?php
+/*
 <div class="video-link-wrapper">
 	<div class="video-link-marker flex align-center">
 		<span class="video-link-marker-line before"></span>
@@ -136,4 +138,6 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 		</button>
 	</div><!-- .video-link-row -->
 </div><!-- .video-link-wrapper -->
+*/
+?>
 
