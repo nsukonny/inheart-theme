@@ -83,16 +83,13 @@ export const checkStep5 = () => {
 
 	stepData.how_to_find = textarea.value
 
-	// Check if textarea is not set.
-	if( textarea.classList.contains( 'error' ) || ( textarea.required && ! textarea.value ) ) isFormValid = false
-
 	// Fill stepData again in the case localStorage was cleared.
 	fields.forEach( field => {
 		const
 			index	= field.name,
 			value	= field.value
 
-		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ) isFormValid = false
+		if( field.required && ! value ) isFormValid = false
 
 		stepData[index] = value
 	} )

@@ -73,7 +73,6 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 						type="text"
 						placeholder="<?php esc_html_e( 'Секція, ряд', 'inheart' ) ?>"
 						value="<?php echo esc_attr( $detail_address ) ?>"
-						required
 					/>
 				</label>
 			</fieldset>
@@ -104,7 +103,6 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 						type="text"
 						placeholder="<?php esc_html_e( 'Довгота', 'inheart' ) ?>"
 						value="<?php echo esc_attr( $longitude ) ?>"
-						required
 					/>
 				</label>
 				<label for="latitude" class="label dark half end">
@@ -115,7 +113,6 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 						type="text"
 						placeholder="<?php esc_html_e( 'Широта', 'inheart' ) ?>"
 						value="<?php echo esc_attr( $latitude ) ?>"
-						required
 					/>
 				</label>
 			</fieldset>
@@ -131,7 +128,6 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 						id="how_to_find"
 						name="how_to_find"
 						placeholder="<?php esc_html_e( 'Як знайти поховання', 'inheart' ) ?>"
-						required
 					><?php echo esc_html( $how_to_find ) ?></textarea>
 				</label>
 			</fieldset>

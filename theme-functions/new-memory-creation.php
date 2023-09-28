@@ -448,9 +448,6 @@ function ih_ajax_save_data_step_4(): void
 	if( ! $memory_page_id || empty( $step_data['photos'] ) )
 		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
-	if( count( $step_data['photos'] ) < 4 )
-		wp_send_json_error( ['msg' => esc_html__( 'Не меньше 4 фото', 'inheart' )] );
-
 	update_field( 'photo', $step_data['photos'], $memory_page_id );
 
 	// Videos.
@@ -533,16 +530,15 @@ function ih_ajax_save_data_step_5(): void
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
-	if(
-		! $step_data || ! $memory_page_id || ! $step_data['address'] || ! $step_data['detail_address'] ||
-		! $step_data['longitude'] || ! $step_data['latitude'] || ! $step_data['how_to_find']
-	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if( ! $step_data || ! $memory_page_id || ! $step_data['address'] )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
+	// Update Memory page fields.
 	update_field( 'address', $step_data['address'], $memory_page_id );
-	update_field( 'detail_address', $step_data['detail_address'], $memory_page_id );
-	update_field( 'longitude', $step_data['longitude'], $memory_page_id );
-	update_field( 'latitude', $step_data['latitude'], $memory_page_id );
-	update_field( 'how_to_find', $step_data['how_to_find'], $memory_page_id );
+	if( $step_data['detail_address'] ) update_field( 'detail_address', $step_data['detail_address'], $memory_page_id );
+	if( $step_data['longitude'] ) update_field( 'longitude', $step_data['longitude'], $memory_page_id );
+	if( $step_data['latitude'] ) update_field( 'latitude', $step_data['latitude'], $memory_page_id );
+	if( $step_data['how_to_find'] ) update_field( 'how_to_find', $step_data['how_to_find'], $memory_page_id );
 
 	// This is the last step. Clean session data and publish memory page.
 	unset( $_SESSION['memory_page_id'] );
@@ -562,7 +558,7 @@ function ih_ajax_save_data_step_5(): void
 
 	wp_send_json_success( [
 		'msg'		=> esc_html__( 'Дані Кроку 5 збережено успішно!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( 951 ) )	// Choose the Plan
+		'redirect'	=> get_the_permalink( pll_get_post( 951 ) )	// Profile
 	] );
 }
 
