@@ -16,7 +16,7 @@ if( ! $logo = get_field( 'header_logo_light', 'option' ) ) return;
 	<div class="container fluid">
 		<div class="header-inner flex align-center justify-between">
 			<div class="header-logo flex align-center">
-				<a href="<?php echo home_url( '/' ) ?>">
+				<a href="<?php echo home_url( '/profile/' ) ?>">
 					<?php echo wp_get_attachment_image( $logo['id'], 'ih-logo' ) ?>
 				</a>
 			</div>
