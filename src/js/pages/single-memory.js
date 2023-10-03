@@ -1,4 +1,7 @@
 import lightbox from 'lightbox2'
+import { Loader } from '@googlemaps/js-api-loader'
+
+let map, infowindows = []
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -6,6 +9,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	lightboxGalleryInit()
 	textFollowsTheCursor()
 	showHiddenVideos()
+
+	const
+		mapEl	= document.querySelector( '#map' ),
+		apiKey	= mapEl ? mapEl.dataset.key : null
+
+	if( ! mapEl ) return
+
+	mapEl.removeAttribute( 'data-key' )
+	initGoogleMap( mapEl, apiKey )
 } )
 
 const lightboxGalleryInit = () => {
@@ -86,44 +98,12 @@ const showHiddenVideos = () => {
 	} )
 }
 
-window.initMap = function(){
-	const styledMapType = new google.maps.StyledMapType( { name: "Styled Map" } )
-	const
-		mapEl	= document.getElementById( 'map' ),
-		lat		= mapEl.dataset.lat,
-		lng		= mapEl.dataset.long
-	const map = new google.maps.Map( mapEl, {
-		center					: { lat: parseFloat( lat ), lng: parseFloat( lng ) },
-		zoom					: 8,
-		disableDefaultUI		: true,
-		mapTypeId				: google.maps.MapTypeId.ROADMAP,
-		zoomControl				: true,
-		scrollwheel				: false,
-		disableDoubleClickZoom	: true,
-		mapTypeControlOptions	: {
-			mapTypeIds: ["roadmap", "satellite", "hybrid", "terrain", "styled_map"]
-		}
-	} )
-
-	return map
-}
-
 window.addEventListener( 'scroll', () => {
 	const
 		topContent		= document.querySelector( '.single-memory-top-inner' ),
 		contentBottom	= topContent.getBoundingClientRect().bottom,
 		mapSection		= document.querySelector( '.single-memory-place' ),
-		mapSectionTop	= mapSection.getBoundingClientRect().top,
-		apiKey			= mapSection.querySelector( '#map' ).dataset.key
-
-	if( window.scrollY > 0 && ! mapSection.classList.contains( 'loaded' ) ){
-		const script	= document.createElement( 'script' )
-
-		mapSection.classList.add( 'loaded' )
-		script.src		= `https://maps.googleapis.com/maps/api/js?key=${ apiKey }&callback=initMap`
-		script.async	= true
-		document.head.appendChild( script )
-	}
+		mapSectionTop	= mapSection.getBoundingClientRect().top
 
 	if( contentBottom < -100 ){
 		if( mapSectionTop < window.innerHeight ){
@@ -135,3 +115,208 @@ window.addEventListener( 'scroll', () => {
 		if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
 	}
 } )
+
+const initGoogleMap = async ( mapEl, apiKey ) => {
+	const
+		lat		= parseFloat( mapEl.dataset.lat ),
+		lng		= parseFloat( mapEl.dataset.long ),
+		center	= { lat, lng },
+		loader	= new Loader( {
+			apiKey: apiKey,
+			version: 'weekly',
+		} )
+
+	loader.load().then( async () => {
+		const styledMapType = new google.maps.StyledMapType( [
+				{
+					"featureType": "administrative",
+					"elementType": "geometry",
+					"stylers": [
+						{
+							"color": "#a7a7a7",
+						},
+					],
+				},
+				{
+					"featureType": "administrative",
+					"elementType": "labels.text.fill",
+					"stylers": [
+						{
+							"visibility": "on",
+						},
+						{
+							"color": "#000000",
+						},
+					],
+				},
+				{
+					"featureType": "landscape",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"visibility": "on",
+						},
+						{
+							"color": "#efefef",
+						},
+					],
+				},
+				{
+					"featureType": "poi",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"visibility": "on",
+						},
+						{
+							"color": "#dadada",
+						},
+					],
+				},
+				{
+					"featureType": "poi",
+					"elementType": "labels",
+					"stylers": [
+						{
+							"visibility": "off",
+						},
+					],
+				},
+				{
+					"featureType": "poi",
+					"elementType": "labels.icon",
+					"stylers": [
+						{
+							"visibility": "off",
+						},
+					],
+				},
+				{
+					"featureType": "road",
+					"elementType": "labels.text.fill",
+					"stylers": [
+						{
+							"color": "#000000",
+						},
+					],
+				},
+				{
+					"featureType": "road",
+					"elementType": "labels.icon",
+					"stylers": [
+						{
+							"visibility": "off",
+						},
+					],
+				},
+				{
+					"featureType": "road.highway",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"color": "#ffffff",
+						},
+					],
+				},
+				{
+					"featureType": "road.highway",
+					"elementType": "geometry.stroke",
+					"stylers": [
+						{
+							"visibility": "on",
+						},
+						{
+							"color": "#b3b3b3",
+						},
+					],
+				},
+				{
+					"featureType": "road.arterial",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"color": "#ffffff",
+						},
+					],
+				},
+				{
+					"featureType": "road.arterial",
+					"elementType": "geometry.stroke",
+					"stylers": [
+						{
+							"color": "#d6d6d6",
+						},
+					],
+				},
+				{
+					"featureType": "road.local",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"visibility": "on",
+						},
+						{
+							"color": "#ffffff",
+						},
+						{
+							"weight": 1.8,
+						},
+					],
+				},
+				{
+					"featureType": "road.local",
+					"elementType": "geometry.stroke",
+					"stylers": [
+						{
+							"color": "#d7d7d7",
+						},
+					],
+				},
+				{
+					"featureType": "transit",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#808080",
+						},
+						{
+							"visibility": "off",
+						},
+					],
+				},
+				{
+					"featureType": "water",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"color": "#007aea",
+						},
+					],
+				},
+				{
+					"featureType": "water",
+					"elementType": "labels.text.fill",
+					"stylers": [
+						{
+							"color": "#000000",
+						},
+					],
+				},
+			], { name: "Styled Map" } )
+
+		map = new google.maps.Map( mapEl, {
+			center,
+			zoom: 15,
+			disableDefaultUI		: true,
+			zoomControl				: true,
+			scrollwheel				: false,
+			disableDoubleClickZoom	: true,
+			mapTypeControlOptions	: {
+				mapTypeIds: ["roadmap", "satellite", "hybrid", "terrain", "styled_map"],
+			},
+		} )
+
+		map.mapTypes.set( 'styled_map', styledMapType )
+		map.setMapTypeId( 'styled_map' )
+	} )
+}
