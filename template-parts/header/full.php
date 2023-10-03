@@ -72,7 +72,7 @@ $socials	= get_field( 'social_icons', 'option' );
 			</div>
 
 			<div class="header-logo flex align-center">
-				<a href="<?php echo home_url( '/' ) ?>">
+				<a href="<?php echo home_url( '/profile' ) ?>">
 					<?php
 					echo wp_get_attachment_image( $logo_dark['id'], 'ih-logo', false, ['class' => 'dark'] );
 					echo wp_get_attachment_image( $logo_light['id'], 'ih-logo', false, ['class' => 'light'] );
