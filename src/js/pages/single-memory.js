@@ -103,10 +103,10 @@ window.addEventListener( 'scroll', () => {
 		topContent		= document.querySelector( '.single-memory-top-inner' ),
 		contentBottom	= topContent.getBoundingClientRect().bottom,
 		mapSection		= document.querySelector( '.single-memory-place' ),
-		mapSectionTop	= mapSection.getBoundingClientRect().top
+		mapSectionBot	= mapSection.getBoundingClientRect().bottom
 
 	if( contentBottom < -100 ){
-		if( mapSectionTop < window.innerHeight ){
+		if( mapSectionBot < window.innerHeight + 100 ){
 			if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
 		}else{
 			if( ! document.body.classList.contains( 'theme-light' ) ) document.body.classList.add( 'theme-light' )
