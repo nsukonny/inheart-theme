@@ -24,6 +24,8 @@ $socials	= get_field( 'social_icons', 'option' );
 					</ul>
 
 					<?php
+					if( ! is_user_logged_in() ) get_template_part( 'template-parts/header/actions' );
+
 					wp_nav_menu( [
 						'theme_location'	=> 'header_menu',
 						'container'			=> 'nav',
