@@ -57,3 +57,27 @@ function ih_ajax_save_profile(): void
 	wp_send_json_success( ['msg' => esc_html__( 'Ваші дані оновлені', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_edit_memory_page', 'ih_ajax_edit_memory_page' );
+/**
+ * Edit existing memory page.
+ *
+ * @return void
+ */
+function ih_ajax_edit_memory_page(): void
+{
+	$memory_id = ( int ) ih_clean( $_POST['id'] );
+
+	if( ! $memory_id || get_post_type( $memory_id ) !== 'memory_page' )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	$user_id	= get_current_user_id();
+	$author_id	= ( int ) get_post_field ( 'post_author', $memory_id );
+
+	if( $user_id !== $author_id )
+		wp_send_json_error( ['msg' => esc_html__( "Ви не автор цієї сторінки пам'яті", 'inheart' )] );
+
+	$_SESSION['memory_page_id'] = $memory_id;
+
+	wp_send_json_success( ['redirect' => get_the_permalink( pll_get_post( 167 ) ) . '?edit=1' ] );
+}
+

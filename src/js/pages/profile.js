@@ -1,11 +1,61 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import { getTargetElement, setTargetElement } from '../common/global'
+import {
+	checkAjaxWorkingStatus,
+	getTargetElement,
+	ihAjaxRequest,
+	setAjaxWorkingStatus,
+	setTargetElement
+} from '../common/global'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
 	expandToFull()
+	editMemory()
 } )
+
+/**
+ * Edit memory page.
+ */
+const editMemory = () => {
+	const editButtons = document.querySelectorAll( '.edit-memory' )
+
+	if( ! editButtons.length ) return
+
+	editButtons.forEach( btn => {
+		btn.addEventListener( 'click', () => {
+			if( checkAjaxWorkingStatus() ) return
+
+			setAjaxWorkingStatus( true )
+
+			const
+				memoryId	= btn.dataset.id,
+				formData	= new FormData()
+
+			btn.classList.add( 'disabled' )
+			formData.append( 'action', 'ih_ajax_edit_memory_page' )
+			formData.append( 'id', memoryId )
+
+			ihAjaxRequest( formData ).then( res => {
+				btn.classList.remove( 'disabled' )
+
+				if( res ){
+					switch( res.success ){
+						case true:
+							if( res.data.redirect ) window.location.href = res.data.redirect
+							break
+
+						case false:
+							console.error( res.data.msg )
+							break
+					}
+				}
+
+				setAjaxWorkingStatus( false )
+			} )
+		} )
+	} )
+}
 
 /**
  * Expand memory page to full button click.
