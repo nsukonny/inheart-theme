@@ -16,7 +16,7 @@ if( ! $user = wp_get_current_user() ) return;
 			<p>
 				<?php
 				printf(
-					esc_html__( 'Вітаємо, %s! Ви вже зайшли на сайт. %sНа Головну%s', 'inheart' ),
+					esc_html__( 'Вітаємо, %s! Ви вже зайшли на сайт. %sУ Профіль%s', 'inheart' ),
 					$user->display_name, '<a href="' . home_url( '/profile' ) . '">', '</a>'
 				);
 				?>
