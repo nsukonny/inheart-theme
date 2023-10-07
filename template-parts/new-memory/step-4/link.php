@@ -42,7 +42,7 @@ $key = $args['key'] ?? 0;
 			name="media-name-link-<?php echo esc_attr( $key ) ?>"
 			type="text"
 			data-type="title"
-			placeholder="<?php esc_attr_e( 'Додати посилання', 'inheart' ) ?>"
+			placeholder="<?php esc_attr_e( 'Назва посилання', 'inheart' ) ?>"
 			value="<?php echo esc_attr( $link_title ) ?>"
 			required
 		/>

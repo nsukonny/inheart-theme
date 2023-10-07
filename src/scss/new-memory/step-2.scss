@@ -197,24 +197,10 @@
 				resize: none;
 				background-color: transparent;
 				padding: 0;
-				caret-color: $bright-yellow;
 				transition: height ease-out $tr;
 
 				&::placeholder {
 					color: #96AAAE
-				}
-
-				&::-webkit-scrollbar {
-					width: 3px
-				}
-
-				&::-webkit-scrollbar-track {
-					-webkit-box-shadow: none
-				}
-
-				&::-webkit-scrollbar-thumb {
-					background-color: $bright-yellow;
-					outline: none
 				}
 			}
 
