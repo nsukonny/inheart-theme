@@ -243,6 +243,73 @@
 			}
 		}
 	}
+
+	&.black {
+		.page-created-info {
+			background-color: $theme-black
+		}
+
+		.page-created-thumb-border {
+			border-color: $white;
+
+			span {
+				background-color: $theme-black
+			}
+		}
+
+		.page-created-fullname {
+			color: $bright-yellow
+		}
+	}
+
+	&.red {
+		.page-created-info {
+			background-color: $theme-red
+		}
+
+		.page-created-thumb-border {
+			border-color: $white;
+
+			&::after {
+				background: linear-gradient(2deg, $theme-red 0%, rgba(1, 28, 26, 0) 100%)
+			}
+
+			span {
+				background-color: $theme-red
+			}
+		}
+
+		.page-created-fullname {
+			color: $bright-yellow
+		}
+	}
+
+	&.blue {
+		.page-created-info {
+			background-color: $theme-blue
+		}
+
+		.page-created-thumb-border {
+			border-color: #4D78AA;
+
+			&::after {
+				background: linear-gradient(2deg, $theme-blue 0%, rgba(1, 28, 26, 0) 100%)
+			}
+
+			span {
+				color: $light-blue;
+				background-color: $theme-blue
+			}
+		}
+
+		.page-created-fullname {
+			color: $light-blue
+		}
+
+		.page-created-lastname .memory-card-date {
+			color: #4D78AA
+		}
+	}
 }
 
 .popup {

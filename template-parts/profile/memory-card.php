@@ -9,6 +9,7 @@
 
 if( ! $id = $args['id'] ?? null ) return;
 
+$theme		= get_field( 'theme', $id );
 $firstname	= get_field( 'first_name', $id );
 $middlename	= get_field( 'middle_name', $id );
 $lastname	= get_field( 'last_name', $id );
@@ -18,7 +19,7 @@ $died_at	= get_field( 'died_at', $id );
 if( ! $firstname && ! $lastname ) return;
 ?>
 
-<div class="memory-card">
+<div class="memory-card <?php echo esc_attr( $theme ) ?>">
 	<a href="<?php echo get_the_permalink( $id ) ?>" class="memory-card-top page-created-info flex direction-column align-center">
 		<div class="page-created-thumb flex justify-center align-center">
 			<div class="page-created-thumb-border">
