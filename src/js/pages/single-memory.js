@@ -100,12 +100,12 @@ const showHiddenVideos = () => {
 
 window.addEventListener( 'scroll', () => {
 	const
-		topContent		= document.querySelector( '.single-memory-top-inner' ),
+		topContent		= document.querySelector( '.single-memory-epitaph' ),
 		contentBottom	= topContent.getBoundingClientRect().bottom,
 		mapSection		= document.querySelector( '.single-memory-place' ),
 		mapSectionBot	= mapSection.getBoundingClientRect().bottom
 
-	if( contentBottom < -100 ){
+	if( contentBottom < 300 ){
 		if( mapSectionBot < window.innerHeight + 100 ){
 			if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
 		}else{

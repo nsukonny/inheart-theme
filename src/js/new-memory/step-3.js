@@ -17,7 +17,6 @@ export const checkEpitaphContentLength = () => {
 	if( ! textarea ) return
 
 	stepData.epitaph = textarea.value
-
 	localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
 	textarea.addEventListener( 'keyup', onEpitaphChange )
 	textarea.addEventListener( 'change', onEpitaphChange )
@@ -68,7 +67,8 @@ const onEpitaphChange = e => {
 
 	if( ! symbolsTyped || ! symbolsAllowed ) return
 
-	localStorage.setItem( 'ih-step-3', JSON.stringify( { epitaph: value } ) )
+	stepData.epitaph = value
+	localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
 
 	// This is the first time textarea focused - clean it from the "placeholder" text.
 	if( textarea.classList.contains( 'clear-on-focus' ) ){

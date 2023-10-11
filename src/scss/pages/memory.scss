@@ -46,6 +46,7 @@ body.single-memory_page {
 		&.black {
 			.single-memory {
 				&-heading,
+				&-epitaph,
 				&-bio-title,
 				&-bio-text,
 				&-no-memories-title,
@@ -194,10 +195,10 @@ body.single-memory_page {
 
 .single-memory {
 	&-top {
-		padding: 100px 0 150px;
+		padding: 124px 0 134px;
 
 		@media (min-width: $md) {
-			padding: 156px 0 177px
+			padding: 156px 0 142px
 		}
 	}
 
@@ -313,6 +314,72 @@ body.single-memory_page {
 
 		@media (min-width: $md) {
 			line-height: 2.5
+		}
+	}
+
+	// EPITAPH SECTION STYLES
+
+	&-epitaph {
+		position: relative;
+		color: $light-green;
+		text-align: center;
+		padding-bottom: 120px;
+
+		@media (min-width: $md) {
+			padding-bottom: 322px
+		}
+
+		&::before {
+			content: '“';
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%, -67%);
+			font-family: $ff-title;
+			font-size: 100px;
+			font-weight: $fw-semibold;
+			line-height: normal;
+			color: #112B2A;
+
+			@media (min-width: $md) {
+				font-size: 140px;
+				transform: translate(-50%, -56%)
+			}
+		}
+
+		> .container {
+			max-width: 758px
+		}
+
+		&-text {
+			font-size: $fs-md;
+			line-height: $lh-4;
+			margin-bottom: 31px;
+
+			@media (min-width: $md) {
+				font-size: $fs-xl
+			}
+		}
+
+		&-name {
+			font-size: 13px;
+			color: $bright-yellow;
+			line-height: normal;
+			margin-bottom: 3px;
+
+			@media (min-width: $md) {
+				font-size: $fs-md;
+				margin-bottom: 9px
+			}
+		}
+
+		&-role {
+			font-size: 11px;
+			color: $green;
+
+			@media (min-width: $md) {
+				font-size: $fs-sm
+			}
 		}
 	}
 
