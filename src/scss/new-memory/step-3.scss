@@ -3,8 +3,11 @@
 		&.form-white {
 			flex-direction: column;
 			max-width: 630px;
-			padding-right: 88px;
-			margin-top: 0
+			margin-top: 0;
+
+			@media (min-width: $md) {
+				padding-right: 88px
+			}
 		}
 
 		&-wrapper {

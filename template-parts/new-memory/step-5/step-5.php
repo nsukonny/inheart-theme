@@ -78,7 +78,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 			</fieldset>
 
 			<fieldset class="flex flex-wrap">
-				<legend class="flex flex-wrap align-center">
+				<legend class="flex flex-wrap">
 					<span class="legend-title"><?php esc_html_e( 'Точні координати', 'inheart' ) ?></span>
 					<button class="legend-tip flex align-center" type="button">
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

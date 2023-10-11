@@ -1,8 +1,8 @@
 .notification {
 	position: fixed;
-	top: 250px;
+	top: 100px;
 	left: 100%;
-	width: 100%;
+	width: 80%;
 	max-width: 490px;
 	transition: transform ease-out $tr;
 	border-radius: $radius-input;
@@ -11,6 +11,11 @@
 	color: $very-dark-green;
 	pointer-events: none;
 	z-index: 10;
+
+	@media (min-width: $md) {
+		top: 250px;
+		width: 100%
+	}
 
 	&::before {
 		content: '';

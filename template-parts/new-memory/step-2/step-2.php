@@ -102,7 +102,7 @@ if( $ready_sections ){
 						}
 						?>
 
-						<div class="sections-list flex direction-column">
+						<div class="sections-list flex align-start">
 							<?php
 							foreach( $sections as $key => $section )
 								get_template_part(

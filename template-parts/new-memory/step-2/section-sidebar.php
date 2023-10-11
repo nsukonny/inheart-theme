@@ -39,7 +39,7 @@ if( $is_custom_title && ! empty( $ready_section ) ){
 ?>
 
 <div
-	class="section flex flex-wrap align-center<?php echo esc_attr( $is_custom_title ) ?>"
+	class="section flex align-center<?php echo esc_attr( $is_custom_title ) ?>"
 	data-order="<?php echo esc_attr( $key ) ?>"
 	data-id="<?php echo esc_attr( $key ) ?>"
 	data-title="<?php echo esc_attr( $sec_title ) ?>"

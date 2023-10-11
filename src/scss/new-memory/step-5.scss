@@ -8,6 +8,31 @@
 			margin-bottom: 40px
 		}
 
+		legend {
+			flex-direction: column;
+
+			@media (min-width: $md) {
+				flex-direction: row;
+				align-items: center
+			}
+		}
+
+		.legend-title {
+			margin: 0;
+
+			@media (min-width: $md) {
+				margin-right: 5px
+			}
+		}
+
+		.legend-tip {
+			margin: 0;
+
+			@media (min-width: $md) {
+				margin-left: 17px
+			}
+		}
+
 		label:last-child {
 			margin-bottom: 0
 		}
@@ -18,15 +43,24 @@
 
 		.popup-inner {
 			position: relative;
-			padding: 15px 18px 15px 54px;
-			border-radius: 50px;
-			overflow: visible
+			padding: 20px;
+			border-radius: $radius-input;
+			overflow: visible;
+
+			@media (min-width: $md) {
+				padding: 15px 18px 15px 54px;
+				border-radius: 50px
+			}
 		}
 
 		&-text {
-			width: calc(100% - 252px);
-			padding: 26px 27px 0 0;
+			width: 100%;
 			color: $very-dark-green;
+
+			@media (min-width: $md) {
+				width: calc(100% - 252px);
+				padding: 26px 27px 0 0
+			}
 
 			h1, h2, h3,
 			h4, h5, h6 {
@@ -82,11 +116,20 @@
 		}
 
 		&-image {
-			width: 252px;
+			width: 100%;
+			text-align: center;
+
+			@media (min-width: $md) {
+				width: 252px
+			}
 
 			img {
-				display: block;
-				width: 100%
+				width: 50%;
+
+				@media (min-width: $md) {
+					display: block;
+					width: 100%
+				}
 			}
 		}
 

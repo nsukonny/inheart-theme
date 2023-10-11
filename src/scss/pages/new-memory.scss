@@ -154,7 +154,7 @@
 	max-width: 522px;
 	flex-grow: 1;
 	background-color: $white;
-	padding: 20px 20px 36px;
+	padding: 20px 20px 36px 0;
 	border-top-right-radius: $radius-theme;
 	margin-top: 20px;
 
@@ -204,14 +204,21 @@
 
 .popup-sure {
 	position: absolute;
-	top: 0;
-	left: calc(100% + 9px);
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
 	min-width: 223px;
 	background-color: $white;
 	box-shadow: 3px 3px 6px 0 rgba(102, 119, 131, 0.10);
 	border-radius: $radius-input;
 	padding: 15px 20px 2px;
 	z-index: 1;
+
+	@media (min-width: $md) {
+		top: 0;
+		left: calc(100% + 9px);
+		transform: none
+	}
 
 	&-text {
 		font-size: $fs-sm;

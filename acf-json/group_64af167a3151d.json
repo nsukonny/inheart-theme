@@ -98,7 +98,7 @@
             "min": 0,
             "max": 0,
             "collapsed": "",
-            "button_label": "Add Row",
+            "button_label": "Додати рядок",
             "rows_per_page": 20,
             "sub_fields": [
                 {
@@ -837,7 +837,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "20",
                 "class": "",
                 "id": ""
             },
@@ -862,7 +862,27 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "75",
+                "width": "40",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_6527280d36d40",
+            "label": "Text on Update",
+            "name": "page_updated_text",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "40",
                 "class": "",
                 "id": ""
             },
@@ -891,5 +911,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1692442726
+    "modified": 1697065006
 }

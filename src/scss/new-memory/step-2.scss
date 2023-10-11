@@ -2,7 +2,10 @@
 	.sections {
 		&-wrapper {
 			max-width: 955px;
-			padding: 53px 95px 53px 0;
+
+			@media (min-width: $lg) {
+				padding: 53px 95px 53px 0
+			}
 
 			button {
 				background-color: transparent;
@@ -18,7 +21,11 @@
 				&.section-add,
 				&.section-remove {
 					color: $bright-yellow;
-					margin-left: auto
+					margin-left: 10px;
+
+					@media (min-width: $lg) {
+						margin-left: auto
+					}
 				}
 
 				&.section-remove {
@@ -46,8 +53,12 @@
 		}
 
 		&-sidebar {
-			width: 245px;
-			padding-right: 24px
+			width: 100%;
+
+			@media (min-width: $lg) {
+				width: 245px;
+				padding-right: 24px
+			}
 		}
 
 		&-added {
@@ -72,6 +83,19 @@
 		}
 
 		&-list {
+			width: 100vw;
+			overflow-x: auto;
+			padding: 0 0 15px $container-padding;
+			margin-left: calc($container-padding * -1);
+
+			@media (min-width: $lg) {
+				width: 100%;
+				flex-direction: column;
+				overflow-x: visible;
+				padding: 0;
+				margin-left: 0
+			}
+
 			.section {
 				&.custom {
 					color: #76929C
@@ -84,9 +108,13 @@
 		}
 
 		&-content {
-			// Minus sidebar column width.
-			width: calc(100% - 245px);
-			padding-left: 55px
+			width: 100%;
+
+			@media (min-width: $lg) {
+				// Minus sidebar column width.
+				width: calc(100% - 245px);
+				padding-left: 55px
+			}
 		}
 
 		&-title {
@@ -103,6 +131,13 @@
 		border: 3px solid $a-bit-blue-white;
 		border-radius: $radius-langs;
 		background-color: $very-dark-green;
+		white-space: nowrap;
+
+		@media (min-width: $lg) {
+			flex-wrap: wrap;
+			white-space: normal;
+			width: 100%
+		}
 
 		&:hover {
 			.section-drag {
@@ -115,7 +150,9 @@
 		}
 
 		&-label {
-			width: calc(100% - 38px)
+			@media (min-width: $lg) {
+				width: calc(100% - 38px)
+			}
 		}
 
 		&-content {
@@ -149,7 +186,8 @@
 				background-color: $a-bit-blue-white;
 
 				.section-content-text {
-					height: 180px
+					height: 180px;
+					overflow-y: auto
 				}
 
 				button.section-remove {
@@ -197,6 +235,7 @@
 				resize: none;
 				background-color: transparent;
 				padding: 0;
+				overflow-y: hidden;
 				transition: height ease-out $tr;
 
 				&::placeholder {
