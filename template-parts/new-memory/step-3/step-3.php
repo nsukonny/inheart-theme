@@ -10,13 +10,16 @@
  * @subpackage inheart
  */
 
-$title		= get_field( 'title_3' );
-$desc		= get_field( 'desc_3' );
-$init_text	= get_field( 'epitaph_init_text' ) ?? '';
-$saved_text	= get_field( 'epitaphy', $_SESSION['memory_page_id'] );
-$max_length	= get_field( 'epitaph_max_length' ) ?: 500;
-$epitaph	= ( isset( $_SESSION['memory_page_id'] ) && $saved_text ) ? $saved_text : $init_text;
-$class		= $saved_text ? '' : ' clear-on-focus';
+$title				= get_field( 'title_3' );
+$desc				= get_field( 'desc_3' );
+$init_text			= get_field( 'epitaph_init_text' ) ?? '';
+$saved_text			= get_field( 'epitaphy', $_SESSION['memory_page_id'] );
+$max_length			= get_field( 'epitaph_max_length' ) ?: 500;
+$epitaph			= ( isset( $_SESSION['memory_page_id'] ) && $saved_text ) ? $saved_text : $init_text;
+$epitaph_lastname	= get_field( 'epitaph_lastname', $_SESSION['memory_page_id'] );
+$epitaph_firstname	= get_field( 'epitaph_firstname', $_SESSION['memory_page_id'] );
+$epitaph_role		= get_field( 'epitaph_role', $_SESSION['memory_page_id'] );
+$class				= $saved_text ? '' : ' clear-on-focus';
 ?>
 
 <section id="new-memory-step-3" class="new-memory-step new-memory-step-3 direction-column">
@@ -45,6 +48,44 @@ $class		= $saved_text ? '' : ' clear-on-focus';
 			?>
 
 			<form class="flex form-white epitaph">
+				<fieldset class="flex flex-wrap">
+					<legend class="flex flex-wrap align-end">
+						<span class="legend-title"><?php esc_html_e( 'Від кого', 'inheart' ) ?></span>
+					</legend>
+					<label for="epitaph-lastname" class="label dark half">
+						<span class="label-text"><?php esc_html_e( 'Прізвище', 'inheart' ) ?></span>
+						<input
+							id="epitaph-lastname"
+							name="epitaph-lastname"
+							type="text"
+							placeholder="<?php esc_html_e( 'Прізвище', 'inheart' ) ?>"
+							value="<?php echo esc_attr( $epitaph_lastname ) ?>"
+							required
+						/>
+					</label>
+					<label for="epitaph-firstname" class="label dark half end">
+						<span class="label-text"><?php esc_html_e( "Ім'я", 'inheart' ) ?></span>
+						<input
+							id="epitaph-firstname"
+							name="epitaph-firstname"
+							type="text"
+							placeholder="<?php esc_html_e( "Ім'я", 'inheart' ) ?>"
+							value="<?php echo esc_attr( $epitaph_firstname ) ?>"
+							required
+						/>
+					</label>
+					<label for="epitaph-role" class="label dark">
+						<span class="label-text"><?php esc_html_e( 'Ким доводилися померлому', 'inheart' ) ?></span>
+						<input
+							id="epitaph-role"
+							name="epitaph-role"
+							type="text"
+							placeholder="<?php esc_html_e( 'Ким доводилися померлому', 'inheart' ) ?>"
+							value="<?php echo esc_attr( $epitaph_role ) ?>"
+							required
+						/>
+					</label>
+				</fieldset>
 				<fieldset class="flex direction-column">
 					<legend class="flex flex-wrap align-end">
 						<span class="legend-title"><?php esc_html_e( 'Епітафія', 'inheart' ) ?></span>
@@ -59,7 +100,7 @@ $class		= $saved_text ? '' : ' clear-on-focus';
 					><?php echo esc_html( $epitaph ) ?></textarea>
 				</fieldset>
 			</form>
-		</div><!-- .step-3-inner -->
+		</div><!-- .epitaph-wrapper -->
 	</div><!-- .container -->
 </section><!-- #new-memory-step-3 -->
 

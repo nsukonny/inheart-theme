@@ -355,6 +355,66 @@
             "endpoint": 0
         },
         {
+            "key": "field_6526fe106e1a3",
+            "label": "Прізвище",
+            "name": "epitaph_lastname",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6526fe2c6e1a4",
+            "label": "Ім'я",
+            "name": "epitaph_firstname",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6526fe416e1a5",
+            "label": "Ким доводилися",
+            "name": "epitaph_role",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_638c72ba19713",
             "label": "Єпітафія",
             "name": "epitaphy",
@@ -364,7 +424,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -760,5 +820,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1693780915
+    "modified": 1697054345
 }

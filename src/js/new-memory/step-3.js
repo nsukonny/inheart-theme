@@ -1,18 +1,57 @@
 import { allowNextStep, applyProgress, disallowNextStep } from './common'
+import { checkStep1 } from './step-1'
+
+const
+	stepData = localStorage.getItem( 'ih-step-3' ) ?
+		JSON.parse( localStorage.getItem( 'ih-step-3' ) ) :
+		{ 'epitaph': '', 'epitaph-lastname': '', 'epitaph-firstname': '', 'epitaph-role': '' }
 
 /**
  * Listen to epitaph textarea changes.
  */
 export const checkEpitaphContentLength = () => {
-	const textarea = document.querySelector( '.epitaph-text' )
+	const
+		textarea	= document.querySelector( '.epitaph-text' ),
+		fields		= document.querySelectorAll( '.epitaph input' )
 
 	if( ! textarea ) return
 
-	localStorage.setItem( 'ih-step-3', JSON.stringify( { epitaph: textarea.value } ) )
+	stepData.epitaph = textarea.value
+
+	localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
 	textarea.addEventListener( 'keyup', onEpitaphChange )
 	textarea.addEventListener( 'change', onEpitaphChange )
 	textarea.addEventListener( 'focus', onEpitaphChange )
 	textarea.addEventListener( 'blur', onEpitaphChange )
+
+	if( ! fields.length ) return
+
+	fields.forEach( field => {
+		field.addEventListener( 'change', e => checkFieldValue( e ) )
+		field.addEventListener( 'keyup', e => checkFieldValue( e ) )
+		field.addEventListener( 'blur', e => checkFieldValue( e ) )
+	} )
+
+	const checkFieldValue = e => {
+		const
+			field	= e.target,
+			value	= field.value,
+			index	= field.name
+
+		if( ! value ) field.classList.add( 'error' )
+		else field.classList.remove( 'error' )
+
+		stepData[index] = value
+		localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
+
+		if( checkStep3() ){
+			applyProgress( 3 )
+			allowNextStep( 4 )
+		}else{
+			disallowNextStep()
+			applyProgress( 3, 0 )
+		}
+	}
 }
 
 /**
@@ -44,11 +83,15 @@ const onEpitaphChange = e => {
 		return
 	}
 
+	// Cut text if there are too many symbols.
 	if( value.length > symbolsAllowed ) textarea.value = value.substring( 0, symbolsAllowed )
 
 	symbolsTyped.innerHTML = textarea.value.length
-	applyProgress( 3 )
-	allowNextStep( 4 )
+
+	if( checkStep3() ){
+		applyProgress( 3 )
+		allowNextStep( 4 )
+	}
 }
 
 /**
@@ -56,4 +99,28 @@ const onEpitaphChange = e => {
  *
  * @returns {boolean}
  */
-export const checkStep3 = () => !! document.querySelector( '.epitaph-text' ).value
+export const checkStep3 = () => {
+	const
+		epitaphValue	= document.querySelector( '.epitaph-text' ).value,
+		fields			= document.querySelectorAll( '.epitaph input' )
+	let isFormValid		= true
+
+	if( ! epitaphValue ) return false
+
+	if( fields.length ){
+		fields.forEach( field => {
+			const
+				index	= field.name,
+				value	= field.value
+
+			if( field.required && ! value ) isFormValid = false
+
+			stepData[index] = value
+		} )
+	}
+	console.log(isFormValid)
+
+	localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
+
+	return isFormValid
+}

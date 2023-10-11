@@ -165,13 +165,22 @@ add_action( 'wp_ajax_ih_ajax_save_data_step_3', 'ih_ajax_save_data_step_3' );
  */
 function ih_ajax_save_data_step_3(): void
 {
-	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
-	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+	$step_data			= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id		= $_SESSION['memory_page_id'] ?? null;
+	$epitaph			= isset( $step_data['epitaph'] ) ? ih_clean( $step_data['epitaph'] ) : '';
+	$epitaph_lastname	= isset( $step_data['epitaph-lastname'] ) ? ih_clean( $step_data['epitaph-lastname'] ) : '';
+	$epitaph_firstname	= isset( $step_data['epitaph-firstname'] ) ? ih_clean( $step_data['epitaph-firstname'] ) : '';
+	$epitaph_role		= isset( $step_data['epitaph-role'] ) ? ih_clean( $step_data['epitaph-role'] ) : '';
 
-	if( ! $memory_page_id || ! isset( $step_data['epitaph'] ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if(
+		! $memory_page_id || ! $epitaph || ! $epitaph_lastname ||
+		! $epitaph_firstname || ! $epitaph_role
+	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
-	update_field( 'epitaphy', $step_data['epitaph'], $memory_page_id );
+	update_field( 'epitaphy', $epitaph, $memory_page_id );
+	update_field( 'epitaph_lastname', $epitaph_lastname, $memory_page_id );
+	update_field( 'epitaph_firstname', $epitaph_firstname, $memory_page_id );
+	update_field( 'epitaph_role', $epitaph_role, $memory_page_id );
 
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
 }
