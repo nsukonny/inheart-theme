@@ -228,3 +228,18 @@ function ih_convert_input_date( string $date, string $format = 'letters' ): stri
 	return date( 'd.m.Y', strtotime( str_replace( '/', '-', $date ) ) );
 }
 
+/**
+ * Prepare ACF Date Picker field value for frontend input[type="date"].
+ *
+ * @param string $date
+ * @return string
+ */
+function ih_convert_date_from_admin_for_input( string $date ): string
+{
+	if( ! $date ) return '';
+
+	$date_arr = array_reverse( explode( '/', $date ) );
+
+	return implode( '-', $date_arr );
+}
+

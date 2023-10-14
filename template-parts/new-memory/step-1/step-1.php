@@ -18,8 +18,8 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 	$first_name		= get_field( 'first_name', $memory_page_id );
 	$last_name		= get_field( 'last_name', $memory_page_id );
 	$middle_name	= get_field( 'middle_name', $memory_page_id );
-	$born_at		= get_field( 'born_at', $memory_page_id );
-	$died_at		= get_field( 'died_at', $memory_page_id );
+	$born_at		= ih_convert_date_from_admin_for_input( get_field( 'born_at', $memory_page_id ) );
+	$died_at		= ih_convert_date_from_admin_for_input( get_field( 'died_at', $memory_page_id ) );
 	$thumb_title	= has_post_thumbnail( $memory_page_id )
 					? ih_get_shorter_filename( basename( get_the_post_thumbnail_url( $memory_page_id, 'full' ) ) ) : '';
 }else{

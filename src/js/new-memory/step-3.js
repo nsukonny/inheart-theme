@@ -118,7 +118,6 @@ export const checkStep3 = () => {
 			stepData[index] = value
 		} )
 	}
-	console.log(isFormValid)
 
 	localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
 
