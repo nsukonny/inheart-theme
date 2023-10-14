@@ -7,6 +7,8 @@
  * @package WordPress
  * @subpackage inheart
  */
+
+$lang = $args['lang'] ?? 'uk';
 ?>
 
 <section class="single-memory-cta">
@@ -14,13 +16,13 @@
 		<div class="single-memory-cta-inner flex flex-wrap align-center">
 			<div class="cta-left flex direction-column">
 				<h2 class="cta-title">
-					<?php esc_html_e( "Спадщина та пам'ять про ваших близьких не зникне.", 'inheart' ) ?>
+					<?php echo pll_translate_string( "Спадщина та пам'ять про ваших близьких не зникне.", $lang ) ?>
 				</h2>
 				<div class="cta-desc">
-					<?php esc_html_e( 'Створіть вічну сторінку спогадів про людину, яка вам була близька. Збережіть спогади для майбутніх поколінь', 'inheart' ) ?>
+					<?php echo pll_translate_string( 'Створіть вічну сторінку спогадів про людину, яка вам була близька. Збережіть спогади для майбутніх поколінь', $lang ) ?>
 				</div>
 				<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="btn lg primary">
-					<?php esc_html_e( 'Створити сторінку спогадів', 'inheart' ) ?>
+					<?php echo pll_translate_string( 'Створити сторінку спогадів', $lang ) ?>
 				</a>
 			</div>
 			<img src="<?php echo THEME_URI ?>/static/img/registration-min.png" alt="" />

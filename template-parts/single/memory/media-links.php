@@ -11,11 +11,13 @@
 if( ! $id = $args['id'] ?? null ) return;
 
 if( ! $links = get_field( 'links', $id ) ?: null ) return;
+
+$lang = $args['lang'] ?? 'uk';
 ?>
 
 <div class="media-links flex flex-wrap align-start">
 	<div class="media-links-title">
-		<?php esc_html_e( 'Посилання на соціальні мережі та згадування в інтернеті', 'inheart' ) ?>
+		<?php echo pll_translate_string( 'Посилання на соціальні мережі та згадування в інтернеті', $lang ) ?>
 	</div>
 
 	<div class="media-links-list">
@@ -29,7 +31,7 @@ if( ! $links = get_field( 'links', $id ) ?: null ) return;
 			<a
 				href="<?php echo esc_url( $url ) ?>"
 				class="media-link flex flex-wrap align-center"
-				title="<?php printf( esc_html__( 'Відкрити %s у новій вкладці', 'inheart' ), $title ) ?>"
+				title="<?php printf( pll_translate_string( 'Відкрити %s у новій вкладці', $lang ), $title ) ?>"
 				target="_blank"
 			>
 				<span class="media-link-title">
@@ -47,7 +49,7 @@ if( ! $links = get_field( 'links', $id ) ?: null ) return;
 					</g>
 				</svg>
 				<div class="media-photo-cursor-text">
-					<?php esc_html_e( 'Перейти', 'inheart' ) ?>
+					<?php echo pll_translate_string( 'Перейти', $lang ) ?>
 				</div>
 			</a>
 			<?php

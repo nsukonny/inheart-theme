@@ -11,11 +11,13 @@
 if( ! $id = $args['id'] ?? null ) return;
 
 if( ! $videos = get_field( 'video', $id ) ?: null ) return;
+
+$lang = $args['lang'] ?? 'uk';
 ?>
 
 <div class="media-videos">
 	<div class="single-memory-media-title">
-		<?php esc_html_e( 'Відео', 'inheart' ) ?>
+		<?php echo pll_translate_string( 'Відео', $lang ) ?>
 	</div>
 
 	<div class="media-videos-list flex flex-wrap">
@@ -56,9 +58,9 @@ if( ! $videos = get_field( 'video', $id ) ?: null ) return;
 						<div class="media-photo-overlay"></div>
 					</div>
 					<div class="media-video-more-text flex direction-column align-center justify-center">
-						<div><?php esc_html_e( 'та ще', 'inheart' ) ?></div>
+						<div><?php echo pll_translate_string( 'та ще', $lang ) ?></div>
 						<div class="count"><?php echo count( $videos ) - 5 ?></div>
-						<div><?php esc_html_e( 'Перегалянути всі відео', 'inheart' ) ?></div>
+						<div><?php echo pll_translate_string( 'Перегалянути всі відео', $lang ) ?></div>
 					</div>
 				</div>
 			</div>

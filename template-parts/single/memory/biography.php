@@ -10,13 +10,14 @@
 
 if( ! $id = $args['id'] ?? null ) return;
 
-$sections = get_field( 'biography_sections', $id );
+$lang		= $args['lang'] ?? 'uk';
+$sections	= get_field( 'biography_sections', $id );
 ?>
 
 <section class="single-memory-bio">
 	<div class="container">
 		<h2 class="single-memory-heading">
-			<?php esc_html_e( 'Біографія', 'inheart' ) ?>
+			<?php echo pll_translate_string( 'Біографія', $lang ) ?>
 		</h2>
 
 		<?php

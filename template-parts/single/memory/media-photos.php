@@ -10,12 +10,13 @@
 
 if( ! $id = $args['id'] ?? null ) return;
 
-$photos = get_field( 'photo', $id );
+$lang	= $args['lang'] ?? 'uk';
+$photos	= get_field( 'photo', $id );
 ?>
 
 <div class="media-photos">
 	<div class="single-memory-media-title">
-		<?php esc_html_e( 'Фото', 'inheart' ) ?>
+		<?php echo pll_translate_string( 'Фото', $lang ) ?>
 	</div>
 
 	<?php
@@ -49,7 +50,7 @@ $photos = get_field( 'photo', $id );
 			?>
 			<div class="media-photos-more flex justify-end">
 				<button>
-					<?php printf( esc_html__( 'Дивитись ще %d', 'inheart' ), count( $photos ) - 4 ) ?>
+					<?php printf( pll_translate_string( 'Дивитись ще %d', $lang ), count( $photos ) - 4 ) ?>
 				</button>
 			</div>
 			<?php

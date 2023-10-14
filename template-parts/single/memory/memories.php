@@ -10,13 +10,14 @@
 
 if( ! $id = $args['id'] ?? null ) return;
 
-$memories = get_field( 'memories', $id );
+$lang		= $args['lang'] ?? 'uk';
+$memories	= get_field( 'memories', $id );
 ?>
 
 <section class="single-memory-memories">
 	<div class="container">
 		<h2 class="single-memory-heading">
-			<?php esc_html_e( 'Спогади рiдних i близьких', 'inheart' ) ?>
+			<?php echo pll_translate_string( 'Спогади рiдних i близьких', $lang ) ?>
 		</h2>
 
 		<?php
@@ -53,17 +54,17 @@ $memories = get_field( 'memories', $id );
 				?>
 
 				<div class="single-memory-no-memories-title">
-					<?php esc_html_e( 'Наразі немає жодного спогаду', 'inheart' ) ?>
+					<?php echo pll_translate_string( 'Наразі немає жодного спогаду', $lang ) ?>
 				</div>
 				<div class="single-memory-no-memories-desc">
-					<?php esc_html_e( 'Додайте перший спогад про близьку людину', 'inheart' ) ?>
+					<?php echo pll_translate_string( 'Додайте перший спогад про близьку людину', $lang ) ?>
 				</div>
 				<a
 					href="#"
 					class="btn xl secondary outlined single-memory-no-memories-btn"
-					title="<?php esc_attr_e( 'Додати спогад про людину', 'inheart' ) ?>"
+					title="<?php echo pll_translate_string( 'Додати спогад про людину', $lang ) ?>"
 				>
-					<?php esc_html_e( 'Додати спогад про людину', 'inheart' ) ?>
+					<?php echo pll_translate_string( 'Додати спогад про людину', $lang ) ?>
 				</a>
 			</div><!-- .single-memory-no-memories -->
 			<?php

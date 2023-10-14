@@ -10,6 +10,7 @@
 
 if( ! $id = $args['id'] ?? null ) return;
 
+$lang			= $args['lang'] ?? 'uk';
 $address		= get_field( 'address', $id );
 $detail_address	= get_field( 'detail_address', $id );
 $longitude		= get_field( 'longitude', $id );
@@ -21,7 +22,7 @@ $key			= get_field( 'google_maps_api_key', 'option' );
 <section class="single-memory-place">
 	<div class="container">
 		<h2 class="single-memory-heading">
-			<?php esc_html_e( 'Остання адреса', 'inheart' ) ?>
+			<?php echo pll_translate_string( 'Остання адреса', $lang ) ?>
 		</h2>
 
 		<div class="single-memory-place-inner flex flex-wrap">
@@ -57,7 +58,7 @@ $key			= get_field( 'google_maps_api_key', 'option' );
 					?>
 					<div class="map-howto">
 						<div class="map-desc-title">
-							<?php esc_html_e( 'Як знайти поховання', 'inheart' ) ?>
+							<?php echo pll_translate_string( 'Як знайти поховання', $lang ) ?>
 						</div>
 						<?php echo esc_html( $how_to_find ) ?>
 					</div>
@@ -67,7 +68,7 @@ $key			= get_field( 'google_maps_api_key', 'option' );
 				if( $longitude && $latitude ){
 					?>
 					<div class="map-coords">
-						<span><?php esc_html_e( 'Точні координати:', 'inheart' ) ?></span>
+						<span><?php echo pll_translate_string( 'Точні координати:', $lang ) ?></span>
 						<?php echo esc_html( "$longitude, $latitude" ) ?>
 					</div>
 					<?php
