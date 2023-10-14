@@ -211,3 +211,20 @@ add_action( 'before_delete_post', function( $id ){
 	foreach( $attachments as $attachment ) wp_delete_attachment( $attachment->ID, 'true' );
 } );
 
+/**
+ * Convert input[type="date"] value to necessary format.
+ *
+ * @param string $date
+ * @param string $format	'letters' | 'dots'
+ * @return string
+ */
+function ih_convert_input_date( string $date, string $format = 'letters' ): string
+{
+	if( ! $date ) return '';
+
+	if( $format === 'letters' )
+		return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
+
+	return date( 'd.m.Y', strtotime( str_replace( '/', '-', $date ) ) );
+}
+

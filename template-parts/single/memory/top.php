@@ -13,10 +13,8 @@ if( ! $id = $args['id'] ?? null ) return;
 $first_name		= get_field( 'first_name', $id );
 $last_name		= get_field( 'last_name', $id );
 $middle_name	= get_field( 'middle_name', $id );
-$born_at		= get_field( 'born_at', $id );
-$died_at		= get_field( 'died_at', $id );
-$born_at		= date( 'jS M Y', strtotime( $born_at ) );
-$died_at		= date( 'jS M Y', strtotime( $died_at ) );
+$born_at		= ih_convert_input_date( get_field( 'born_at', $id ) );
+$died_at		= ih_convert_input_date( get_field( 'died_at', $id ) );
 
 $diff	= abs( strtotime( $died_at ) - strtotime( $born_at ) );
 $years	= floor( $diff /  (365 * 60 * 60 * 24 ) );

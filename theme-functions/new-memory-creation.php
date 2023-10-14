@@ -556,9 +556,9 @@ function ih_ajax_save_data_step_5(): void
 	$first_name		= get_field( 'first_name', $memory_page_id );
 	$last_name		= get_field( 'last_name', $memory_page_id );
 	$middle_name	= get_field( 'middle_name', $memory_page_id );
-	$born_at		= get_field( 'born_at', $memory_page_id );
-	$died_at		= get_field( 'died_at', $memory_page_id );
-	$new_title		= "$last_name $first_name $middle_name, " . str_replace( '/', '.', $born_at ) . '-' . str_replace( '/', '.', $died_at );
+	$born_at		= ih_convert_input_date( get_field( 'born_at', $memory_page_id ), 'dots' );
+	$died_at		= ih_convert_input_date( get_field( 'died_at', $memory_page_id ), 'dots' );
+	$new_title		= "$last_name $first_name $middle_name, " . $born_at . '-' . $died_at;
 	wp_update_post( [
 		'ID'			=> $memory_page_id,
 		'post_title'	=> $new_title,

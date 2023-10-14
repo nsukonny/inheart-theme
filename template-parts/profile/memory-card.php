@@ -13,8 +13,8 @@ $theme		= get_field( 'theme', $id );
 $firstname	= get_field( 'first_name', $id );
 $middlename	= get_field( 'middle_name', $id );
 $lastname	= get_field( 'last_name', $id );
-$born_at	= get_field( 'born_at', $id );
-$died_at	= get_field( 'died_at', $id );
+$born_at	= ih_convert_input_date( get_field( 'born_at', $id ), 'dots' );
+$died_at	= ih_convert_input_date( get_field( 'died_at', $id ), 'dots' );
 
 if( ! $firstname && ! $lastname ) return;
 ?>
@@ -33,14 +33,14 @@ if( ! $firstname && ! $lastname ) return;
 		<div class="page-created-fullname flex direction-column align-center">
 			<div class="page-created-firstname"><?php echo esc_html( "$firstname $middlename" ) ?></div>
 			<div class="page-created-lastname flex">
-				<div class="memory-card-date born"><?php echo esc_attr( str_replace( '/', '.', $born_at ) ) ?></div>
+				<div class="memory-card-date born"><?php echo esc_attr( $born_at ) ?></div>
 				<span><?php echo esc_html( $lastname ) ?></span>
-				<div class="memory-card-date died"><?php echo esc_attr( str_replace( '/', '.', $died_at ) ) ?></div>
+				<div class="memory-card-date died"><?php echo esc_attr( $died_at ) ?></div>
 			</div>
 			<div class="page-created-dates flex align-center justify-center">
-				<div class="memory-card-date born"><?php echo esc_attr( str_replace( '/', '.', $born_at ) ) ?></div>
+				<div class="memory-card-date born"><?php echo esc_attr( $born_at ) ?></div>
 				<span>–</span>
-				<div class="memory-card-date died"><?php echo esc_attr( str_replace( '/', '.', $died_at ) ) ?></div>
+				<div class="memory-card-date died"><?php echo esc_attr( $died_at ) ?></div>
 			</div>
 		</div>
 	</a><!-- .memory-card-top -->

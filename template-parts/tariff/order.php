@@ -13,10 +13,8 @@ if( ! $memory_page_id = $args['id'] ?? null ) return;
 $thumb		= has_post_thumbnail( $memory_page_id ) ? get_the_post_thumbnail( $memory_page_id, 'thumbnail' ) : null;
 $first_name	= get_field( 'first_name', $memory_page_id ) . ' ' . get_field( 'middle_name', $memory_page_id );
 $last_name	= get_field( 'last_name', $memory_page_id );
-$born_date	= get_field( 'born_at', $memory_page_id );
-$born_date	= $born_date ? date( 'd.m.Y', strtotime( $born_date ) ) : '';
-$died_date	= get_field( 'died_at', $memory_page_id );
-$died_date	= $died_date ? date( 'd.m.Y', strtotime( $died_date ) ) : '';
+$born_date	= ih_convert_input_date( get_field( 'born_at', $memory_page_id ), 'dots' );
+$died_date	= ih_convert_input_date( get_field( 'died_at', $memory_page_id ), 'dots' );
 $rust_image	= get_field( 'rust_image', 'option' );
 $rust_text	= get_field( 'rust_text', 'option' );
 ?>
