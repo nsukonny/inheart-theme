@@ -249,11 +249,17 @@
 			background-color: $theme-black
 		}
 
-		.page-created-thumb-border {
-			border-color: $white;
+		.page-created-thumb {
+			&-border {
+				border-color: $white;
 
-			span {
-				background-color: $theme-black
+				span {
+					background-color: $theme-black
+				}
+			}
+
+			&-img::after {
+				background: linear-gradient(2deg, $theme-black 0%, rgba(1, 28, 26, 0) 100%)
 			}
 		}
 
@@ -267,15 +273,21 @@
 			background-color: $theme-red
 		}
 
-		.page-created-thumb-border {
-			border-color: $white;
+		.page-created-thumb {
+			&-border {
+				border-color: $white;
 
-			&::after {
-				background: linear-gradient(2deg, $theme-red 0%, rgba(1, 28, 26, 0) 100%)
+				&::after {
+					background: linear-gradient(2deg, $theme-red 0%, rgba(1, 28, 26, 0) 100%)
+				}
+
+				span {
+					background-color: $theme-red
+				}
 			}
 
-			span {
-				background-color: $theme-red
+			&-img::after {
+				background: linear-gradient(2deg, $theme-red 0%, rgba(1, 28, 26, 0) 100%)
 			}
 		}
 
@@ -289,16 +301,22 @@
 			background-color: $theme-blue
 		}
 
-		.page-created-thumb-border {
-			border-color: #4D78AA;
+		.page-created-thumb{
+			&-border {
+				border-color: #4D78AA;
 
-			&::after {
-				background: linear-gradient(2deg, $theme-blue 0%, rgba(1, 28, 26, 0) 100%)
+				&::after {
+					background: linear-gradient(2deg, $theme-blue 0%, rgba(1, 28, 26, 0) 100%)
+				}
+
+				span {
+					color: $light-blue;
+					background-color: $theme-blue
+				}
 			}
 
-			span {
-				color: $light-blue;
-				background-color: $theme-blue
+			&-img::after {
+				background: linear-gradient(2deg, $theme-blue 0%, rgba(1, 28, 26, 0) 100%)
 			}
 		}
 
