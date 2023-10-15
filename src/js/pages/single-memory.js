@@ -59,21 +59,19 @@ const textFollowsTheCursor = () => {
 	if( overlaysVideo.length ){
 		overlaysVideo.forEach( overlayOnMousemove )
 		overlaysVideo.forEach( overlay => {
-			const video = overlay.querySelector( 'video' )
+			const
+				video	= overlay.querySelector( 'video' ),
+				poster	= overlay.querySelector( '.media-photo-overlay' )
 
 			if( ! video ) return
 
-			const onPlay = e => {
-				e.preventDefault()
+			const onPlay = () => {
+				if( overlay.classList.contains( 'playing' ) ) return
 
-				if( ! overlay.classList.contains( 'playing' ) ){
-					overlay.classList.add( 'playing' )
-					video.play()
-					video.controls = true
-				}else{
-					overlay.classList.remove( 'playing' )
-					video.pause()
-				}
+				overlay.classList.add( 'playing' )
+				poster.remove()
+				video.play()
+				video.controls = true
 			}
 
 			overlay.addEventListener( 'click', onPlay )

@@ -683,6 +683,10 @@ body.single-memory_page {
 					opacity: 0
 				}
 			}
+
+			.media-photo-overlay {
+				pointer-events: auto
+			}
 		}
 
 		&-bottom {
