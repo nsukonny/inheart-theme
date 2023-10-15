@@ -259,7 +259,7 @@
 			}
 
 			&-img::after {
-				background: linear-gradient(2deg, $theme-black 0%, rgba(1, 28, 26, 0) 100%)
+				background: linear-gradient(1deg, $theme-black 0%, rgba(19, 20, 20, 0) 63.47%)
 			}
 		}
 
@@ -278,7 +278,7 @@
 				border-color: $white;
 
 				&::after {
-					background: linear-gradient(2deg, $theme-red 0%, rgba(1, 28, 26, 0) 100%)
+					background: linear-gradient(1deg, $theme-red 1.14%, rgba(51, 4, 13, 0) 63.47%)
 				}
 
 				span {
@@ -306,7 +306,7 @@
 				border-color: #4D78AA;
 
 				&::after {
-					background: linear-gradient(2deg, $theme-blue 0%, rgba(1, 28, 26, 0) 100%)
+					background: linear-gradient(1deg, $theme-blue 1.14%, rgba(6, 32, 83, 0) 63.47%)
 				}
 
 				span {

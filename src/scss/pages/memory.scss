@@ -52,7 +52,9 @@ body.single-memory_page {
 				&-no-memories-title,
 				&-media-title,
 				.media-links-title,
-				.media-link-title {
+				.media-link-title,
+				.map-desc,
+				.map-desc-title {
 					color: $theme-black
 				}
 			}
@@ -69,6 +71,11 @@ body.single-memory_page {
 				.media-link-title {
 					color: $theme-red
 				}
+
+				.map-desc-title,
+				.map-coords {
+					color: $black-for-text
+				}
 			}
 		}
 
@@ -82,6 +89,14 @@ body.single-memory_page {
 				.media-links-title,
 				.media-link-title {
 					color: $theme-blue
+				}
+
+				.map-desc-title,
+				.map-address-detail,
+				.map-howto,
+				.map-coords,
+				.map-coords span {
+					color: $black-for-text
 				}
 			}
 		}
@@ -139,15 +154,27 @@ body.single-memory_page {
 
 		.single-memory {
 			&-thumb-border::after {
-				background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $theme-black 100%)
+				background: linear-gradient(180deg, rgba(19, 20, 20, 0.34) 40%, rgba(19, 20, 20, 0.92) 86.98%)
 			}
 
 			&-name {
 				color: $bright-yellow
 			}
 
-			&-date {
+			&-date,
+			&-heading,
+			&-epitaph,
+			&-epitaph::before,
+			&-epitaph-role,
+			&-bio-section,
+			.map-desc,
+			.map-desc-title,
+			.cta-desc {
 				color: $white
+			}
+
+			.media-photo-overlay {
+				background: rgba(19, 20, 20, 0.79)
 			}
 		}
 	}
@@ -158,16 +185,38 @@ body.single-memory_page {
 		background-color: $theme-red;
 
 		.single-memory {
-			&-thumb-border::after {
-				background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $theme-red 100%)
+			&-thumb-border {
+				&::after {
+					background: linear-gradient(180deg, rgba(51, 4, 13, 0.34) 40%, rgba(51, 4, 13, 0.92) 86.98%)
+				}
+
+				svg text {
+					fill: $bright-yellow
+				}
 			}
 
-			&-name {
+			&-name,
+			&-epitaph,
+			&-epitaph::before,
+			&-heading,
+			.map-desc-title {
 				color: $bright-yellow
 			}
 
-			&-date {
+			&-date,
+			&-epitaph-name,
+			&-epitaph-role,
+			&-bio-section,
+			.map-desc {
 				color: $white
+			}
+
+			.media-photo-overlay {
+				background: rgba(51, 4, 13, 0.79)
+			}
+
+			&-cta-inner {
+				background-color: #120000
 			}
 		}
 	}
@@ -179,15 +228,33 @@ body.single-memory_page {
 
 		.single-memory {
 			&-thumb-border::after {
-				background: linear-gradient(2deg, rgba(1, 28, 26, 0) 0%, $theme-blue 100%)
+				background: linear-gradient(1deg, $theme-blue 1.14%, rgba(6, 32, 83, 0.16) 63.47%)
 			}
 
-			&-name {
+			&-name,
+			&-epitaph,
+			&-epitaph::before,
+			&-epitaph-name,
+			.media-photo-cursor-text,
+			.map-desc-title,
+			.map-coords {
 				color: $light-blue
 			}
 
-			&-date {
+			&-date,
+			&-epitaph-role,
+			.map-address-detail,
+			.map-howto,
+			.map-coords span {
 				color: #4D78AA
+			}
+
+			.media-photo-overlay {
+				background: rgba(6, 32, 83, 0.79)
+			}
+
+			&-cta-inner {
+				background-color: #000112
 			}
 		}
 	}
@@ -218,7 +285,7 @@ body.single-memory_page {
 			left: 50%;
 			width: calc(100% + 94px);
 			height: calc(100% + 110px);
-			transform: translateX(-50%) rotate(180deg);
+			transform: translateX(-50%);
 
 			@media (min-width: $md) {
 				top: -89px;
@@ -234,7 +301,7 @@ body.single-memory_page {
 				left: -1px;
 				width: calc(100% + 2px);
 				height: 100%;
-				background: linear-gradient(2deg, rgba(1, 28, 26, 0.00) 0%, $very-dark-green 100%)
+				background: linear-gradient(180deg, rgba(1, 28, 26, 0.34) 40%, rgba(1, 28, 26, 0.85) 86.98%)
 			}
 
 			svg text {
