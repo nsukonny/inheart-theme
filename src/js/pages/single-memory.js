@@ -1,7 +1,7 @@
 import lightbox from 'lightbox2'
 import { Loader } from '@googlemaps/js-api-loader'
 
-let map, infowindows = []
+let map
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -63,22 +63,20 @@ const textFollowsTheCursor = () => {
 
 			if( ! video ) return
 
-			const onPlay = () => {
+			const onPlay = e => {
+				e.preventDefault()
+
 				if( ! overlay.classList.contains( 'playing' ) ){
 					overlay.classList.add( 'playing' )
 					video.play()
 					video.controls = true
+				}else{
+					overlay.classList.remove( 'playing' )
+					video.pause()
 				}
 			}
 
 			overlay.addEventListener( 'click', onPlay )
-			video.addEventListener( 'play', onPlay )
-			video.addEventListener( 'pause', () => {
-				if( overlay.classList.contains( 'playing' ) ){
-					overlay.classList.remove( 'playing' )
-					video.removeAttribute( 'controls' )
-				}
-			} )
 		} )
 	}
 
