@@ -73,7 +73,10 @@ body.single-memory_page {
 				}
 
 				.map-desc-title,
-				.map-coords {
+				.map-address-detail,
+				.map-howto,
+				.map-coords,
+				.map-coords span {
 					color: $black-for-text
 				}
 			}
@@ -199,7 +202,8 @@ body.single-memory_page {
 			&-epitaph,
 			&-epitaph::before,
 			&-heading,
-			.map-desc-title {
+			.map-desc-title,
+			.map-coords {
 				color: $bright-yellow
 			}
 
@@ -207,7 +211,10 @@ body.single-memory_page {
 			&-epitaph-name,
 			&-epitaph-role,
 			&-bio-section,
-			.map-desc {
+			.map-desc,
+			.map-address-detail,
+			.map-howto,
+			.map-coords span {
 				color: $white
 			}
 

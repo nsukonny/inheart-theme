@@ -46,7 +46,8 @@
 			opacity: 0.7
 		}
 
-		img {
+		img, svg {
+			display: block;
 			height: 100%;
 			width: auto;
 			max-width: none
@@ -67,5 +68,95 @@
 		font-size: 10px;
 		line-height: 2;
 		color: $bright-yellow
+	}
+}
+
+body {
+	&.black {
+		.footer {
+			&-bottom {
+				border-top-color: $theme-black;
+
+				&-nav .menu-item a {
+					color: $white;
+
+					&:hover {
+						color: $light-green
+					}
+				}
+			}
+
+			&-link svg path:first-child {
+				fill: $white
+			}
+		}
+	}
+
+	&.red {
+		.footer {
+			background-color: #230208;
+
+			&-nav .menu-item a {
+				color: $bright-yellow;
+
+				&:hover {
+					color: $dark-yellow
+				}
+			}
+
+			&-link svg path:first-child {
+				fill: $bright-yellow
+			}
+
+			&-copyright {
+				color: $white
+			}
+
+			&-bottom {
+				border-top-color: $theme-red;
+
+				&-nav .menu-item a {
+					color: $bright-yellow;
+
+					&:hover {
+						color: $dark-yellow
+					}
+				}
+			}
+		}
+	}
+
+	&.blue {
+		.footer {
+			background-color: #031333;
+
+			&-nav .menu-item a {
+				color: $light-blue;
+
+				&:hover {
+					color: #4D78AA
+				}
+			}
+
+			&-link svg path:first-child {
+				fill: $light-blue
+			}
+
+			&-copyright {
+				color: #4D78AA
+			}
+
+			&-bottom {
+				border-top-color: $theme-blue;
+
+				&-nav .menu-item a {
+					color: $light-blue;
+
+					&:hover {
+						color: #4D78AA
+					}
+				}
+			}
+		}
 	}
 }

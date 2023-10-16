@@ -23,7 +23,7 @@ $copyright		= '&copy; Inheart ' . date( 'Y' ) . '. All rights reserved.';
 							<?php
 							if( $logo ){
 								echo '<a class="footer-logo" href="' . home_url( '/' ) . '" title="' . esc_attr__( 'На Головну', 'inheart' ) . '">'
-									. wp_get_attachment_image( $logo['id'], 'ih-logo' ) .
+									. wp_get_attachment_image( $logo['id'], 'ih-logo', false, ['class' => 'style-svg'] ) .
 								'</a>';
 							}
 
@@ -49,7 +49,7 @@ $copyright		= '&copy; Inheart ' . date( 'Y' ) . '. All rights reserved.';
 											target="_blank"
 											title="<?php esc_attr_e( 'Відкрити у новій вкладці', 'inheart' ) ?>"
 										>
-											<?php echo wp_get_attachment_image( $icon['id'] ) ?>
+											<?php echo wp_get_attachment_image( $icon['id'], 'thumbnail', false, ['class' => 'style-svg'] ) ?>
 										</a>
 									</div>
 									<?php
