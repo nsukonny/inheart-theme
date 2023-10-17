@@ -66,8 +66,7 @@ $memories	= get_field( 'memories', $id );
 				>
 					<?php
 //					echo pll_translate_string( 'Додати спогад про людину', $lang );
-//					echo pll_translate_string( 'Функція скоро буде доступна', $lang );
-					esc_html_e( 'Функція скоро буде доступна', 'inheart' );
+					echo pll_translate_string( 'Функція скоро буде доступна', $lang );
 					?>
 				</a>
 			</div><!-- .single-memory-no-memories -->
