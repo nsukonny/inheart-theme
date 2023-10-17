@@ -22,7 +22,7 @@ $key			= get_field( 'google_maps_api_key', 'option' );
 <section class="single-memory-place">
 	<div class="container">
 		<h2 class="single-memory-heading">
-			<?php esc_html_e( 'Остання адреса', 'inheart' ) ?>
+			<?php echo pll_translate_string( 'Остання адреса', $lang ) ?>
 		</h2>
 
 		<div class="single-memory-place-inner flex flex-wrap">
