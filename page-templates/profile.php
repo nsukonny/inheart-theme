@@ -21,8 +21,10 @@ $memory_pages	= get_posts( [
 ] );
 ?>
 
-<main class="main profile">
+<main class="main profile flex flex-wrap">
 	<?php
+	get_template_part( 'template-parts/profile/sidebar' );
+
 	if( ! empty( $memory_pages ) ){
 		get_template_part( 'template-parts/profile/memory-pages', 'exist', [ 'pages' => $memory_pages ] );
 		get_template_part( 'template-parts/profile/expand-to-full-popup' );

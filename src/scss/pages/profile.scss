@@ -1,172 +1,233 @@
 @import '../components/vars';
+@import '../components/buttons';
 @import '../new-memory/step-6';
+@import '../pages/memory';
 
 .page-template-profile {
-	background-color: $a-bit-blue-white
+	background-color: $a-bit-blue-white;
+
+	.header-logo {
+		width: 104px
+	}
 }
 
-.profile-memories {
-	&.none {
-		.profile-memories-inner {
-			padding: 93px 0
+.profile {
+	&-sidebar {
+		width: 384px;
+		background-color: $very-dark-green;
+		padding: 40px 46px;
+
+		&-header {
+			margin-bottom: 40px;
+
+			.header-menu {
+				width: auto
+			}
+
+			&.menu-visible .header-nav-wrap {
+				visibility: visible;
+				z-index: 10;
+				pointer-events: auto
+			}
+
+			&.menu-opened {
+				.header-nav-wrap {
+					opacity: 1
+				}
+
+				.menu-item,
+				.header-nav-icons a,
+				.lang-item {
+					opacity: 1;
+					transform: translateY(0)
+				}
+
+				.header-menu-button {
+					color: $dark-yellow;
+
+					&-lines span {
+						top: 6px;
+
+						&:first-child {
+							transform: rotate(45deg)
+						}
+
+						&:nth-child(2) {
+							opacity: 0
+						}
+
+						&:last-child {
+							transform: rotate(-45deg)
+						}
+					}
+				}
+			}
+		}
+
+		&-nav {
+			li {
+				width: 100%;
+				margin-bottom: 8px;
+
+				a {
+					@extend .btn, .profile-nav
+				}
+
+				&.current-menu-item a {
+					border-color: $dark-yellow
+				}
+			}
+		}
+
+		&-footer {
+			margin-top: auto;
+
+			.logout {
+				width: 100%;
+				background-color: transparent;
+				padding: 24px;
+			}
+		}
+
+		.header-menu-button {
+			color: $light-green
 		}
 	}
 
-	&-inner {
-		padding-top: 12px
+	&-memories {
+		width: calc(100% - 384px);
+		padding: 28px 46px 42px;
+
+		&.none {
+			.profile-memories-inner {
+				padding: 93px 0
+			}
+		}
+
+		&-img {
+			width: 303px;
+
+			img {
+				width: 100%
+			}
+		}
+
+		&-title {
+			font-family: $ff-title;
+			font-size: 24px;
+			line-height: 1.17;
+			color: $very-dark-green;
+			margin-bottom: 24px
+		}
+
+		&-list {
+			gap: 24px 20px
+		}
+
+		.page-created {
+			&-info {
+				background-color: inherit;
+				padding: 52px 33px 33px
+			}
+
+			&-thumb {
+				width: 181px;
+				height: 230px;
+				transform: translateY(45px);
+
+				@media (min-width: $xl) {
+					width: 226px;
+					height: 288px
+				}
+
+				&-border {
+					border-color: #C3A195;
+
+					span {
+						position: absolute;
+						font-size: 10px;
+						line-height: normal;
+						color: $white;
+						background-color: #131414;
+						padding: 0 9px;
+						top: 0;
+						left: 50%;
+						transform: translate(-50%, -50%)
+					}
+				}
+
+				&-img {
+					width: 144px;
+					height: 180px;
+
+					@media (min-width: $xl) {
+						width: 180px;
+						height: 225px
+					}
+				}
+			}
+
+			&-fullname {
+				position: relative;
+				width: 100%;
+				font-size: 26px;
+				color: $light-green;
+				padding: 0 13px;
+				margin: 0
+			}
+
+			&-firstname {
+				text-align: center
+			}
+
+			&-lastname {
+				width: 100%;
+				text-align: center
+			}
+
+			&-dates {
+				width: 100%;
+				font-size: $fs-xs;
+				font-weight: $fw-regular;
+				line-height: $lh-5;
+				color: $bright-yellow;
+				margin-top: 8px;
+
+				span {
+					margin: 0 4px
+				}
+			}
+		}
 	}
 
-	&-img {
-		width: 303px;
+	.single-memory-thumb {
+		&-border {
+			top: -19px;
+			left: 50%;
+			width: calc(100% + 42px);
+			height: calc(100% + 38px);
+
+			&::after {
+				background: linear-gradient(180deg, rgba(1, 28, 26, 0.21) 55.45%, $very-dark-green 76.13%)
+			}
+		}
 
 		img {
-			width: 100%
-		}
-	}
-
-	&-title {
-		font-family: $ff-title;
-		font-size: 30px;
-		line-height: normal;
-		color: $very-dark-green;
-		margin-bottom: 20px;
-		text-align: center;
-
-		@media (min-width: $xl) {
-			font-size: 40px;
-			line-height: 2.5;
-			margin-bottom: 11px;
-			text-align: left
-		}
-	}
-
-	&-list {
-		gap: 20px;
-		margin-bottom: 49px
-	}
-
-	.page-created {
-		&-info {
-			background-color: #131414;
-			padding: 0 0 23px;
-			border-radius: 30px 30px 0 0;
-
-			@media (min-width: $xl) {
-				border-radius: 30px 30px 0 0;
-				padding: 0 37px 53px
-			}
-		}
-
-		&-thumb {
-			width: 181px;
-			height: 230px;
-			transform: translateY(45px);
-
-			@media (min-width: $xl) {
-				width: 226px;
-				height: 288px
-			}
-
-			&-border {
-				border-color: #C3A195;
-
-				span {
-					position: absolute;
-					font-size: 10px;
-					line-height: normal;
-					color: $white;
-					background-color: #131414;
-					padding: 0 9px;
-					top: 0;
-					left: 50%;
-					transform: translate(-50%, -50%)
-				}
-			}
-
-			&-img {
-				width: 144px;
-				height: 180px;
-
-				@media (min-width: $xl) {
-					width: 180px;
-					height: 225px
-				}
-			}
-		}
-
-		&-fullname {
-			position: relative;
-			width: 100%;
-			font-size: 32px;
-			color: #C3A195;
-			padding: 0 13px;
-			margin: 0
-		}
-
-		&-firstname {
-			text-align: center
-		}
-
-		&-lastname {
-			width: 100%;
-			align-items: flex-end;
-			justify-content: center;
-
-			@media (min-width: $xl) {
-				justify-content: space-between
-			}
-
-			.memory-card-date {
-				display: none;
-				font-family: $ff;
-				font-weight: $fw-regular;
-				font-size: $fs-xs;
-				line-height: normal;
-				color: $white;
-				padding-bottom: 4px;
-
-				@media (min-width: $xl) {
-					display: block
-				}
-
-				span {
-					padding: 0 5px
-				}
-
-				&.born {
-					margin-right: auto
-				}
-
-				&.died {
-					margin-left: auto
-				}
-			}
-		}
-
-		&-dates {
-			width: 100%;
-			font-family: $ff-title;
-			font-size: $fs-xs;
-			font-weight: $fw-regular;
-			line-height: normal;
-			color: $white;
-			margin-top: 17px;
-
-			span {
-				margin: 0 21px
-			}
-
-			@media (min-width: $xl) {
-				display: none
-			}
+			width: 120px;
+			height: auto;
+			border-radius: 95px;
+			filter: grayscale(100%)
 		}
 	}
 }
 
 .memory-card {
+	position: relative;
 	width: 100%;
-	background-color: $white;
+	min-height: 308px;
+	background-color: $very-dark-green;
 	border-radius: 30px;
+	overflow: hidden;
 
 	@media (min-width: $md) {
 		width: calc(50% - 10px)
@@ -174,10 +235,6 @@
 
 	@media (min-width: $lg) {
 		width: calc((100% - 40px) / 3)
-	}
-
-	&.create {
-		padding: 20px
 	}
 
 	&-create-text {
@@ -204,10 +261,43 @@
 	}
 
 	&-bottom {
-		padding: 20px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding: 24px 25px;
+		background-color: inherit;
+		opacity: 0;
+		transform: translateY(30px);
+		transition:
+			transform ease-out $tr,
+			opacity ease-out $tr;
 
 		@media (min-width: $xl) {
 			padding: 23px 30px 30px
+		}
+
+		.btn {
+			color: $light-green
+		}
+	}
+
+	&-watch {
+		position: relative;
+		flex-grow: 1;
+		width: 100%;
+		padding: 24px;
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 90%;
+			height: 1px;
+			background-color: rgba(195, 218, 226, 0.24)
 		}
 	}
 
@@ -224,14 +314,17 @@
 	}
 
 	&-actions {
+		width: 100%;
+		gap: 4px;
+		padding-top: 24px;
+
 		.btn {
+			padding: 7px 20px 8px;
+			background-color: transparent;
+
 			&.lg {
 				padding-left: 20px;
 				padding-right: 20px
-			}
-
-			&:last-child {
-				margin-left: auto
 			}
 
 			&.simple span {
@@ -245,87 +338,33 @@
 	}
 
 	&.black {
-		.page-created-info {
-			background-color: $theme-black
-		}
+		background-color: $theme-black;
 
-		.page-created-thumb {
-			&-border {
-				border-color: $white;
-
-				span {
-					background-color: $theme-black
-				}
-			}
-
-			&-img::after {
-				background: linear-gradient(1deg, $theme-black 0%, rgba(19, 20, 20, 0) 63.47%)
-			}
-		}
-
-		.page-created-fullname {
-			color: $bright-yellow
+		.single-memory-thumb-border::after {
+			background: linear-gradient(180deg, rgba(19, 20, 20, 0) 55.45%, $theme-black 76.13%)
 		}
 	}
 
 	&.red {
-		.page-created-info {
-			background-color: $theme-red
-		}
+		background-color: $theme-red;
 
-		.page-created-thumb {
-			&-border {
-				border-color: $white;
-
-				&::after {
-					background: linear-gradient(1deg, $theme-red 1.14%, rgba(51, 4, 13, 0) 63.47%)
-				}
-
-				span {
-					background-color: $theme-red
-				}
-			}
-
-			&-img::after {
-				background: linear-gradient(2deg, $theme-red 0%, rgba(1, 28, 26, 0) 100%)
-			}
-		}
-
-		.page-created-fullname {
-			color: $bright-yellow
+		.single-memory-thumb-border::after {
+			background: linear-gradient(180deg, rgba(51, 4, 13, 0) 55.45%, $theme-red 76.13%)
 		}
 	}
 
 	&.blue {
-		.page-created-info {
-			background-color: $theme-blue
+		background-color: $theme-blue;
+
+		.single-memory-thumb-border::after {
+			background: linear-gradient(180deg, rgba(6, 32, 83, 0) 55.45%, $theme-blue 76.13%)
 		}
+	}
 
-		.page-created-thumb{
-			&-border {
-				border-color: #4D78AA;
-
-				&::after {
-					background: linear-gradient(1deg, $theme-blue 1.14%, rgba(6, 32, 83, 0) 63.47%)
-				}
-
-				span {
-					color: $light-blue;
-					background-color: $theme-blue
-				}
-			}
-
-			&-img::after {
-				background: linear-gradient(2deg, $theme-blue 0%, rgba(1, 28, 26, 0) 100%)
-			}
-		}
-
-		.page-created-fullname {
-			color: $light-blue
-		}
-
-		.page-created-lastname .memory-card-date {
-			color: #4D78AA
+	&:hover {
+		.memory-card-bottom {
+			opacity: 1;
+			transform: translateY(0)
 		}
 	}
 }
@@ -382,7 +421,7 @@
 	&-header {
 		padding-bottom: 30px;
 		border-bottom: 1px solid #8FB7C5;
-		
+
 		&-thumb {
 			position: relative;
 			width: 70px;
@@ -400,7 +439,7 @@
 				height: 100%;
 				background: linear-gradient( 2deg, $very-dark-green 0%, rgba(1, 28, 26, 0.00) 100%), transparent 50%
 			}
-			
+
 			img {
 				width: 100%;
 				height: 100%;

@@ -60,7 +60,10 @@ $logo_only		= get_field( 'logo_only' );
 
 	<div class="wrapper">
 		<?php
-		if( $logo_only ) get_template_part( 'template-parts/header/logo-only' );
-		else get_template_part( 'template-parts/header/full' );
+		// Use different layout for the Profile pages.
+		if( ! is_page_template( 'page-templates/profile.php' ) ){
+			if( $logo_only ) get_template_part( 'template-parts/header/logo-only' );
+			else get_template_part( 'template-parts/header/full' );
+		}
 		?>
 

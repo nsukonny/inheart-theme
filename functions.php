@@ -22,9 +22,10 @@ function ih_load_theme_dependencies(): void
 {
 	// Register theme menus.
 	register_nav_menus( [
-		'header_menu'		=> esc_html__( 'Меню Хедеру', 'inheart' ),
-		'footer_menu'		=> esc_html__( 'Меню Футеру', 'inheart' ),
-		'footer_bottom_menu'=> esc_html__( 'Меню знизу футеру', 'inheart' )
+		'header_menu'			=> esc_html__( 'Меню Хедеру', 'inheart' ),
+		'footer_menu'			=> esc_html__( 'Меню Футеру', 'inheart' ),
+		'footer_bottom_menu'	=> esc_html__( 'Меню знизу футеру', 'inheart' ),
+		'profile_sidebar_menu'	=> esc_html__( 'Меню профілю', 'inheart' ),
 	] );
 
 	// Hide admin bar for everyone on the frontend.

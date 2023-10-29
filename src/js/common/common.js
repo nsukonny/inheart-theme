@@ -12,7 +12,7 @@ const toggleMenu = () => {
 	const
 		menuButton	= document.querySelector( '.header-menu-button' ),
 		menuWrap	= document.querySelector( '#header-nav-wrap' ),
-		header		= document.querySelector( '.header' )
+		header		= menuButton ? menuButton.closest( 'header' ) : null
 
 	if( ! header || ! menuButton || ! menuWrap ) return
 
