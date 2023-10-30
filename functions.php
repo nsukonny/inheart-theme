@@ -53,6 +53,7 @@ function ih_init_theme(): void
 
 	// Custom image sizes.
 	add_image_size( 'ih-logo', 98 );
+	add_image_size( 'ih-logo-mobile', 41 );
 	add_image_size( 'ih-content-half', 413 );
 	add_image_size( 'ih-content-full', 845 );
 	add_image_size( 'ih-additional-material', 285, 151 );

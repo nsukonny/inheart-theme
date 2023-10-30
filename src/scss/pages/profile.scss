@@ -7,21 +7,58 @@
 	background-color: $a-bit-blue-white;
 
 	.header-logo {
-		width: 104px
+		display: none;
+		width: 64px;
+		padding: 0 11px 0 10px;
+		border: 1px solid $a-bit-blue-white;
+		border-radius: 10px;
+
+		@media (min-width: $lg) {
+			display: flex;
+			width: 104px;
+			padding: 0;
+			border: none;
+			border-radius: 0
+		}
+
+		&.mobile {
+			display: flex;
+
+			@media (min-width: $lg) {
+				display: none
+			}
+		}
 	}
 }
 
 .profile {
 	&-sidebar {
-		width: 384px;
 		background-color: $very-dark-green;
-		padding: 40px 46px;
+		padding: 40px 24px;
+
+		@media (min-width: $lg) {
+			width: 384px;
+			padding: 40px 46px
+		}
 
 		&-header {
+			flex-direction: column;
+			justify-content: flex-start;
 			margin-bottom: 40px;
 
+			@media (min-width: $lg) {
+				flex-flow: row wrap;
+				justify-content: space-between;
+				align-items: center
+			}
+
 			.header-menu {
-				width: auto
+				width: auto;
+				margin-top: 40px;
+
+				@media (min-width: $lg) {
+					margin-top: 0
+				}
 			}
 
 			&.menu-visible .header-nav-wrap {
@@ -70,11 +107,46 @@
 				margin-bottom: 8px;
 
 				a {
-					@extend .btn, .profile-nav
+					@extend .btn, .profile-nav;
+					display: block;
+					width: 64px;
+					height: 64px;
+					overflow: hidden;
+					color: transparent;
+
+					@media (min-width: $lg) {
+						display: inline-flex;
+						width: 100%;
+						height: auto;
+						overflow: visible;
+						color: $light-green
+					}
+
+					&::before {
+						content: '';
+						display: block;
+						width: 16px;
+						height: 16px;
+						background-size: 100% auto;
+						background-position: center;
+						background-repeat: no-repeat
+					}
 				}
 
 				&.current-menu-item a {
 					border-color: $dark-yellow
+				}
+
+				&.menu-item-memory-pages a::before {
+					background-image: url('../../img/profile-menu-memory-pages.svg')
+				}
+
+				&.menu-item-memories a::before {
+					background-image: url('../../img/profile-menu-memories.svg')
+				}
+
+				&.menu-item-settings a::before {
+					background-image: url('../../img/profile-menu-settings.svg')
 				}
 			}
 		}
@@ -83,9 +155,21 @@
 			margin-top: auto;
 
 			.logout {
-				width: 100%;
+				display: block;
+				width: 64px;
+				height: 64px;
+				color: transparent;
 				background-color: transparent;
 				padding: 24px;
+				overflow: hidden;
+
+				@media (min-width: $lg) {
+					display: inline-flex;
+					width: 100%;
+					height: auto;
+					overflow: visible;
+					color: $light-green
+				}
 			}
 		}
 
@@ -95,8 +179,13 @@
 	}
 
 	&-memories {
-		width: calc(100% - 384px);
-		padding: 28px 46px 42px;
+		width: calc(100% - 112px);
+		padding: 28px 24px 14px;
+
+		@media (min-width: $lg) {
+			width: calc(100% - 384px);
+			padding: 28px 46px 42px
+		}
 
 		&.none {
 			.profile-memories-inner {
@@ -114,14 +203,23 @@
 
 		&-title {
 			font-family: $ff-title;
-			font-size: 24px;
-			line-height: 1.17;
+			font-size: $fs-xl;
+			line-height: $lh-4;
 			color: $very-dark-green;
-			margin-bottom: 24px
+			margin-bottom: 24px;
+
+			@media (min-width: $lg) {
+				font-size: 24px;
+				line-height: 1.17
+			}
 		}
 
 		&-list {
-			gap: 24px 20px
+			gap: 12px;
+
+			@media (min-width: $lg) {
+				gap: 24px 20px
+			}
 		}
 
 		.page-created {
@@ -171,6 +269,7 @@
 				position: relative;
 				width: 100%;
 				font-size: 26px;
+				line-height: $lh-2;
 				color: $light-green;
 				padding: 0 13px;
 				margin: 0
@@ -230,7 +329,7 @@
 	overflow: hidden;
 
 	@media (min-width: $md) {
-		width: calc(50% - 10px)
+		width: calc(50% - 6px)
 	}
 
 	@media (min-width: $lg) {
@@ -327,12 +426,9 @@
 				padding-right: 20px
 			}
 
-			&.simple span {
-				display: none;
-
-				@media (min-width: $xl) {
-					display: inline-block
-				}
+			&.simple {
+				padding-left: 0;
+				padding-right: 0
 			}
 		}
 	}

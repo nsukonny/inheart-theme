@@ -7,23 +7,32 @@
  * @subpackage inheart
  */
 
-$logo		= get_field( 'header_logo_light', 'option' );
-$socials	= get_field( 'social_icons', 'option' );
+$logo			= get_field( 'header_logo_light', 'option' );
+$logo_mobile	= get_field( 'header_logo_light_mobile', 'option' );
+$socials		= get_field( 'social_icons', 'option' );
 ?>
 
 <aside class="profile-sidebar flex direction-column">
-	<header class="profile-sidebar-header flex flex-wrap align-center justify-between">
+	<header class="profile-sidebar-header flex">
 		<?php
 		if( $logo ){
 			?>
-			<a class="header-logo flex align-center" href="<?php echo get_the_permalink( pll_get_post( 2 ) ) ?>">
+			<a class="header-logo align-center" href="<?php echo get_the_permalink( pll_get_post( 2 ) ) ?>">
 				<?php echo wp_get_attachment_image( $logo['id'], 'ih-logo' ) ?>
+			</a>
+			<?php
+		}
+
+		if( $logo_mobile ){
+			?>
+			<a class="header-logo mobile align-center" href="<?php echo get_the_permalink( pll_get_post( 2 ) ) ?>">
+				<?php echo wp_get_attachment_image( $logo_mobile['id'], 'ih-logo-mobile' ) ?>
 			</a>
 			<?php
 		}
 		?>
 
-		<div class="header-menu flex align-center">
+		<div class="header-menu flex justify-center align-center">
 			<div id="header-nav-wrap" class="header-nav-wrap">
 				<ul class="header-langs flex align-center justify-center hide-after-md">
 					<?php pll_the_languages() ?>
@@ -62,14 +71,14 @@ $socials	= get_field( 'social_icons', 'option' );
 				type="button"
 				aria-label="<?php esc_attr_e( 'Відкрити меню', 'inheart' ) ?>"
 			>
-					<span class="header-menu-button-lines">
-						<span></span>
-						<span></span>
-						<span></span>
-					</span>
+				<span class="header-menu-button-lines">
+					<span></span>
+					<span></span>
+					<span></span>
+				</span>
 				<span class="header-menu-button-label">
-						<?php esc_html_e( 'Меню', 'inheart' ) ?>
-					</span>
+					<?php esc_html_e( 'Меню', 'inheart' ) ?>
+				</span>
 			</button>
 		</div>
 	</header>
