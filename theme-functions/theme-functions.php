@@ -231,40 +231,15 @@ function ih_convert_input_date( string $date, string $format = 'letters' ): stri
 /**
  * Prepare ACF Date Picker field value for frontend input[type="date"].
  *
- * @param string $date
+ * @param $date
  * @return string
  */
-function ih_convert_date_from_admin_for_input( string $date = '' ): string
+function ih_convert_date_from_admin_for_input( $date ): string
 {
 	if( ! $date ) return '';
 
 	$date_arr = array_reverse( explode( '/', $date ) );
 
 	return implode( '-', $date_arr );
-}
-
-/**
- * Get person lifetime numbers.
- *
- * @param int $id
- * @return array
- */
-function ih_get_lifetime_numbers( int $id = 0 ): array
-{
-	if( ! $id ) return ['years' => 0, 'months' => 0, 'weeks' => 0, 'days' => 0, 'hours' => 0];
-
-	$born_at	= ih_convert_input_date( get_field( 'born_at', $id ) );
-	$died_at	= ih_convert_input_date( get_field( 'died_at', $id ) );
-	$diff		= abs( strtotime( $died_at ) - strtotime( $born_at ) );
-
-	return [
-		'born'	=> $born_at,
-		'died'	=> $died_at,
-		'years'	=> floor( $diff /  (365 * 60 * 60 * 24 ) ),
-		'months'=> floor( $diff / ( 30 * 60 * 60 * 24 ) ),
-		'weeks'	=> floor( $diff / ( 60 * 60 * 24 * 7 ) ),
-		'days'	=> floor( $diff / ( 60 * 60 * 24 ) ),
-		'hours'	=> floor( $diff / ( 60 * 60 ) )
-	];
 }
 
