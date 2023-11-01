@@ -53,10 +53,6 @@ label.label {
 	width: 100%;
 	margin-bottom: 16px;
 
-	@media (min-width: $md) {
-		margin-bottom: 21px
-	}
-
 	&-checkbox {
 		position: relative;
 		display: block;
@@ -176,9 +172,14 @@ label.label {
 			&[type='password'],
 			input[type='date'],
 			input[type='url'],
-			&[type='email'] {
+			&[type='email'],
+			textarea {
 				color: $error-primary;
-				border-color: $error-primary
+				border-color: $error-primary;
+
+				&::placeholder {
+					color: $error-primary !important
+				}
 			}
 		}
 	}
@@ -216,6 +217,12 @@ label.label {
 			&::placeholder {
 				color: rgba(1, 28, 26, 0.51)
 			}
+
+			&:active,
+			&:focus {
+				border-width: 3px;
+				border-color: rgba(247, 185, 65, 0.40)
+			}
 		}
 	}
 }
@@ -247,20 +254,29 @@ input[type='email'] {
 	border: 0.5px solid $white;
 	border-radius: $radius-input;
 	padding: 0 16px;
-	transition: border-color ease-out $tr;
+	transition:
+		border-width ease-out $tr,
+		border-color ease-out $tr;
 
 	&:active,
 	&:focus {
-		border-color: $bright-yellow
+		border-width: 3px;
+		border-color: rgba(247, 185, 65, 0.40)
 	}
 
 	&::placeholder {
 		font-family: $ff;
 		font-size: $fs-md;
-		color: $very-dark-green !important;
+		color: rgba(5, 51, 48, 0.40) !important;
+		opacity: 1
+	}
 
-		@media (min-width: $md) {
-			color: rgba(156, 180, 186, 0.51) !important
+	&.error {
+		color: $error-primary !important;
+		border-color: $error-primary !important;
+
+		&::placeholder {
+			color: $error-primary !important
 		}
 	}
 }

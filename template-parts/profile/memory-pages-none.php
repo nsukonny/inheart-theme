@@ -12,7 +12,7 @@ $main_title = get_field( 'memory_pages_title' );
 $title		= get_field( 'no_memory_pages_title' );
 ?>
 
-<section class="profile-memories none">
+<section class="profile-memories none profile-body">
 	<?php
 	if( $main_title ){
 		?>

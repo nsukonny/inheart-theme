@@ -25,6 +25,7 @@ $email		= $data->user_email;
 				id="lastname"
 				name="lastname"
 				type="text"
+				placeholder="<?php esc_attr_e( 'Ваше прізвище', 'inheart' ) ?>"
 				value="<?php echo esc_attr( $last_name ) ?>"
 				required
 			/>
@@ -35,6 +36,7 @@ $email		= $data->user_email;
 				id="firstname"
 				name="firstname"
 				type="text"
+				placeholder="<?php esc_attr_e( "Ваше ім'я", 'inheart' ) ?>"
 				value="<?php echo esc_attr( $first_name ) ?>"
 				required
 			/>
@@ -45,6 +47,7 @@ $email		= $data->user_email;
 				id="email"
 				name="email"
 				type="email"
+				placeholder="<?php esc_attr_e( 'Email', 'inheart' ) ?>"
 				value="<?php echo esc_attr( $email ) ?>"
 				required
 			/>
@@ -52,11 +55,11 @@ $email		= $data->user_email;
 	</fieldset>
 
 	<fieldset class="flex flex-wrap">
-		<legend><?php esc_html_e( 'Змiнити пароль', 'inheart' ) ?></legend>
+		<legend><?php esc_html_e( 'Пароль', 'inheart' ) ?></legend>
 		<label for="pass" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Поточний пароль', 'inheart' ) ?></span>
 			<span class="pass-wrapper">
-				<input id="pass" name="pass" type="password" />
+				<input id="pass" name="pass" type="password" placeholder="<?php esc_attr_e( 'Поточний пароль', 'inheart' ) ?>" />
 				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
 			</span>
 		</label>
@@ -64,14 +67,14 @@ $email		= $data->user_email;
 		<label for="new-pass" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Новий пароль', 'inheart' ) ?></span>
 			<span class="pass-wrapper">
-				<input id="new-pass" name="new-pass" type="password" />
+				<input id="new-pass" name="new-pass" type="password" placeholder="<?php esc_attr_e( 'Новий пароль', 'inheart' ) ?>" />
 				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
 			</span>
 		</label>
 		<label for="confirm-pass" class="label dark half end">
 			<span class="label-text"><?php esc_html_e( 'Підтвердьте пароль', 'inheart' ) ?></span>
 			<span class="pass-wrapper">
-				<input id="confirm-pass" name="confirm-pass" type="password" />
+				<input id="confirm-pass" name="confirm-pass" type="password" placeholder="<?php esc_attr_e( 'Підтвердьте пароль', 'inheart' ) ?>" />
 				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
 			</span>
 		</label>

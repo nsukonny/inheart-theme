@@ -12,7 +12,7 @@ if( ! $memory_pages = $args['pages'] ?? null ) return;
 $title = get_field( 'memory_pages_title' );
 ?>
 
-<section class="profile-memories">
+<section class="profile-memories profile-body">
 	<?php
 	if( $title ){
 		?>

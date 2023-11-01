@@ -10,31 +10,6 @@
 	.wrapper {
 		overflow: visible
 	}
-
-	.header-logo {
-		display: none;
-		width: 64px;
-		padding: 0 11px 0 10px;
-		border: 1px solid $a-bit-blue-white;
-		border-radius: 10px;
-		z-index: 11;
-
-		@media (min-width: $lg) {
-			display: flex;
-			width: 104px;
-			padding: 0;
-			border: none;
-			border-radius: 0
-		}
-
-		&.mobile {
-			display: flex;
-
-			@media (min-width: $lg) {
-				display: none
-			}
-		}
-	}
 }
 
 .profile {
@@ -44,6 +19,7 @@
 		position: relative;
 		width: 112px;
 		background-color: $very-dark-green;
+		z-index: 1;
 
 		@media (min-width: $lg) {
 			width: 384px
@@ -198,9 +174,34 @@
 		.header-menu-button {
 			color: $light-green
 		}
+
+		.header-logo {
+			display: none;
+			width: 64px;
+			padding: 0 11px 0 10px;
+			border: 1px solid $a-bit-blue-white;
+			border-radius: 10px;
+			z-index: 11;
+
+			@media (min-width: $lg) {
+				display: flex;
+				width: 104px;
+				padding: 0;
+				border: none;
+				border-radius: 0
+			}
+
+			&.mobile {
+				display: flex;
+
+				@media (min-width: $lg) {
+					display: none
+				}
+			}
+		}
 	}
 
-	&-memories {
+	&-body {
 		width: calc(100% - 112px);
 		padding: 28px 24px 14px;
 
@@ -208,7 +209,9 @@
 			width: calc(100% - 384px);
 			padding: 28px 46px 42px
 		}
+	}
 
+	&-memories {
 		&.none {
 			.profile-memories-title {
 				margin-bottom: 100px;
@@ -251,12 +254,17 @@
 			font-family: $ff-title;
 			font-size: $fs-xl;
 			line-height: $lh-4;
+			font-weight: $fw-semibold;
 			color: $very-dark-green;
 			margin-bottom: 24px;
 
 			@media (min-width: $lg) {
 				font-size: 24px;
 				line-height: 1.17
+			}
+
+			.btn {
+				min-width: 221px
 			}
 		}
 

@@ -2,94 +2,26 @@
 @import '../components/forms';
 
 .page-template-profile-settings {
-	background-color: $a-bit-blue-white
+	background-color: $a-bit-blue-white;
+	overflow-x: hidden;
+
+	.wrapper {
+		overflow: visible
+	}
 }
 
 .profile-settings {
-	padding-bottom: 69px;
-
-	&-header {
-		padding: 47px 0 38px
-	}
-
-	&-back {
-		font-size: $fs-sm;
-		color: $very-dark-green;
-		transition: opacity ease-out $tr;
-
-		&:hover {
-			opacity: 0.7
-		}
-
-		svg {
-			display: block;
-			width: 20px;
-			margin-right: 7px
-		}
-	}
-
-	&-title {
-		margin-top: 15px;
-
-		h1 {
-			font-size: 40px
-		}
-	}
-
-	&-left {
-		width: 100%;
-
-		@media (min-width: $xl) {
-			max-width: 847px
-		}
-	}
-
-	&-right {
-		flex-direction: column-reverse;
-		width: 100%;
-		margin-top: 30px;
-
-		@media (min-width: $md) {
-			flex-direction: row
-		}
-
-		@media (min-width: $xl) {
-			max-width: calc(100% - 847px);
-			padding-top: 93px;
-			margin-top: 0
-		}
-
-		.btn {
-			width: 100%;
-			margin-bottom: 18px;
-
-			&:first-child {
-				margin-bottom: 0
-			}
-
-			@media (min-width: $md) {
-				width: auto
-			}
-
-			&:not(:last-child) {
-				@media (min-width: $md) {
-					margin-right: 20px
-				}
-			}
-		}
-	}
+	height: 100%;
 
 	&-form {
 		width: 100%;
+		max-width: 656px;
 
 		fieldset {
-			background-color: $white;
-			border-radius: $radius-theme;
-			padding: 30px;
-			margin-bottom: 57px;
+			margin-bottom: 16px;
 
 			&:last-child {
-				margin-bottom: 20px
+				margin-bottom: 0
 			}
 		}
 
@@ -97,9 +29,9 @@
 			display: block;
 			width: 100%;
 			font-family: $ff-title;
-			font-size: 30px;
+			font-size: 24px;
 			font-weight: $fw-semibold;
-			line-height: 1;
+			line-height: 1.16;
 			color: $very-dark-green;
 			padding: 0;
 			margin: 0 0 20px;
@@ -109,20 +41,19 @@
 
 	&-plan {
 		width: 100%;
-		background-color: $white;
-		border-radius: $radius-theme;
-		padding: 30px
+		max-width: 417px;
+		margin-top: 16px
 	}
 
 	&-heading {
 		display: block;
 		width: 100%;
 		font-family: $ff-title;
-		font-size: 30px;
+		font-size: 24px;
 		font-weight: $fw-semibold;
-		line-height: 1;
+		line-height: 1.16;
 		color: $very-dark-green;
-		margin: 0 0 20px
+		margin: 0 0 32px
 	}
 
 	&-pages {
@@ -133,11 +64,13 @@
 
 .profile-memory-preview {
 	width: 100%;
-	padding-bottom: 28px;
-	border-bottom: 1px solid #8FB7C5;
+	padding-bottom: 20px;
+	margin-bottom: 24px;
+	border-bottom: 0.5px solid rgba(5, 51, 48, 0.40);
 
-	@media (min-width: $md) {
-		width: calc(50% - 10px)
+	&:last-child {
+		border-bottom: none;
+		margin-bottom: 0
 	}
 
 	&-thumb {
@@ -154,13 +87,14 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: linear-gradient( 2deg, $very-dark-green 0%, rgba(1, 28, 26, 0.00) 100%), transparent 50%
+			background: linear-gradient(1deg, $very-dark-green 1.14%, rgba(1, 28, 26, 0) 63.47%)
 		}
 
 		img {
 			width: 100%;
 			height: 100%;
-			object-fit: cover
+			object-fit: cover;
+			filter: grayscale(100%)
 		}
 	}
 
@@ -170,21 +104,31 @@
 		color: $very-dark-green
 	}
 
+	&-dates {
+		font-size: 13px;
+		line-height: 1.38;
+		color: $dark-yellow;
+		margin-bottom: 10px
+	}
+
 	&-name {
 		font-family: $ff-title;
 		font-size: $fs-lg;
 		font-weight: $fw-semibold;
-		margin-bottom: 13px
+		line-height: $lh-1;
+		padding-right: 34px;
+		margin-bottom: 4px
 	}
 
 	&-bottom .btn {
+		padding: 7px 12px 8px;
 		margin-left: auto
 	}
 
 	&-type {
 		width: 100%;
-		font-size: $fs-sm;
-		line-height: 1.6;
+		font-size: 15px;
+		line-height: $lh-5;
 		margin-bottom: 12px;
 
 		@media (min-width: $sm) {

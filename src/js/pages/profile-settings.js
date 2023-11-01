@@ -17,6 +17,14 @@ const saveChanges = () => {
 
 	if( ! form || ! button ) return
 
+	const fields = form.querySelectorAll( 'input' )
+
+	if( ! fields ) return
+
+	fields.forEach( field => {
+		field.addEventListener( 'keyup', () => button.removeAttribute( 'disabled' ) )
+	} )
+
 	button.addEventListener( 'click', e => {
 		e.preventDefault()
 
@@ -28,7 +36,7 @@ const saveChanges = () => {
 				switch( res.success ){
 					case true:
 						showNotification( res.data.msg )
-						setTimeout( () => window.location.href = button.href, 1000 )
+						setTimeout( () => window.location.reload(), 1000 )
 						break
 
 					case false:
