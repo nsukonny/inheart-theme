@@ -231,10 +231,10 @@ function ih_convert_input_date( string $date, string $format = 'letters' ): stri
 /**
  * Prepare ACF Date Picker field value for frontend input[type="date"].
  *
- * @param string $date
+ * @param $date
  * @return string
  */
-function ih_convert_date_from_admin_for_input( string $date ): string
+function ih_convert_date_from_admin_for_input( $date ): string
 {
 	if( ! $date ) return '';
 
