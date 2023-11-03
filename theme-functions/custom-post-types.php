@@ -79,34 +79,34 @@ $args = [
 ];
 register_post_type( 'promocode', $args );
 
-/*
-$labels = array(
-	'name'          => __( 'Спогади', 'inheart' ),
-	'singular_name' => __( 'Спогади', 'inheart' ),
-	'add_new'       => __( 'Додати спогад', 'inheart' ),
-	'add_new_item'  => __( 'Додати новий спогад', 'inheart' ),
-	'edit_item'     => __( 'Редагувати', 'inheart' ),
-	'new_item'      => __( 'Новий спогад', 'inheart' ),
-	'all_item'      => __( 'Усі спогади', 'inheart' ),
-	'view_item'     => __( 'Дивитись', 'inheart' ),
-	'search_item'   => __( 'Пошук', 'inheart' ),
-	'menu_item'     => __( 'Спогади', 'inheart' ),
-);
-$args = array(
-	'labels'             => $labels,
-	'public'             => true,
-	'publicly_queryable' => false,
-	'show_ui'            => true,
-	'hierarchical'       => false,
-	'menu_icon'          => 'dashicons-format-status',
-	'menu_position'      => 6,
-	'has_archive'        => true,
-	'show_in_rest'       => true,
-	'supports'           => array( 'title', 'page-attributes', 'custom-fields' ),
-);
-
+$labels = [
+	'name'			=> __( 'Спогади', 'inheart' ),
+	'singular_name'	=> __( 'Спогади', 'inheart' ),
+	'add_new'		=> __( 'Додати спогад', 'inheart' ),
+	'add_new_item'	=> __( 'Додати новий спогад', 'inheart' ),
+	'edit_item'		=> __( 'Редагувати', 'inheart' ),
+	'new_item'		=> __( 'Новий спогад', 'inheart' ),
+	'all_item'		=> __( 'Усі спогади', 'inheart' ),
+	'view_item'		=> __( 'Дивитись', 'inheart' ),
+	'search_item'	=> __( 'Пошук', 'inheart' ),
+	'menu_item'		=> __( 'Спогади', 'inheart' )
+];
+$args = [
+	'labels'			=> $labels,
+	'public'			=> true,
+	'publicly_queryable'=> false,
+	'show_ui'			=> true,
+	'hierarchical'		=> false,
+	'menu_icon'			=> 'dashicons-format-status',
+	'menu_position'		=> 6,
+	'has_archive'		=> false,
+	'show_in_rest'		=> true,
+	'supports'			=> ['title', 'thumbnail'],
+	'rewrite'			=> ['slug' => 'memories']
+];
 register_post_type( 'memory', $args );
 
+/*
 $labels = array(
 	'name'          => __( 'Підписки', 'inheart' ),
 	'singular_name' => __( 'Підписки', 'inheart' ),

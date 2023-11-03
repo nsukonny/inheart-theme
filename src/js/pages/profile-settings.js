@@ -1,9 +1,15 @@
 import '../common/forms'
-import { ihAjaxRequest, setAjaxWorkingStatus, showNotification } from '../common/global'
+import {
+	customDebounce,
+	ihAjaxRequest,
+	setAjaxWorkingStatus,
+	showNotification
+} from '../common/global'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
+	formValidation( document.querySelector( '.profile-settings-form' ) )
 	saveChanges()
 } )
 
@@ -16,14 +22,6 @@ const saveChanges = () => {
 		button	= document.querySelector( '.save-changes' )
 
 	if( ! form || ! button ) return
-
-	const fields = form.querySelectorAll( 'input' )
-
-	if( ! fields ) return
-
-	fields.forEach( field => {
-		field.addEventListener( 'keyup', () => button.removeAttribute( 'disabled' ) )
-	} )
 
 	button.addEventListener( 'click', e => {
 		e.preventDefault()
@@ -47,5 +45,82 @@ const saveChanges = () => {
 
 			setAjaxWorkingStatus( false )
 		} )
+	} )
+}
+
+/**
+ * Validate profile settings changes.
+ *
+ * @param {HTMLObjectElement} form
+ */
+const formValidation = form => {
+	if( ! form ) return
+
+	const inputs = form.querySelectorAll( 'input' )
+
+	if( ! inputs.length ) return
+
+	const inputChanged = () => {
+		const
+			formData	= new FormData( form ),
+			button		= document.querySelector( '.save-changes' )
+
+		formData.append( 'action', 'ih_ajax_check_profile_settings' )
+		clearFormErrors( form )
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						if( button ) button.removeAttribute( 'disabled' )
+						break
+
+					case false:
+						if( button ) button.disabled = true
+
+						if( res.data.errors ) processErrors( form, res.data.errors )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
+		} )
+	}
+
+	inputs.forEach( input => {
+		input.addEventListener( 'input', customDebounce( inputChanged ) )
+	} )
+}
+
+const clearFormErrors = form => {
+	const clearError = field => {
+		const
+			label	= field.closest( 'label' ),
+			hint	= label.querySelector( '.hint' )
+
+		label.classList.remove( 'error' )
+		hint.innerText = ''
+	}
+
+	form.querySelectorAll( 'input' ).forEach( clearError )
+	form.querySelectorAll( 'textarea' ).forEach( clearError )
+}
+
+const processErrors = ( form, errors ) => {
+	errors = Object.entries( errors )
+
+	errors.forEach( error => {
+		const
+			fieldName	= error[0],
+			errorText	= error[1],
+			field		= form.querySelector( `[name="${ fieldName }"]` )
+
+		if( ! field ) return
+
+		const
+			label	= field.closest( 'label' ),
+			hint	= label.querySelector( '.hint' )
+
+		label.classList.add( 'error' )
+		hint.innerText = errorText
 	} )
 }

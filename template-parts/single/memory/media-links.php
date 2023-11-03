@@ -8,9 +8,7 @@
  * @subpackage inheart
  */
 
-if( ! $id = $args['id'] ?? null ) return;
-
-if( ! $links = get_field( 'links', $id ) ?: null ) return;
+if( ! ( $id = $args['id'] ?? null ) || ! ( $links = $args['links'] ?? null ) ) return;
 
 $lang = $args['lang'] ?? 'uk';
 ?>

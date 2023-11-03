@@ -1,0 +1,84 @@
+@import '../components/vars';
+@import '../components/typography';
+@import '../pages/profile';
+
+.page-template-add-new-memories {
+	background-color: $a-bit-blue-white
+}
+
+.add-new-memories {
+	padding: 50px 0
+}
+
+.add-new-memory {
+	&-form {
+		width: 100%;
+		background-color: $white;
+		padding: 30px;
+		border-radius: $radius-theme;
+
+		@media (min-width: $xl) {
+			width: 760px
+		}
+
+		fieldset {
+			width: 100%;
+			max-width: 383px
+		}
+
+		legend {
+			@extend .h3;
+			margin-bottom: 20px
+		}
+
+		.btn[type="submit"] {
+			width: 100%;
+			max-width: 308px
+		}
+	}
+
+	&-info {
+		width: 100%;
+
+		@media (min-width: $xl) {
+			width: 472px;
+			margin-left: auto
+		}
+
+		.memory-card {
+			width: 100%
+		}
+
+		.page-created-info {
+			padding: 60px 70px 80px
+		}
+
+		.page-created-fullname {
+			font-size: 42px;
+			padding: 0;
+			margin-bottom: 20px
+		}
+
+		.page-created-dates {
+			font-size: $fs-md;
+			line-height: $lh-4;
+
+			span {
+				margin: 0 5px
+			}
+		}
+
+		.single-memory-thumb {
+			img {
+				width: 193px;
+				height: 246px
+			}
+
+			&-border {
+				top: -33px;
+				width: calc(100% + 68px);
+				height: calc(100% + 66px)
+			}
+		}
+	}
+}

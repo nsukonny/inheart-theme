@@ -63,7 +63,8 @@ $logo_only		= get_field( 'logo_only' );
 		// Use different layout for the Profile pages.
 		if(
 			! is_page_template( 'page-templates/profile.php' ) &&
-			! is_page_template( 'page-templates/profile-settings.php' )
+			! is_page_template( 'page-templates/profile-settings.php' ) &&
+			! is_page_template( 'page-templates/profile-memories.php' )
 		){
 			if( $logo_only ) get_template_part( 'template-parts/header/logo-only' );
 			else get_template_part( 'template-parts/header/full' );

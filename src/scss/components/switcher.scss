@@ -1,0 +1,67 @@
+.switcher {
+	position: relative;
+	border-radius: 10px;
+	border: 1px solid #000;
+	gap: 2px;
+	padding: 1px;
+
+	&-bg {
+		position: absolute;
+		top: 3px;
+		left: 2px;
+		width: 135px;
+		height: 40px;
+		background-color: $very-dark-green;
+		border-radius: 8px;
+		transition: left ease-out $tr
+	}
+
+	.tab {
+		position: relative;
+		z-index: 1;
+
+		&.active {
+			color: $light-green
+		}
+
+		&:first-child.active ~ .switcher-bg {
+			left: 2px
+		}
+
+		&:nth-child(2).active ~ .switcher-bg {
+			left: 137px
+		}
+
+		&:nth-child(3).active ~ .switcher-bg {
+			left: 272px
+		}
+
+		&:nth-child(4).active ~ .switcher-bg {
+			left: 407px
+		}
+
+		&:nth-child(5).active ~ .switcher-bg {
+			left: 542px
+		}
+
+		&:nth-child(6).active ~ .switcher-bg {
+			left: 677px
+		}
+
+		&:nth-child(7).active ~ .switcher-bg {
+			left: 812px
+		}
+
+		&:nth-child(8).active ~ .switcher-bg {
+			left: 947px
+		}
+
+		&:nth-child(9).active ~ .switcher-bg {
+			left: 1082px
+		}
+
+		&:nth-child(10).active ~ .switcher-bg {
+			left: 1217px
+		}
+	}
+}

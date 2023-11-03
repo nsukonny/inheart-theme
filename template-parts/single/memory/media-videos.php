@@ -8,9 +8,7 @@
  * @subpackage inheart
  */
 
-if( ! $id = $args['id'] ?? null ) return;
-
-if( ! $videos = get_field( 'video', $id ) ?: null ) return;
+if( ! ( $id = $args['id'] ?? null ) || ! ( $videos = $args['videos'] ?? null ) ) return;
 
 $lang = $args['lang'] ?? 'uk';
 ?>

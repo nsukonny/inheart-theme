@@ -26,13 +26,19 @@ $key			= get_field( 'google_maps_api_key', 'option' );
 		</h2>
 
 		<div class="single-memory-place-inner flex flex-wrap">
-			<div
-				id="map"
-				class="map"
-				data-long="<?php echo esc_attr( $longitude ) ?>"
-				data-lat="<?php echo esc_attr( $latitude ) ?>"
-				data-key="<?php echo esc_attr( $key ) ?>"
-			></div>
+			<?php
+			if( $latitude && $longitude && $key ){
+				?>
+				<div
+					id="map"
+					class="map"
+					data-long="<?php echo esc_attr( $longitude ) ?>"
+					data-lat="<?php echo esc_attr( $latitude ) ?>"
+					data-key="<?php echo esc_attr( $key ) ?>"
+				></div>
+				<?php
+			}
+			?>
 
 			<div class="map-desc">
 				<?php

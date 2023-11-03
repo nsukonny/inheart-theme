@@ -1,0 +1,14 @@
+@import '../components/vars';
+
+.page-template-profile-memories {
+	background-color: $a-bit-blue-white;
+	overflow-x: hidden;
+
+	.wrapper {
+		overflow: visible
+	}
+}
+
+.profile-memories {
+	height: 100%
+}

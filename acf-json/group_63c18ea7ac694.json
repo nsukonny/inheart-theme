@@ -3,36 +3,16 @@
     "title": "Спогади",
     "fields": [
         {
-            "key": "field_63c18ea884c22",
-            "label": "Спогад",
-            "name": "content",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_63c18ee084c23",
-            "label": "Автор",
-            "name": "author",
+            "key": "field_65455d0144048",
+            "label": "Повне ім'я",
+            "name": "full_name",
             "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -43,60 +23,44 @@
             "append": ""
         },
         {
-            "key": "field_63c18ef184c24",
-            "label": "Зображення",
-            "name": "images",
+            "key": "field_65455d4144049",
+            "label": "Ким припадає покійному",
+            "name": "role",
             "aria-label": "",
-            "type": "gallery",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "33",
                 "class": "",
                 "id": ""
             },
-            "return_format": "array",
-            "library": "all",
-            "min": "",
-            "max": "",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "insert": "append",
-            "preview_size": "medium"
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
-            "key": "field_63c18f2684c25",
-            "label": "Відео",
-            "name": "video",
+            "key": "field_63c18ea884c22",
+            "label": "Спогад",
+            "name": "content",
             "aria-label": "",
-            "type": "gallery",
+            "type": "textarea",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "34",
                 "class": "",
                 "id": ""
             },
-            "return_format": "array",
-            "library": "all",
-            "min": "",
-            "max": "",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "insert": "append",
-            "preview_size": "medium"
+            "default_value": "",
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": "wpautop"
         }
     ],
     "location": [
@@ -117,5 +81,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1686509138
+    "modified": 1699044789
 }

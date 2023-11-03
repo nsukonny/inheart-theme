@@ -323,3 +323,40 @@ export const hideElement = el => {
 export const formatNumber = number => {
 	return parseFloat( number ).toLocaleString( 'us' )
 }
+
+/**
+ * Custom debounce function to improve performance.
+ *
+ * @param callback
+ * @param delay		Value in milliseconds.
+ * @returns {(function(...[*]): void)|*}
+ */
+export const customDebounce = ( callback, delay = 500 ) => {
+	let timer
+
+	return ( ...args ) => {
+		if( timer ) clearTimeout( timer )
+
+		timer = setTimeout( () => callback( ...args ), delay )
+	}
+}
+
+/**
+ * Switcher tabs logic.
+ */
+export const switcherLogic = () => {
+	const switchers = document.querySelectorAll( '.switcher' )
+
+	if( ! switchers.length ) return
+
+	switchers.forEach( switcher => {
+		switcher.addEventListener( 'click', e => {
+			const target = e.target
+
+			if( target.className && target.classList.contains( 'tab' ) && ! target.classList.contains( 'active' ) ){
+				switcher.querySelector( '.tab.active' ).classList.remove( 'active' )
+				target.classList.add( 'active' )
+			}
+		} )
+	} )
+}

@@ -174,8 +174,9 @@ label.label {
 			input[type='url'],
 			&[type='email'],
 			textarea {
-				color: $error-primary;
-				border-color: $error-primary;
+				color: $error-primary !important;
+				border-color: $error-primary !important;
+				background-color: #F8EBED;
 
 				&::placeholder {
 					color: $error-primary !important
@@ -256,7 +257,8 @@ input[type='email'] {
 	padding: 0 16px;
 	transition:
 		border-width ease-out $tr,
-		border-color ease-out $tr;
+		border-color ease-out $tr,
+		background-color ease-out $tr;
 
 	&:active,
 	&:focus {
@@ -269,15 +271,6 @@ input[type='email'] {
 		font-size: $fs-md;
 		color: rgba(5, 51, 48, 0.40) !important;
 		opacity: 1
-	}
-
-	&.error {
-		color: $error-primary !important;
-		border-color: $error-primary !important;
-
-		&::placeholder {
-			color: $error-primary !important
-		}
 	}
 }
 
@@ -318,7 +311,21 @@ input {
 
 .pass-wrapper {
 	display: block;
-	position: relative
+	position: relative;
+
+	.pass-toggle.crossed {
+		display: none
+	}
+
+	&.pass-visible {
+		.pass-toggle {
+			display: none;
+
+			&.crossed {
+				display: block
+			}
+		}
+	}
 }
 
 .pass-toggle {
@@ -384,5 +391,19 @@ input {
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: contain
+	}
+}
+
+.hint {
+	display: block;
+	width: 100%;
+	font-size: 13px;
+	line-height: 1.38;
+	color: $error-primary;
+	padding-left: 16px;
+	margin-top: 8px;
+
+	&:empty {
+		display: none
 	}
 }

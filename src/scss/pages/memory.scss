@@ -322,6 +322,7 @@ body.single-memory_page {
 			display: block;
 			width: 100%;
 			border-radius: 120px;
+			filter: grayscale(100%);
 
 			@media (min-width: $md) {
 				width: 406px;
@@ -921,13 +922,14 @@ body.single-memory_page {
 
 		&-desc {
 			width: 100%;
+			flex-grow: 1;
 			color: $light-blue;
 			transition: color ease-out $tr;
 			order: 1;
 
 			@media (min-width: $xl) {
-				width: calc(100% - 630px);
-				padding-left: 129px;
+				width: calc(100% - 759px);
+				margin-left: auto;
 				order: 2
 			}
 

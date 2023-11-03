@@ -27,8 +27,10 @@ $email		= $data->user_email;
 				type="text"
 				placeholder="<?php esc_attr_e( 'Ваше прізвище', 'inheart' ) ?>"
 				value="<?php echo esc_attr( $last_name ) ?>"
+				autocomplete="family-name"
 				required
 			/>
+			<span class="hint"></span>
 		</label>
 		<label for="firstname" class="label dark half end">
 			<span class="label-text"><?php esc_html_e( "Ваше ім'я", 'inheart' ) ?></span>
@@ -38,8 +40,10 @@ $email		= $data->user_email;
 				type="text"
 				placeholder="<?php esc_attr_e( "Ваше ім'я", 'inheart' ) ?>"
 				value="<?php echo esc_attr( $first_name ) ?>"
+				autocomplete="given-name"
 				required
 			/>
+			<span class="hint"></span>
 		</label>
 		<label for="email" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Email', 'inheart' ) ?></span>
@@ -49,8 +53,10 @@ $email		= $data->user_email;
 				type="email"
 				placeholder="<?php esc_attr_e( 'Email', 'inheart' ) ?>"
 				value="<?php echo esc_attr( $email ) ?>"
+				autocomplete="email"
 				required
 			/>
+			<span class="hint"></span>
 		</label>
 	</fieldset>
 
@@ -59,24 +65,48 @@ $email		= $data->user_email;
 		<label for="pass" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Поточний пароль', 'inheart' ) ?></span>
 			<span class="pass-wrapper">
-				<input id="pass" name="pass" type="password" placeholder="<?php esc_attr_e( 'Поточний пароль', 'inheart' ) ?>" />
+				<input
+					id="pass"
+					name="pass"
+					type="password"
+					placeholder="<?php esc_attr_e( 'Поточний пароль', 'inheart' ) ?>"
+					autocomplete="current-password"
+				/>
 				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
+				<img class="pass-toggle crossed" src="<?php echo THEME_URI . '/static/img/eye-gray-crossed.svg' ?>" alt="" />
 			</span>
+			<span class="hint"></span>
 		</label>
 		<div style="width: 100%; height: 0"></div>
 		<label for="new-pass" class="label dark half">
 			<span class="label-text"><?php esc_html_e( 'Новий пароль', 'inheart' ) ?></span>
 			<span class="pass-wrapper">
-				<input id="new-pass" name="new-pass" type="password" placeholder="<?php esc_attr_e( 'Новий пароль', 'inheart' ) ?>" />
+				<input
+					id="new-pass"
+					name="new-pass"
+					type="password"
+					placeholder="<?php esc_attr_e( 'Новий пароль', 'inheart' ) ?>"
+					autocomplete="new-password"
+				/>
 				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
+				<img class="pass-toggle crossed" src="<?php echo THEME_URI . '/static/img/eye-gray-crossed.svg' ?>" alt="" />
 			</span>
+			<span class="hint"></span>
 		</label>
 		<label for="confirm-pass" class="label dark half end">
 			<span class="label-text"><?php esc_html_e( 'Підтвердьте пароль', 'inheart' ) ?></span>
 			<span class="pass-wrapper">
-				<input id="confirm-pass" name="confirm-pass" type="password" placeholder="<?php esc_attr_e( 'Підтвердьте пароль', 'inheart' ) ?>" />
+				<input
+					id="confirm-pass"
+					name="confirm-pass"
+					type="password"
+					placeholder="<?php esc_attr_e( 'Підтвердьте пароль', 'inheart' ) ?>"
+					autocomplete="new-password"
+				/>
 				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
+				<img class="pass-toggle crossed" src="<?php echo THEME_URI . '/static/img/eye-gray-crossed.svg' ?>" alt="" />
 			</span>
+			<span class="hint"></span>
 		</label>
 	</fieldset>
 </form><!-- .profile-settings-form -->

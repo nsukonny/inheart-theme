@@ -60,14 +60,11 @@ $memories	= get_field( 'memories', $id );
 					<?php echo pll_translate_string( 'Додайте перший спогад про близьку людину', $lang ) ?>
 				</div>
 				<a
-					href="#"
+					href="<?php echo get_the_permalink( pll_get_post( 1374 ) ), '?mp=', $id ?>"
 					class="btn xl secondary outlined single-memory-no-memories-btn"
 					title="<?php echo pll_translate_string( 'Додати спогад про людину', $lang ) ?>"
 				>
-					<?php
-//					echo pll_translate_string( 'Додати спогад про людину', $lang );
-					echo pll_translate_string( 'Функція скоро буде доступна', $lang );
-					?>
+					<?php echo pll_translate_string( 'Додати спогад про людину', $lang ) ?>
 				</a>
 			</div><!-- .single-memory-no-memories -->
 			<?php
