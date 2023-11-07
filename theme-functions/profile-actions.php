@@ -76,7 +76,8 @@ function ih_ajax_edit_memory_page(): void
 	if( $user_id !== $author_id )
 		wp_send_json_error( ['msg' => esc_html__( "Ви не автор цієї сторінки пам'яті", 'inheart' )] );
 
-	$_SESSION['memory_page_id'] = $memory_id;
+	$_SESSION['memory_page_id']	= $memory_id;
+	$_SESSION['edit_mode']		= 1;
 
 	wp_send_json_success( ['redirect' => get_the_permalink( pll_get_post( 167 ) ) . '?edit=1' ] );
 }
