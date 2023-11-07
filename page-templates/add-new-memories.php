@@ -28,8 +28,9 @@ wp_enqueue_script( 'add-new-memories', THEME_URI . '/static/js/add-new-memories/
 			<div class="add-new-memory-info">
 				<?php
 				get_template_part( 'template-parts/profile/memory-card', null, [
-					'id'	=> $memory_page,
-					'front'	=> 1
+					'id'			=> $memory_page,
+					'front'			=> 1,
+					'date_format'	=> 'lang'
 				] );
 				?>
 			</div>

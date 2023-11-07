@@ -215,17 +215,37 @@ add_action( 'before_delete_post', function( $id ){
  * Convert input[type="date"] value to necessary format.
  *
  * @param string $date
- * @param string $format	'letters' | 'dots'
+ * @param string $format	'letters' | 'dots' | 'lang'
+ * @param int $memory_page	Memory page ID.
  * @return string
  */
-function ih_convert_input_date( string $date, string $format = 'letters' ): string
+function ih_convert_input_date( string $date, string $format = 'letters', int $memory_page = 0 ): string
 {
 	if( ! $date ) return '';
 
-	if( $format === 'letters' )
-		return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
+	switch( $format ){
+		case 'letters':
+			return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
 
-	return date( 'd.m.Y', strtotime( str_replace( '/', '-', $date ) ) );
+		case 'lang':
+			$lang		= get_field( 'language', $memory_page );
+			$ua_months	= ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+			$ru_months	= ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+			$en_months	= ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+			if( $lang === 'uk' ){
+				$date = date( 'j F Y', strtotime( str_replace( '/', '-', $date ) ) );
+				return str_replace( $en_months, $ua_months, $date );
+			}else if( $lang === 'ru-RU' ){
+				$date = date( 'j F Y', strtotime( str_replace( '/', '-', $date ) ) );
+				return str_replace( $en_months, $ru_months, $date );
+			}else{
+				return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
+			}
+
+		default:
+			return date( 'd.m.Y', strtotime( str_replace( '/', '-', $date ) ) );
+	}
 }
 
 /**

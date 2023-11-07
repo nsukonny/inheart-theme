@@ -9,13 +9,14 @@
 
 if( ! $id = $args['id'] ?? null ) return;
 
-$only_front	= $args['front'] ?? null;
-$theme		= get_field( 'theme', $id );
-$firstname	= get_field( 'first_name', $id );
-$middlename	= get_field( 'middle_name', $id );
-$lastname	= get_field( 'last_name', $id );
-$born_at	= ih_convert_input_date( get_field( 'born_at', $id ), 'dots' );
-$died_at	= ih_convert_input_date( get_field( 'died_at', $id ), 'dots' );
+$only_front		= $args['front'] ?? null;
+$date_format	= $args['date_format'] ?? 'dots';
+$theme			= get_field( 'theme', $id );
+$firstname		= get_field( 'first_name', $id );
+$middlename		= get_field( 'middle_name', $id );
+$lastname		= get_field( 'last_name', $id );
+$born_at		= ih_convert_input_date( get_field( 'born_at', $id ), $date_format, $id );
+$died_at		= ih_convert_input_date( get_field( 'died_at', $id ), $date_format, $id );
 
 if( ! $firstname && ! $lastname ) return;
 ?>

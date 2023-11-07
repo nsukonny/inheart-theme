@@ -55,6 +55,17 @@ if( ! $memory_page = $args['memory_page'] ?? null ) return;
 			<input id="photo" name="photo" type="file" autocomplete="photo" />
 			<span class="hint"></span>
 		</label>
+		<div class="checkbox-wrapper">
+			<input id="agreement" name="agreement" type="checkbox" required />
+			<label for="agreement" class="label-checkbox">
+				<?php
+				printf(
+					__( 'Погоджуюсь з умовами %sположення про обробку і захист персональних даних%s та %sофертою%s', 'inheart' ),
+					'<a href="/">', '</a>', '<a href="/">', '</a>',
+				);
+				?>
+			</label>
+		</div>
 	</fieldset>
 
 	<button class="btn lg primary" type="submit"><?php _e( 'Далі', 'inheart' ) ?></button>

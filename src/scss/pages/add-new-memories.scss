@@ -31,6 +31,50 @@
 			margin-bottom: 20px
 		}
 
+		label.label {
+			margin-bottom: 20px;
+
+			&-file {
+				margin-bottom: 30px;
+
+				.label-text {
+					margin: 0
+				}
+			}
+
+			&-checkbox {
+				color: $very-dark-green;
+
+				&::before {
+					width: 14px;
+					height: 14px;
+					background-color: transparent;
+					border: 1px solid $very-dark-green
+				}
+
+				a {
+					color: $dark-yellow;
+
+					&:hover {
+						color: $bright-yellow
+					}
+				}
+			}
+		}
+
+		textarea {
+			resize: none
+		}
+
+		input[type="checkbox"]:checked ~ label::before {
+			border-color: $dark-yellow
+		}
+
+		.checkbox-wrapper {
+			padding: 0;
+			margin-bottom: 30px
+		}
+
 		.btn[type="submit"] {
 			width: 100%;
 			max-width: 308px
