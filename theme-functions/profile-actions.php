@@ -121,3 +121,57 @@ function ih_ajax_edit_memory_page(): void
 	wp_send_json_success( ['redirect' => get_the_permalink( pll_get_post( 167 ) ) . '?edit=1' ] );
 }
 
+add_action( 'wp_ajax_ih_ajax_add_person_memory', 'ih_ajax_add_person_memory' );
+/**
+ * Add a memory from a person.
+ *
+ * @return void
+ */
+function ih_ajax_add_person_memory(): void
+{
+	$photo			= $_FILES['photo'];
+	$memory_page_id	= ih_clean( $_POST['page'] );
+	$fullname		= ih_clean( $_POST['fullname'] );
+	$role			= ih_clean( $_POST['role'] );
+	$memory			= ih_clean( $_POST['memory'] );
+	$agreement		= ih_clean( $_POST['agreement'] );
+
+	// If data is not set - send error.
+	if( ! $photo || ! $memory_page_id || ! $fullname || ! $role || ! $memory || ! $agreement )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$post_data = [
+		'post_title'	=> "$fullname для сторінки " . get_the_title( $memory_page_id ),
+		'post_status'	=> 'draft',
+		'post_type'		=> 'memory',
+		'post_author'	=> get_current_user_id()
+	];
+	$post_id = wp_insert_post( wp_slash( $post_data ) );
+
+	if( is_wp_error( $post_id ) ) wp_send_json_error( ['msg' => __( 'Не вдалося створити спогад', 'inheart' )] );
+
+	update_field( 'full_name', $fullname, $post_id );
+	update_field( 'role', $role, $post_id );
+	update_field( 'content', $memory, $post_id );
+
+	$allowed_image_types    = ['image/jpeg', 'image/png'];
+	$max_image_size         = 50_000_000;
+
+	// Check conditions for the image.
+	if( ! in_array( $photo['type'], $allowed_image_types ) || ( int ) $photo['size'] > $max_image_size )
+		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 50 мб', 'inheart' )] );
+
+	require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+	$attach_id = media_handle_upload( 'photo', $post_id );
+
+	if( is_wp_error( $attach_id ) )
+		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
+
+	set_post_thumbnail( $post_id, $attach_id );
+
+	wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+}
+

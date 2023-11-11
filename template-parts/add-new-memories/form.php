@@ -11,7 +11,7 @@
 if( ! $memory_page = $args['memory_page'] ?? null ) return;
 ?>
 
-<form class="add-new-memory-form" enctype="multipart/form-data">
+<form class="add-new-memory-form" enctype="multipart/form-data" data-page="<?php echo esc_attr( $memory_page ) ?>">
 	<fieldset class="flex flex-wrap">
 		<legend><?php esc_html_e( 'Створення спогаду', 'inheart' ) ?></legend>
 
@@ -55,6 +55,9 @@ if( ! $memory_page = $args['memory_page'] ?? null ) return;
 			<input id="photo" name="photo" type="file" autocomplete="photo" />
 			<span class="hint"></span>
 		</label>
+        <div class="memory-photo-preview">
+            <img id="photo-preview" src="#" alt="" />
+        </div>
 		<div class="checkbox-wrapper">
 			<input id="agreement" name="agreement" type="checkbox" required />
 			<label for="agreement" class="label-checkbox">

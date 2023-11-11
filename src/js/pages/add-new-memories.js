@@ -1,80 +1,79 @@
-import { BYTES_IN_MB, showNotification } from '../common/global'
+import {
+	BYTES_IN_MB,
+	checkAjaxWorkingStatus,
+	ihAjaxRequest,
+	setAjaxWorkingStatus,
+	showNotification
+} from '../common/global'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
 	uploadPhoto()
+	submitForm( document.querySelector( '.add-new-memory-form' ) )
 } )
 
 const uploadPhoto = () => {
-	const input = document.querySelector( '#photo' )
+	const
+		input	= document.querySelector( '#photo' ),
+		preview	= document.querySelector( '#photo-preview' )
 
-	if( ! input ) return
+	if( ! input || ! preview ) return
 
 	input.addEventListener( 'change', e => {
-		const fileInstance = [...e.target.files]
+		const [file] = e.target.files
 
-		if( ! fileInstance.length ) return
+		if( ! file ) return
 
-		if( fileInstance[0].size > 50 * BYTES_IN_MB ){
-			showNotification( `Фото ${ fileInstance[0].name } повинне бути меньше 50 Мб`, 'error' )
+		if( file.size > 50 * BYTES_IN_MB ){
+			showNotification( `Фото ${ file.name } повинне бути меньше 50 Мб`, 'error' )
 			return false
 		}
 
-		if( fileInstance[0].type.startsWith( 'image/' ) )
-			processingUploadPhoto( fileInstance[0] )
-		else
-			showNotification( `Тільки зображення - файл ${ fileInstance[0].name } не є зображенням`, 'warning' )
+		if( file.type.startsWith( 'image/' ) ){
+			if( file ){
+				preview.src = URL.createObjectURL( file )
+				input.closest( 'label' ).classList.add( 'hidden' )
+			}
+		}else{
+			showNotification(`Тільки зображення - файл ${file.name} не є зображенням`, 'warning')
+		}
 	} )
 }
 
 /**
- * Processing photo uploading.
+ * Submit form to add a memory from a person.
  *
- * @param file
+ * @param {HTMLElement} form
  */
-const processingUploadPhoto = file => {
-	if( ! file ) return
+const submitForm = form => {
+	if( ! form ) return
 
-	const formData = new FormData()
+	form.addEventListener( 'submit', e => {
+		e.preventDefault()
 
-	formData.append( 'file', file )
-	formData.append( 'action', 'ih_ajax_upload_memories_photo' )
-/*
-	xhr.onload = () => {
-		if( xhr.status == 200 ){
-			const
-				response	= JSON.parse( xhr.response ),
-				data		= response.data
-			let imageHTML	= ''
+		if( checkAjaxWorkingStatus() ) return
 
-			if( data.success == 1 ){
-				imageHTML = getPhotoHTML( data, file.name )
+		const formData = new FormData( form )
 
-				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
-				showNotification( `Фото ${ file.name } успішно завантажено` )
-				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
-							 .addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) ) )
-				checkIfStepIsReady()
+		formData.append( 'action', 'ih_ajax_add_person_memory' )
+		formData.append( 'page', form.dataset.page )
+		setAjaxWorkingStatus( true )
 
-				stepData.photos.push( data.attachId )
-				localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						console.log( res.data.msg )
+						break
 
-				// Show images wrapper if the last images was loaded.
-				if( index === count - 1 ){
-					setTimeout( () => {
-						loader.classList.add( 'hidden' )
-						imagesWrapper.classList.remove( 'hidden' )
-					}, 3000 )
+					case false:
+						console.error( res.data.msg )
+						break
 				}
 			}
-		}else{
-			// If no images loaded yet.
-			if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
-				inner.classList.remove( 'hidden' )
-			else imagesWrapper.classList.remove( 'hidden' )
 
-			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
-		}
-	}*/
+			setAjaxWorkingStatus( false )
+		} )
+	} )
 }
