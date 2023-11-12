@@ -3,6 +3,28 @@
     "title": "Спогади",
     "fields": [
         {
+            "key": "field_65513ffc3fbd1",
+            "label": "Сторінка пам'яті",
+            "name": "memory_page",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_65455d0144048",
             "label": "Повне ім'я",
             "name": "full_name",
@@ -12,7 +34,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -32,7 +54,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -52,7 +74,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "34",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -81,5 +103,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1699044789
+    "modified": 1699823684
 }

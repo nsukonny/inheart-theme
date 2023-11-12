@@ -142,7 +142,7 @@ function ih_ajax_add_person_memory(): void
 
 	$post_data = [
 		'post_title'	=> "$fullname для сторінки " . get_the_title( $memory_page_id ),
-		'post_status'	=> 'draft',
+		'post_status'	=> 'pending',
 		'post_type'		=> 'memory',
 		'post_author'	=> get_current_user_id()
 	];
@@ -150,6 +150,7 @@ function ih_ajax_add_person_memory(): void
 
 	if( is_wp_error( $post_id ) ) wp_send_json_error( ['msg' => __( 'Не вдалося створити спогад', 'inheart' )] );
 
+	update_field( 'memory_page', $fullname, $memory_page_id );
 	update_field( 'full_name', $fullname, $post_id );
 	update_field( 'role', $role, $post_id );
 	update_field( 'content', $memory, $post_id );
@@ -173,5 +174,40 @@ function ih_ajax_add_person_memory(): void
 	set_post_thumbnail( $post_id, $attach_id );
 
 	wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_load_profile_memories', 'ih_ajax_load_profile_memories' );
+/**
+ * Show memories in Profile depending on a passed type.
+ *
+ * @return void
+ */
+function ih_ajax_load_profile_memories(): void
+{
+	$type = ih_clean( $_POST['type'] );	// 'others' | 'yours'
+
+	if( ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$args = [
+		'post_type'		=> 'memory',
+		'posts_per_page'=> -1
+	];
+
+	if( $type === 'yours' ) $args['author__in'] = [get_current_user_id()];
+
+	$memories_query = new WP_Query( $args );
+
+	if( ! $memories_query->have_posts() ) wp_send_json_error( ['msg' => __( 'Спогадів не знайдено', 'inheart' )] );
+
+	$memories = '';
+
+	while( $memories_query->have_posts() ){
+		$memories_query->the_post();
+		$memories .= ih_load_template_part( 'template-parts/add-new-memories/preview', null, ['id' => get_the_ID()] );
+	}
+
+	wp_reset_query();
+
+	wp_send_json_success( ['memories' => $memories] );
 }
 

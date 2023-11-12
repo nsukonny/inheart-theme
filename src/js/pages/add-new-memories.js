@@ -13,6 +13,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	submitForm( document.querySelector( '.add-new-memory-form' ) )
 } )
 
+/**
+ * Show memory photo preview.
+ */
 const uploadPhoto = () => {
 	const
 		input	= document.querySelector( '#photo' ),

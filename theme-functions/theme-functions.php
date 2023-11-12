@@ -288,3 +288,20 @@ function ih_get_lifetime_numbers( int $id = 0 ): array
 	];
 }
 
+/**
+ * Return Memory page full name.
+ *
+ * @param int $page_id
+ * @return string
+ */
+function ih_get_memory_page_name( int $page_id = 0 ): string
+{
+	if( ! $page_id ) return '';
+
+	$first_name		= get_field( 'first_name', $page_id );
+	$middle_name	= get_field( 'middle_name', $page_id );
+	$last_name		= get_field( 'last_name', $page_id );
+
+	return "<div class='memory-page-name'><div>$first_name $middle_name</div><div>$last_name</div></div>";
+}
+
