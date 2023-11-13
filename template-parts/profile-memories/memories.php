@@ -16,9 +16,7 @@ $memory_pages = get_posts( [
 ] );
 $memory_pages_ids = [];
 
-foreach( $memory_pages as $page ){
-    $memory_pages_ids[] = $page->ID;
-}
+foreach( $memory_pages as $page ) $memory_pages_ids[] = $page->ID;
 
 $memories_query = new WP_Query( [
 	'post_type'     => 'memory',

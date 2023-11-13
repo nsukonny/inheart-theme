@@ -224,6 +224,16 @@ label.label {
 				border-width: 3px;
 				border-color: rgba(247, 185, 65, 0.40)
 			}
+
+			&:disabled {
+				background-color: $bg-disabled;
+				border-color: $bg-disabled;
+				color: $text-secondary;
+
+				&::placeholder {
+					color: $alpha-black-30 !important
+				}
+			}
 		}
 	}
 }
@@ -271,6 +281,15 @@ input[type='email'] {
 		font-size: $fs-md;
 		color: rgba(5, 51, 48, 0.40) !important;
 		opacity: 1
+	}
+
+	&:disabled {
+		background-color: $bg-disabled;
+		border-color: $bg-disabled;
+
+		&::placeholder {
+			color: $alpha-black-30 !important
+		}
 	}
 }
 

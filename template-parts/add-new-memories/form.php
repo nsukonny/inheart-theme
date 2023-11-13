@@ -9,11 +9,14 @@
  */
 
 if( ! $memory_page = $args['memory_page'] ?? null ) return;
+
+$current_user = get_user_meta( get_current_user_id() );
+$full_name = "{$current_user['first_name'][0]} {$current_user['last_name'][0]}";
 ?>
 
 <form class="add-new-memory-form" enctype="multipart/form-data" data-page="<?php echo esc_attr( $memory_page ) ?>">
 	<fieldset class="flex flex-wrap">
-		<legend><?php esc_html_e( 'Створення спогаду', 'inheart' ) ?></legend>
+		<legend><?php _e( 'Створення спогаду', 'inheart' ) ?></legend>
 
 		<label for="fullname" class="label dark">
 			<span class="label-text"><?php _e( "Ваше ім’я", 'inheart' ) ?></span>
@@ -23,17 +26,19 @@ if( ! $memory_page = $args['memory_page'] ?? null ) return;
 				type="text"
 				placeholder="<?php _e( "Повне ім’я", 'inheart' ) ?>"
 				autocomplete="name"
+                value="<?php echo esc_attr( $full_name ) ?>"
+                disabled
 				required
 			/>
 			<span class="hint"></span>
 		</label>
 		<label for="role" class="label dark">
-			<span class="label-text"><?php _e( 'Ким ви припадаєте покійному', 'inheart' ) ?></span>
+			<span class="label-text"><?php _e( 'Хто ви є для покійного', 'inheart' ) ?></span>
 			<input
 				id="role"
 				name="role"
 				type="text"
-				placeholder="<?php esc_html_e( 'Ким ви припадаєте покійному', 'inheart' ) ?>"
+				placeholder="<?php _e( 'Хто ви є для покійного', 'inheart' ) ?>"
 				required
 			/>
 			<span class="hint"></span>
@@ -43,7 +48,7 @@ if( ! $memory_page = $args['memory_page'] ?? null ) return;
 			<textarea
 				id="memory"
 				name="memory"
-				placeholder="<?php esc_html_e( 'Ваш текст спогаду', 'inheart' ) ?>"
+				placeholder="<?php _e( 'Ваш текст спогаду', 'inheart' ) ?>"
 				required
 			></textarea>
 			<span class="hint"></span>

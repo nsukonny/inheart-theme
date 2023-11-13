@@ -188,12 +188,34 @@ function ih_ajax_load_profile_memories(): void
 
 	if( ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	$args = [
+	$current_user_id	= get_current_user_id();
+	$args				= [
 		'post_type'		=> 'memory',
 		'posts_per_page'=> -1
 	];
 
-	if( $type === 'yours' ) $args['author__in'] = [get_current_user_id()];
+	if( $type === 'yours' ){
+		$args['author__in'] = [$current_user_id];
+	}else{
+		$memory_pages = get_posts( [
+			'post_type'     => 'memory_page',
+			'post_status'   => 'publish',
+			'numberposts'   => -1,
+			'author__in'    => $current_user_id
+		] );
+		$memory_pages_ids = [];
+
+		foreach( $memory_pages as $page ) $memory_pages_ids[] = $page->ID;
+
+		$args = array_merge( $args, [
+			'post_status'   => 'any',
+			'meta_query'    => [[
+				'key'       => 'memory_page',
+				'value'     => $memory_pages_ids,
+				'compare'   => 'IN'
+			]]
+		] );
+	}
 
 	$memories_query = new WP_Query( $args );
 
