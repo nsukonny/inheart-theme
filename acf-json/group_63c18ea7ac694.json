@@ -3,6 +3,26 @@
     "title": "Спогади",
     "fields": [
         {
+            "key": "field_6553ea43a3b62",
+            "label": "Відхилений",
+            "name": "is_rejected",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_65513ffc3fbd1",
             "label": "Сторінка пам'яті",
             "name": "memory_page",
@@ -103,5 +123,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1699823684
+    "modified": 1699998361
 }

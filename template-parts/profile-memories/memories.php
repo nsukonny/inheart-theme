@@ -34,7 +34,14 @@ if( $memories_query->have_posts() ){
 
     while( $memories_query->have_posts() ){
         $memories_query->the_post();
-        get_template_part( 'template-parts/add-new-memories/preview', null, ['id' => get_the_ID()] );
+        get_template_part(
+			'template-parts/add-new-memories/preview',
+			null,
+			[
+				'id'	=> get_the_ID(),
+				'type'	=> 'others'
+			]
+		);
     }
     wp_reset_query();
 

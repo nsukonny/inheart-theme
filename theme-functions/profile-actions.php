@@ -225,7 +225,14 @@ function ih_ajax_load_profile_memories(): void
 
 	while( $memories_query->have_posts() ){
 		$memories_query->the_post();
-		$memories .= ih_load_template_part( 'template-parts/add-new-memories/preview', null, ['id' => get_the_ID()] );
+		$memories .= ih_load_template_part(
+			'template-parts/add-new-memories/preview',
+			null,
+			[
+				'id'	=> get_the_ID(),
+				'type'	=> $type
+			]
+		);
 	}
 
 	wp_reset_query();
