@@ -18,16 +18,13 @@ $logo_only		= get_field( 'logo_only' );
 <!doctype html>
 <html class="no-js" <?php language_attributes() ?>>
 <head>
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NRBKM3VLV8"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'G-NRBKM3VLV8');
-	</script>
-	<!-- End of Google tag (gtag.js) -->
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-KZXZ4PTX');</script>
+	<!-- End Google Tag Manager -->
 
 	<meta charset="<?php bloginfo( 'charset' ) ?>" />
 	<meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -56,6 +53,15 @@ $logo_only		= get_field( 'logo_only' );
 </head>
 
 <body <?php body_class( "theme-$page_theme $memory_theme" ) ?>>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe
+		src="https://www.googletagmanager.com/ns.html?id=GTM-KZXZ4PTX"
+		height="0"
+		width="0"
+		style="display:none;visibility:hidden"
+	></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+
 	<?php wp_body_open() ?>
 
 	<div class="wrapper">
