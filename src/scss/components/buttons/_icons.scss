@@ -1,0 +1,15 @@
+.button {
+	svg {
+		display: block;
+		width: 16px;
+		height: 16px
+	}
+
+	&.button-icon-lead svg {
+		margin-right: 8px
+	}
+
+	&.button-icon-tail svg {
+		margin-left: 8px
+	}
+}

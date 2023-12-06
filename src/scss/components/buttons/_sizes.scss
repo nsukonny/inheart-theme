@@ -1,0 +1,16 @@
+.button {
+	&.sm {
+		min-height: 32px;
+		padding: 7px 12px 8px
+	}
+
+	&.md {
+		min-height: 40px;
+		padding: 11px 20px 12px
+	}
+
+	&.lg {
+		min-height: 48px;
+		padding: 15px 20px 16px
+	}
+}
