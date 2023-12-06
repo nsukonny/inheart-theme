@@ -9,7 +9,7 @@
 
 if( ! is_user_logged_in() ) wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );
 
-get_header();
+get_template_part( 'components/header/profile' );
 
 wp_enqueue_style( 'profile', THEME_URI . '/static/css/pages/profile.min.css', [], THEME_VERSION );
 wp_enqueue_script( 'profile', THEME_URI . '/static/js/profile/profile.min.js', [], THEME_VERSION, true );
