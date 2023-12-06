@@ -1,4 +1,5 @@
 @import '../components/vars';
+@import '../components/helpers';
 @import '../components/buttons';
 @import '../new-memory/step-6';
 @import '../pages/memory';
@@ -15,195 +16,13 @@
 .profile {
 	height: 100%;
 
-	&-sidebar {
-		position: relative;
-		width: 112px;
-		background-color: $very-dark-green;
-		z-index: 2;
-
-		@media (min-width: $lg) {
-			width: 384px
-		}
-
-		&-inner {
-			position: sticky;
-			top: 0;
-			flex-grow: 1;
-			width: 100%;
-			max-height: 100dvh;
-			overflow-y: auto;
-			padding: 40px 24px;
-
-			@media (min-width: $lg) {
-				padding: 40px 46px
-			}
-		}
-
-		&-header {
-			flex-direction: column;
-			justify-content: flex-start;
-			margin-bottom: 40px;
-
-			@media (min-width: $lg) {
-				flex-flow: row wrap;
-				justify-content: space-between;
-				align-items: center
-			}
-
-			.header-menu {
-				width: auto;
-				margin-top: 40px;
-
-				@media (min-width: $lg) {
-					margin-top: 0
-				}
-			}
-
-			&.menu-visible .header-nav-wrap {
-				visibility: visible;
-				z-index: 10;
-				pointer-events: auto
-			}
-
-			&.menu-opened {
-				.header-nav-wrap {
-					opacity: 1
-				}
-
-				.menu-item,
-				.header-nav-icons a,
-				.lang-item {
-					opacity: 1;
-					transform: translateY(0)
-				}
-
-				.header-menu-button {
-					color: $dark-yellow;
-
-					&-lines span {
-						top: 6px;
-
-						&:first-child {
-							transform: rotate(45deg)
-						}
-
-						&:nth-child(2) {
-							opacity: 0
-						}
-
-						&:last-child {
-							transform: rotate(-45deg)
-						}
-					}
-				}
-			}
-		}
-
-		&-nav {
-			li {
-				width: 100%;
-				margin-bottom: 8px;
-
-				a {
-					@extend .btn, .profile-nav;
-					display: block;
-					width: 64px;
-					height: 64px;
-					overflow: hidden;
-					color: transparent;
-
-					@media (min-width: $lg) {
-						display: inline-flex;
-						width: 100%;
-						height: auto;
-						overflow: visible;
-						color: $light-green
-					}
-
-					&::before {
-						content: '';
-						display: block;
-						width: 16px;
-						height: 16px;
-						background-size: 100% auto;
-						background-position: center;
-						background-repeat: no-repeat
-					}
-				}
-
-				&.current-menu-item a {
-					border-color: $dark-yellow
-				}
-
-				&.menu-item-memory-pages a::before {
-					background-image: url('../../img/profile-menu-memory-pages.svg')
-				}
-
-				&.menu-item-memories a::before {
-					background-image: url('../../img/profile-menu-memories.svg')
-				}
-
-				&.menu-item-settings a::before {
-					background-image: url('../../img/profile-menu-settings.svg')
-				}
-			}
-		}
-
-		&-footer {
-			margin-top: auto;
-
-			.logout {
-				display: block;
-				width: 64px;
-				height: 64px;
-				color: transparent;
-				background-color: transparent;
-				padding: 24px;
-				overflow: hidden;
-
-				@media (min-width: $lg) {
-					display: inline-flex;
-					width: 100%;
-					height: auto;
-					overflow: visible;
-					color: $light-green
-				}
-			}
-		}
-
-		.header-menu-button {
-			color: $light-green
-		}
-
-		.header-logo {
-			display: none;
-			width: 64px;
-			padding: 0 11px 0 10px;
-			border: 1px solid $a-bit-blue-white;
-			border-radius: 10px;
-			z-index: 11;
-
-			@media (min-width: $lg) {
-				display: flex;
-				width: 104px;
-				padding: 0;
-				border: none;
-				border-radius: 0
-			}
-
-			&.mobile {
-				display: flex;
-
-				@media (min-width: $lg) {
-					display: none
-				}
-			}
-		}
-	}
-
 	&-body {
-		width: calc(100% - 112px);
-		padding: 28px 24px 14px;
+		width: 100%;
+		padding: 16px;
+
+		@media (min-width: $md) {
+			padding: 20px
+		}
 
 		@media (min-width: $lg) {
 			width: calc(100% - 384px);
@@ -251,16 +70,39 @@
 		}
 
 		&-title {
+			width: 100%;
 			font-family: $ff-title;
 			font-size: $fs-xl;
 			line-height: $lh-4;
 			font-weight: $fw-semibold;
 			color: $very-dark-green;
 			margin-bottom: 24px;
+			gap: 10px;
 
 			@media (min-width: $lg) {
 				font-size: 24px;
-				line-height: 1.17
+				line-height: 1.17;
+				gap: 0
+			}
+
+			&-buttons {
+				width: 100%;
+				order: 1;
+				padding-bottom: 10px;
+
+				@media (min-width: $lg) {
+					width: auto;
+					order: 2;
+					padding-bottom: 0
+				}
+			}
+
+			&-text {
+				order: 2;
+
+				@media (min-width: $lg) {
+					order: 1
+				}
 			}
 
 			.btn {
@@ -353,6 +195,33 @@
 		}
 	}
 
+	.menu-button {
+		color: $icon-accent-on-color;
+		background-color: transparent;
+		padding: 0;
+		border: none;
+		border-radius: 0;
+		cursor: pointer;
+
+		@media (min-width: $lg) {
+			display: none
+		}
+
+		svg {
+			display: block;
+			width: 14px;
+			height: 14px;
+			margin-right: 12px
+		}
+
+		span {
+			font-family: $ff;
+			font-size: $fs-sm;
+			line-height: $lh-fs-14;
+			color: $text-primary
+		}
+	}
+
 	.single-memory-thumb {
 		&-border {
 			top: -19px;
@@ -371,6 +240,102 @@
 			border-radius: 95px;
 			filter: grayscale(100%)
 		}
+	}
+}
+
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 285px;
+	height: 100dvh;
+	transform: translateX(-100%);
+	background-color: $very-dark-green;
+	z-index: 2;
+	transition: transform ease-out $tr;
+
+	@media (min-width: $lg) {
+		position: relative;
+		top: auto;
+		left: auto;
+		width: 384px;
+		height: auto;
+		transform: translateX(0)
+	}
+
+	&.show {
+		transform: translateX(0);
+
+		&::before {
+			width: 200vw;
+			opacity: 1
+		}
+	}
+
+	&::before {
+		content: '';
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 0;
+		height: 100dvh;
+		background-color: rgba(0, 0, 0, 0.3);
+		opacity: 0;
+		transition: opacity ease-out $tr;
+
+		@media (min-width: $lg) {
+			display: none
+		}
+	}
+
+	&-inner {
+		position: sticky;
+		top: 0;
+		flex-grow: 1;
+		width: 100%;
+		max-height: 100dvh;
+		overflow-y: auto;
+		padding: 26px 20px 20px;
+		background-color: $very-dark-green;
+
+		@media (min-width: $lg) {
+			padding: 40px 46px
+		}
+	}
+
+	&-header {
+		margin-bottom: 40px;
+
+		@media (min-width: $lg) {
+			flex-flow: row wrap;
+			justify-content: space-between;
+			align-items: center
+		}
+
+		&-return {
+			font-size: 13px;
+			line-height: $lh-fs-13;
+			color: $text-accent-on-color;
+			cursor: pointer;
+			@include hover-opacity;
+
+			@media (min-width: $lg) {
+				display: none
+			}
+		}
+	}
+
+	&-footer {
+		padding-top: 24px;
+		margin-top: auto
+	}
+
+	.header-menu-button {
+		color: $light-green
+	}
+
+	.header-logo {
+		width: 104px
 	}
 }
 

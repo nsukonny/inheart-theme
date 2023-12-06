@@ -5,11 +5,11 @@
 		height: 16px
 	}
 
-	&.button-icon-lead svg {
+	&.button-icon-lead svg:first-child {
 		margin-right: 8px
 	}
 
-	&.button-icon-tail svg {
+	&.button-icon-tail svg:last-child {
 		margin-left: 8px
 	}
 }

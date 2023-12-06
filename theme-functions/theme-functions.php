@@ -35,6 +35,26 @@ function ih_clean( $value ): string
 	return htmlspecialchars( $value );
 }
 
+
+add_filter( 'wp_nav_menu_objects', 'ih_add_acf_data_to_nav_menu', 10, 2 );
+/**
+ * Add ACF fields' data to WP nav menus.
+ *
+ * @param $items
+ * @param $args
+ * @return array
+ */
+function ih_add_acf_data_to_nav_menu( $items, $args ): array
+{
+	foreach( $items as &$item ) {
+		if( ! $icon = get_field( 'icon', $item ) ?: null ) continue;
+
+		$item->title = wp_get_attachment_image( $icon, 'ih-icon', false, ['class' => 'style-svg'] ) . $item->title;
+	}
+
+	return $items;
+}
+
 /**
  * Send new User creation error.
  *
@@ -303,5 +323,31 @@ function ih_get_memory_page_name( int $page_id = 0 ): string
 	$last_name		= get_field( 'last_name', $page_id );
 
 	return "<div class='memory-page-name'><div>$first_name $middle_name</div><div>$last_name</div></div>";
+}
+
+/**
+ * Return social icons layout.
+ *
+ * @param string $class
+ * @return string
+ */
+function ih_get_socials( string $class = '' ): string
+{
+	if( ! $socials = get_field( 'social_icons', 'option' ) ?: null ) return '';
+
+	$res = '<div class="flex align-center justify-center icons-list ' . esc_attr( $class ) . '">';
+
+	foreach( $socials as $soc ){
+		$icon	= $soc['icon'];
+		$url	= $soc['url'];
+
+		if( ! $icon || ! $url ) continue;
+
+		$res .= '<a href="' . esc_url( $url ) . '" class="flex justify-center align-center" target="_blank">'
+			. wp_get_attachment_image( $icon['id'], 'icon', false, ['loading' => 'lazy', 'class' => 'style-svg'] ) .
+		'</a>';
+	}
+
+	return "$res</div>";
 }
 

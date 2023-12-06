@@ -1,0 +1,30 @@
+.button.button-menu {
+	width: 100%;
+	justify-content: flex-start;
+	font-size: $fs-md;
+	color: $text-primary-on-color;
+	background-color: transparent;
+	border: 1px solid $border-primary-on-color;
+	padding: 20px;
+
+	@media (min-width: $lg) {
+		padding: 24px
+	}
+
+	&.button-icon-lead svg:first-child {
+		margin-right: 10px
+	}
+
+	&.button-icon-tail svg:last-child {
+		margin-left: 10px
+	}
+
+	&:hover {
+		background-color: $bg-primary-on-color-hover;
+		border-color: $bg-primary-on-color-hover
+	}
+
+	&:active {
+		border-color: $border-accent-on-color
+	}
+}

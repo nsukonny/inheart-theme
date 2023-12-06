@@ -9,10 +9,15 @@
 	line-height: $lh-2;
 	color: $very-dark-green;
 	border: none;
-	border-radius: $radius-input;
+	border-radius: $rad-btn;
 	padding: 0;
 	transition:
 		background-color ease-out $tr,
+		border-color ease-out $tr,
 		color ease-out $tr;
-	cursor: pointer
+	cursor: pointer;
+
+	&:focus {
+		box-shadow: 0 0 0 3px $accent-04
+	}
 }

@@ -44,6 +44,16 @@
 	}
 }
 
+@mixin hover-opacity() {
+	@media (min-width: $lg) {
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+	}
+}
+
 .hidden {
 	display: none !important
 }

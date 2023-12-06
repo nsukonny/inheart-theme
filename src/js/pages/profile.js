@@ -1,4 +1,5 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import '../components/sidebar/sidebar'
 import {
 	checkAjaxWorkingStatus,
 	getTargetElement,

@@ -13,33 +13,12 @@ $container-md: calc(720px + $container-padding * 2);
 $container-lg: calc(950px + $container-padding * 2);
 $container-xl: calc(1280px + $container-padding * 2);
 
-// Font families.
-$ff			: 'Grafita-Normal', Arial, sans-serif;
-$ff-title	: 'Calvino Grande', Arial, sans-serif;
-
 // Font sizes.
 $fs-xs	: 12px;
 $fs-sm	: 14px;
 $fs-md	: 16px;
 $fs-lg	: 18px;
 $fs-xl	: 20px;
-
-// Font weights.
-$fw-light		: 300;
-$fw-regular		: 400;
-$fw-medium		: 500;
-$fw-semibold	: 600;
-$fw-bold		: 700;
-$fw-extrabold	: 800;
-$fw-black		: 900;
-
-// Line heights.
-$lh-base: 1.5;
-$lh-1	: 1.1;
-$lh-2	: 1.2;
-$lh-3	: 1.25;
-$lh-4	: 1.3;
-$lh-5	: 1.33;
 
 // Colors - primary.
 $white				: #FFFFFF;
@@ -89,3 +68,5 @@ $radius-input		: 12px;
 $radius-theme		: 40px;
 $radius-theme-border: 46px;
 $radius-langs		: 60px;
+
+@import 'vars/vars';

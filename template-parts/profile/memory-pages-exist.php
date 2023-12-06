@@ -17,10 +17,21 @@ $title = get_field( 'memory_pages_title' );
 	if( $title ){
 		?>
 		<h1 class="profile-memories-title flex flex-wrap justify-between align-center">
-			<?php echo esc_html( $title ) ?>
-			<a class="btn lg primary" href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>">
-				<?php esc_html_e( "Створити сторінку пам'яті", 'inheart' ) ?>
-			</a>
+			<span class="profile-memories-title-text"><?php echo esc_html( $title ) ?></span>
+
+			<span class="profile-memories-title-buttons flex flex-wrap align-center justify-between">
+				<button class="menu-button flex align-center">
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+						<line y1="1" x2="14" y2="1" stroke="currentColor" />
+						<line y1="13" x2="14" y2="13" stroke="currentColor" />
+						<line y1="7" x2="14" y2="7" stroke="currentColor" />
+					</svg>
+					<span><?php _e( 'Меню', 'inheart' ) ?></span>
+				</button>
+				<a class="btn lg primary" href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>">
+					<?php _e( "Створити сторінку пам'яті", 'inheart' ) ?>
+				</a>
+			</span>
 		</h1>
 		<?php
 	}
