@@ -1,8 +1,7 @@
 @import '../components/vars';
 @import '../components/helpers';
 @import '../components/buttons';
-@import '../new-memory/step-6';
-@import '../pages/memory';
+@import '../components/cards/memory-page/card';
 
 .page-template-profile {
 	background-color: $a-bit-blue-white;
@@ -24,7 +23,7 @@
 			padding: 20px
 		}
 
-		@media (min-width: $lg) {
+		@media (min-width: $xl) {
 			width: calc(100% - 384px);
 			padding: 28px 46px 42px
 		}
@@ -76,7 +75,7 @@
 			line-height: $lh-4;
 			font-weight: $fw-semibold;
 			color: $very-dark-green;
-			margin-bottom: 24px;
+			margin-bottom: 27px;
 			gap: 10px;
 
 			@media (min-width: $lg) {
@@ -90,7 +89,7 @@
 				order: 1;
 				padding-bottom: 10px;
 
-				@media (min-width: $lg) {
+				@media (min-width: $xl) {
 					width: auto;
 					order: 2;
 					padding-bottom: 0
@@ -100,7 +99,7 @@
 			&-text {
 				order: 2;
 
-				@media (min-width: $lg) {
+				@media (min-width: $xl) {
 					order: 1
 				}
 			}
@@ -111,7 +110,7 @@
 		}
 
 		&-list {
-			gap: 12px;
+			gap: 16px;
 
 			@media (min-width: $lg) {
 				gap: 24px 20px
@@ -167,7 +166,7 @@
 				font-size: 26px;
 				line-height: $lh-2;
 				color: $light-green;
-				padding: 0 13px;
+				padding: 0;
 				margin: 0
 			}
 
@@ -203,7 +202,7 @@
 		border-radius: 0;
 		cursor: pointer;
 
-		@media (min-width: $lg) {
+		@media (min-width: $xl) {
 			display: none
 		}
 
@@ -221,26 +220,6 @@
 			color: $text-primary
 		}
 	}
-
-	.single-memory-thumb {
-		&-border {
-			top: -19px;
-			left: 50%;
-			width: calc(100% + 42px);
-			height: calc(100% + 38px);
-
-			&::after {
-				background: linear-gradient(180deg, rgba(1, 28, 26, 0.21) 55.45%, $very-dark-green 76.13%)
-			}
-		}
-
-		img {
-			width: 120px;
-			height: auto;
-			border-radius: 95px;
-			filter: grayscale(100%)
-		}
-	}
 }
 
 .sidebar {
@@ -254,7 +233,7 @@
 	z-index: 2;
 	transition: transform ease-out $tr;
 
-	@media (min-width: $lg) {
+	@media (min-width: $xl) {
 		position: relative;
 		top: auto;
 		left: auto;
@@ -283,7 +262,7 @@
 		opacity: 0;
 		transition: opacity ease-out $tr;
 
-		@media (min-width: $lg) {
+		@media (min-width: $xl) {
 			display: none
 		}
 	}
@@ -298,15 +277,15 @@
 		padding: 26px 20px 20px;
 		background-color: $very-dark-green;
 
-		@media (min-width: $lg) {
+		@media (min-width: $xl) {
 			padding: 40px 46px
 		}
 	}
 
 	&-header {
-		margin-bottom: 40px;
+		margin-bottom: 38px;
 
-		@media (min-width: $lg) {
+		@media (min-width: $xl) {
 			flex-flow: row wrap;
 			justify-content: space-between;
 			align-items: center
@@ -319,7 +298,7 @@
 			cursor: pointer;
 			@include hover-opacity;
 
-			@media (min-width: $lg) {
+			@media (min-width: $xl) {
 				display: none
 			}
 		}
@@ -336,151 +315,6 @@
 
 	.header-logo {
 		width: 104px
-	}
-}
-
-.memory-card {
-	position: relative;
-	width: 100%;
-	min-height: 308px;
-	background-color: $very-dark-green;
-	border-radius: 30px;
-	overflow: hidden;
-
-	@media (min-width: $md) {
-		width: calc(50% - 6px)
-	}
-
-	@media (min-width: $lg) {
-		width: calc((100% - 40px) / 3)
-	}
-
-	&-create-text {
-		height: 100%;
-		font-size: $fs-xl;
-		line-height: normal;
-		color: $very-dark-green;
-		padding: 20px;
-		border: 1px solid $bright-yellow;
-		border-radius: 19px;
-		text-align: center;
-		transition: opacity ease-out $tr;
-
-		&:hover {
-			opacity: 0.7
-		}
-
-		svg {
-			display: block;
-			width: 24px;
-			height: 24px;
-			margin-bottom: 12px
-		}
-	}
-
-	&-bottom {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		padding: 24px 25px;
-		background-color: inherit;
-		opacity: 0;
-		transform: translateY(30px);
-		transition:
-			transform ease-out $tr,
-			opacity ease-out $tr;
-
-		@media (min-width: $xl) {
-			padding: 23px 30px 30px
-		}
-
-		.btn {
-			color: $light-green
-		}
-	}
-
-	&-watch {
-		position: relative;
-		flex-grow: 1;
-		width: 100%;
-		padding: 24px;
-
-		&::after {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 90%;
-			height: 1px;
-			background-color: rgba(195, 218, 226, 0.24)
-		}
-	}
-
-	&-title {
-		font-family: $ff-title;
-		font-size: $fs-xl;
-		line-height: 1;
-		color: $very-dark-green;
-		margin-bottom: 20px;
-
-		@media (min-width: $xl) {
-			margin-bottom: 29px
-		}
-	}
-
-	&-actions {
-		width: 100%;
-		gap: 4px;
-		padding-top: 24px;
-
-		.btn {
-			padding: 7px 20px 8px;
-			background-color: transparent;
-
-			&.lg {
-				padding-left: 20px;
-				padding-right: 20px
-			}
-
-			&.simple {
-				padding-left: 0;
-				padding-right: 0
-			}
-		}
-	}
-
-	&.black {
-		background-color: $theme-black;
-
-		.single-memory-thumb-border::after {
-			background: linear-gradient(180deg, rgba(19, 20, 20, 0) 55.45%, $theme-black 76.13%)
-		}
-	}
-
-	&.red {
-		background-color: $theme-red;
-
-		.single-memory-thumb-border::after {
-			background: linear-gradient(180deg, rgba(51, 4, 13, 0) 55.45%, $theme-red 76.13%)
-		}
-	}
-
-	&.blue {
-		background-color: $theme-blue;
-
-		.single-memory-thumb-border::after {
-			background: linear-gradient(180deg, rgba(6, 32, 83, 0) 55.45%, $theme-blue 76.13%)
-		}
-	}
-
-	&:hover {
-		.memory-card-bottom {
-			opacity: 1;
-			transform: translateY(0)
-		}
 	}
 }
 

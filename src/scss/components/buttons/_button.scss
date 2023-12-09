@@ -7,17 +7,44 @@
 	font-size: $fs-sm;
 	font-weight: $fw-regular;
 	line-height: $lh-2;
-	color: $very-dark-green;
+	color: $text-primary;
+	background-color: transparent;
 	border: none;
 	border-radius: $rad-btn;
-	padding: 0;
+	padding: 7px 12px 8px;
 	transition:
 		background-color ease-out $tr,
 		border-color ease-out $tr,
 		color ease-out $tr;
 	cursor: pointer;
 
+	svg {
+		color: $icon-accent
+	}
+
+	.button-text {
+		text-align: center
+	}
+
+	&:hover {
+		background-color: $bg-primary-hover
+	}
+
+	&:active {
+		background-color: $bg-primary-pressed
+	}
+
 	&:focus {
-		box-shadow: 0 0 0 3px $accent-04
+		box-shadow: 0 0 0 3px $accent-04;
+		background-color: $bg-primary
+	}
+
+	&:disabled {
+		color: $text-disabled;
+		pointer-events: none;
+
+		svg {
+			color: inherit
+		}
 	}
 }

@@ -5,7 +5,7 @@
 	gap: 16px;
 
 	&-item a {
-		@include title-special;
+		@include mobile-title-special;
 		color: $accent-on-color;
 
 		&:hover {

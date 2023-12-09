@@ -1,0 +1,57 @@
+.memory-card {
+	&-thumb {
+		position: relative;
+		width: 164px;
+		height: 195px;
+		padding: 20px 21px;
+		transform: translateY(38px);
+
+		&::after {
+			content: '';
+			@include card-overlay
+		}
+
+		&-border {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+
+			svg text {
+				font-family: $ff;
+				fill: $white;
+				font-size: $fs-lg
+			}
+		}
+
+		&-img {
+			border-radius: $rad-memory-card-thumb;
+			overflow: hidden
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			filter: grayscale(100%)
+		}
+	}
+
+	&.green .memory-card-thumb::after {
+		background: $card-overlay-green
+	}
+
+	&.blue .memory-card-thumb::after {
+		background: $card-overlay-blue
+	}
+
+	&.red .memory-card-thumb::after {
+		background: $card-overlay-red
+	}
+
+	&.black .memory-card-thumb::after {
+		background: $card-overlay-black
+	}
+}

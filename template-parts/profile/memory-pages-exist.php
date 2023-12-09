@@ -40,7 +40,7 @@ $title = get_field( 'memory_pages_title' );
 	<div class="profile-memories-list flex flex-wrap">
 		<?php
 		foreach( $memory_pages as $page )
-			get_template_part( 'template-parts/profile/memory-card', null, ['id' => $page->ID] );
+			get_template_part( 'components/cards/memory-page/card', null, ['id' => $page->ID] );
 		?>
 	</div>
 </section>

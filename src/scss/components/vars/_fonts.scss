@@ -6,18 +6,21 @@ $fw-medium	: 500;
 $fw-semibold: 600;
 $fw-bold	: 700;
 
-$lh-desktop-title-special	: 1.17;
+$lh-mobile-title-special-lg	: 1.17;
 $lh-mobile-title-special	: 1.3;
+$lh-desktop-title-special	: 1.2;
+$lh-tags-special			: 1.33;
 $lh-fs-13					: 1.38;
 $lh-fs-14					: 1.61;
+
 $lh-base					: 1.5;
 $lh-1						: 1.1;
-$lh-2						: 1.2;
+$lh-2						: $lh-desktop-title-special;
 $lh-3						: 1.25;
-$lh-4						: 1.3;
-$lh-5						: 1.33;
+$lh-4						: $lh-mobile-title-special;
+$lh-5						: $lh-tags-special;
 
-@mixin title-special(){
+@mixin mobile-title-special(){
 	font-family: $ff-title;
 	font-size: 20px;
 	font-weight: $fw-semibold;
@@ -25,6 +28,19 @@ $lh-5						: 1.33;
 
 	@media (min-width: $lg) {
 		font-size: 24px;
-		line-height: $lh-desktop-title-special
+		line-height: $lh-mobile-title-special-lg
 	}
+}
+
+@mixin desktop-title-special(){
+	font-family: $ff-title;
+	font-size: 26px;
+	font-weight: $fw-semibold;
+	line-height: $lh-desktop-title-special
+}
+
+@mixin tags-special(){
+	font-family: $ff;
+	font-size: $fs-xs;
+	line-height: $lh-tags-special
 }
