@@ -47,7 +47,7 @@
 				}
 
 				.profile-memories-title {
-					font-size: 24px;
+					font-size: $fs-xl;
 					margin: 34px 0 36px;
 					text-align: center;
 
@@ -71,16 +71,14 @@
 		&-title {
 			width: 100%;
 			font-family: $ff-title;
-			font-size: $fs-xl;
-			line-height: $lh-4;
+			font-size: 24px;
+			line-height: $lh-mobile-title-special-lg;
 			font-weight: $fw-semibold;
 			color: $very-dark-green;
 			margin-bottom: 27px;
 			gap: 10px;
 
 			@media (min-width: $lg) {
-				font-size: 24px;
-				line-height: 1.17;
 				gap: 0
 			}
 
@@ -97,10 +95,14 @@
 			}
 
 			&-text {
+				width: 100%;
+				padding-right: 26%;
 				order: 2;
 
 				@media (min-width: $xl) {
-					order: 1
+					width: auto;
+					order: 1;
+					padding-right: 0
 				}
 			}
 

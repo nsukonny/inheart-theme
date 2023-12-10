@@ -1,9 +1,12 @@
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { getTargetElement, setTargetElement, WINDOW_XL } from '../../common/global'
+
 let sidebar
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
-	sidebar	= document.querySelector( '.sidebar' )
+	sidebar = document.querySelector( '.sidebar' )
 
 	showSidebar()
 	hideSidebar()
@@ -18,6 +21,8 @@ const showSidebar = () => {
 		e.preventDefault()
 
 		sidebar.classList.add( 'show' )
+		setTargetElement( '#sidebar-inner' )
+		disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
 	} )
 }
 
@@ -29,13 +34,22 @@ const hideSidebar = () => {
 	btn.addEventListener( 'click', e => {
 		e.preventDefault()
 
-		sidebar.classList.remove( 'show' )
+		onHideSidebar()
 	} )
 
 	sidebar.addEventListener( 'click', e => {
 		const target = e.target
 
-		if( target.className && target.classList.contains( 'sidebar' ) )
-			sidebar.classList.remove( 'show' )
+		if( target.className && target.classList.contains( 'sidebar' ) ) onHideSidebar()
 	} )
 }
+
+const onHideSidebar = () => {
+	sidebar.classList.remove( 'show' )
+	enableBodyScroll( getTargetElement() )
+}
+
+window.addEventListener( 'resize', () => {
+	if( window.innerWidth >= WINDOW_XL && sidebar && sidebar.classList.contains( 'show' ) )
+		onHideSidebar()
+} )

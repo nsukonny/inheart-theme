@@ -11,7 +11,7 @@ $logo = get_field( 'header_logo_light', 'option' );
 ?>
 
 <aside class="sidebar flex">
-	<div class="sidebar-inner flex direction-column">
+	<div id="sidebar-inner" class="sidebar-inner flex direction-column">
 		<header class="sidebar-header flex flex-wrap align-center justify-between">
 			<?php
 			if( $logo ){

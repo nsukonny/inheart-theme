@@ -27,4 +27,8 @@
 	&:active {
 		border-color: $border-accent-on-color
 	}
+
+	&:focus {
+		background-color: $bg-secondary
+	}
 }
