@@ -20,11 +20,8 @@ wp_enqueue_script( 'profile-memories', THEME_URI . '/static/js/profile-memories/
 	<?php get_template_part( 'components/sidebar/sidebar' ) ?>
 
 	<div class="profile-body">
-		<h1 class="profile-memories-title flex flex-wrap justify-between align-center">
-			<?php esc_html_e( 'Спогади', 'inheart' ) ?>
-		</h1>
-
 		<?php
+		get_template_part( 'components/profile/memory-pages/title', null, ['hide_button' => 1] );
 		get_template_part( 'template-parts/profile-memories/switcher' );
 		get_template_part( 'template-parts/profile-memories/memories' );
 		?>

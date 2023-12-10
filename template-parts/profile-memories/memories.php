@@ -47,6 +47,6 @@ if( $memories_query->have_posts() ){
 
     echo '</section>';
 }else{
-    echo 'NO MEMORIES';
+    get_template_part( 'components/profile/memories/no-memories', null, ['type' => 'others'] );
 }
 

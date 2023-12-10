@@ -109,6 +109,13 @@
                 "operator": "==",
                 "value": "page-templates\/profile.php"
             }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-templates\/profile-memories.php"
+            }
         ]
     ],
     "menu_order": 0,
@@ -120,5 +127,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1692736265
+    "modified": 1702239714
 }

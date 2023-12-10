@@ -184,7 +184,8 @@ add_action( 'wp_ajax_ih_ajax_load_profile_memories', 'ih_ajax_load_profile_memor
  */
 function ih_ajax_load_profile_memories(): void
 {
-	$type = ih_clean( $_POST['type'] );	// 'others' | 'yours'
+	$type		= ih_clean( $_POST['type'] );	// 'others' | 'yours'
+	$page_id	= ih_clean( $_POST['id'] );	// 'others' | 'yours'
 
 	if( ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
@@ -219,24 +220,27 @@ function ih_ajax_load_profile_memories(): void
 
 	$memories_query = new WP_Query( $args );
 
-	if( ! $memories_query->have_posts() ) wp_send_json_error( ['msg' => __( 'Спогадів не знайдено', 'inheart' )] );
+	if( $memories_query->have_posts() ){
+		$memories = '';
 
-	$memories = '';
+		while( $memories_query->have_posts() ){
+			$memories_query->the_post();
+			$memories .= ih_load_template_part(
+				'template-parts/add-new-memories/preview',
+				null,
+				['id' => get_the_ID(), 'type' => $type]
+			);
+		}
 
-	while( $memories_query->have_posts() ){
-		$memories_query->the_post();
-		$memories .= ih_load_template_part(
-			'template-parts/add-new-memories/preview',
-			null,
-			[
-				'id'	=> get_the_ID(),
-				'type'	=> $type
-			]
-		);
+		wp_reset_query();
+		wp_send_json_success( ['memories' => $memories] );
 	}
 
-	wp_reset_query();
-
-	wp_send_json_success( ['memories' => $memories] );
+	$memories = ih_load_template_part(
+		'components/profile/memories/no-memories',
+		'body',
+		['id' => $page_id, 'type' => $type]
+	);
+	wp_send_json_success( ['memories' => $memories, 'no-memories' => 1] );
 }
 

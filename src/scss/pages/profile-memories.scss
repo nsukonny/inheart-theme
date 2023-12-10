@@ -7,6 +7,15 @@
 	.wrapper {
 		overflow: visible
 	}
+
+	.profile-memories.none {
+		height: auto;
+		margin-top: 100px;
+
+		@media (min-width: $lg) {
+			margin-top: 223px
+		}
+	}
 }
 
 .profile-memories {

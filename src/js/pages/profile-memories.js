@@ -1,3 +1,4 @@
+import '../components/sidebar/sidebar'
 import {
 	checkAjaxWorkingStatus,
 	ihAjaxRequest,
@@ -24,19 +25,29 @@ const switchMemories = () => {
 
 			const
 				type		= btn.dataset.type,
+				pageId		= btn.closest( '.switcher' ).dataset.page,
 				formData	= new FormData()
 
 			formData.append( 'action', 'ih_ajax_load_profile_memories' )
 			formData.append( 'type', type )
+			formData.append( 'id', pageId )
 			setAjaxWorkingStatus( true )
 
 			ihAjaxRequest( formData ).then( res => {
 				if( res ){
 					switch( res.success ){
 						case true:
-							const wrapper = document.querySelector( '.profile-memories-list' )
+							const
+								wrapper = document.querySelector( '.profile-memories-list' ),
+								inner	= document.querySelector( '.profile-memories-inner' )
 
-							if( wrapper && res.data.memories ) wrapper.innerHTML = res.data.memories
+							if( res.data.memories ){
+								if( wrapper && ! res.data['no-memories'] ){
+									wrapper.innerHTML = res.data.memories
+								}else{
+									if( inner && res.data['no-memories'] ) inner.innerHTML = res.data.memories
+								}
+							}
 							break
 
 						case false:
