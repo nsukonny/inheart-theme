@@ -8,6 +8,7 @@ $accent-04					: rgba(247, 185, 65, 0.40);
 $light-pink					: #C3A195;
 
 $border-accent-on-color		: $accent-on-color;
+$border-primary				: rgba(5, 51, 48, 0.30);
 $border-primary-on-color	: rgba(195, 218, 226, 0.24);
 
 $bg-secondary				: #011C1A;
@@ -22,7 +23,7 @@ $text-accent				: $accent;
 $text-primary				: $bg-secondary;
 $text-primary-on-color		: #C3DAE2;
 $text-accent-on-color		: $accent-on-color;
-$text-disabled				: rgba(5, 51, 48, 0.30);
+$text-disabled				: $border-primary;
 
 $icon-accent				: $accent;
 $icon-accent-on-color		: $accent-on-color;

@@ -1,4 +1,5 @@
 import '../components/sidebar/sidebar'
+import '../components/switcher/switcher'
 import {
 	checkAjaxWorkingStatus,
 	ihAjaxRequest,
@@ -15,7 +16,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 } )
 
 const switchMemories = () => {
-	const switcherButtons = document.querySelectorAll( '.profile-memories-switcher .tab' )
+	const switcherButtons = document.querySelectorAll( '.profile-memories-switcher .switch' )
 
 	if( ! switcherButtons.length ) return
 

@@ -22,7 +22,7 @@ wp_enqueue_script( 'profile-memories', THEME_URI . '/static/js/profile-memories/
 	<div class="profile-body">
 		<?php
 		get_template_part( 'components/profile/memory-pages/title', null, ['hide_button' => 1] );
-		get_template_part( 'template-parts/profile-memories/switcher' );
+		get_template_part( 'components/switcher/switcher' );
 		get_template_part( 'template-parts/profile-memories/memories' );
 		?>
 	</div>
