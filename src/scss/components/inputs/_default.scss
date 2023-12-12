@@ -1,0 +1,127 @@
+input[type='text'],
+input[type='password'],
+input[type='date'],
+input[type='url'],
+input[type='email'],
+textarea {
+	width: 100%;
+	height: 40px;
+	font-family: $ff;
+	font-size: $fs-md;
+	line-height: $lh-desktop-title-special;
+	color: $text-primary;
+	background-color: transparent;
+	border: 0.5px solid $border-primary;
+	border-radius: $rad-input;
+	padding: 0 16px;
+	transition:
+		box-shadow ease-out $tr,
+		border-color ease-out $tr,
+		background-color ease-out $tr;
+
+	@media (min-width: $lg) {
+		height: 48px
+	}
+
+	&:hover {
+		border-color: $border-primary-hover
+	}
+
+	&:active,
+	&:focus {
+		border-color: transparent;
+		box-shadow: 0 0 0 3px $accent-04
+	}
+
+	&::placeholder {
+		font-family: $ff;
+		font-size: $fs-md;
+		line-height: $lh-desktop-title-special;
+		color: $text-secondary !important;
+		opacity: 1
+	}
+
+	&:disabled {
+		background-color: $bg-disabled;
+		border-color: $bg-disabled;
+		color: $text-disabled;
+		pointer-events: none;
+
+		&::placeholder {
+			color: $text-disabled !important
+		}
+	}
+}
+
+textarea {
+	height: 140px;
+	resize: vertical;
+
+	@media (min-width: $lg) {
+		height: 140px
+	}
+}
+
+.input-wrapper {
+	display: block;
+	position: relative;
+
+	&.icon-lead {
+		input[type='text'],
+		input[type='password'],
+		input[type='date'],
+		input[type='url'],
+		input[type='email'] {
+			padding-left: 48px
+		}
+	}
+
+	&.icon-tail {
+		input[type='text'],
+		input[type='password'],
+		input[type='date'],
+		input[type='url'],
+		input[type='email'] {
+			padding-right: 48px
+		}
+	}
+}
+
+.input-icon {
+	display: block;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+
+	&.lead {
+		left: 16px
+	}
+
+	&.tail {
+		right: 16px
+	}
+
+	img, svg {
+		display: block;
+		width: inherit;
+		height: inherit;
+
+		* {
+			fill: $icon-secondary
+		}
+	}
+}
+
+.label.dark .input-icon {
+	img, svg {
+		display: block;
+		width: inherit;
+		height: inherit;
+
+		* {
+			fill: #C1E3FB
+		}
+	}
+}

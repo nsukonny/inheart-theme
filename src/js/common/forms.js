@@ -15,7 +15,7 @@ const togglePasswordVisibility = () => {
 
 	eyeButtons.forEach( eye => {
 		const
-			wrap		= eye.closest( '.pass-wrapper' ),
+			wrap		= eye.closest( '.input-wrapper' ),
 			passInput	= wrap.querySelector( 'input[type="password"]' )
 
 		eye.addEventListener( 'click', () => {

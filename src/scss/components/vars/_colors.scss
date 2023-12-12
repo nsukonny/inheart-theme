@@ -10,6 +10,8 @@ $light-pink					: #C3A195;
 $border-accent-on-color		: $accent-on-color;
 $border-primary				: rgba(5, 51, 48, 0.30);
 $border-primary-on-color	: rgba(195, 218, 226, 0.24);
+$border-primary-hover		: rgba(5, 51, 48, 0.85);
+$border-danger				: rgba(247, 65, 65, 0.60);
 
 $bg-secondary				: #011C1A;
 $bg-primary					: #F7FAFC;
@@ -17,14 +19,17 @@ $bg-primary-hover			: $border-primary-on-color;
 $bg-primary-pressed			: rgba(195, 218, 226, 0.40);
 $bg-primary-on-color-hover	: rgba(195, 218, 226, 0.08);
 $bg-primary-on-color-pressed: rgba(195, 218, 226, 0.12);
+$bg-danger-subdued			: rgba(247, 65, 65, 0.08);
 $bg-disabled				: rgba(5, 51, 48, 0.05);
 
 $text-accent				: $accent;
 $text-primary				: $bg-secondary;
 $text-primary-on-color		: #C3DAE2;
 $text-accent-on-color		: $accent-on-color;
+$text-danger				: #F74141;
 $text-disabled				: $border-primary;
 
 $icon-accent				: $accent;
 $icon-accent-on-color		: $accent-on-color;
+$icon-secondary				: rgba(5, 51, 48, 0.4);
 $icon-disabled-on-color		: $border-primary-on-color;
