@@ -1,0 +1,11 @@
+.input-wrapper.date::before {
+	content: '';
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	width: 48px;
+	height: calc(100% - 2px);
+	background-color: $white;
+	border-radius: 12px;
+	z-index: 1
+}

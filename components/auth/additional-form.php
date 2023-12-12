@@ -6,6 +6,24 @@
  * @package WordPress
  * @subpackage inheart
  */
+
+$type = $args['type'] ?? 'login';
+
+switch( $type ){
+	case 'register':
+		$text = sprintf(
+			__( 'Я вже маю акаунт %sУвійти%s', 'inheart' ),
+			'<a href="' . get_the_permalink( pll_get_post( 10 ) ) . '">', '</a>'
+		);
+		break;
+
+	default:
+		$text = sprintf(
+			__( 'Ще не зареєстровані? %sСтворити акаунт %s', 'inheart' ),
+			'<a href="' . get_the_permalink( pll_get_post( 12 ) ) . '">', '</a>'
+		);
+		break;
+}
 ?>
 
 <div class="auth-additional">
@@ -28,12 +46,7 @@
 	</div>
 
 	<div class="auth-additional-option">
-		<?php
-		printf(
-			__( 'Ще не зареєстровані? %sСтворити акаунт %s', 'inheart' ),
-			'<a href="' . get_the_permalink( pll_get_post( 12 ) ) . '">', '</a>'
-		);
-		?>
+		<?php echo $text ?>
 	</div>
 </div>
 

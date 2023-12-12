@@ -160,14 +160,6 @@ label.label {
 			}
 		}
 	}
-
-	&.dark {
-		&.label-file {
-			.label-text {
-				border-color: $very-dark-green
-			}
-		}
-	}
 }
 
 input {
@@ -226,26 +218,5 @@ input {
 	&:not(:empty) {
 		display: inline-block;
 		margin-bottom: 20px
-	}
-}
-
-.input-date-wrapper {
-	position: relative;
-	display: block;
-
-	&::after {
-		content: '';
-		position: absolute;
-		top: 50%;
-		right: 16px;
-		transform: translateY(-50%);
-		width: 24px;
-		height: calc(100% - 2px);
-		background-color: $white;
-		pointer-events: none;
-		background-image: url(../img/calendar.svg);
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: contain
 	}
 }

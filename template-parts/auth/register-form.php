@@ -74,6 +74,6 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 		</div>
 	</form><!-- #form-register -->
 
-	<?php get_template_part( 'components/auth/additional-form' ) ?>
+	<?php get_template_part( 'components/auth/additional-form', null, ['type' => 'register'] ) ?>
 </div><!-- .auth-form-wrapper -->
 

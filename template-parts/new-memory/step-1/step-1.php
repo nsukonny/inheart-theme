@@ -55,69 +55,53 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 
 		<form class="form-white new-memory-main-info" enctype="multipart/form-data">
 			<fieldset class="flex flex-wrap">
-				<label for="lastname" class="label dark">
-					<span class="label-text"><?php esc_html_e( 'Прізвище', 'inheart' ) ?></span>
-					<input
-						id="lastname"
-						name="lastname"
-						type="text"
-						placeholder="<?php esc_html_e( 'Прізвище Померлого', 'inheart' ) ?>"
-						value="<?php echo esc_attr( $last_name ) ?>"
-						required
-					/>
-				</label>
-				<label for="firstname" class="label dark">
-					<span class="label-text"><?php esc_html_e( "Ім'я", 'inheart' ) ?></span>
-					<input
-						id="firstname"
-						name="firstname"
-						type="text"
-						placeholder="<?php esc_html_e( "Ім'я Померлого", 'inheart' ) ?>"
-						value="<?php echo esc_attr( $first_name ) ?>"
-						required
-					/>
-				</label>
-				<label for="fathername" class="label dark">
-					<span class="label-text"><?php esc_html_e( 'По батькові', 'inheart' ) ?></span>
-					<input
-						id="fathername"
-						name="fathername"
-						type="text"
-						placeholder="<?php esc_html_e( 'По батькові Померлого', 'inheart' ) ?>"
-						value="<?php echo esc_attr( $middle_name ) ?>"
-						required
-					/>
-				</label>
-				<label for="date-of-birth" class="label dark half">
-					<span class="label-text"><?php esc_html_e( 'Дата народження', 'inheart' ) ?></span>
-					<span class="input-date-wrapper">
-						<input
-							id="date-of-birth"
-							name="date-of-birth"
-							type="text"
-							onfocus="this.type='date';this.showPicker()"
-							onblur="(this.value === '' ? this.type='text' : this.type='date')"
-							placeholder="__.__.____"
-							value="<?php echo esc_attr( $born_at ) ?>"
-							required
-						/>
-					</span>
-				</label>
-				<label for="date-of-death" class="label dark half end">
-					<span class="label-text"><?php esc_html_e( 'Дата смерті', 'inheart' ) ?></span>
-					<span class="input-date-wrapper">
-						<input
-							id="date-of-death"
-							name="date-of-death"
-							type="text"
-							onfocus="this.type='date';this.showPicker()"
-							onblur="(this.value === '' ? this.type='text' : this.type='date')"
-							placeholder="__.__.____"
-							value="<?php echo esc_attr( $died_at ) ?>"
-							required
-						/>
-					</span>
-				</label>
+				<?php
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'lastname',
+					'label'			=> __( 'Прізвище', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Прізвище Померлого', 'inheart' ),
+					'value'			=> $last_name,
+					'autocomplete'	=> 'family-name',
+					'required'		=> 1
+				] );
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'firstname',
+					'label'			=> __( "Ім'я", 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( "Ім'я Померлого", 'inheart' ),
+					'value'			=> $first_name,
+					'autocomplete'	=> 'given-name',
+					'required'		=> 1
+				] );
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'fathername',
+					'label'			=> __( 'По батькові', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'По батькові Померлого', 'inheart' ),
+					'value'			=> $middle_name,
+					'autocomplete'	=> 'additional-name',
+					'required'		=> 1
+				] );
+				get_template_part( 'components/inputs/date', null, [
+					'name'			=> 'date-of-birth',
+					'label'			=> __( 'Дата народження', 'inheart' ),
+					'label_class'	=> 'half',
+					'placeholder'	=> '__.__.____',
+					'value'			=> $born_at,
+					'autocomplete'	=> 'bday',
+					'required'		=> 1
+				] );
+				get_template_part( 'components/inputs/date', null, [
+					'name'			=> 'date-of-death',
+					'label'			=> __( 'Дата смерті', 'inheart' ),
+					'label_class'	=> 'half end',
+					'placeholder'	=> '__.__.____',
+					'value'			=> $died_at,
+					'required'		=> 1
+				] );
+				?>
+
 				<label for="photo" class="label label-file dark flex-wrap align-center<?php echo ( $thumb_title ? ' added' : '' ) ?>">
 					<span class="label-text flex-wrap align-center">
 						<?php esc_html_e( "Додати пам'ятну фотографію", 'inheart' ) ?>
