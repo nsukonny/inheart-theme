@@ -23,7 +23,7 @@ $key = $args['key'] ?? 0;
 ?>
 
 <div class="step-media-link flex flex-wrap<?php echo esc_attr( $wrapper_class ) ?>" data-id="<?php echo esc_attr( $key ) ?>">
-	<label for="media-link-<?php echo esc_attr( $key ) ?>" class="label dark half">
+	<label for="media-link-<?php echo esc_attr( $key ) ?>" class="label half">
 		<span class="label-text"><?php esc_html_e( 'Посилання', 'inheart' ) ?></span>
 		<input
 			id="media-link-<?php echo esc_attr( $key ) ?>"
@@ -35,7 +35,7 @@ $key = $args['key'] ?? 0;
 			required
 		/>
 	</label>
-	<label for="media-name-link-<?php echo esc_attr( $key ) ?>" class="label dark half end">
+	<label for="media-name-link-<?php echo esc_attr( $key ) ?>" class="label half end">
 		<span class="label-text"><?php esc_html_e( 'Назва посилання', 'inheart' ) ?></span>
 		<input
 			id="media-name-link-<?php echo esc_attr( $key ) ?>"

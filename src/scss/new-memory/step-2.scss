@@ -237,6 +237,7 @@
 				padding: 0;
 				overflow-y: hidden;
 				transition: height ease-out $tr;
+				box-shadow: none;
 
 				&::placeholder {
 					color: #96AAAE

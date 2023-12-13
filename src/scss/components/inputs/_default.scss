@@ -55,6 +55,7 @@ textarea {
 
 textarea {
 	height: 140px;
+	padding: 12px 16px;
 	resize: vertical;
 
 	@media (min-width: $lg) {

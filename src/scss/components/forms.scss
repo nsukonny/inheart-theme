@@ -101,47 +101,17 @@ label.label {
 			align-items: center
 		}
 
-		.label-text {
-			display: flex;
+		.button.outlined {
 			width: 100%;
-			padding: 11px 16px;
 			margin-bottom: 2px;
-			border: 0.5px solid $white;
-			border-radius: $radius-input;
-			cursor: pointer;
-			transition: background-color ease-out $tr;
 
 			@media (min-width: $md) {
-				display: inline-flex;
 				width: auto;
 				margin: 0 22px 0 0
 			}
 
-			&::before {
-				content: '';
-				display: block;
-				width: 24px;
-				height: 24px;
-				background-image: url(../img/add-photo.svg);
-				background-size: contain;
-				background-position: center;
-				background-repeat: no-repeat;
-				margin-right: 6px
-			}
-
-			&:hover {
-				background-color: $a-bit-blue-white
-			}
-
 			&.added {
-				display: none;
-				background-color: $a-bit-blue-white
-			}
-
-			svg {
-				width: 24px;
-				height: auto;
-				margin-right: 6px
+				display: none
 			}
 		}
 
@@ -152,7 +122,7 @@ label.label {
 			color: $green
 		}
 
-		&.added .label-text {
+		&.added .button.outlined {
 			display: none;
 
 			&.added {

@@ -882,7 +882,7 @@ const getExternalLinkHTML = ( index = 0 ) => {
 	const linkClass = index ? ' filled' : ''
 
 	return `<div class="step-media-link flex flex-wrap${ linkClass }" data-id="${ index }">
-			<label for="media-link-${ index }" class="label dark half">
+			<label for="media-link-${ index }" class="label half">
 				<span class="label-text">Посилання</span>
 				<input
 					id="media-link-${ index }"
@@ -893,7 +893,7 @@ const getExternalLinkHTML = ( index = 0 ) => {
 					required
 				/>
 			</label>
-			<label for="media-name-link-${ index }" class="label dark half end">
+			<label for="media-name-link-${ index }" class="label half end">
 				<span class="label-text">Назва посилання</span>
 				<input
 					id="media-name-link-${ index }"

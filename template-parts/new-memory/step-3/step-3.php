@@ -52,39 +52,34 @@ $class				= $saved_text ? '' : ' clear-on-focus';
 					<legend class="flex flex-wrap align-end">
 						<span class="legend-title"><?php esc_html_e( 'Від кого', 'inheart' ) ?></span>
 					</legend>
-					<label for="epitaph-lastname" class="label dark half">
-						<span class="label-text"><?php esc_html_e( 'Прізвище', 'inheart' ) ?></span>
-						<input
-							id="epitaph-lastname"
-							name="epitaph-lastname"
-							type="text"
-							placeholder="<?php esc_html_e( 'Прізвище', 'inheart' ) ?>"
-							value="<?php echo esc_attr( $epitaph_lastname ) ?>"
-							required
-						/>
-					</label>
-					<label for="epitaph-firstname" class="label dark half end">
-						<span class="label-text"><?php esc_html_e( "Ім'я", 'inheart' ) ?></span>
-						<input
-							id="epitaph-firstname"
-							name="epitaph-firstname"
-							type="text"
-							placeholder="<?php esc_html_e( "Ім'я", 'inheart' ) ?>"
-							value="<?php echo esc_attr( $epitaph_firstname ) ?>"
-							required
-						/>
-					</label>
-					<label for="epitaph-role" class="label dark">
-						<span class="label-text"><?php esc_html_e( 'Ким доводилися померлому', 'inheart' ) ?></span>
-						<input
-							id="epitaph-role"
-							name="epitaph-role"
-							type="text"
-							placeholder="<?php esc_html_e( 'Ким доводилися померлому', 'inheart' ) ?>"
-							value="<?php echo esc_attr( $epitaph_role ) ?>"
-							required
-						/>
-					</label>
+					<?php
+					get_template_part( 'components/inputs/default', null, [
+						'name'			=> 'epitaph-lastname',
+						'label'			=> __( 'Прізвище', 'inheart' ),
+						'label_class'	=> 'half',
+						'placeholder'	=> __( 'Прізвище', 'inheart' ),
+						'value'			=> $epitaph_lastname,
+						'autocomplete'	=> 'family-name',
+						'required'		=> 1
+					] );
+					get_template_part( 'components/inputs/default', null, [
+						'name'			=> 'epitaph-firstname',
+						'label'			=> __( "Ім'я", 'inheart' ),
+						'label_class'	=> 'half end',
+						'placeholder'	=> __( "Ім'я", 'inheart' ),
+						'value'			=> $epitaph_firstname,
+						'autocomplete'	=> 'given-name',
+						'required'		=> 1
+					] );
+					get_template_part( 'components/inputs/default', null, [
+						'name'			=> 'epitaph-role',
+						'label'			=> __( 'Ким доводилися померлому', 'inheart' ),
+						'label_class'	=> 'full',
+						'placeholder'	=> __( 'Ким доводилися померлому', 'inheart' ),
+						'value'			=> $epitaph_role,
+						'required'		=> 1
+					] );
+					?>
 				</fieldset>
 				<fieldset class="flex direction-column">
 					<legend class="flex flex-wrap align-end">
