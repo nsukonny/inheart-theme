@@ -16,7 +16,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 } )
 
 const switchMemories = () => {
-	const switcherButtons = document.querySelectorAll( '.profile-memories-switcher .switch' )
+	const switcherButtons = document.querySelectorAll( '.profile-memories-switcher .button' )
 
 	if( ! switcherButtons.length ) return
 

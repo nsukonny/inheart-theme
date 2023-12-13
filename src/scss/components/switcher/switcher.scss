@@ -3,5 +3,93 @@
 	border-radius: $rad-btn;
 	border: 0.5px solid $border-primary;
 	gap: 2px;
-	padding: 1.5px
+	padding: 1.5px;
+
+	&-bg {
+		position: absolute;
+		top: 1.5px;
+		left: 1.5px;
+		width: 135px;
+		height: 44px;
+		background-color: $very-dark-green;
+		border-radius: 8px;
+		transition: left ease-out $tr
+	}
+
+	.button {
+		position: relative;
+		width: 67.8px;
+		font-size: $fs-sm;
+		line-height: $lh-desktop-title-special;
+		border-radius: $rad-switch;
+		background-color: transparent;
+		padding: 5.5px;
+		white-space: nowrap;
+		transition: color ease-out $tr;
+		z-index: 1;
+
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: transparent;
+			box-shadow: none
+		}
+
+		&.md-h {
+			padding: 9.5px
+		}
+
+		&.lg-h {
+			padding: 13.5px
+		}
+
+		&.xl-w {
+			width: 135px
+		}
+
+		&.active {
+			color: $text-primary-on-color
+		}
+
+		// Step: +137 (button width + gap)
+		&:first-child.active ~ .switcher-bg {
+			left: 1.5px
+		}
+
+		&:nth-child(2).active ~ .switcher-bg {
+			left: 138.5px
+		}
+
+		&:nth-child(3).active ~ .switcher-bg {
+			left: 275.5px
+		}
+
+		&:nth-child(4).active ~ .switcher-bg {
+			left: 412.5px
+		}
+
+		&:nth-child(5).active ~ .switcher-bg {
+			left: 549.5px
+		}
+
+		&:nth-child(6).active ~ .switcher-bg {
+			left: 686.5px
+		}
+
+		&:nth-child(7).active ~ .switcher-bg {
+			left: 823.5px
+		}
+
+		&:nth-child(8).active ~ .switcher-bg {
+			left: 960.5px
+		}
+
+		&:nth-child(9).active ~ .switcher-bg {
+			left: 1097.5px
+		}
+
+		&:nth-child(10).active ~ .switcher-bg {
+			left: 1234.5px
+		}
+	}
 }
