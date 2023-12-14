@@ -13,8 +13,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	switcherLogic()
 	switchMemories()
+	publishMemory()
 } )
 
+/**
+ * Switch between others and yours memories.
+ */
 const switchMemories = () => {
 	const switcherButtons = document.querySelectorAll( '.profile-memories-switcher .button' )
 
@@ -59,6 +63,50 @@ const switchMemories = () => {
 
 				setAjaxWorkingStatus( false )
 			} )
+		} )
+	} )
+}
+
+/**
+ * Publish memory.
+ */
+const publishMemory = () => {
+	const profileBody = document.querySelector( '.profile-body' )
+
+	if( ! profileBody ) return
+
+	profileBody.addEventListener( 'click', e => {
+		const target = e.target
+
+		if( ! target.className || ! target.classList.contains( 'memory-preview-publish' ) ) return
+
+		if( checkAjaxWorkingStatus() ) return
+
+		const
+			memory		= target.closest( '.memory-preview' ),
+			memoryId	= memory.dataset.id || '',
+			formData	= new FormData()
+
+		formData.append( 'action', 'ih_ajax_publish_profile_memory' )
+		formData.append( 'id', memoryId )
+		setAjaxWorkingStatus( true )
+
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						showNotification( res.data.msg )
+						memory.insertAdjacentHTML( 'afterend', res.data.memory )
+						memory.remove()
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
 		} )
 	} )
 }

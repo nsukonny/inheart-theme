@@ -137,7 +137,7 @@ function ih_ajax_add_person_memory(): void
 	$agreement		= ih_clean( $_POST['agreement'] );
 
 	// If data is not set - send error.
-	if( ! $photo || ! $memory_page_id || ! $fullname || ! $role || ! $memory || ! $agreement )
+	if( ! $memory_page_id || ! $fullname || ! $role || ! $memory || ! $agreement )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$post_data = [
@@ -150,10 +150,12 @@ function ih_ajax_add_person_memory(): void
 
 	if( is_wp_error( $post_id ) ) wp_send_json_error( ['msg' => __( 'Не вдалося створити спогад', 'inheart' )] );
 
-	update_field( 'memory_page', $fullname, $memory_page_id );
+	update_field( 'memory_page', $memory_page_id, $post_id );
 	update_field( 'full_name', $fullname, $post_id );
 	update_field( 'role', $role, $post_id );
 	update_field( 'content', $memory, $post_id );
+
+	if( ! $photo || $photo['size'] === 0 ) wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
 	$max_image_size         = 50_000_000;
@@ -226,7 +228,7 @@ function ih_ajax_load_profile_memories(): void
 		while( $memories_query->have_posts() ){
 			$memories_query->the_post();
 			$memories .= ih_load_template_part(
-				'template-parts/add-new-memories/preview',
+				'components/cards/memory/preview',
 				null,
 				['id' => get_the_ID(), 'type' => $type]
 			);
@@ -242,5 +244,33 @@ function ih_ajax_load_profile_memories(): void
 		['id' => $page_id, 'type' => $type]
 	);
 	wp_send_json_success( ['memories' => $memories, 'no-memories' => 1] );
+}
+
+add_action( 'wp_ajax_ih_ajax_publish_profile_memory', 'ih_ajax_publish_profile_memory' );
+/**
+ * Publish memory.
+ *
+ * @return void
+ */
+function ih_ajax_publish_profile_memory(): void
+{
+	$id = ih_clean( $_POST['id'] );
+
+	if( ! $id ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$current_user_id	= get_current_user_id();
+	$memory_page_id		= get_field( 'memory_page', $id );
+	$author_id			= ( int ) get_post_field ( 'post_author', $memory_page_id );
+
+	// Current User is not an author of this Memory page - exit.
+	if( $current_user_id !== $author_id )
+		wp_send_json_error( ['msg' => __( "Ви не автор цієї сторінки пам'яті", 'inheart' )] );
+
+	wp_publish_post( $id );
+	$memory = ih_load_template_part( 'components/cards/memory/preview', null, ['id' => $id] );
+	wp_send_json_success( [
+		'msg'		=> __( 'Спогад успішно опубліковано!', 'inheart' ),
+		'memory'	=> $memory
+	] );
 }
 

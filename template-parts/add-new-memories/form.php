@@ -27,7 +27,6 @@ $full_name = "{$current_user['first_name'][0]} {$current_user['last_name'][0]}";
 				placeholder="<?php _e( "Повне ім’я", 'inheart' ) ?>"
 				autocomplete="name"
                 value="<?php echo esc_attr( $full_name ) ?>"
-                disabled
 				required
 			/>
 			<span class="hint"></span>

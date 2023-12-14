@@ -20,7 +20,7 @@ $role			= get_field( 'role', $id );
 $content		= get_field( 'content', $id );
 ?>
 
-<div class="memory-preview">
+<div class="memory-preview" data-id="<?php echo esc_attr( $id ) ?>">
     <div class="memory-preview-top flex flex-wrap justify-between align-center">
         <div class="memory-preview-page flex align-center">
             <?php
@@ -35,27 +35,40 @@ $content		= get_field( 'content', $id );
 
         <div class="memory-preview-actions flex align-center">
             <?php
-			if( $status === 'publish' && ! $is_rejected )
-				echo '<button class="btn">' . __( 'Спогад опубліковано', 'inheart' ) . '</button>';
-
 			if( $type === 'others' ){
-				if( $is_rejected ){
-					echo '<button class="btn">' . esc_html__( 'Відмовлено в публікації', 'inheart' ) . '</button>
-					<button class="btn lg primary">' . esc_html__( "Додати на сторінку пам'яті", 'inheart' ) . '</button>';
-				}elseif( $status === 'pending' ){
-					echo '<button class="btn lg primary">' . esc_html__( "Додати на сторінку пам'яті", 'inheart' ) . '</button>';
+				if( $status === 'publish' && ! $is_rejected )
+					echo '<span class="button info">' . __( 'Спогад опубліковано', 'inheart' ) . '</span>';
+
+				if( $status === 'pending' ){
+					?>
+					<button class="button lg primary memory-preview-publish">
+						<?php _e( "Додати на сторінку пам'яті", 'inheart' ) ?>
+					</button>
+					<?php
 				}
+				?>
+				<button class="btn icon delete">
+					<img src="<?php echo THEME_URI ?>/static/img/delete.svg" alt="delete"/>
+				</button>
+				<?php
 			}else{
+				if( $status === 'publish' && ! $is_rejected )
+					echo '<span class="button info">' . __( 'Спогад опубліковано', 'inheart' ) . '</span>';
+
 				if( $is_rejected )
-					echo '<button class="btn">' . esc_html__( 'Відмовлено в публікації', 'inheart' ) . '</button>';
-				elseif( $status === 'pending' )
-					echo '<button class="btn">' . esc_html__( 'На розгляді', 'inheart' ) . '</button>';
+					echo '<button class="button">' . esc_html__( 'Відмовлено в публікації', 'inheart' ) . '</button>';
+				elseif( $status === 'pending' ){
+					?>
+					<button class="button no-events">
+						<?php _e( 'На модерації', 'inheart' ) ?>
+					</button>
+					<button class="btn icon delete">
+						<img src="<?php echo THEME_URI ?>/static/img/delete.svg" alt="delete"/>
+					</button>
+					<?php
+				}
 			}
             ?>
-
-            <button class="btn icon delete">
-                <img src="<?php echo THEME_URI ?>/static/img/delete.svg" alt="delete"/>
-            </button>
         </div>
     </div>
 

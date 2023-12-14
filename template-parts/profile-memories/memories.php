@@ -35,7 +35,7 @@ if( $memories_query->have_posts() ){
     while( $memories_query->have_posts() ){
         $memories_query->the_post();
         get_template_part(
-			'template-parts/add-new-memories/preview',
+			'components/cards/memory/preview',
 			null,
 			['id' => get_the_ID(), 'type' => 'others']
 		);

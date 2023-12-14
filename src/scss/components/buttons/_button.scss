@@ -48,4 +48,9 @@
 			color: inherit
 		}
 	}
+
+	&.no-events {
+		color: $text-secondary;
+		pointer-events: none
+	}
 }
