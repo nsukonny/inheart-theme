@@ -1,0 +1,28 @@
+.button.button-icon {
+	padding: 7px;
+	border: 1px solid;
+	border-radius: $rad-switch;
+
+	img, svg {
+		display: block;
+		width: 20px;
+		height: 20px;
+		color: inherit;
+		pointer-events: none
+	}
+
+	&.md {
+		padding: 9px;
+		border-radius: $rad-btn
+	}
+
+	&.lg {
+		padding: 13px;
+		border-radius: $rad-btn
+	}
+
+	&.danger {
+		color: $icon-danger;
+		border-color: $border-danger
+	}
+}

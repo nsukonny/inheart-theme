@@ -42,8 +42,29 @@ if( $memories_query->have_posts() ){
     }
     wp_reset_query();
 
-    echo '</section>';
+	echo '</section>';
 }else{
     get_template_part( 'components/profile/memories/no-memories', null, ['type' => 'others'] );
 }
+
+get_template_part(
+	'components/popup/popup',
+	null,
+	[
+		'text'		=> __( 'Дійсно видалити спогад?', 'inheart' ),
+		'class'		=> 'delete',
+		'label_yes'	=> __( 'Видалити', 'inheart' ),
+		'label_no'	=> __( 'Ні', 'inheart' )
+	]
+);
+get_template_part(
+	'components/popup/popup',
+	null,
+	[
+		'text'		=> __( 'Дійсно опубліковати спогад?', 'inheart' ),
+		'class'		=> 'publish',
+		'label_yes'	=> __( 'Опубліковати', 'inheart' ),
+		'label_no'	=> __( 'Ні', 'inheart' )
+	]
+);
 

@@ -6,11 +6,14 @@
  * @package WordPress
  * @subpackage inheart
  */
+
+$id		= $args['id'] ?? null;
+$type	= $args['type'] ?? null;
 ?>
 
-<section class="profile-memories none">
-	<div class="profile-memories-inner flex direction-column align-center">
-		<?php get_template_part( 'components/profile/memories/no-memories', 'body' ) ?>
+<section class="profile-memories-list none">
+	<div class="profile-memories-list-inner flex direction-column align-center">
+		<?php get_template_part( 'components/profile/memories/no-memories', 'body', ['id' => $id, 'type' => $type] ) ?>
 	</div>
 </section>
 

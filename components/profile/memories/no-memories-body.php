@@ -10,7 +10,7 @@
 $id		= $args['id'] ?? get_the_ID();
 $img	= get_field( 'no_memory_pages_img', $id );
 $title	= ( ! isset( $args['type'] ) || $args['type'] === 'others' )
-		? __( 'У вас ще немае спогадiв', 'inheart' )
+		? __( 'У вас ще немає спогадiв', 'inheart' )
 		: __( 'Ви поки що не залишили спогадів', 'inheart' );
 
 if( $img )

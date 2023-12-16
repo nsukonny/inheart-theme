@@ -1,5 +1,6 @@
 @import '../components/vars';
 @import '../components/memory/preview';
+@import '../components/popup/popup';
 
 .page-template-profile-memories {
 	background-color: $a-bit-blue-white;
@@ -8,21 +9,47 @@
 	.wrapper {
 		overflow: visible
 	}
-
-	.profile-memories.none {
-		height: auto;
-		margin-top: 100px;
-
-		@media (min-width: $lg) {
-			margin-top: 223px
-		}
-	}
 }
 
 .profile-memories {
 	height: 100%;
 
 	&-list {
-		margin-top: 32px
+		margin-top: 32px;
+
+		&.none {
+			height: auto;
+			margin-top: 100px;
+
+			@media (min-width: $lg) {
+				margin-top: 223px
+			}
+
+			.profile-memories-title {
+				margin-bottom: 100px;
+
+				@media (min-width: $lg) {
+					margin-bottom: 223px
+				}
+			}
+
+			.profile-memories-list-inner {
+				margin-bottom: 100px;
+
+				@media (min-width: $lg) {
+					margin-bottom: 223px
+				}
+
+				.profile-memories-title {
+					font-size: $fs-xl;
+					margin: 34px 0 36px;
+					text-align: center;
+
+					@media (min-width: $lg) {
+						font-size: 38px
+					}
+				}
+			}
+		}
 	}
 }

@@ -1,0 +1,28 @@
+.popup-confirm {
+	position: fixed;
+	transform: translate(-90%, 20px);
+	width: 233px;
+	background-color: $bg-primary;
+	box-shadow: $menu-shadow;
+	border-radius: $rad-input;
+	z-index: 999;
+
+	&-text {
+		width: 100%;
+		text-align: center;
+		font-size: $fs-sm-alt;
+		line-height: $lh-tags-special;
+		color: $text-primary;
+		padding: 14px 21px;
+		opacity: 0.8
+	}
+
+	.button-wrap {
+		width: 50%;
+		padding: 8px 8px 4px;
+
+		.button {
+			width: 100%
+		}
+	}
+}

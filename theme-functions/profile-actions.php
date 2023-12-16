@@ -198,7 +198,8 @@ function ih_ajax_load_profile_memories(): void
 	];
 
 	if( $type === 'yours' ){
-		$args['author__in'] = [$current_user_id];
+		$args['author__in']		= [$current_user_id];
+		$args['post_status']	= ['publish', 'pending', 'trash'];
 	}else{
 		$memory_pages = get_posts( [
 			'post_type'     => 'memory_page',
@@ -238,12 +239,12 @@ function ih_ajax_load_profile_memories(): void
 		wp_send_json_success( ['memories' => $memories] );
 	}
 
-	$memories = ih_load_template_part(
+	$no_memories = ih_load_template_part(
 		'components/profile/memories/no-memories',
-		'body',
+		null,
 		['id' => $page_id, 'type' => $type]
 	);
-	wp_send_json_success( ['memories' => $memories, 'no-memories' => 1] );
+	wp_send_json_success( ['no-memories' => $no_memories] );
 }
 
 add_action( 'wp_ajax_ih_ajax_publish_profile_memory', 'ih_ajax_publish_profile_memory' );
@@ -272,5 +273,41 @@ function ih_ajax_publish_profile_memory(): void
 		'msg'		=> __( 'Спогад успішно опубліковано!', 'inheart' ),
 		'memory'	=> $memory
 	] );
+}
+
+add_action( 'wp_ajax_ih_ajax_delete_profile_memory', 'ih_ajax_delete_profile_memory' );
+/**
+ * Delete memory.
+ *
+ * @return void
+ */
+function ih_ajax_delete_profile_memory(): void
+{
+	$id		= ih_clean( $_POST['id'] );
+	$type	= ih_clean( $_POST['id'] );
+
+	if( ! $id || ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$memory_author_id		= ( int ) get_post_field( 'post_author', $id );
+	$current_user_id		= get_current_user_id();
+	$memory_page_id			= get_field( 'memory_page', $id );
+	$memory_page_author_id	= ( int ) get_post_field( 'post_author', $memory_page_id );
+
+	// If User changed his mind and wants to remove his own memory.
+	if( $type === 'yours' ){
+		// Check if he is an author of this memory.
+		if( $current_user_id !== $memory_author_id )
+			wp_send_json_error( ['msg' => __( 'Ви не автор цього спогаду', 'inheart' )] );
+
+		wp_delete_post( $id, true );
+	}else{
+		// If User is the author of the Memory page - let's check it.
+		if( $current_user_id !== $memory_page_author_id )
+			wp_send_json_error( ['msg' => __( "Ви не автор сторінки пам'яті, до якої належить цей спогад", 'inheart' )] );
+
+		wp_trash_post( $id );	// Move to Trash - we need to show a notification to its author first.
+	}
+
+	wp_send_json_success( ['msg' => __( 'Спогад успішно видалено!', 'inheart' )] );
 }
 
