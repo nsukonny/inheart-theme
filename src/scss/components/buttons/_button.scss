@@ -28,7 +28,9 @@
 	}
 
 	&:hover {
-		background-color: $bg-primary-hover
+		@media (min-width: $xl) {
+			background-color: $bg-primary-hover
+		}
 	}
 
 	&:active {

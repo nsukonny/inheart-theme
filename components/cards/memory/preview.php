@@ -91,7 +91,13 @@ $content		= get_field( 'content', $id );
 
     <div class="memory-preview-body flex direction-column align-center">
         <?php
-        if( has_post_thumbnail( $id ) ) echo '<div class="memory-preview-thumb">' . get_the_post_thumbnail( $id, 'ih-logo' ) . '</div>';
+        if( has_post_thumbnail( $id ) ){
+			?>
+			<div class="memory-preview-thumb" data-full="<?php echo get_the_post_thumbnail_url( $id, 'full' ) ?>">
+				<?php echo get_the_post_thumbnail( $id, 'ih-logo' ) ?>
+			</div>
+			<?php
+        }
 
         if( $content ) echo '<div class="memory-preview-text">' . $content . '</div>';
 

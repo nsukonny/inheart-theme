@@ -21,6 +21,16 @@
 		border-radius: $rad-btn
 	}
 
+	&.round {
+		padding: 6px;
+		border-radius: 50%;
+		border: none;
+
+		&.danger {
+			background-color: $bg-danger-subdued
+		}
+	}
+
 	&.danger {
 		color: $icon-danger;
 		border-color: $border-danger

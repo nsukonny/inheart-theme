@@ -4,6 +4,7 @@ import {
 	checkAjaxWorkingStatus,
 	ihAjaxRequest,
 	setAjaxWorkingStatus,
+	showImagePopup,
 	showNotification,
 	switcherLogic
 } from '../common/global'
@@ -17,6 +18,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	publishMemory()
 	deleteMemory()
 	memoryRejectedSubmit()
+	showImagePopupOnClick()
 } )
 
 /**
@@ -275,5 +277,26 @@ const memoryRejectedSubmit = () => {
 
 			setAjaxWorkingStatus( false )
 		} )
+	} )
+}
+
+/**
+ * Show memory's large image in popup on click.
+ */
+const showImagePopupOnClick = () => {
+	const profileBody = document.querySelector( '.profile-body' )
+
+	if( ! profileBody ) return
+
+	profileBody.addEventListener( 'click', e => {
+		const target = e.target
+
+		if(
+			! target.className ||
+			! target.classList.contains( 'wp-post-image' ) ||
+			! target.closest( '.memory-preview-thumb' )
+		) return
+
+		showImagePopup( target )
 	} )
 }

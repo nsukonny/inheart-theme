@@ -75,6 +75,10 @@ textarea {
 		input[type='email'] {
 			padding-left: 48px
 		}
+
+		&.file .label-text {
+			padding-left: 24px
+		}
 	}
 
 	&.icon-tail {
@@ -84,6 +88,10 @@ textarea {
 		input[type='url'],
 		input[type='email'] {
 			padding-right: 48px
+		}
+
+		&.file .label-text {
+			padding-right: 24px
 		}
 	}
 }

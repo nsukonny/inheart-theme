@@ -104,6 +104,10 @@
 					order: 1;
 					padding-right: 0
 				}
+
+				.button-return {
+					margin-bottom: 4px
+				}
 			}
 
 			.btn {
@@ -292,18 +296,6 @@
 			justify-content: space-between;
 			align-items: center
 		}
-
-		&-return {
-			font-size: 13px;
-			line-height: $lh-fs-13;
-			color: $text-accent-on-color;
-			cursor: pointer;
-			@include hover-opacity;
-
-			@media (min-width: $xl) {
-				display: none
-			}
-		}
 	}
 
 	&-footer {
@@ -324,7 +316,7 @@
 	display: flex;
 	padding: 100px $container-padding;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -487,5 +479,9 @@
 			color: $very-dark-green;
 			margin-left: auto
 		}
+	}
+
+	&-image img {
+		max-width: 80%
 	}
 }

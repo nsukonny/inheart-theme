@@ -95,6 +95,7 @@ label.label {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		width: auto;
 
 		@media (min-width: $md) {
 			flex-direction: row;
@@ -103,16 +104,23 @@ label.label {
 
 		.button.outlined {
 			width: 100%;
-			margin-bottom: 2px;
 
 			@media (min-width: $md) {
-				width: auto;
-				margin: 0 22px 0 0
+				width: auto
 			}
 
 			&.added {
 				display: none
 			}
+		}
+
+		.input-icon {
+			width: 16px;
+			height: 16px
+		}
+
+		.label-text {
+			padding: 0
 		}
 
 		.filename {
@@ -129,6 +137,27 @@ label.label {
 				display: inline-flex
 			}
 		}
+	}
+}
+
+.label-file-wrap-result {
+	position: relative;
+	width: 170px;
+	height: 110px;
+
+	img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: $rad-input
+	}
+
+	.button {
+		position: absolute;
+		top: 50%;
+		left: 100%;
+		transform: translate(11px, -50%)
 	}
 }
 

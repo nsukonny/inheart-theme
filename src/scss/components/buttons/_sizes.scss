@@ -13,4 +13,10 @@
 		min-height: 48px;
 		padding: 15px 20px 16px
 	}
+
+	&.min-width {
+		@media (min-width: $md) {
+			min-width: 226px
+		}
+	}
 }

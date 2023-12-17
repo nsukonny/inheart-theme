@@ -1,3 +1,5 @@
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+
 export const
 	ajaxUrl				= window.wpData.ajaxUrl,
 	TRANSITION_DURATION	= 350,
@@ -360,5 +362,37 @@ export const switcherLogic = () => {
 				target.classList.add( 'active' )
 			}
 		} )
+	} )
+}
+
+/**
+ * Append image popup.
+ *
+ * @param image
+ */
+export const showImagePopup = image => {
+	if( ! image ) return
+
+	const
+		popup		= document.createElement( 'div' ),
+		imageFull	= document.createElement( 'img' ),
+		src			= image.closest( '.memory-preview-thumb' ).dataset.full || ''
+
+	if( ! src ) return
+
+	imageFull.src = src
+	popup.classList.add( 'popup', 'popup-image' )
+	popup.appendChild( imageFull )
+	document.body.appendChild( popup )
+	disableBodyScroll( popup, { reserveScrollBarGap: true } )
+
+	// Close popup.
+	popup.addEventListener( 'click', e => {
+		const target = e.target
+
+		if( target.className && target.classList.contains( 'popup' ) ){
+			enableBodyScroll( popup )
+			popup.remove()
+		}
 	} )
 }

@@ -1,0 +1,19 @@
+.button.button-return {
+	color: $text-accent-on-color;
+	cursor: pointer;
+	padding: 0;
+	border-radius: 0;
+
+	svg {
+		width: 24px;
+		height: 24px
+	}
+
+	span {
+		font-family: $ff;
+		font-size: $fs-xs-alt;
+		line-height: $lh-fs-13;
+		font-weight: $fw-regular;
+		padding: 3px 0
+	}
+}

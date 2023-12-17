@@ -5,7 +5,9 @@
 	padding: 7px 16px 8px;
 
 	&:hover {
-		background-color: $bg-primary-on-color-hover
+		@media (min-width: $xl) {
+			background-color: $bg-primary-on-color-hover
+		}
 	}
 
 	&:active {

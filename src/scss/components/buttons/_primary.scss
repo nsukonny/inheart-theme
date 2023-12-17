@@ -2,7 +2,9 @@
 	background-color: $accent-on-color;
 
 	&:hover {
-		background-color: $accent-on-color-hover
+		@media (min-width: $xl) {
+			background-color: $accent-on-color-hover
+		}
 	}
 
 	&:active {

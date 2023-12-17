@@ -11,6 +11,7 @@ if( ! $id = $args['id'] ?? null ) return;
 
 $only_front		= $args['front'] ?? null;
 $date_format	= $args['date_format'] ?? 'dots';
+$mobile_dates	= $args['mobile_dates'] ?? null;
 $theme			= get_field( 'theme', $id );
 $firstname		= get_field( 'first_name', $id );
 $middlename		= get_field( 'middle_name', $id );
@@ -33,7 +34,23 @@ if( ! $firstname && ! $lastname ) return;
 				</div>
 			</div>
 
-			<div class="memory-card-dates flex align-center justify-center">
+			<?php
+			if( $mobile_dates ){
+				?>
+				<div class="memory-card-dates flex align-center justify-center hide-after-lg">
+					<div class="memory-card-date born">
+						<?php echo ih_convert_input_date( get_field( 'born_at', $id ), 'dots', $id ) ?>
+					</div>
+					<span>–</span>
+					<div class="memory-card-date died">
+						<?php echo ih_convert_input_date( get_field( 'died_at', $id ), 'dots', $id ) ?>
+					</div>
+				</div>
+				<?php
+			}
+			?>
+
+			<div class="memory-card-dates flex align-center justify-center<?php echo ( $mobile_dates ? ' hide-before-lg' : '' ) ?>">
 				<div class="memory-card-date born"><?php echo esc_attr( $born_at ) ?></div>
 				<span>–</span>
 				<div class="memory-card-date died"><?php echo esc_attr( $died_at ) ?></div>

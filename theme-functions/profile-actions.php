@@ -306,6 +306,11 @@ function ih_ajax_delete_profile_memory(): void
 			wp_send_json_error( ['msg' => __( 'Ви не автор цього спогаду', 'inheart' )] );
 
 		if( get_post_status( $id ) === 'pending' ){
+			$images = get_attached_media( 'image', $id );
+
+			if( ! empty( $images ) )
+				foreach ( $images as $image ) wp_delete_attachment( $image->ID, true );
+
 			wp_delete_post( $id, true );
 			wp_send_json_success( ['msg' => __( 'Ваш спогад видалено', 'inheart' )] );
 		}

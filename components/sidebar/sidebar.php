@@ -23,12 +23,12 @@ $logo = get_field( 'header_logo_light', 'option' );
 			}
 			?>
 
-			<div class="sidebar-header-return flex align-center">
+			<button class="button button-return flex align-center sidebar-header-return hide-after-xl" type="button">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 					<path d="M11.828 11.9992L14.657 14.8272L13.243 16.2422L9 11.9992L13.243 7.75619L14.657 9.17119L11.828 11.9992Z" fill="currentColor"/>
 				</svg>
 				<span><?php _e( 'Назад', 'inheart' ) ?></span>
-			</div>
+			</button>
 		</header>
 
 		<?php get_template_part( 'components/menu/main', null, ['type' => 'profile_sidebar_menu', 'class' => 'sidebar-nav'] ) ?>

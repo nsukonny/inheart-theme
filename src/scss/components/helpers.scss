@@ -135,38 +135,57 @@
 .hide-after {
 	&-md {
 		@media (min-width: $md) {
-			display: none
+			display: none !important
 		}
 	}
 
 	&-lg {
 		@media (min-width: $lg) {
-			display: none
+			display: none !important
+		}
+	}
+
+	&-xl {
+		@media (min-width: $xl) {
+			display: none !important
 		}
 	}
 }
 
 .hide-before {
 	&-md {
-		display: none;
+		display: none !important;
 
 		@media (min-width: $md) {
-			display: block;
+			display: block !important;
 
 			&.flex {
-				display: flex
+				display: flex !important
 			}
 		}
 	}
 
 	&-lg {
-		display: none;
+		display: none !important;
 
 		@media (min-width: $lg) {
-			display: block;
+			display: block !important;
 
 			&.flex {
-				display: flex
+				display: flex !important
+			}
+		}
+	}
+
+
+	&-xl {
+		display: none !important;
+
+		@media (min-width: $xl) {
+			display: block !important;
+
+			&.flex {
+				display: flex !important
 			}
 		}
 	}
@@ -174,4 +193,9 @@
 
 .overflow-hidden {
 	overflow: hidden !important
+}
+
+.loading {
+	opacity: 0.5;
+	pointer-events: none
 }
