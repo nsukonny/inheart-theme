@@ -16,6 +16,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	switchMemories()
 	publishMemory()
 	deleteMemory()
+	memoryRejectedSubmit()
 } )
 
 /**
@@ -205,6 +206,8 @@ const deleteMemory = () => {
 						case true:
 							showNotification( res.data.msg )
 							memory.remove()
+
+							if( ! profileBody.querySelectorAll( '.memory-preview' ).length ) window.location.reload()
 							break
 
 						case false:
@@ -218,6 +221,59 @@ const deleteMemory = () => {
 
 			popupConfirmClone.remove()
 			document.body.classList.remove( 'overflow-hidden' )
+		} )
+	} )
+}
+
+/**
+ * Your memory has been rejected - click OK.
+ */
+const memoryRejectedSubmit = () => {
+	const profileBody = document.querySelector( '.profile-body' )
+
+	if( ! profileBody ) return
+
+	profileBody.addEventListener( 'click', e => {
+		const target = e.target
+
+		if(
+			! target.className ||
+			! target.classList.contains( 'memory-preview-rejected-submit' ) ||
+			! target.closest( '.memory-preview-rejected-submit' )
+		) return
+
+		if( checkAjaxWorkingStatus() ) return
+
+		const
+			memory		= target.closest( '.memory-preview' ),
+			memoryId	= memory.dataset.id || '',
+			type		= target.dataset.type || '',
+			formData	= new FormData()
+
+		if( ! type ) showNotification( 'Невідома помилка. Перезавантажте сторінку та спробуйте ще раз.', 'error' )
+
+		formData.append( 'action', 'ih_ajax_delete_profile_memory' )
+		formData.append( 'id', memoryId )
+		formData.append( 'type', type )
+		setAjaxWorkingStatus( true )
+
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						showNotification( res.data.msg )
+						memory.remove()
+
+						if( ! profileBody.querySelectorAll( '.memory-preview' ).length ) window.location.reload()
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
 		} )
 	} )
 }

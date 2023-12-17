@@ -22,11 +22,17 @@ $memories_query = new WP_Query( [
 	'post_type'     => 'memory',
 	'post_status'   => 'any',
 	'posts_per_page'=> -1,
-    'meta_query'    => [[
-		'key'       => 'memory_page',
-		'value'     => $memory_pages_ids,
-		'compare'   => 'IN'
-    ]]
+    'meta_query'    => [
+		[
+			'key'		=> 'memory_page',
+			'value'		=> $memory_pages_ids,
+			'compare'	=> 'IN'
+		],
+		[
+			'key'		=> 'is_rejected',
+			'compare'	=> 'NOT EXISTS'
+		]
+	]
 ] );
 
 if( $memories_query->have_posts() ){

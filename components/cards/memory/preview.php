@@ -62,9 +62,12 @@ $content		= get_field( 'content', $id );
 				if( $status === 'publish' && ! $is_rejected )
 					echo '<span class="button info">' . __( 'Спогад опубліковано', 'inheart' ) . '</span>';
 
-				if( $is_rejected )
-					echo '<button class="button">' . esc_html__( 'Відмовлено в публікації', 'inheart' ) . '</button>';
-				elseif( $status === 'pending' ){
+				if( $is_rejected ){
+					?>
+					<button class="button negative no-events"><?php esc_html_e( 'Відмовлено в публікації', 'inheart' ) ?></button>
+					<button class="button md outlined memory-preview-rejected-submit" data-type="yours">OK</button>
+					<?php
+				}elseif( $status === 'pending' ){
 					?>
 					<button class="button no-events">
 						<?php _e( 'На модерації', 'inheart' ) ?>
@@ -80,7 +83,7 @@ $content		= get_field( 'content', $id );
 						</svg>
 					</button>
 					<?php
-				}
+				}elseif( $status === 'trash' ){}
 			}
             ?>
         </div>
