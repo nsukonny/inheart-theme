@@ -155,7 +155,14 @@ function ih_ajax_add_person_memory(): void
 	update_field( 'role', $role, $post_id );
 	update_field( 'content', $memory, $post_id );
 
-	if( ! $photo || $photo['size'] === 0 ) wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+	if( ! $photo || $photo['size'] === 0 ){
+		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+	}
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
 	$max_image_size         = 50_000_000;
@@ -174,6 +181,27 @@ function ih_ajax_add_person_memory(): void
 		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
 
 	set_post_thumbnail( $post_id, $attach_id );
+
+	$subject		= get_field( 'memory_created_subject', 'option' );
+	$body			= get_field( 'memory_created_body', 'option' );
+	$memory_author	= wp_get_current_user();
+	$author_email	= $memory_author->user_email;
+	$memory_wrap	= '<div style="width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;">' .
+		( has_post_thumbnail( $post_id ) ?
+		'<img
+			src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
+			style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
+			alt=""
+		/>' : '' ) .
+		'<div style="margin-bottom: 20px; opacity: 0.8;">' . esc_html( $memory ) . '</div>' .
+		'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $fullname ) . '</div>' .
+		'<div style="color: #7E969B">' . esc_html( $role ) . '</div>' .
+	'</div>';
+	$body = str_replace( '[memory]', $memory_wrap, $body );
+
+	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+	wp_mail( $author_email, $subject, $body );
+	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 
 	wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
 }
