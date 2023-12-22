@@ -13,6 +13,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	expandToFull()
 	editMemory()
+	// novaPoshtaAPI()
 } )
 
 /**
@@ -59,44 +60,53 @@ const editMemory = () => {
 }
 
 /**
- * Expand memory page to full button click.
+ * Expand memory page to full - button click.
  */
-export const expandToFull = () => {
+const expandToFull = () => {
 	const
-		popup	= document.querySelector( '.expand-to-full-popup' ),
-		buttons	= document.querySelectorAll( '.expand-to-full' )
+		memoriesSection	= document.querySelector( '.profile-body' ),
+		expandSection	= document.querySelector( '.expand-page' ),
+		buttons			= document.querySelectorAll( '.expand-to-full' ),
+		back			= document.querySelector( '.profile-breadcrumbs-back' )
 
-	if( ! popup || ! buttons.length  ) return
+	if( ! memoriesSection || ! expandSection || ! buttons.length  ) return
 
 	buttons.forEach( btn => {
 		btn.addEventListener( 'click', () => {
 			const
-				card		= btn.closest( '.memory-card' ),
-				thumb		= card.querySelector( '.page-created-thumb-img' ).innerHTML,
-				firstName	= card.querySelector( '.page-created-firstname' ).innerHTML,
-				lastName	= card.querySelector( '.page-created-lastname span' ).innerHTML,
-				dates		= card.querySelector( '.page-created-dates' ).innerHTML
+				card			= btn.closest( '.memory-card' ),
+				memoryPageId	= card.dataset.id,
+				thumb			= card.querySelector( '.memory-card-thumb-img' ).innerHTML,
+				firstName		= card.querySelector( '.memory-card-firstname' ).innerHTML,
+				lastName		= card.querySelector( '.memory-card-lastname' ).innerHTML
 
-			setTargetElement( '#expand-to-full-popup' )
-			disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
-			popup.querySelector( '.popup-header-thumb' ).innerHTML	= thumb
-			popup.querySelector( '.popup-name-first' ).innerHTML	= firstName
-			popup.querySelector( '.popup-name-last' ).innerHTML		= lastName
-			popup.querySelector( '.popup-dates' ).innerHTML			= dates
-			popup.classList.remove( 'hidden' )
+			memoriesSection.classList.add( 'hidden' )
+			expandSection.classList.remove( 'hidden' )
 		} )
 	} )
 
-	// Close popup.
-	popup.addEventListener( 'click', e => {
-		const target = e.target
+	if( back ){
+		back.addEventListener( 'click', e => {
+			e.preventDefault()
+			memoriesSection.classList.remove( 'hidden' )
+			expandSection.classList.add( 'hidden' )
+		} )
+	}
+}
 
-		if(
-			target.className &&
-			( target.classList.contains( 'popup' ) || target.classList.contains( 'popup-close' ) )
-		){
-			popup.classList.add( 'hidden' )
-			enableBodyScroll( getTargetElement() )
-		}
+const novaPoshtaAPI = () => {
+	fetch( 'https://api.novaposhta.ua/v2.0/json/', {
+		method: 'POST',
+		body: JSON.stringify( {
+			apiKey: "1c1680d527abb8098fd0ffbf1345d5ab",
+			modelName: "Address",
+			calledMethod: "getSettlements",
+			methodProperties: {
+				FindByString: '',
+				Warehouse: 1
+			}
+		} )
 	} )
+		.then( json => json.json() )
+		.then( res => console.log( res ) )
 }

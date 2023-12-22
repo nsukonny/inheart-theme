@@ -22,7 +22,7 @@ $died_at		= ih_convert_input_date( get_field( 'died_at', $id ), $date_format, $i
 if( ! $firstname && ! $lastname ) return;
 ?>
 
-<div class="memory-card <?php echo esc_attr( $theme ) ?>">
+<div class="memory-card <?php echo esc_attr( $theme ) ?>" data-id="<?php echo esc_attr( $id ) ?>">
 	<div class="memory-card-inner">
 		<div class="memory-card-top flex direction-column align-center">
 			<?php get_template_part( 'components/cards/memory-page/thumb', null, ['id' => $id] ) ?>

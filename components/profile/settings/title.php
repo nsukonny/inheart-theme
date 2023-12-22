@@ -1,20 +1,16 @@
 <?php
 
 /**
- * Profile memory pages.
+ * Profile settings.
  * Title part.
  *
  * @package WordPress
  * @subpackage inheart
  */
-
-if( ! $title = get_field( 'memory_pages_title' ) ?: null ) return;
-
-$hide_button = $args['hide_button'] ?? '';
 ?>
 
 <h1 class="profile-memories-title flex flex-wrap justify-between align-center">
-	<span class="profile-memories-title-text"><?php echo esc_html( $title ) ?></span>
+	<span class="profile-memories-title-text"><?php _e( 'Налаштування', 'inheart' ) ?></span>
 
 	<span class="profile-memories-title-buttons flex flex-wrap align-center justify-between">
 		<button class="menu-button profile-menu-button flex align-center hide-after-xl">
@@ -26,15 +22,9 @@ $hide_button = $args['hide_button'] ?? '';
 			<span><?php _e( 'Меню', 'inheart' ) ?></span>
 		</button>
 
-		<?php
-		if( ! $hide_button ){
-			?>
-			<a class="button primary lg" href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>">
-				<?php _e( "Створити сторінку пам'яті", 'inheart' ) ?>
-			</a>
-			<?php
-		}
-		?>
+		<button class="btn lg primary save-changes" disabled>
+			<?php _e( 'Зберегти', 'inheart' ) ?>
+		</button>
 	</span>
 </h1>
 

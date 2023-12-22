@@ -30,7 +30,7 @@ $memory_pages	= get_posts( [
 
 	if( ! empty( $memory_pages ) ){
 		get_template_part( 'template-parts/profile/memory-pages', 'exist', [ 'pages' => $memory_pages ] );
-		get_template_part( 'template-parts/profile/expand-to-full-popup' );
+		get_template_part( 'template-parts/profile/expand-to-full' );
 	}else{
 		get_template_part( 'template-parts/profile/memory-pages', 'none' );
 	}

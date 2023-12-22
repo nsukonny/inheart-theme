@@ -20,16 +20,9 @@ wp_enqueue_script( 'profile-settings', THEME_URI . '/static/js/profile-settings/
 	<?php get_template_part( 'components/sidebar/sidebar' ) ?>
 
 	<div class="profile-body">
-		<h1 class="profile-memories-title flex flex-wrap justify-between align-center">
-			<?php esc_html_e( 'Налаштування', 'inheart' ) ?>
-			<button class="btn lg primary save-changes" disabled>
-				<?php esc_html_e( 'Зберегти', 'inheart' ) ?>
-			</button>
-		</h1>
-
 		<?php
+		get_template_part( 'components/profile/settings/title' );
 		get_template_part( 'template-parts/profile-settings/form' );
-		get_template_part( 'template-parts/profile-settings/plan' );
 		?>
 	</div>
 </main>

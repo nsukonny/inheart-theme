@@ -13,16 +13,18 @@ document.addEventListener( 'DOMContentLoaded', () => {
 } )
 
 const showSidebar = () => {
-	const btn = document.querySelector( '.menu-button' )
+	const buttons = document.querySelectorAll( '.menu-button' )
 
-	if( ! btn || ! sidebar ) return
+	if( ! buttons.length || ! sidebar ) return
 
-	btn.addEventListener( 'click', e => {
-		e.preventDefault()
+	buttons.forEach( btn => {
+		btn.addEventListener( 'click', e => {
+			e.preventDefault()
 
-		sidebar.classList.add( 'show' )
-		setTargetElement( '#sidebar-inner' )
-		disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
+			sidebar.classList.add( 'show' )
+			setTargetElement( '#sidebar-inner' )
+			disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
+		} )
 	} )
 }
 
