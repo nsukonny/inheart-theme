@@ -22,6 +22,7 @@ $memory_created	= get_field( 'memory_created' );
 			'label'			=> __( "Ваше ім’я", 'inheart' ),
 			'label_class'	=> 'full',
 			'placeholder'	=> __( "Повне ім’я", 'inheart' ),
+			'value'			=> $full_name,
 			'autocomplete'	=> 'name',
 			'required'		=> 1
 		] );
