@@ -193,7 +193,7 @@ function ih_ajax_add_person_memory(): void
 			style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
 			alt=""
 		/>' : '' ) .
-		'<div style="margin-bottom: 20px; opacity: 0.8;">' . esc_html( $memory ) . '</div>' .
+		'<div style="margin-bottom: 20px; opacity: 0.8;">' . $memory . '</div>' .
 		'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $fullname ) . '</div>' .
 		'<div style="color: #7E969B">' . esc_html( $role ) . '</div>' .
 	'</div>';

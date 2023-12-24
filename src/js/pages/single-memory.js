@@ -9,6 +9,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	lightboxGalleryInit()
 	textFollowsTheCursor()
 	showHiddenVideos()
+	readMoreMemory()
 
 	const
 		mapEl	= document.querySelector( '#map' ),
@@ -314,5 +315,28 @@ const initGoogleMap = async ( mapEl, apiKey ) => {
 
 		map.mapTypes.set( 'styled_map', styledMapType )
 		map.setMapTypeId( 'styled_map' )
+	} )
+}
+
+/**
+ * Read more clicks.
+ */
+const readMoreMemory = () => {
+	const readMores = document.querySelectorAll( '.single-memory-memories-excerpt .read-more' )
+
+	if( ! readMores.length ) return
+
+	readMores.forEach( item => {
+		item.addEventListener( 'click', () => {
+			const
+				wrap	= item.closest( '.single-memory-memories-text' ),
+				excerpt	= wrap.querySelector( '.single-memory-memories-excerpt' ),
+				text	= wrap.querySelector( '.single-memory-memories-content' )
+
+			if( ! excerpt || ! text ) return
+
+			excerpt.remove()
+			text.classList.remove( 'hidden' )
+		} )
 	} )
 }
