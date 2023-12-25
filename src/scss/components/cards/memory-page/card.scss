@@ -32,6 +32,7 @@
 	&-fullname {
 		position: relative;
 		@include desktop-title-special;
+		color: $text-primary-on-color;
 		text-align: center;
 		transform: translateY(-5px)
 	}

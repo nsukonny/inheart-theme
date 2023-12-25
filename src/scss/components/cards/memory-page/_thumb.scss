@@ -26,6 +26,7 @@
 		}
 
 		&-img {
+			width: 100%;
 			border-radius: $rad-memory-card-thumb;
 			overflow: hidden
 		}
@@ -39,7 +40,7 @@
 		}
 	}
 
-	&.green .memory-card-thumb::after {
+	&.classic .memory-card-thumb::after {
 		background: $card-overlay-green
 	}
 
