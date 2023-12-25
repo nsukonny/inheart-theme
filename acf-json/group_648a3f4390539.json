@@ -251,6 +251,46 @@
             "toolbar": "full",
             "media_upload": 1,
             "delay": 0
+        },
+        {
+            "key": "field_6589f0729458e",
+            "label": "Тема листа автору сторінки",
+            "name": "memory_created_mp_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Спогад створено",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6589f0d29458f",
+            "label": "Тіло листа автору сторінки",
+            "name": "memory_created_mp_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "You can use these placeholders: [memory]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [
@@ -271,5 +311,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1703281937
+    "modified": 1703538939
 }

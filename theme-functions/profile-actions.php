@@ -162,6 +162,11 @@ function ih_ajax_add_person_memory(): void
 			'fullname'	=> $fullname,
 			'role'		=> $role
 		] );
+		in_memory_created_send_mail_to_mp_author( $post_id, [
+			'memory'	=> $memory,
+			'fullname'	=> $fullname,
+			'role'		=> $role
+		] );
 		wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
 	}
 
@@ -183,6 +188,11 @@ function ih_ajax_add_person_memory(): void
 
 	set_post_thumbnail( $post_id, $attach_id );
 	in_memory_created_send_mail( $post_id, [
+		'memory'	=> $memory,
+		'fullname'	=> $fullname,
+		'role'		=> $role
+	] );
+	in_memory_created_send_mail_to_mp_author( $post_id, [
 		'memory'	=> $memory,
 		'fullname'	=> $fullname,
 		'role'		=> $role
@@ -225,6 +235,46 @@ function in_memory_created_send_mail( int $post_id, array $data ): mixed
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 	$send = wp_mail( $author_email, $subject, $body );
+	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+
+	return $send;
+}
+
+/**
+ * Send email to an author of the Memory Page when new memory is created.
+ *
+ * @param int   $post_id	Created memory ID.
+ * @param array $data
+ * 		@var string $data['memory']
+ * 		@var string $data['fullname']
+ * 		@var string $data['role']
+ * @return bool|mixed
+ */
+function in_memory_created_send_mail_to_mp_author( int $post_id, array $data ): mixed
+{
+	if( ! $post_id ) return false;
+
+	$memory_page	= get_field( 'memory_page', $post_id );
+	$author_id		= ( int ) get_post_field( 'post_author', $memory_page );
+	$email			= get_user_by( 'id', $author_id )->user_email;
+	$subject		= get_field( 'memory_created_mp_subject', 'option' );
+	$body			= get_field( 'memory_created_mp_body', 'option' );
+	$memory_wrap	= '<style>body{background-color: #F7FAFC}</style>' .
+		'<span style="display: block; width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;margin: 0 auto">' .
+			( has_post_thumbnail( $post_id ) ?
+			'<img
+				src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
+				style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
+				alt=""
+			/>' : '' ) .
+			'<span style="display: block; margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</span>' .
+			'<span style="display: block; margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</span>' .
+			'<span style="display: block; color: #7E969B">' . esc_html( $data['role'] ) . '</span>' .
+		'</span>';
+	$body = str_replace( '[memory]', $memory_wrap, $body );
+
+	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+	$send = wp_mail( $email, $subject, $body );
 	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 
 	return $send;
