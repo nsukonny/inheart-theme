@@ -210,16 +210,16 @@ function in_memory_created_send_mail( int $post_id, array $data ): mixed
 	$memory_author	= wp_get_current_user();
 	$author_email	= $memory_author->user_email;
 	$memory_wrap	= '<style>body{background-color: #F7FAFC}</style>' .
-		'<span style="width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;">' .
+		'<span style="display: block; width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;margin: 0 auto">' .
 			( has_post_thumbnail( $post_id ) ?
-				'<img
+			'<img
 				src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
 				style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
 				alt=""
 			/>' : '' ) .
-			'<div style="margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</div>' .
-			'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</div>' .
-			'<div style="color: #7E969B">' . esc_html( $data['role'] ) . '</div>' .
+			'<span style="display: block; margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</span>' .
+			'<span style="display: block; margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</span>' .
+			'<span style="display: block; color: #7E969B">' . esc_html( $data['role'] ) . '</span>' .
 		'</span>';
 	$body = str_replace( '[memory]', $memory_wrap, $body );
 
