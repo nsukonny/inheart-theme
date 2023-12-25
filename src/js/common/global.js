@@ -1,7 +1,11 @@
-export const ajaxUrl	= window.wpData.ajaxUrl,
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+
+export const
+	ajaxUrl				= window.wpData.ajaxUrl,
 	TRANSITION_DURATION	= 350,
 	BYTES_IN_MB			= 1048576,
-	WINDOW_LG			= 992
+	WINDOW_LG			= 992,
+	WINDOW_XL			= 1320
 
 let isAjaxWorking = false,
 	targetElement
@@ -358,5 +362,38 @@ export const switcherLogic = () => {
 				target.classList.add( 'active' )
 			}
 		} )
+	} )
+}
+
+/**
+ * Append image popup.
+ *
+ * @param {HTMLObjectElement}	image
+ * @param {String}				imageWrapSelector
+ */
+export const showImagePopup = ( image, imageWrapSelector ) => {
+	if( ! image ) return
+
+	const
+		popup		= document.createElement( 'div' ),
+		imageFull	= document.createElement( 'img' ),
+		src			= image.closest( imageWrapSelector ).dataset.full || ''
+
+	if( ! src ) return
+
+	imageFull.src = src
+	popup.classList.add( 'popup', 'popup-image' )
+	popup.appendChild( imageFull )
+	document.body.appendChild( popup )
+	disableBodyScroll( popup, { reserveScrollBarGap: true } )
+
+	// Close popup.
+	popup.addEventListener( 'click', e => {
+		const target = e.target
+
+		if( target.className && target.classList.contains( 'popup' ) ){
+			enableBodyScroll( popup )
+			popup.remove()
+		}
 	} )
 }

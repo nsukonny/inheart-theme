@@ -44,7 +44,7 @@ $lang = $args['lang'] ?? 'uk';
 	<?php
 	if( count( $photos ) - 4 > 0 ){
 		?>
-		<div class="media-photos-more flex justify-end">
+		<div class="media-photos-more show-more-posts flex justify-end">
 			<button>
 				<?php printf( pll_translate_string( 'Дивитись ще %d', $lang ), count( $photos ) - 4 ) ?>
 			</button>

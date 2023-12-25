@@ -154,31 +154,6 @@
 		border-radius: 24px
 	}
 
-	&.profile-nav {
-		width: 100%;
-		gap: 10px;
-		justify-content: flex-start;
-		font-size: $fs-md;
-		line-height: $lh-2;
-		color: $light-green;
-		padding: 24px;
-		border: 1px solid rgba(195, 218, 226, 0.24);
-		transition: border-color ease-out $tr;
-
-		svg {
-			display: block;
-			width: 16px
-		}
-	}
-
-	&.tab {
-		width: 135px;
-		height: 44px;
-		border-radius: 8px;
-		background-color: transparent;
-		transition: color ease-out $tr
-	}
-
 	&.icon {
 		width: 48px;
 		height: 48px;
@@ -214,3 +189,5 @@
 		height: auto
 	}
 }
+
+@import 'buttons/buttons';

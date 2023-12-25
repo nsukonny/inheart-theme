@@ -6,24 +6,37 @@
 	background-color: $a-bit-blue-white
 }
 
-.add-new-memories {
-	padding: 50px 0
-}
-
 .add-new-memory {
 	&-form {
 		width: 100%;
-		background-color: $white;
-		padding: 30px;
-		border-radius: $radius-theme;
+		order: 3;
 
-		@media (min-width: $xl) {
-			width: 760px
+		@media (min-width: $md) {
+			width: calc(100% - 312px);
+			padding-right: 60px;
+			order: 2
+		}
+
+		@media (min-width: $lg) {
+			width: calc(100% - 472px);
+			padding-right: 109px
+		}
+
+		&.success {
+			order: 1;
+			margin-bottom: 24px;
+
+			@media (min-width: $md) {
+				margin: auto 0
+			}
 		}
 
 		fieldset {
 			width: 100%;
-			max-width: 383px
+
+			@media (min-width: $md) {
+				max-width: 383px
+			}
 		}
 
 		legend {
@@ -66,7 +79,7 @@
 			resize: none
 		}
 
-		input[type="checkbox"]:checked ~ label::before {
+		input[type='checkbox']:checked ~ label::before {
 			border-color: $dark-yellow
 		}
 
@@ -75,54 +88,150 @@
 			margin-bottom: 30px
 		}
 
-		.btn[type="submit"] {
+		.btn[type='submit'] {
 			width: 100%;
 			max-width: 308px
+		}
+
+		.label-file-wrap-result {
+			margin-bottom: 30px
 		}
 	}
 
 	&-info {
 		width: 100%;
+		pointer-events: none;
+		order: 2;
+		margin-bottom: 24px;
 
-		@media (min-width: $xl) {
-			width: 472px;
-			margin-left: auto
+		@media (min-width: $md) {
+			width: 312px;
+			margin: 0 0 0 auto;
+			order: 3
+		}
+
+		@media (min-width: $lg) {
+			width: 472px
 		}
 
 		.memory-card {
-			width: 100%
+			width: 100%;
+
+			&-inner {
+				@media (min-width: $lg) {
+					border-radius: 34px
+				}
+			}
+
+			&-top {
+				@media (min-width: $lg) {
+					padding: 35px 70px 80px
+				}
+			}
+
+			&-thumb {
+				@media (min-width: $lg) {
+					width: 256px;
+					height: 308px;
+					padding: 35px 32px 25px;
+					transform: translateY(32px);
+
+					&::after {
+						width: 128%;
+						height: 130%
+					}
+				}
+			}
+
+			&-fullname {
+				@media (min-width: $lg) {
+					font-size: 42px;
+					padding: 0;
+					margin-bottom: 9px;
+					transform: translateY(-9px)
+				}
+			}
+
+			&-dates {
+				@media (min-width: $lg) {
+					.memory-card-date {
+						font-size: $fs-md;
+						line-height: $lh-4
+					}
+
+					span {
+						margin: 0 5px
+					}
+				}
+			}
+		}
+	}
+
+	&-bottom {
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		padding: 24px;
+		margin-bottom: 36px;
+		background-color: $bg-primary-hover;
+		border-radius: $rad-memory-page-card;
+		gap: 20px;
+		order: 4;
+
+		@media (min-width: $md) {
+			flex-direction: row;
+			padding: 30px;
+			margin-top: 24px;
+			gap: 54px
 		}
 
-		.page-created-info {
-			padding: 60px 70px 80px
+		div {
+			max-width: 75%;
+
+			* {
+				text-align: center;
+
+				@media (min-width: $md) {
+					text-align: left
+				}
+			}
+
+			h3 {
+				@media (min-width: $lg) {
+					font-size: 38px
+				}
+			}
 		}
 
-		.page-created-fullname {
-			font-size: 42px;
-			padding: 0;
+		a {
+			white-space: nowrap
+		}
+	}
+}
+
+.memory-created {
+	max-width: 369px;
+
+	h1, h2, h3, h4 {
+		font-size: 24px;
+		margin-bottom: 10px;
+
+		@media (min-width: $md) {
 			margin-bottom: 20px
 		}
+	}
 
-		.page-created-dates {
-			font-size: $fs-md;
-			line-height: $lh-4;
+	p {
+		color: $text-primary;
+		line-height: $lh-base;
+		opacity: 0.8
+	}
 
-			span {
-				margin: 0 5px
-			}
-		}
+	.button {
+		margin-top: 20px;
 
-		.single-memory-thumb {
-			img {
-				width: 193px;
-				height: 246px
-			}
-
-			&-border {
-				top: -33px;
-				width: calc(100% + 68px);
-				height: calc(100% + 66px)
-			}
+		@media (min-width: $lg) {
+			margin-top: 30px
 		}
 	}
 }

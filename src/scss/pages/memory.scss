@@ -491,7 +491,98 @@ body.single-memory_page {
 
 	&-memories {
 		padding: 100px 0;
-		transition: background-color ease-out $tr
+		transition: background-color ease-out $tr;
+
+		&-cols {
+			gap: 22px
+		}
+
+		&-col {
+			gap: 20px;
+
+			@media (min-width: $lg) {
+				gap: 22px
+			}
+
+			&.add-padding {
+				@media (min-width: $lg) {
+					padding-top: 205px
+				}
+
+				&.single-col {
+					padding-top: 0;
+
+					.single-memory-memories-item {
+						@media (min-width: $lg) {
+							width: calc((100% - 44px) / 3);
+
+							&:first-child,
+							&:last-child {
+								margin-top: 205px
+							}
+						}
+					}
+				}
+			}
+
+			&:not(.single-col) {
+				@media (min-width: $lg) {
+					width: calc((100% - 44px) / 3)
+				}
+			}
+		}
+
+		&-item {
+			width: 100%;
+			padding: 30px;
+			border-radius: $rad-memory-page-card;
+			background-color: $white;
+			color: #2D2D2D;
+			line-height: $lh-mobile-title-special;
+
+			@media (min-width: $lg) {
+				padding: 50px 50px 46px
+			}
+		}
+
+		&-thumb {
+			width: 100%;
+			margin-bottom: 23px;
+			cursor: pointer;
+
+			img {
+				display: block;
+				border-radius: $rad-memory-thumb
+			}
+		}
+
+		&-text {
+			margin-bottom: 19px
+		}
+
+		&-name {
+			line-height: normal;
+			margin-bottom: 2px
+		}
+
+		&-role {
+			font-size: $fs-xs-alt;
+			color: #7E969B;
+
+			@media (min-width: $lg) {
+				font-size: $fs-sm
+			}
+		}
+
+		&-add {
+			width: 100%;
+			margin-top: 28px;
+
+			.btn {
+				width: 100%;
+				white-space: nowrap
+			}
+		}
 	}
 
 	&-no-memories {
@@ -561,26 +652,6 @@ body.single-memory_page {
 			@media (min-width: $xl) {
 				column-gap: 20px;
 				row-gap: 30px
-			}
-		}
-
-		&-more {
-			margin-top: 24px;
-
-			button {
-				font-family: $ff;
-				font-size: $fs-md;
-				line-height: normal;
-				text-decoration: underline;
-				color: $black-for-text;
-				background-color: transparent;
-				border: none;
-				padding: 0;
-				cursor: pointer;
-
-				&:hover {
-					text-decoration: none
-				}
 			}
 		}
 	}
@@ -1073,6 +1144,26 @@ body.single-memory_page {
 					margin-bottom: 0
 				}
 			}
+		}
+	}
+}
+
+.show-more-posts {
+	margin-top: 24px;
+
+	button {
+		font-family: $ff;
+		font-size: $fs-md;
+		line-height: normal;
+		text-decoration: underline;
+		color: $black-for-text;
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: none
 		}
 	}
 }

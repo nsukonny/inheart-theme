@@ -1,0 +1,18 @@
+.button.outlined {
+	border: 0.5px solid $border-primary;
+	background-color: $bg-primary;
+
+	svg {
+		color: $icon-primary
+	}
+
+	&:hover {
+		@media (min-width: $xl) {
+			background-color: $bg-primary-hover
+		}
+	}
+
+	&:active {
+		background-color: $bg-primary-pressed
+	}
+}

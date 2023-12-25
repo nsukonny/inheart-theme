@@ -53,3 +53,14 @@ ul {
 		margin-top: auto
 	}
 }
+
+.read-more {
+	color: $accent;
+	cursor: pointer;
+	margin-left: 3px;
+	transition: color ease-out $tr;
+
+	&:hover {
+		color: $accent-bright
+	}
+}

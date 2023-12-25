@@ -1,0 +1,31 @@
+.button {
+	svg {
+		display: block;
+		width: 16px;
+		height: 16px
+	}
+
+	&.button-icon-lead {
+		&:not(.button-icon-tail) .button-text {
+			max-width: calc(100% - 24px)
+		}
+
+		svg:first-child {
+			margin-right: 8px
+		}
+	}
+
+	&.button-icon-tail {
+		&:not(.button-icon-lead) .button-text {
+			max-width: calc(100% - 24px)
+		}
+
+		svg:last-child {
+			margin-left: 8px
+		}
+	}
+
+	&.button-icon-lead.button-icon-tail .button-text {
+		max-width: calc(100% - 48px)
+	}
+}

@@ -1,4 +1,5 @@
 import '../common/forms'
+import '../components/sidebar/sidebar'
 import {
 	customDebounce,
 	ihAjaxRequest,

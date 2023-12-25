@@ -1,0 +1,25 @@
+.icons-list {
+	gap: 15px;
+
+	&.sidebar-icons {
+		margin: 24px 0 32px
+	}
+
+	a {
+		width: 36px;
+		height: 36px;
+		transition: opacity ease-out $tr;
+
+		&:hover {
+			opacity: 0.7
+		}
+	}
+
+	svg {
+		display: block;
+		width: auto;
+		height: auto;
+		max-width: 20px;
+		max-height: 20px
+	}
+}

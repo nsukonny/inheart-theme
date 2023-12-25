@@ -54,27 +54,25 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 					<span class="legend-title"><?php esc_html_e( 'Адреса поховання', 'inheart' ) ?></span>
 				</legend>
 
-				<label for="address" class="label dark">
-					<span class="label-text"><?php esc_html_e( 'Адреса кладовища', 'inheart' ) ?></span>
-					<input
-						id="address"
-						name="address"
-						type="text"
-						placeholder="<?php esc_html_e( 'Адреса', 'inheart' ) ?>"
-						value="<?php echo esc_attr( $address ) ?>"
-						required
-					/>
-				</label>
-				<label for="detail_address" class="label dark">
-					<span class="label-text"><?php esc_html_e( 'Детальне розташування на цвинтарі (секція, ряд)', 'inheart' ) ?></span>
-					<input
-						id="detail_address"
-						name="detail_address"
-						type="text"
-						placeholder="<?php esc_html_e( 'Секція, ряд', 'inheart' ) ?>"
-						value="<?php echo esc_attr( $detail_address ) ?>"
-					/>
-				</label>
+				<?php
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'address',
+					'label'			=> __( 'Адреса кладовища', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Адреса', 'inheart' ),
+					'value'			=> $address,
+					'autocomplete'	=> 'address',
+					'required'		=> 1
+				] );
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'detail_address',
+					'label'			=> __( 'Детальне розташування на цвинтарі (секція, ряд)', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Секція, ряд', 'inheart' ),
+					'value'			=> $detail_address,
+					'autocomplete'	=> 'address-line1'
+				] );
+				?>
 			</fieldset>
 
 			<fieldset class="flex flex-wrap">
@@ -95,26 +93,22 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 					</button>
 				</legend>
 
-				<label for="longitude" class="label dark half">
-					<span class="label-text"><?php esc_html_e( 'Довгота', 'inheart' ) ?></span>
-					<input
-						id="longitude"
-						name="longitude"
-						type="text"
-						placeholder="<?php esc_html_e( 'Довгота', 'inheart' ) ?>"
-						value="<?php echo esc_attr( $longitude ) ?>"
-					/>
-				</label>
-				<label for="latitude" class="label dark half end">
-					<span class="label-text"><?php esc_html_e( 'Широта', 'inheart' ) ?></span>
-					<input
-						id="latitude"
-						name="latitude"
-						type="text"
-						placeholder="<?php esc_html_e( 'Широта', 'inheart' ) ?>"
-						value="<?php echo esc_attr( $latitude ) ?>"
-					/>
-				</label>
+				<?php
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'longitude',
+					'label'			=> __( 'Довгота', 'inheart' ),
+					'label_class'	=> 'half',
+					'placeholder'	=> __( 'Довгота', 'inheart' ),
+					'value'			=> $longitude
+				] );
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'latitude',
+					'label'			=> __( 'Широта', 'inheart' ),
+					'label_class'	=> 'half end',
+					'placeholder'	=> __( 'Широта', 'inheart' ),
+					'value'			=> $latitude
+				] );
+				?>
 			</fieldset>
 
 			<fieldset>
@@ -122,7 +116,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 					<span class="legend-title"><?php esc_html_e( 'Як знайти місце поховання', 'inheart' ) ?></span>
 				</legend>
 
-				<label for="how_to_find" class="label dark">
+				<label for="how_to_find" class="label">
 					<span class="label-text"><?php esc_html_e( 'Докладно опишіть, як знайти місце поховання', 'inheart' ) ?></span>
 					<textarea
 						id="how_to_find"

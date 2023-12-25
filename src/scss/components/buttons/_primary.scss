@@ -1,0 +1,13 @@
+.button.primary {
+	background-color: $accent-on-color;
+
+	&:hover {
+		@media (min-width: $xl) {
+			background-color: $accent-on-color-hover
+		}
+	}
+
+	&:active {
+		background-color: $accent-on-color-pressed
+	}
+}

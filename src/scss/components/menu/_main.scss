@@ -1,0 +1,15 @@
+.main-menu .menu {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+
+	&-item a {
+		@include mobile-title-special;
+		color: $accent-on-color;
+
+		&:hover {
+			color: $accent
+		}
+	}
+}

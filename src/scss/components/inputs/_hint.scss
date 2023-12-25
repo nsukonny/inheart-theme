@@ -1,0 +1,13 @@
+.hint {
+	display: block;
+	width: 100%;
+	font-size: 13px;
+	line-height: $lh-fs-13;
+	color: $text-danger;
+	padding-left: 16px;
+	margin-top: 8px;
+
+	&:empty {
+		display: none
+	}
+}

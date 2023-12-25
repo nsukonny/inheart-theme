@@ -1,0 +1,28 @@
+.button.dark-mode {
+	justify-content: flex-start;
+	min-width: 141px;
+	color: $text-primary-on-color;
+	padding: 7px 16px 8px;
+
+	&:hover {
+		@media (min-width: $xl) {
+			background-color: $bg-primary-on-color-hover
+		}
+	}
+
+	&:active {
+		background-color: $bg-primary-on-color-pressed
+	}
+
+	&:focus {
+		background-color: $bg-secondary
+	}
+
+	&:disabled {
+		color: $icon-disabled-on-color;
+
+		svg {
+			color: $icon-disabled-on-color
+		}
+	}
+}

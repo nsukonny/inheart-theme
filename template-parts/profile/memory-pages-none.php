@@ -7,21 +7,12 @@
  * @subpackage inheart
  */
 
-$img		= get_field( 'no_memory_pages_img' );
-$main_title = get_field( 'memory_pages_title' );
-$title		= get_field( 'no_memory_pages_title' );
+$img	= get_field( 'no_memory_pages_img' );
+$title	= get_field( 'no_memory_pages_title' );
 ?>
 
 <section class="profile-memories none profile-body">
-	<?php
-	if( $main_title ){
-		?>
-		<h1 class="profile-memories-title flex flex-wrap justify-between align-center">
-			<?php echo esc_html( $main_title ) ?>
-		</h1>
-		<?php
-	}
-	?>
+	<?php get_template_part( 'components/profile/memory-pages/title' ) ?>
 
 	<div class="profile-memories-inner flex direction-column align-center">
 		<?php
@@ -32,7 +23,7 @@ $title		= get_field( 'no_memory_pages_title' );
 			echo '<h1 class="profile-memories-title">' . esc_html( $title ) . '</h1>';
 		?>
 
-		<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="btn lg primary">
+		<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="button primary lg">
 			<?php esc_html_e( "Створити сторінку пам'яті", 'inheart' ) ?>
 		</a>
 	</div>

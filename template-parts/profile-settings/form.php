@@ -19,95 +19,63 @@ $email		= $data->user_email;
 <form class="profile-settings-form">
 	<fieldset class="flex flex-wrap">
 		<legend><?php esc_html_e( 'Головна інформація', 'inheart' ) ?></legend>
-		<label for="lastname" class="label dark half">
-			<span class="label-text"><?php esc_html_e( 'Ваше прізвище', 'inheart' ) ?></span>
-			<input
-				id="lastname"
-				name="lastname"
-				type="text"
-				placeholder="<?php esc_attr_e( 'Ваше прізвище', 'inheart' ) ?>"
-				value="<?php echo esc_attr( $last_name ) ?>"
-				autocomplete="family-name"
-				required
-			/>
-			<span class="hint"></span>
-		</label>
-		<label for="firstname" class="label dark half end">
-			<span class="label-text"><?php esc_html_e( "Ваше ім'я", 'inheart' ) ?></span>
-			<input
-				id="firstname"
-				name="firstname"
-				type="text"
-				placeholder="<?php esc_attr_e( "Ваше ім'я", 'inheart' ) ?>"
-				value="<?php echo esc_attr( $first_name ) ?>"
-				autocomplete="given-name"
-				required
-			/>
-			<span class="hint"></span>
-		</label>
-		<label for="email" class="label dark half">
-			<span class="label-text"><?php esc_html_e( 'Email', 'inheart' ) ?></span>
-			<input
-				id="email"
-				name="email"
-				type="email"
-				placeholder="<?php esc_attr_e( 'Email', 'inheart' ) ?>"
-				value="<?php echo esc_attr( $email ) ?>"
-				autocomplete="email"
-				required
-			/>
-			<span class="hint"></span>
-		</label>
+
+		<?php
+		get_template_part( 'components/inputs/default', null, [
+			'name'			=> 'lastname',
+			'label'			=> __( 'Ваше прізвище', 'inheart' ),
+			'placeholder'	=> __( 'Ваше прізвище', 'inheart' ),
+			'value'			=> $last_name,
+			'autocomplete'	=> 'family-name',
+			'required'		=> 1
+		] );
+		get_template_part( 'components/inputs/default', null, [
+			'name'			=> 'firstname',
+			'label'			=> __( "Ваше ім'я", 'inheart' ),
+			'label_class'	=> 'half end',
+			'placeholder'	=> __( "Ваше ім'я", 'inheart' ),
+			'value'			=> $first_name,
+			'autocomplete'	=> 'given-name',
+			'required'		=> 1
+		] );
+		get_template_part( 'components/inputs/default', null, [
+			'name'			=> 'email',
+			'label'			=> __( 'Email', 'inheart' ),
+			'type'			=> 'email',
+			'placeholder'	=> __( 'Email', 'inheart' ),
+			'value'			=> $email,
+			'autocomplete'	=> 'email',
+			'required'		=> 1
+		] );
+		?>
 	</fieldset>
 
 	<fieldset class="flex flex-wrap">
 		<legend><?php esc_html_e( 'Пароль', 'inheart' ) ?></legend>
-		<label for="pass" class="label dark half">
-			<span class="label-text"><?php esc_html_e( 'Поточний пароль', 'inheart' ) ?></span>
-			<span class="pass-wrapper">
-				<input
-					id="pass"
-					name="pass"
-					type="password"
-					placeholder="<?php esc_attr_e( 'Поточний пароль', 'inheart' ) ?>"
-					autocomplete="current-password"
-				/>
-				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
-				<img class="pass-toggle crossed" src="<?php echo THEME_URI . '/static/img/eye-gray-crossed.svg' ?>" alt="" />
-			</span>
-			<span class="hint"></span>
-		</label>
+
+		<?php
+		get_template_part( 'components/inputs/password', null, [
+			'name'			=> 'pass',
+			'label'			=> __( 'Поточний пароль', 'inheart' ),
+			'placeholder'	=> __( 'Поточний пароль', 'inheart' )
+		] );
+		?>
 		<div style="width: 100%; height: 0"></div>
-		<label for="new-pass" class="label dark half">
-			<span class="label-text"><?php esc_html_e( 'Новий пароль', 'inheart' ) ?></span>
-			<span class="pass-wrapper">
-				<input
-					id="new-pass"
-					name="new-pass"
-					type="password"
-					placeholder="<?php esc_attr_e( 'Новий пароль', 'inheart' ) ?>"
-					autocomplete="new-password"
-				/>
-				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
-				<img class="pass-toggle crossed" src="<?php echo THEME_URI . '/static/img/eye-gray-crossed.svg' ?>" alt="" />
-			</span>
-			<span class="hint"></span>
-		</label>
-		<label for="confirm-pass" class="label dark half end">
-			<span class="label-text"><?php esc_html_e( 'Підтвердьте пароль', 'inheart' ) ?></span>
-			<span class="pass-wrapper">
-				<input
-					id="confirm-pass"
-					name="confirm-pass"
-					type="password"
-					placeholder="<?php esc_attr_e( 'Підтвердьте пароль', 'inheart' ) ?>"
-					autocomplete="new-password"
-				/>
-				<img class="pass-toggle" src="<?php echo THEME_URI . '/static/img/eye-gray.svg' ?>" alt="" />
-				<img class="pass-toggle crossed" src="<?php echo THEME_URI . '/static/img/eye-gray-crossed.svg' ?>" alt="" />
-			</span>
-			<span class="hint"></span>
-		</label>
+		<?php
+		get_template_part( 'components/inputs/password', null, [
+			'name'			=> 'new-pass',
+			'label'			=> __( 'Новий пароль', 'inheart' ),
+			'placeholder'	=> __( 'Новий пароль', 'inheart' ),
+			'autocomplete'	=> 'new-password'
+		] );
+		get_template_part( 'components/inputs/password', null, [
+			'name'			=> 'confirm-pass',
+			'label'			=> __( 'Підтвердьте пароль', 'inheart' ),
+			'label_class'	=> 'half end',
+			'placeholder'	=> __( 'Підтвердьте пароль', 'inheart' ),
+			'autocomplete'	=> 'new-password'
+		] );
+		?>
 	</fieldset>
 </form><!-- .profile-settings-form -->
 

@@ -1,0 +1,17 @@
+.sidebar-nav {
+	.menu {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		&-item {
+			&.current-menu-item a {
+				border-color: $border-accent-on-color
+			}
+
+			a {
+				@extend .button, .button-menu, .button-icon-lead
+			}
+		}
+	}
+}

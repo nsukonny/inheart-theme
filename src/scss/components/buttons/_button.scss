@@ -1,0 +1,58 @@
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-family: $ff;
+	font-size: $fs-sm;
+	font-weight: $fw-regular;
+	line-height: $lh-2;
+	color: $text-primary;
+	background-color: transparent;
+	border: none;
+	border-radius: $rad-btn;
+	padding: 7px 12px 8px;
+	transition:
+		background-color ease-out $tr,
+		border-color ease-out $tr,
+		box-shadow ease-out $tr,
+		color ease-out $tr;
+	cursor: pointer;
+
+	svg {
+		color: $icon-accent
+	}
+
+	.button-text {
+		text-align: center
+	}
+
+	&:hover {
+		@media (min-width: $xl) {
+			background-color: $bg-primary-hover
+		}
+	}
+
+	&:active {
+		background-color: $bg-primary-pressed
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 3px $accent-04;
+		background-color: $bg-primary
+	}
+
+	&:disabled {
+		color: $text-disabled;
+		pointer-events: none;
+
+		svg {
+			color: inherit
+		}
+	}
+
+	&.no-events {
+		color: $text-secondary;
+		pointer-events: none
+	}
+}

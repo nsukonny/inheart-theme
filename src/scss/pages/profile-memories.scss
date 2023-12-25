@@ -1,4 +1,5 @@
 @import '../components/vars';
+@import '../components/memory/preview';
 
 .page-template-profile-memories {
 	background-color: $a-bit-blue-white;
@@ -13,87 +14,41 @@
 	height: 100%;
 
 	&-list {
-		margin-top: 32px
-	}
-}
+		margin-top: 32px;
 
-.memory-preview {
-	width: 100%;
-	padding: 24px 30px 42px;
-	background-color: $white;
-	border-radius: 30px;
-	color: $very-dark-green;
+		&.none {
+			height: auto;
+			margin-top: 100px;
 
-	&:not(:last-child) {
-		margin-bottom: 24px
-	}
+			@media (min-width: $lg) {
+				margin-top: 223px
+			}
 
-	&-top {
-		padding-bottom: 24px;
-		border-bottom: 1px solid rgba(195, 218, 226, 0.24)
-	}
+			.profile-memories-title {
+				margin-bottom: 100px;
 
-	&-page {
-		column-gap: 12px;
+				@media (min-width: $lg) {
+					margin-bottom: 223px
+				}
+			}
 
-		&-thumb {
-			width: 48px;
-			height: 48px;
-			border-radius: 50%;
-			overflow: hidden;
+			.profile-memories-list-inner {
+				margin-bottom: 100px;
 
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover
+				@media (min-width: $lg) {
+					margin-bottom: 223px
+				}
+
+				.profile-memories-title {
+					font-size: $fs-xl;
+					margin: 34px 0 36px;
+					text-align: center;
+
+					@media (min-width: $lg) {
+						font-size: 38px
+					}
+				}
 			}
 		}
-
-		&-name {
-			font-family: $ff-title;
-			font-size: $fs-lg;
-			line-height: $lh-1;
-			font-weight: $fw-semibold
-		}
-	}
-
-	&-actions {
-		column-gap: 12px
-	}
-
-	&-thumb {
-		width: 80px;
-		height: 80px;
-		margin-top: 24px;
-
-		img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			border-radius: $radius-input
-		}
-	}
-
-	&-text {
-		font-family: $ff-title;
-		font-size: $fs-lg;
-		line-height: $lh-1;
-		font-weight: $fw-semibold;
-		padding: 0 64px;
-		margin: 24px 0;
-		text-align: center
-	}
-
-	&-fullname {
-		line-height: $lh-3;
-		text-align: center;
-		margin-bottom: 4px
-	}
-
-	&-role {
-		font-size: 15px;
-		line-height: $lh-5;
-		text-align: center;
-		color: rgba(5, 51, 48, 0.4)
 	}
 }

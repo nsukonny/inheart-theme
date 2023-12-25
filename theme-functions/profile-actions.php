@@ -138,7 +138,7 @@ function ih_ajax_add_person_memory(): void
 	$agreement		= ih_clean( $_POST['agreement'] );
 
 	// If data is not set - send error.
-	if( ! $photo || ! $memory_page_id || ! $fullname || ! $role || ! $memory || ! $agreement )
+	if( ! $memory_page_id || ! $fullname || ! $role || ! $memory || ! $agreement )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$post_data = [
@@ -151,10 +151,19 @@ function ih_ajax_add_person_memory(): void
 
 	if( is_wp_error( $post_id ) ) wp_send_json_error( ['msg' => __( 'Не вдалося створити спогад', 'inheart' )] );
 
-	update_field( 'memory_page', $fullname, $memory_page_id );
+	update_field( 'memory_page', $memory_page_id, $post_id );
 	update_field( 'full_name', $fullname, $post_id );
 	update_field( 'role', $role, $post_id );
 	update_field( 'content', $memory, $post_id );
+
+	if( ! $photo || $photo['size'] === 0 ){
+		in_memory_created_send_mail( $post_id, [
+			'memory'	=> $memory,
+			'fullname'	=> $fullname,
+			'role'		=> $role
+		] );
+		wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+	}
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
 	$max_image_size         = 50_000_000;
@@ -173,8 +182,51 @@ function ih_ajax_add_person_memory(): void
 		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
 
 	set_post_thumbnail( $post_id, $attach_id );
+	in_memory_created_send_mail( $post_id, [
+		'memory'	=> $memory,
+		'fullname'	=> $fullname,
+		'role'		=> $role
+	] );
 
 	wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+}
+
+/**
+ * Send email to an author when memory is created.
+ *
+ * @param int   $post_id	Created memory ID.
+ * @param array $data
+ * 		@var string $data['memory']
+ * 		@var string $data['fullname']
+ * 		@var string $data['role']
+ * @return bool|mixed
+ */
+function in_memory_created_send_mail( int $post_id, array $data ): mixed
+{
+	if( ! $post_id ) return false;
+
+	$subject		= get_field( 'memory_created_subject', 'option' );
+	$body			= get_field( 'memory_created_body', 'option' );
+	$memory_author	= wp_get_current_user();
+	$author_email	= $memory_author->user_email;
+	$memory_wrap	= '<div style="width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;">' .
+		( has_post_thumbnail( $post_id ) ?
+			'<img
+			src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
+			style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
+			alt=""
+		/>' : '' ) .
+		'<div style="margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</div>' .
+		'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</div>' .
+		'<div style="color: #7E969B">' . esc_html( $data['role'] ) . '</div>' .
+		'</div>';
+	$body = str_replace( '[memory]', $memory_wrap, $body );
+
+	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+	$send = wp_mail( $author_email, $subject, $body );
+	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+
+	return $send;
 }
 
 add_action( 'wp_ajax_ih_ajax_load_profile_memories', 'ih_ajax_load_profile_memories' );
@@ -185,7 +237,8 @@ add_action( 'wp_ajax_ih_ajax_load_profile_memories', 'ih_ajax_load_profile_memor
  */
 function ih_ajax_load_profile_memories(): void
 {
-	$type = ih_clean( $_POST['type'] );	// 'others' | 'yours'
+	$type		= ih_clean( $_POST['type'] );	// 'others' | 'yours'
+	$page_id	= ih_clean( $_POST['id'] );	// 'others' | 'yours'
 
 	if( ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
@@ -196,7 +249,8 @@ function ih_ajax_load_profile_memories(): void
 	];
 
 	if( $type === 'yours' ){
-		$args['author__in'] = [$current_user_id];
+		$args['author__in']		= [$current_user_id];
+		$args['post_status']	= ['publish', 'pending', 'trash'];
 	}else{
 		$memory_pages = get_posts( [
 			'post_type'     => 'memory_page',
@@ -210,34 +264,115 @@ function ih_ajax_load_profile_memories(): void
 
 		$args = array_merge( $args, [
 			'post_status'   => 'any',
-			'meta_query'    => [[
-				'key'       => 'memory_page',
-				'value'     => $memory_pages_ids,
-				'compare'   => 'IN'
-			]]
+			'meta_query'    => [
+				[
+					'key'       => 'memory_page',
+					'value'     => $memory_pages_ids,
+					'compare'   => 'IN'
+				],
+				[
+					'key'		=> 'is_rejected',
+					'compare'	=> 'NOT EXISTS'
+				]
+			]
 		] );
 	}
 
 	$memories_query = new WP_Query( $args );
 
-	if( ! $memories_query->have_posts() ) wp_send_json_error( ['msg' => __( 'Спогадів не знайдено', 'inheart' )] );
+	if( $memories_query->have_posts() ){
+		$memories = '';
 
-	$memories = '';
+		while( $memories_query->have_posts() ){
+			$memories_query->the_post();
+			$memories .= ih_load_template_part(
+				'components/cards/memory/preview',
+				null,
+				['id' => get_the_ID(), 'type' => $type]
+			);
+		}
 
-	while( $memories_query->have_posts() ){
-		$memories_query->the_post();
-		$memories .= ih_load_template_part(
-			'template-parts/add-new-memories/preview',
-			null,
-			[
-				'id'	=> get_the_ID(),
-				'type'	=> $type
-			]
-		);
+		wp_reset_query();
+		wp_send_json_success( ['memories' => $memories] );
 	}
 
-	wp_reset_query();
+	$no_memories = ih_load_template_part(
+		'components/profile/memories/no-memories',
+		null,
+		['id' => $page_id, 'type' => $type]
+	);
+	wp_send_json_success( ['no-memories' => $no_memories] );
+}
 
-	wp_send_json_success( ['memories' => $memories] );
+add_action( 'wp_ajax_ih_ajax_publish_profile_memory', 'ih_ajax_publish_profile_memory' );
+/**
+ * Publish memory.
+ *
+ * @return void
+ */
+function ih_ajax_publish_profile_memory(): void
+{
+	$id = ih_clean( $_POST['id'] );
+
+	if( ! $id ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$current_user_id	= get_current_user_id();
+	$memory_page_id		= get_field( 'memory_page', $id );
+	$author_id			= ( int ) get_post_field ( 'post_author', $memory_page_id );
+
+	// Current User is not an author of this Memory page - exit.
+	if( $current_user_id !== $author_id )
+		wp_send_json_error( ['msg' => __( "Ви не автор цієї сторінки пам'яті", 'inheart' )] );
+
+	wp_publish_post( $id );
+	$memory = ih_load_template_part( 'components/cards/memory/preview', null, ['id' => $id] );
+	wp_send_json_success( [
+		'msg'		=> __( 'Спогад успішно опубліковано!', 'inheart' ),
+		'memory'	=> $memory
+	] );
+}
+
+add_action( 'wp_ajax_ih_ajax_delete_profile_memory', 'ih_ajax_delete_profile_memory' );
+/**
+ * Delete memory.
+ *
+ * @return void
+ */
+function ih_ajax_delete_profile_memory(): void
+{
+	$id		= ih_clean( $_POST['id'] );
+	$type	= ih_clean( $_POST['type'] );
+
+	if( ! $id || ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$memory_author_id		= ( int ) get_post_field( 'post_author', $id );
+	$current_user_id		= get_current_user_id();
+	$memory_page_id			= get_field( 'memory_page', $id );
+	$memory_page_author_id	= ( int ) get_post_field( 'post_author', $memory_page_id );
+
+	// If User changed his mind and wants to remove his own memory.
+	if( $type === 'yours' ){
+		// Check if he is an author of this memory.
+		if( $current_user_id !== $memory_author_id )
+			wp_send_json_error( ['msg' => __( 'Ви не автор цього спогаду', 'inheart' )] );
+
+		if( get_post_status( $id ) === 'pending' ){
+			$images = get_attached_media( 'image', $id );
+
+			if( ! empty( $images ) )
+				foreach ( $images as $image ) wp_delete_attachment( $image->ID, true );
+
+			wp_delete_post( $id, true );
+			wp_send_json_success( ['msg' => __( 'Ваш спогад видалено', 'inheart' )] );
+		}
+	}else{
+		// If User is the author of the Memory page - let's check it.
+		if( $current_user_id !== $memory_page_author_id )
+			wp_send_json_error( ['msg' => __( "Ви не автор сторінки пам'яті, до якої належить цей спогад", 'inheart' )] );
+
+		update_field( 'is_rejected', 'yes', $id );
+		wp_update_post( ['ID' =>  $id, 'post_status' => 'pending'] );
+		wp_send_json_success( ['msg' => __( 'Спогад успішно видалено', 'inheart' )] );
+	}
 }
 

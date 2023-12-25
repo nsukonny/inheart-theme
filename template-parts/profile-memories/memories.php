@@ -22,11 +22,17 @@ $memories_query = new WP_Query( [
 	'post_type'     => 'memory',
 	'post_status'   => 'any',
 	'posts_per_page'=> -1,
-    'meta_query'    => [[
-		'key'       => 'memory_page',
-		'value'     => $memory_pages_ids,
-		'compare'   => 'IN'
-    ]]
+    'meta_query'    => [
+		[
+			'key'		=> 'memory_page',
+			'value'		=> $memory_pages_ids,
+			'compare'	=> 'IN'
+		],
+		[
+			'key'		=> 'is_rejected',
+			'compare'	=> 'NOT EXISTS'
+		]
+	]
 ] );
 
 if( $memories_query->have_posts() ){
@@ -35,18 +41,36 @@ if( $memories_query->have_posts() ){
     while( $memories_query->have_posts() ){
         $memories_query->the_post();
         get_template_part(
-			'template-parts/add-new-memories/preview',
+			'components/cards/memory/preview',
 			null,
-			[
-				'id'	=> get_the_ID(),
-				'type'	=> 'others'
-			]
+			['id' => get_the_ID(), 'type' => 'others']
 		);
     }
     wp_reset_query();
 
-    echo '</section>';
+	echo '</section>';
 }else{
-    echo 'NO MEMORIES';
+    get_template_part( 'components/profile/memories/no-memories', null, ['type' => 'others'] );
 }
+
+get_template_part(
+	'components/popup/popup',
+	null,
+	[
+		'text'		=> __( 'Дійсно видалити спогад?', 'inheart' ),
+		'class'		=> 'delete',
+		'label_yes'	=> __( 'Видалити', 'inheart' ),
+		'label_no'	=> __( 'Ні', 'inheart' )
+	]
+);
+get_template_part(
+	'components/popup/popup',
+	null,
+	[
+		'text'		=> __( 'Дійсно опубліковати спогад?', 'inheart' ),
+		'class'		=> 'publish',
+		'label_yes'	=> __( 'Опубліковати', 'inheart' ),
+		'label_no'	=> __( 'Ні', 'inheart' )
+	]
+);
 

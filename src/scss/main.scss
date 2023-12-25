@@ -8,9 +8,11 @@
 // Theme base styles.
 @import 'components/base';
 @import 'components/forms';
+@import 'components/inputs/inputs';
 @import 'components/buttons';
 @import 'components/notifications';
-@import 'components/switcher';
+@import 'components/switcher/switcher';
+@import 'components/popup/popup';
 
 // Theme common styles.
 @import 'header/header';
@@ -18,3 +20,7 @@
 @import 'header/profile';
 @import 'footer/footer';
 @import 'footer/menu';
+
+// New Components styles.
+@import 'components/menu/menu';
+@import 'components/socials/socials';

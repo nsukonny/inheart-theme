@@ -102,7 +102,7 @@
             "maxlength": "",
             "rows": 4,
             "placeholder": "",
-            "new_lines": "wpautop"
+            "new_lines": "br"
         }
     ],
     "location": [
@@ -123,5 +123,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1699998361
+    "modified": 1703451603
 }

@@ -1,8 +1,14 @@
 @font-face {
 	font-display: swap;
-	font-family: 'Calvino-Grande';
-	src: url('../fonts/Calvino-Grande-Semibold.woff2') format('woff2'),
-		url('../fonts/Calvino-Grande-Semibold.woff') format('woff')
+	font-family: 'Calvino Grande';
+	src: url('../fonts/CalvinoGrande-Semibold.eot');
+	src: url('../fonts/CalvinoGrande-Semibold.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/CalvinoGrande-Semibold.woff2') format('woff2'),
+	url('../fonts/CalvinoGrande-Semibold.woff') format('woff'),
+	url('../fonts/CalvinoGrande-Semibold.ttf') format('truetype'),
+	url('../fonts/CalvinoGrande-Semibold.svg#CalvinoGrande-Semibold') format('svg');
+	font-weight: 600;
+	font-style: normal
 }
 
 @font-face {

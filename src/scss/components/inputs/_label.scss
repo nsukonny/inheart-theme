@@ -1,0 +1,63 @@
+.label {
+	position: relative;
+	display: block;
+	width: 100%;
+	margin-bottom: 16px;
+
+	&.half {
+		@media (min-width: $sm) {
+			width: calc(50% - 10px)
+		}
+	}
+
+	&.end {
+		margin-left: auto
+	}
+
+	&.error {
+		input[type='text'],
+		input[type='password'],
+		input[type='date'],
+		input[type='url'],
+		input[type='email'],
+		textarea {
+			color: $text-danger;
+			background-color: $bg-danger-subdued;
+			border-color: $border-danger;
+
+			&::placeholder {
+				color: $text-danger !important
+			}
+		}
+	}
+
+	&.dark {
+		.label-text {
+			color: $text-primary-on-color
+		}
+
+		input[type='text'],
+		input[type='password'],
+		input[type='date'],
+		input[type='url'],
+		input[type='email'],
+		textarea {
+			color: $text-primary-on-color;
+			border-color: $white;
+
+			&::placeholder {
+				color: rgba(156, 180, 186, 0.51) !important;
+				opacity: 0.5 !important
+			}
+		}
+	}
+}
+
+.label-text {
+	display: block;
+	font-size: $fs-sm;
+	line-height: $lh-desktop-title-special;
+	color: $text-primary;
+	padding: 0 16px;
+	margin-bottom: 8px
+}

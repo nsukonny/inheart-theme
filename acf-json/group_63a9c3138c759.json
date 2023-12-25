@@ -3,11 +3,11 @@
     "title": "Користувачі",
     "fields": [
         {
-            "key": "field_63a9c3153155c",
-            "label": "Email підтверджено",
-            "name": "email_approved",
+            "key": "field_658214b674f08",
+            "label": "По батькові",
+            "name": "fathername",
             "aria-label": "",
-            "type": "true_false",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -16,18 +16,18 @@
                 "class": "",
                 "id": ""
             },
-            "message": "",
-            "default_value": 0,
-            "ui": 0,
-            "ui_on_text": "",
-            "ui_off_text": ""
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
-            "key": "field_63bbed2d87e8e",
-            "label": "Сторінки пам'яті",
-            "name": "memory_pages",
+            "key": "field_65821622d3b31",
+            "label": "Телефон",
+            "name": "phone",
             "aria-label": "",
-            "type": "post_object",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -36,91 +36,19 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": [
-                "memory_page"
-            ],
-            "taxonomy": "",
-            "return_format": "object",
-            "multiple": 1,
-            "allow_null": 0,
-            "ui": 1
-        },
-        {
-            "key": "field_63bc01e384499",
-            "label": "Підписки",
-            "name": "subscriptions",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "subscription"
-            ],
-            "taxonomy": "",
-            "return_format": "object",
-            "multiple": 1,
-            "allow_null": 0,
-            "ui": 1
-        },
-        {
-            "key": "field_63c12cf9235ce",
-            "label": "Активний промокод",
-            "name": "active_promocode",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "promocode"
-            ],
-            "taxonomy": "",
-            "return_format": "object",
-            "multiple": 0,
-            "allow_null": 0,
-            "ui": 1
-        },
-        {
-            "key": "field_63c12d31235cf",
-            "label": "Історія промокодів",
-            "name": "used_promocodes",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "promocode"
-            ],
-            "taxonomy": "",
-            "return_format": "object",
-            "multiple": 1,
-            "allow_null": 0,
-            "ui": 1
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
         [
             {
                 "param": "user_role",
-                "operator": "!=",
-                "value": "administrator"
+                "operator": "==",
+                "value": "all"
             }
         ]
     ],
@@ -133,5 +61,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1686509138
+    "modified": 1703024176
 }
