@@ -209,17 +209,18 @@ function in_memory_created_send_mail( int $post_id, array $data ): mixed
 	$body			= get_field( 'memory_created_body', 'option' );
 	$memory_author	= wp_get_current_user();
 	$author_email	= $memory_author->user_email;
-	$memory_wrap	= '<div style="width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;">' .
-		( has_post_thumbnail( $post_id ) ?
-			'<img
-			src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
-			style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
-			alt=""
-		/>' : '' ) .
-		'<div style="margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</div>' .
-		'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</div>' .
-		'<div style="color: #7E969B">' . esc_html( $data['role'] ) . '</div>' .
-		'</div>';
+	$memory_wrap	= '<style>body{background-color: #F7FAFC}</style>' .
+		'<span style="width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;">' .
+			( has_post_thumbnail( $post_id ) ?
+				'<img
+				src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
+				style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
+				alt=""
+			/>' : '' ) .
+			'<div style="margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</div>' .
+			'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</div>' .
+			'<div style="color: #7E969B">' . esc_html( $data['role'] ) . '</div>' .
+		'</span>';
 	$body = str_replace( '[memory]', $memory_wrap, $body );
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
