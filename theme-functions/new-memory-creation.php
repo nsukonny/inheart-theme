@@ -7,8 +7,17 @@
  */
 function ih_create_new_memory_page(): void
 {
-	// Memory page is already in creation process - exit.
-	if( isset( $_SESSION['memory_page_id'] ) ) return;
+	// Memory page is already in creation process.
+	if( isset( $_SESSION['memory_page_id'] ) ){
+		$edit = ( isset( $_GET['edit'] ) && $_GET['edit'] == 1 ) ? 1 : null;
+
+		// If this is an edit mode - do nothing.
+		if( isset( $_SESSION['edit_mode'] ) && $edit ) return;
+	}
+
+	// Otherwise - this is not an edit mode
+	unset( $_SESSION['edit_mode'] );
+	unset( $_SESSION['memory_page_id'] );
 
 	$author_id		= get_current_user_id();
 	$memory_pages	= get_posts( [
@@ -551,6 +560,7 @@ function ih_ajax_save_data_step_5(): void
 
 	// This is the last step. Clean session data and publish memory page.
 	unset( $_SESSION['memory_page_id'] );
+	unset( $_SESSION['edit_mode'] );
 	unset( $_SESSION['step1'] );
 	unset( $_SESSION['step4'] );
 	$first_name		= get_field( 'first_name', $memory_page_id );
