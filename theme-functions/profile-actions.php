@@ -156,11 +156,11 @@ function ih_ajax_add_person_memory(): void
 	update_field( 'content', $memory, $post_id );
 
 	if( ! $photo || $photo['size'] === 0 ){
-		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// send mail !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		in_memory_created_send_mail( $post_id, [
+			'memory'	=> $memory,
+			'fullname'	=> $fullname,
+			'role'		=> $role
+		] );
 		wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
 	}
 
@@ -181,6 +181,28 @@ function ih_ajax_add_person_memory(): void
 		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
 
 	set_post_thumbnail( $post_id, $attach_id );
+	in_memory_created_send_mail( $post_id, [
+		'memory'	=> $memory,
+		'fullname'	=> $fullname,
+		'role'		=> $role
+	] );
+
+	wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+}
+
+/**
+ * Send email to an author when memory is created.
+ *
+ * @param int   $post_id	Created memory ID.
+ * @param array $data
+ * 		@var string $data['memory']
+ * 		@var string $data['fullname']
+ * 		@var string $data['role']
+ * @return bool|mixed
+ */
+function in_memory_created_send_mail( int $post_id, array $data ): mixed
+{
+	if( ! $post_id ) return false;
 
 	$subject		= get_field( 'memory_created_subject', 'option' );
 	$body			= get_field( 'memory_created_body', 'option' );
@@ -188,22 +210,22 @@ function ih_ajax_add_person_memory(): void
 	$author_email	= $memory_author->user_email;
 	$memory_wrap	= '<div style="width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;">' .
 		( has_post_thumbnail( $post_id ) ?
-		'<img
+			'<img
 			src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
 			style="width: 100%; height: auto; border-radius: 20px; margin-bottom: 24px;"
 			alt=""
 		/>' : '' ) .
-		'<div style="margin-bottom: 20px; opacity: 0.8;">' . $memory . '</div>' .
-		'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $fullname ) . '</div>' .
-		'<div style="color: #7E969B">' . esc_html( $role ) . '</div>' .
-	'</div>';
+		'<div style="margin-bottom: 20px; opacity: 0.8;">' . $data['memory'] . '</div>' .
+		'<div style="margin-bottom: 4px; opacity: 0.8;">' . esc_html( $data['fullname'] ) . '</div>' .
+		'<div style="color: #7E969B">' . esc_html( $data['role'] ) . '</div>' .
+		'</div>';
 	$body = str_replace( '[memory]', $memory_wrap, $body );
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-	wp_mail( $author_email, $subject, $body );
+	$send = wp_mail( $author_email, $subject, $body );
 	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 
-	wp_send_json_success( ['msg' => __( 'Спогад створено успішно', 'inheart' )] );
+	return $send;
 }
 
 add_action( 'wp_ajax_ih_ajax_load_profile_memories', 'ih_ajax_load_profile_memories' );

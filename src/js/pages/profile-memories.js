@@ -297,6 +297,6 @@ const showImagePopupOnClick = () => {
 			! target.closest( '.memory-preview-thumb' )
 		) return
 
-		showImagePopup( target )
+		showImagePopup( target, '.memory-preview-thumb' )
 	} )
 }

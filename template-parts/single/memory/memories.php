@@ -59,7 +59,10 @@ $memories		= get_posts( [
 					<div class="single-memory-memories-col flex direction-column add-padding">
 						<?php
 						for( $i = 0; $i < $count_in_col; $i++ )
-							get_template_part( 'components/memory-page/memory', null, [ 'id' => $memories[$i]->ID ] );
+							get_template_part( 'components/memory-page/memory', null, [
+								'id'	=> $memories[$i]->ID,
+								'index'	=> $i
+							] );
 
 						get_template_part( 'components/memory-page/add-memory-button', null, [
 							'url'	=> $add_memory_url,
@@ -78,7 +81,10 @@ $memories		= get_posts( [
 						$count_in_col_2			= $float_part === 0 ? ( int ) $half : ( int ) $half + 1;
 
 						for( $i = $count_in_col; $i < ( $count_in_col + $count_in_col_2 ); $i++ )
-							get_template_part( 'components/memory-page/memory', null, ['id' => $memories[$i]->ID] );
+							get_template_part( 'components/memory-page/memory', null, [
+								'id'	=> $memories[$i]->ID,
+								'index'	=> $i
+							] );
 						?>
 					</div>
 
@@ -86,11 +92,24 @@ $memories		= get_posts( [
 					<div class="single-memory-memories-col flex direction-column add-padding">
 						<?php
 						for( $i = ( $count_in_col + $count_in_col_2 ); $i < $memories_count; $i++ )
-							get_template_part( 'components/memory-page/memory', null, ['id' => $memories[$i]->ID] );
+							get_template_part( 'components/memory-page/memory', null, [
+								'id'	=> $memories[$i]->ID,
+								'index'	=> $i
+							] );
 						?>
 					</div>
 
 					<?php
+					if( $memories_count > 3 ){
+						?>
+						<div class="show-more-posts flex grow justify-end hide-after-lg">
+							<button>
+								<?php printf( pll_translate_string( 'Дивитись ще %d', $lang ), $memories_count - 3 ) ?>
+							</button>
+						</div>
+						<?php
+					}
+
 					get_template_part( 'components/memory-page/add-memory-button', null, [
 						'url'	=> $add_memory_url,
 						'lang'	=> $lang,

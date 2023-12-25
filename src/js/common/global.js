@@ -368,15 +368,16 @@ export const switcherLogic = () => {
 /**
  * Append image popup.
  *
- * @param image
+ * @param {HTMLObjectElement}	image
+ * @param {String}				imageWrapSelector
  */
-export const showImagePopup = image => {
+export const showImagePopup = ( image, imageWrapSelector ) => {
 	if( ! image ) return
 
 	const
 		popup		= document.createElement( 'div' ),
 		imageFull	= document.createElement( 'img' ),
-		src			= image.closest( '.memory-preview-thumb' ).dataset.full || ''
+		src			= image.closest( imageWrapSelector ).dataset.full || ''
 
 	if( ! src ) return
 

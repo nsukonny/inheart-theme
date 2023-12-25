@@ -10,6 +10,8 @@
 
 if( ! $memory_id = $args['id'] ?? null ) return;
 
+$index		= $args['index'] ?? 0;
+$class		= $index > 2 ? ' hide-before-lg' : '';
 $text		= get_field( 'content', $memory_id );
 $length		= 340;
 $excerpt	= mb_strlen( $text ) > $length
@@ -21,10 +23,10 @@ $role		= get_field( 'role', $memory_id );
 if( ! $text ) return;
 ?>
 
-<div class="single-memory-memories-item">
+<div class="single-memory-memories-item<?php echo $class ?>">
 	<?php
 	if( has_post_thumbnail( $memory_id ) )
-		echo '<div class="single-memory-memories-thumb flex justify-center">',
+		echo '<div class="single-memory-memories-thumb flex justify-center" data-full="', get_the_post_thumbnail_url( $memory_id, 'full' ), '">',
 			get_the_post_thumbnail( $memory_id, 'ih-memory-photo' ),
 		'</div>';
 

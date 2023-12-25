@@ -548,6 +548,7 @@ body.single-memory_page {
 		&-thumb {
 			width: 100%;
 			margin-bottom: 23px;
+			cursor: pointer;
 
 			img {
 				display: block;
@@ -651,26 +652,6 @@ body.single-memory_page {
 			@media (min-width: $xl) {
 				column-gap: 20px;
 				row-gap: 30px
-			}
-		}
-
-		&-more {
-			margin-top: 24px;
-
-			button {
-				font-family: $ff;
-				font-size: $fs-md;
-				line-height: normal;
-				text-decoration: underline;
-				color: $black-for-text;
-				background-color: transparent;
-				border: none;
-				padding: 0;
-				cursor: pointer;
-
-				&:hover {
-					text-decoration: none
-				}
 			}
 		}
 	}
@@ -1163,6 +1144,26 @@ body.single-memory_page {
 					margin-bottom: 0
 				}
 			}
+		}
+	}
+}
+
+.show-more-posts {
+	margin-top: 24px;
+
+	button {
+		font-family: $ff;
+		font-size: $fs-md;
+		line-height: normal;
+		text-decoration: underline;
+		color: $black-for-text;
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: none
 		}
 	}
 }

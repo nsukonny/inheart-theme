@@ -1,5 +1,6 @@
 import lightbox from 'lightbox2'
 import { Loader } from '@googlemaps/js-api-loader'
+import { showImagePopup, WINDOW_LG } from '../common/global'
 
 let map
 
@@ -9,7 +10,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	lightboxGalleryInit()
 	textFollowsTheCursor()
 	showHiddenVideos()
+
 	readMoreMemory()
+	showMoreMemories()
+	showMemoryImagePopupOnClick()
 
 	const
 		mapEl	= document.querySelector( '#map' ),
@@ -339,4 +343,41 @@ const readMoreMemory = () => {
 			text.classList.remove( 'hidden' )
 		} )
 	} )
+}
+
+/**
+ * Show more memories click.
+ */
+const showMoreMemories = () => {
+	const btn = document.querySelector( '.single-memory-memories .show-more-posts' )
+
+	if( ! btn ) return
+
+	btn.addEventListener( 'click', e => {
+		e.preventDefault()
+
+		const hiddenMemories = btn.closest( '.single-memory-memories' ).querySelectorAll( '.single-memory-memories-item.hide-before-lg' )
+
+		if( ! hiddenMemories.length ) return
+
+		hiddenMemories.forEach( memory => {
+			memory.classList.remove( 'hide-before-lg' )
+			btn.closest( '.show-more-posts' ).remove()
+		} )
+	} )
+}
+
+/**
+ * Show memory's large image in popup on click.
+ */
+const showMemoryImagePopupOnClick = () => {
+	const memoriesImages = document.querySelectorAll( '.single-memory-memories-thumb img' )
+
+	if( ! memoriesImages.length ) return
+
+	memoriesImages.forEach(
+		thumb => thumb.addEventListener( 'click', () => {
+			showImagePopup( thumb, '.single-memory-memories-thumb' )
+		} )
+	)
 }

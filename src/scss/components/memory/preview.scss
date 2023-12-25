@@ -37,7 +37,13 @@
 			font-family: $ff-title;
 			font-size: $fs-lg;
 			line-height: $lh-1;
-			font-weight: $fw-semibold
+			font-weight: $fw-semibold;
+			color: $text-primary;
+			transition: color ease-out $tr
+		}
+
+		&:hover .memory-preview-page-name {
+			color: $text-secondary
 		}
 	}
 

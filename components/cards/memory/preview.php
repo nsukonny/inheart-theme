@@ -22,7 +22,7 @@ $content		= get_field( 'content', $id );
 
 <div class="memory-preview" data-id="<?php echo esc_attr( $id ) ?>">
     <div class="memory-preview-top flex flex-wrap justify-between align-center">
-        <div class="memory-preview-page flex align-center">
+        <a href="<?php echo get_the_permalink( $page_id ) ?>" class="memory-preview-page flex align-center">
             <?php
 			if( has_post_thumbnail( $page_id ) )
 				echo '<div class="memory-preview-page-thumb">' . get_the_post_thumbnail( $page_id, 'ih-logo' ) . '</div>';
@@ -31,7 +31,7 @@ $content		= get_field( 'content', $id );
             <div class="memory-preview-page-name">
                 <?php echo ih_get_memory_page_name( $page_id ) ?>
             </div>
-        </div>
+        </a>
 
         <div class="memory-preview-actions flex align-center">
             <?php
