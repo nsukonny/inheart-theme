@@ -220,7 +220,7 @@ function in_memory_created_send_mail( int $post_id, array $data ): mixed
 	$memory_author	= wp_get_current_user();
 	$author_email	= $memory_author->user_email;
 	$memory_wrap	= '<style>body{background-color: #F7FAFC}</style>' .
-		'<span style="display: block; width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;margin: 0 auto">' .
+		'<span style="display: block; width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px; margin: 0 auto; text-align: left">' .
 			( has_post_thumbnail( $post_id ) ?
 			'<img
 				src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
@@ -260,7 +260,7 @@ function in_memory_created_send_mail_to_mp_author( int $post_id, array $data ): 
 	$subject		= get_field( 'memory_created_mp_subject', 'option' );
 	$body			= get_field( 'memory_created_mp_body', 'option' );
 	$memory_wrap	= '<style>body{background-color: #F7FAFC}</style>' .
-		'<span style="display: block; width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px;margin: 0 auto">' .
+		'<span style="display: block; width: 100%; max-width: 400px; color: #011C1A; font-size: 16px; line-height: 24px; background-color: #FFFFFF; border-radius: 40px; margin: 0 auto; text-align: left">' .
 			( has_post_thumbnail( $post_id ) ?
 			'<img
 				src="' . get_the_post_thumbnail_url( $post_id, 'medium' ) . '"
