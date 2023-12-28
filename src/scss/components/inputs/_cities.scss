@@ -1,0 +1,30 @@
+.np-cities,
+.np-departments {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	max-height: 250px;
+	flex-direction: column;
+	background-color: $white;
+	padding: 16px;
+	border-radius: $rad-input;
+	box-shadow: $menu-shadow;
+	z-index: 1;
+	overflow-y: auto;
+
+	&:empty {
+		display: none
+	}
+}
+
+.np-city,
+.np-department {
+	padding: 10px 0;
+	cursor: pointer;
+	transition: opacity ease-out $tr;
+
+	&:hover {
+		opacity: 0.7
+	}
+}

@@ -427,3 +427,70 @@ function ih_ajax_delete_profile_memory(): void
 	}
 }
 
+add_action( 'wp_ajax_ih_ajax_load_cities', 'ih_ajax_load_cities' );
+/**
+ * Return cities list from Nova Poshta API.
+ *
+ * @return void
+ */
+function ih_ajax_load_cities(): void
+{
+	if( ! $city = ih_clean( $_POST['city'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$body = json_encode( [
+		'apiKey'		=> '1c1680d527abb8098fd0ffbf1345d5ab',
+		'modelName'		=> 'Address',
+		'calledMethod'	=> 'getSettlements',
+		'methodProperties'	=> [
+			'FindByString'	=> $city,
+			'Warehouse'		=> 1
+		]
+	] );
+	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [
+		'headers'		=> ['Content-Type' => 'application/json; charset=utf-8'],
+		'data_format'	=> 'body',
+		'body'			=> $body
+	] );
+
+	if( empty( $res ) ) wp_send_json_error( ['msg' => __( 'Немає даних', 'inheart' )] );
+
+	$res_body = json_decode( $res['body'], true );
+
+	if( $res_body['success'] === true ) wp_send_json_success( ['cities' => $res_body['data']] );
+
+	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_load_departments', 'ih_ajax_load_departments' );
+/**
+ * Return city departments list from Nova Poshta API.
+ *
+ * @return void
+ */
+function ih_ajax_load_departments(): void
+{
+	if( ! $ref = ih_clean( $_POST['ref'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$body = json_encode( [
+		'apiKey'		=> '1c1680d527abb8098fd0ffbf1345d5ab',
+		'modelName'		=> 'Address',
+		'calledMethod'	=> 'getWarehouses',
+		'methodProperties'	=> [
+			'SettlementRef' => $ref
+		]
+	] );
+	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [
+		'headers'		=> ['Content-Type' => 'application/json; charset=utf-8'],
+		'data_format'	=> 'body',
+		'body'			=> $body
+	] );
+
+	if( empty( $res ) ) wp_send_json_error( ['msg' => __( 'Немає даних', 'inheart' )] );
+
+	$res_body = json_decode( $res['body'], true );
+
+	if( $res_body['success'] === true ) wp_send_json_success( ['departments' => $res_body['data']] );
+
+	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
+}
+

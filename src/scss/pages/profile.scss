@@ -358,4 +358,45 @@
 			}
 		}
 	}
+
+	&-form {
+		column-gap: 22px;
+
+		&-left {
+			width: 554px;
+			flex-grow: 1
+		}
+
+		&-right {
+			width: 404px;
+			flex-grow: 1
+		}
+
+		fieldset {
+			padding: 24px;
+			margin-bottom: 20px;
+			background-color: $white;
+			border-radius: $rad-form-fieldset;
+
+			&:last-child {
+				margin-bottom: 0
+			}
+		}
+
+		legend {
+			width: 100%;
+			font-family: $ff-title;
+			font-size: 24px;
+			font-weight: $fw-semibold;
+			line-height: 1.16;
+			color: $very-dark-green;
+			padding: 0;
+			margin: 0 0 20px;
+			float: left;
+
+			svg {
+				margin-left: 20px
+			}
+		}
+	}
 }

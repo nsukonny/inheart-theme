@@ -1,19 +1,20 @@
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import '../components/sidebar/sidebar'
 import {
 	checkAjaxWorkingStatus,
-	getTargetElement,
+	customDebounce,
 	ihAjaxRequest,
-	setAjaxWorkingStatus,
-	setTargetElement
+	setAjaxWorkingStatus
 } from '../common/global'
+
+let cities,
+	departments
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
 	expandToFull()
 	editMemory()
-	// novaPoshtaAPI()
+	loadCities()
 } )
 
 /**
@@ -94,19 +95,130 @@ const expandToFull = () => {
 	}
 }
 
-const novaPoshtaAPI = () => {
-	fetch( 'https://api.novaposhta.ua/v2.0/json/', {
-		method: 'POST',
-		body: JSON.stringify( {
-			apiKey: "1c1680d527abb8098fd0ffbf1345d5ab",
-			modelName: "Address",
-			calledMethod: "getSettlements",
-			methodProperties: {
-				FindByString: '',
-				Warehouse: 1
+/**
+ * Load matching cities list.
+ */
+const loadCities = () => {
+	const
+		cityInput	= document.querySelector( '#city' ),
+		formData	= new FormData()
+
+	if( ! cityInput ) return
+
+	const citiesWrap = cityInput.closest( 'label' ).querySelector( '.np-cities' )
+
+	formData.append( 'action', 'ih_ajax_load_cities' )
+
+	const onCityInputChange = e => {
+		const val = e.target.value
+
+		if( ! val || ! citiesWrap ) return
+
+		formData.append( 'city', val )
+		ihAjaxRequest( formData ).then( res => {
+			if( res ){
+				switch( res.success ){
+					case true:
+						cities = res.data.cities
+						console.log(cities)
+						citiesWrap.innerHTML = ''
+						cities.forEach( ( city, index ) => {
+							const item = `<span class="np-city" data-index="${ index }">
+								${ city.SettlementTypeDescription[0] }. ${ city.Description }, ${ city.AreaDescription }
+							</span>`
+							citiesWrap.insertAdjacentHTML( 'beforeend', item )
+						} )
+						break
+
+					case false:
+						console.error( res.data.msg )
+						break
+				}
 			}
 		} )
+	}
+
+	cityInput.addEventListener( 'input', customDebounce( onCityInputChange ) )
+	cityInput.addEventListener( 'focus', () => citiesWrap.classList.remove( 'hidden' ) )
+
+	citiesWrap.addEventListener( 'click', e => {
+		e.stopPropagation()
+
+		const target = e.target
+		let index
+
+		if( target.className && target.classList.contains( 'np-city' ) ){
+			index			= target.dataset.index
+			cityInput.value = target.innerText
+			setTimeout( () => {
+				cityInput.blur()
+				citiesWrap.classList.add( 'hidden' )
+			}, 10 )
+			loadDepartments( cities[index] )
+		}
 	} )
-		.then( json => json.json() )
-		.then( res => console.log( res ) )
+}
+
+const loadDepartments = city => {
+	if( ! city ) return
+
+	const
+		select			= document.querySelector( '#departments' ),
+		departmentsWrap	= select.closest( 'label' ).querySelector( '.np-departments' ),
+		formData		= new FormData()
+
+	formData.append( 'action', 'ih_ajax_load_departments' )
+	formData.append( 'ref', city.Ref )
+	ihAjaxRequest( formData ).then( res => {
+		if( res ){
+			switch( res.success ){
+				case true:
+					departments = res.data.departments
+					departmentsWrap.innerHTML = ''
+					departmentsWrap.classList.remove( 'hidden' )
+					departments.forEach( department => {
+						const item = `<span class="np-department">${ department.Description }</span>`
+						departmentsWrap.insertAdjacentHTML( 'beforeend', item )
+					} )
+					break
+
+				case false:
+					console.error( res.data.msg )
+					break
+			}
+		}
+	} )
+
+	const searchDepartments = e => {
+		const
+			val			= e.target.value,
+			departments	= document.querySelectorAll( '.np-department' )
+
+		if( ! departments.length ) return
+
+		departments.forEach( dep => dep.classList.remove( 'hidden' ) )
+
+		if( ! val ) return
+
+		departments.forEach( dep => {
+			if( ! dep.innerText.toLowerCase().includes( val.toLowerCase() ) ) dep.classList.add( 'hidden' )
+		} )
+	}
+
+	select.addEventListener( 'focus', () => departmentsWrap.classList.remove( 'hidden' ) )
+	select.addEventListener( 'input', searchDepartments )
+
+	departmentsWrap.addEventListener( 'click', e => {
+		e.stopPropagation()
+
+		const target = e.target
+
+		if( target.className && target.classList.contains( 'np-department' ) ){
+			select.value = target.innerText
+			setTimeout( () => {
+				select.blur()
+				departmentsWrap.classList.add( 'hidden' )
+			}, 10 )
+		}
+	} )
 }
