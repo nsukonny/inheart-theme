@@ -110,17 +110,21 @@ const loadCities = () => {
 	formData.append( 'action', 'ih_ajax_load_cities' )
 
 	const onCityInputChange = e => {
-		const val = e.target.value
+		const
+			input	= e.target,
+			val		= input.value
 
 		if( ! val || ! citiesWrap ) return
 
 		formData.append( 'city', val )
+		disableInput( input )
 		ihAjaxRequest( formData ).then( res => {
+			enableInput( input )
+
 			if( res ){
 				switch( res.success ){
 					case true:
 						cities = res.data.cities
-						console.log(cities)
 						citiesWrap.innerHTML = ''
 						cities.forEach( ( city, index ) => {
 							const item = `<span class="np-city" data-index="${ index }">
@@ -128,6 +132,7 @@ const loadCities = () => {
 							</span>`
 							citiesWrap.insertAdjacentHTML( 'beforeend', item )
 						} )
+						citiesWrap.classList.remove( 'hidden' )
 						break
 
 					case false:
@@ -135,6 +140,9 @@ const loadCities = () => {
 						break
 				}
 			}
+		} ).catch( err => {
+			enableInput( input )
+			console.error( err.message )
 		} )
 	}
 
@@ -157,6 +165,13 @@ const loadCities = () => {
 			loadDepartments( cities[index] )
 		}
 	} )
+
+	document.addEventListener( 'click', e => {
+		if(
+			! citiesWrap.classList.contains( 'hidden' ) &&
+			e.target.id !== 'city'
+		) citiesWrap.classList.add( 'hidden' )
+	} )
 }
 
 const loadDepartments = city => {
@@ -169,10 +184,15 @@ const loadDepartments = city => {
 
 	formData.append( 'action', 'ih_ajax_load_departments' )
 	formData.append( 'ref', city.Ref )
+	select.value = ''
+	disableInput( select )
 	ihAjaxRequest( formData ).then( res => {
+		enableInput( select )
+
 		if( res ){
 			switch( res.success ){
 				case true:
+					select.focus()
 					departments = res.data.departments
 					departmentsWrap.innerHTML = ''
 					departmentsWrap.classList.remove( 'hidden' )
@@ -180,6 +200,7 @@ const loadDepartments = city => {
 						const item = `<span class="np-department">${ department.Description }</span>`
 						departmentsWrap.insertAdjacentHTML( 'beforeend', item )
 					} )
+					departmentsWrap.classList.remove( 'hidden' )
 					break
 
 				case false:
@@ -187,6 +208,9 @@ const loadDepartments = city => {
 					break
 			}
 		}
+	} ).catch( err => {
+		enableInput( select )
+		console.error( err.message )
 	} )
 
 	const searchDepartments = e => {
@@ -221,4 +245,21 @@ const loadDepartments = city => {
 			}, 10 )
 		}
 	} )
+
+	document.addEventListener( 'click', e => {
+		if(
+			! departmentsWrap.classList.contains( 'hidden' ) &&
+			e.target.id !== 'departments'
+		) departmentsWrap.classList.add( 'hidden' )
+	} )
+}
+
+const disableInput = input => {
+	input.classList.add( 'loading' )
+	input.disabled = 'disabled'
+}
+
+const enableInput = input => {
+	input.classList.remove( 'loading' )
+	input.removeAttribute( 'disabled' )
 }
