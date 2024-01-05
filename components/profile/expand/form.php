@@ -18,7 +18,7 @@ $phone		= get_field( 'phone', "user_{$user_id}" ) ?: '';
 $email		= $data->user_email;
 ?>
 
-<form class="expand-page-form flex flex-wrap">
+<form class="expand-page-form flex">
 	<div class="expand-page-form-left">
 		<fieldset class="flex flex-wrap">
 			<legend><?php _e( 'Ваші контактні дані для доставки', 'inheart' ) ?></legend>
@@ -47,9 +47,9 @@ $email		= $data->user_email;
 		</fieldset>
 
 		<fieldset class="flex flex-wrap">
-			<legend class="flex flex-wrap align-center">
+			<p class="legend">
 				<?php _e( 'Отримати у відділенні Нової пошти', 'inheart' ) ?>
-				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+				<a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
 					<g clip-path="url(#clip0_1070_53792)">
 						<path fill-rule="evenodd" clip-rule="evenodd" d="M24.0485 8.76098C24.1392 8.73244 24.2587 8.78951 24.3781 8.94646C24.3781 8.94646 24.3781 8.94645 29.7759 14.2064C30.0912 14.5203 30.0912 14.9959 29.7759 15.229C29.7759 15.229 29.7759 15.229 24.3781 20.5698C24.2587 20.7267 24.1392 20.7648 24.0485 20.7172C23.9577 20.6697 23.9004 20.5317 23.9004 20.332V9.1034C23.9004 8.90841 23.9577 8.78951 24.0485 8.76098Z" fill="#ED1C24"/>
 						<path fill-rule="evenodd" clip-rule="evenodd" d="M14.815 -0.00390625H15.1972L15.565 0.148282C15.565 0.148282 15.565 0.148282 21.1204 5.64606C21.3593 5.95995 21.2781 6.19774 20.8816 6.19774C20.8816 6.19774 20.8816 6.19774 18.5792 6.19774C18.1827 6.19774 17.8674 6.51163 17.8674 6.90637C17.8674 6.90637 17.8674 6.90637 17.8674 10.9869C17.8674 11.3816 17.5474 11.6955 17.0697 11.6955C17.0697 11.6955 17.0697 11.6955 13.0237 11.6955C12.6272 11.6955 12.3072 11.3816 12.3072 10.9869C12.3072 10.9869 12.3072 10.9869 12.3072 6.90637C12.3072 6.51163 11.9919 6.19774 11.5907 6.19774H9.13058C8.73411 6.19774 8.6529 5.95995 8.89174 5.64606C8.89174 5.64606 8.89174 5.64606 14.452 0.148282L14.815 -0.00390625Z" fill="#ED1C24"/>
@@ -61,8 +61,8 @@ $email		= $data->user_email;
 							<rect width="30" height="29.6053" fill="white"/>
 						</clipPath>
 					</defs>
-				</svg>
-			</legend>
+					</svg></a>
+			</p>
 
 			<?php
 			get_template_part( 'components/inputs/cities', null, [
@@ -111,7 +111,7 @@ $email		= $data->user_email;
 	</div>
 
 	<div class="expand-page-form-right">
-		RIGHT PART
+		<?php get_template_part( 'components/profile/expand/form-right' ) ?>
 	</div>
 </form><!-- .profile-settings-form -->
 

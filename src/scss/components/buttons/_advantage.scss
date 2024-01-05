@@ -1,0 +1,14 @@
+.advantage {
+	display: inline-block;
+	padding: 6px 7px;
+	font-size: $fs-xs;
+	line-height: $lh-tags-special;
+	color: $text-primary;
+	background-color: $bg-primary;
+	border: 1px solid transparent;
+	border-radius: $rad-advantage;
+
+	&.pro {
+		border-color: $border-accent-on-color
+	}
+}
