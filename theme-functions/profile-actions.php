@@ -437,8 +437,11 @@ function ih_ajax_load_cities(): void
 {
 	if( ! $city = ih_clean( $_POST['city'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
+	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
+		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
+
 	$body = json_encode( [
-		'apiKey'		=> '1c1680d527abb8098fd0ffbf1345d5ab',
+		'apiKey'		=> $np_api_key,
 		'modelName'		=> 'Address',
 		'calledMethod'	=> 'getSettlements',
 		'methodProperties'	=> [
@@ -471,8 +474,11 @@ function ih_ajax_load_departments(): void
 {
 	if( ! $ref = ih_clean( $_POST['ref'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
+	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
+		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
+
 	$body = json_encode( [
-		'apiKey'		=> '1c1680d527abb8098fd0ffbf1345d5ab',
+		'apiKey'		=> $np_api_key,
 		'modelName'		=> 'Address',
 		'calledMethod'	=> 'getWarehouses',
 		'methodProperties'	=> [

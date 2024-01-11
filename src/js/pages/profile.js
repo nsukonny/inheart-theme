@@ -1,8 +1,9 @@
 import '../components/sidebar/sidebar'
 import {
+	addLoader,
 	checkAjaxWorkingStatus,
-	customDebounce,
-	ihAjaxRequest,
+	customDebounce, disableInput, enableInput,
+	ihAjaxRequest, removeLoader,
 	setAjaxWorkingStatus
 } from '../common/global'
 
@@ -112,14 +113,19 @@ const loadCities = () => {
 	const onCityInputChange = e => {
 		const
 			input	= e.target,
-			val		= input.value
+			val		= input.value,
+			label	= input.closest( 'label' )
 
 		if( ! val || ! citiesWrap ) return
 
 		formData.append( 'city', val )
 		disableInput( input )
+		addLoader( label )
+		citiesWrap.classList.add( 'hidden' )
 		ihAjaxRequest( formData ).then( res => {
 			enableInput( input )
+			removeLoader( label )
+			input.focus()
 
 			if( res ){
 				switch( res.success ){
@@ -142,6 +148,7 @@ const loadCities = () => {
 			}
 		} ).catch( err => {
 			enableInput( input )
+			removeLoader( label )
 			console.error( err.message )
 		} )
 	}
@@ -180,27 +187,37 @@ const loadDepartments = city => {
 	const
 		select			= document.querySelector( '#departments' ),
 		departmentsWrap	= select.closest( 'label' ).querySelector( '.np-departments' ),
-		formData		= new FormData()
+		formData		= new FormData(),
+		label			= select.closest( 'label' )
 
 	formData.append( 'action', 'ih_ajax_load_departments' )
 	formData.append( 'ref', city.Ref )
 	select.value = ''
 	disableInput( select )
+	addLoader( label )
+	departmentsWrap.classList.add( 'hidden' )
 	ihAjaxRequest( formData ).then( res => {
 		enableInput( select )
+		removeLoader( label )
+		select.focus()
 
 		if( res ){
 			switch( res.success ){
 				case true:
 					select.focus()
 					departments = res.data.departments
-					departmentsWrap.innerHTML = ''
-					departmentsWrap.classList.remove( 'hidden' )
-					departments.forEach( department => {
-						const item = `<span class="np-department">${ department.Description }</span>`
-						departmentsWrap.insertAdjacentHTML( 'beforeend', item )
-					} )
-					departmentsWrap.classList.remove( 'hidden' )
+
+					if( departments.length ){
+						departmentsWrap.innerHTML = ''
+						departmentsWrap.classList.remove( 'hidden' )
+						departments.forEach( department => {
+							const item = `<span class="np-department">${ department.Description }</span>`
+							departmentsWrap.insertAdjacentHTML( 'beforeend', item )
+						} )
+						departmentsWrap.classList.remove( 'hidden' )
+					}else{
+						select.value = 'Нажаль, інформації немає'
+					}
 					break
 
 				case false:
@@ -210,6 +227,7 @@ const loadDepartments = city => {
 		}
 	} ).catch( err => {
 		enableInput( select )
+		removeLoader( label )
 		console.error( err.message )
 	} )
 
@@ -252,14 +270,4 @@ const loadDepartments = city => {
 			e.target.id !== 'departments'
 		) departmentsWrap.classList.add( 'hidden' )
 	} )
-}
-
-const disableInput = input => {
-	input.classList.add( 'loading' )
-	input.disabled = 'disabled'
-}
-
-const enableInput = input => {
-	input.classList.remove( 'loading' )
-	input.removeAttribute( 'disabled' )
 }

@@ -397,3 +397,53 @@ export const showImagePopup = ( image, imageWrapSelector ) => {
 		}
 	} )
 }
+
+/**
+ * Disable input.
+ *
+ * @param {HTMLObjectElement} input
+ */
+export const disableInput = input => {
+	input.classList.add( 'loading' )
+	input.disabled = 'disabled'
+}
+
+/**
+ * Enable input.
+ *
+ * @param {HTMLObjectElement} input
+ */
+export const enableInput = input => {
+	input.classList.remove( 'loading' )
+	input.removeAttribute( 'disabled' )
+}
+
+/**
+ * Append loader inside specific element.
+ *
+ * @param {HTMLObjectElement} elem	Element to put loader in.
+ */
+export const addLoader = elem => {
+	if( ! elem ) return
+
+	const loader = '<div class="tmp-loader"></div>'
+
+	elem.classList.add( 'loading' )
+	elem.insertAdjacentHTML( 'beforeend', loader )
+}
+
+/**
+ * Delete loader from specific element.
+ *
+ * @param {HTMLObjectElement} elem	Element to delete loader from.
+ */
+export const removeLoader = elem => {
+	if( ! elem ) return
+
+	const loader = elem.querySelector( '.tmp-loader' )
+
+	if( loader ){
+		elem.classList.remove( 'loading' )
+		loader.remove()
+	}
+}
