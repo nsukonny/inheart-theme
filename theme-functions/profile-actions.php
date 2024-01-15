@@ -500,3 +500,25 @@ function ih_ajax_load_departments(): void
 	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_change_qty', 'ih_ajax_change_qty' );
+/**
+ * Change quantity of metal QR-codes.
+ *
+ * @return void
+ */
+function ih_ajax_change_qty(): void
+{
+	if( ! $count = ih_clean( $_POST['count'] ) ?? null )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$expanded_id	= get_field( 'expanded_memory_page', 'option' );
+	$qr_id			= get_field( 'qr_code_metal', 'option' );
+	$price			= get_field( 'price', $expanded_id );
+	$price			+= get_field( 'price', $qr_id ) * $count;
+
+	if( ! $expanded_id || ! $qr_id )
+		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
+
+	wp_send_json_success( ['price' => $price] );
+}
+

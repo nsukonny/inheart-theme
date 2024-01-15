@@ -383,6 +383,10 @@
 			@media (min-width: $lg) {
 				max-width: 404px
 			}
+
+			.full-price-btn span {
+				margin: 0 5px
+			}
 		}
 
 		fieldset {
@@ -524,7 +528,12 @@
 .qr-count {
 	margin-bottom: 24px;
 
-	&-qty {
-		margin: 0 20px
+	#qr-count-qty {
+		padding: 0;
+		margin: 0;
+		border: none;
+		width: 45px;
+		height: auto;
+		text-align: center
 	}
 }

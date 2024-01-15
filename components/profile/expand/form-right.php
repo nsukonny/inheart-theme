@@ -74,13 +74,20 @@ if( $qr_id && get_post_type( $qr_id ) === 'production' ) $full_price += get_fiel
 
 		<div class="qr-count-buttons flex align-center">
 			<button class="button qty minus" disabled type="button"></button>
-			<span class="qr-count-qty">1</span>
+			<input type="text" name="qr-count-qty" id="qr-count-qty" class="qr-count-qty" value="1" />
 			<button class="button qty plus" type="button"></button>
 		</div>
 	</div>
 
-	<button class="button primary lg fw" type="submit">
-		<?php printf( __( 'Замовити за %s грн', 'inheart' ), number_format( $full_price, 0, '', ' ' ) ) ?>
+	<button class="button primary lg fw full-price-btn" type="submit">
+		<?php
+		printf(
+			__( 'Замовити за %s%s%s грн', 'inheart' ),
+			'<span>',
+			number_format( $full_price, 0, '', ' ' ),
+			'</span>'
+		);
+		?>
 	</button>
 </div>
 

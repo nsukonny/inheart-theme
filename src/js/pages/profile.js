@@ -2,9 +2,13 @@ import '../components/sidebar/sidebar'
 import {
 	addLoader,
 	checkAjaxWorkingStatus,
-	customDebounce, disableInput, enableInput,
-	ihAjaxRequest, removeLoader,
-	setAjaxWorkingStatus
+	customDebounce,
+	disableInput,
+	enableInput,
+	ihAjaxRequest,
+	removeLoader,
+	setAjaxWorkingStatus,
+	showNotification
 } from '../common/global'
 
 let cities,
@@ -16,6 +20,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	expandToFull()
 	editMemory()
 	loadCities()
+	calculateQRCount()
 } )
 
 /**
@@ -181,6 +186,9 @@ const loadCities = () => {
 	} )
 }
 
+/**
+ * Load city departments list.
+ */
 const loadDepartments = city => {
 	if( ! city ) return
 
@@ -269,5 +277,98 @@ const loadDepartments = city => {
 			! departmentsWrap.classList.contains( 'hidden' ) &&
 			e.target.id !== 'departments'
 		) departmentsWrap.classList.add( 'hidden' )
+	} )
+}
+
+/**
+ * Re-calculate full price on QR count change.
+ */
+const calculateQRCount = () => {
+	const
+		buttonsWrap = document.querySelector( '.qr-count-buttons' ),
+		priceBtn	= document.querySelector( '.full-price-btn' )
+
+	if( ! buttonsWrap || ! priceBtn ) return
+
+	const
+		buttons	= buttonsWrap.querySelectorAll( '.button.qty' ),
+		minus	= buttonsWrap.querySelector( '.button.qty.minus' ),
+		countEl	= buttonsWrap.querySelector( '.qr-count-qty' ),
+		priceEl	= priceBtn.querySelector( 'span' )
+
+	if( ! buttons.length || ! minus || ! countEl ) return
+
+	/**
+	 * Quantity input changed callback.
+	 *
+	 * @param {Event} e
+	 */
+	const onQuantityChange = e => {
+		const
+			target		= e.target,
+			value		= target.value,
+			formData	= new FormData()
+
+		if( checkAjaxWorkingStatus() || ! value ) return
+
+		setAjaxWorkingStatus( true )
+
+		target.classList.add( 'disabled' )
+		priceBtn.classList.add( 'disabled' )
+		priceBtn.disabled = true
+
+		formData.append( 'action', 'ih_ajax_change_qty' )
+		formData.append( 'count', value )
+
+		ihAjaxRequest( formData ).then( res => {
+			target.classList.remove( 'disabled' )
+			priceBtn.classList.remove( 'disabled' )
+			priceBtn.removeAttribute( 'disabled' )
+
+			if( res ){
+				switch( res.success ){
+					case true:
+						priceEl.innerHTML = res.data.price
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
+		} )
+	}
+
+	/**
+	 * Quantity change via buttons callback.
+	 *
+ 	 * @param {Event} e
+	 */
+	const onButtonClick = e => {
+		const btn	= e.target
+		let count	= countEl.value.trim().replace( ' ', '' )
+
+		if( btn.disabled ) return
+
+		if( btn.classList.contains( 'plus' ) ){
+			count++
+
+			if( minus.disabled ) minus.removeAttribute( 'disabled' )
+		}else{
+			if( btn.classList.contains( 'minus' ) && count > 1 ) count--
+
+			if( count === 1 ) minus.disabled = true
+		}
+
+		countEl.value = count
+		countEl.dispatchEvent( new Event( 'change' ) )
+	}
+
+	countEl.addEventListener( 'change', customDebounce( onQuantityChange, 350 ) )
+
+	buttons.forEach( btn => {
+		btn.addEventListener( 'click', onButtonClick )
 	} )
 }
