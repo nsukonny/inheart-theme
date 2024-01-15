@@ -14,7 +14,13 @@ $advantages_pro	= get_field( 'advantages_pro' );
 $title_qr		= get_field( 'title_qr' );
 $photo_qr		= get_field( 'photo_qr' );
 $desc_qr		= get_field( 'desc_qr' );
-$qr_price		= 2900;
+$expanded_id	= get_field( 'expanded_memory_page', 'option' );
+$qr_id			= get_field( 'qr_code_metal', 'option' );
+$full_price		= 0;
+
+if( $expanded_id && get_post_type( $expanded_id ) === 'production' ) $full_price += get_field( 'price', $expanded_id );
+
+if( $qr_id && get_post_type( $qr_id ) === 'production' ) $full_price += get_field( 'price', $qr_id );
 ?>
 
 <div class="expand-page-form-right flex direction-column">
@@ -67,14 +73,14 @@ $qr_price		= 2900;
 		<span class="qr-count-label"><?php _e( 'Кількість', 'inheart' ) ?></span>
 
 		<div class="qr-count-buttons flex align-center">
-			<button class="button qty minus" disabled></button>
+			<button class="button qty minus" disabled type="button"></button>
 			<span class="qr-count-qty">1</span>
-			<button class="button qty plus"></button>
+			<button class="button qty plus" type="button"></button>
 		</div>
 	</div>
 
 	<button class="button primary lg fw" type="submit">
-		<?php printf( __( 'Замовити за %s грн', 'inheart' ), number_format( $qr_price, 0, '', ' ' ) ) ?>
+		<?php printf( __( 'Замовити за %s грн', 'inheart' ), number_format( $full_price, 0, '', ' ' ) ) ?>
 	</button>
 </div>
 

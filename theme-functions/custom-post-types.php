@@ -106,6 +106,33 @@ $args = [
 ];
 register_post_type( 'memory', $args );
 
+$labels = [
+	'name'			=> __( 'Товари', 'inheart' ),
+	'singular_name'	=> __( 'Товар', 'inheart' ),
+	'add_new'		=> __( 'Додати товар', 'inheart' ),
+	'add_new_item'	=> __( 'Додати новий товар', 'inheart' ),
+	'edit_item'		=> __( 'Редагувати', 'inheart' ),
+	'new_item'		=> __( 'Новий товар', 'inheart' ),
+	'all_item'		=> __( 'Усі товари', 'inheart' ),
+	'view_item'		=> __( 'Дивитись', 'inheart' ),
+	'search_item'	=> __( 'Пошук', 'inheart' ),
+	'menu_item'		=> __( 'Товари', 'inheart' )
+];
+$args = [
+	'labels'				=> $labels,
+	'public'				=> true,
+	'publicly_queryable'	=> true,
+	'show_ui'				=> true,
+	'hierarchical'			=> false,
+	'menu_icon'				=> 'dashicons-cart',
+	'menu_position'			=> 6,
+	'has_archive'			=> false,
+	'show_in_rest'			=> true,
+	'supports'				=> ['title', 'thumbnail'],
+	'rewrite'				=> ['slug' => 'production']
+];
+register_post_type( 'production', $args );
+
 /*
 $labels = array(
 	'name'          => __( 'Підписки', 'inheart' ),
