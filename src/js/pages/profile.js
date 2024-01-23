@@ -21,6 +21,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	editMemory()
 	loadCities()
 	calculateQRCount()
+	createOrder()
 } )
 
 /**
@@ -370,5 +371,45 @@ const calculateQRCount = () => {
 
 	buttons.forEach( btn => {
 		btn.addEventListener( 'click', onButtonClick )
+	} )
+}
+
+const createOrder = () => {
+	const form = document.querySelector( '.expand-page-form' )
+
+	if( ! form ) return
+
+	form.addEventListener( 'submit', e => {
+		e.preventDefault()
+
+		const
+			target		= e.target,
+			formData	= new FormData( form )
+
+		if( checkAjaxWorkingStatus() ) return
+
+		setAjaxWorkingStatus( true )
+
+		target.classList.add( 'disabled' )
+		formData.append( 'action', 'ih_ajax_create_order' )
+
+		ihAjaxRequest( formData ).then( res => {
+			target.classList.remove( 'disabled' )
+
+			if( res ){
+				switch( res.success ){
+					case true:
+						if( res.data.pageUrl ) window.location.href = res.data.pageUrl
+						else showNotification( 'Невідома помилка', 'error' )
+						break
+
+					case false:
+						showNotification( res.data.msg, 'error' )
+						break
+				}
+			}
+
+			setAjaxWorkingStatus( false )
+		} )
 	} )
 }

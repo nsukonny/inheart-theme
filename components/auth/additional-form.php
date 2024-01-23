@@ -13,14 +13,14 @@ switch( $type ){
 	case 'register':
 		$text = sprintf(
 			__( 'Я вже маю акаунт %sУвійти%s', 'inheart' ),
-			'<a href="' . get_the_permalink( pll_get_post( 10 ) ) . '">', '</a>'
+			'<a href="' . get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) . '">', '</a>'
 		);
 		break;
 
 	default:
 		$text = sprintf(
 			__( 'Ще не зареєстровані? %sСтворити акаунт %s', 'inheart' ),
-			'<a href="' . get_the_permalink( pll_get_post( 12 ) ) . '">', '</a>'
+			'<a href="' . get_the_permalink( pll_get_post( ih_get_registration_page_id() ) ) . '">', '</a>'
 		);
 		break;
 }

@@ -351,3 +351,71 @@ function ih_get_socials( string $class = '' ): string
 	return "$res</div>";
 }
 
+/**
+ * Returns the expanded memory page price.
+ *
+ * @return int
+ */
+function ih_get_expanded_page_price(): int
+{
+	if( ! $expanded_id = get_field( 'expanded_memory_page', 'option' ) ) return 0;
+
+	return get_field( 'price', $expanded_id );
+}
+
+/**
+ * Returns the metal QR-code price.
+ *
+ * @return int
+ */
+function ih_get_metal_qr_price(): int
+{
+	if( ! $qr_id = get_field( 'qr_code_metal', 'option' ) ) return 0;
+
+	return get_field( 'price', $qr_id );
+}
+
+/**
+ * Returns the total price of the expanded memory page and metal QRs.
+ *
+ * @param int $qr_count	Count of metal QRs
+ * @return int
+ */
+function ih_get_expanded_page_order_price( int $qr_count = 1 ): int
+{
+	return ih_get_expanded_page_price() + ( ih_get_metal_qr_price() * $qr_count );
+}
+
+/**
+ * Below - helpers to get theme pages IDs.
+ */
+function ih_get_login_page_id(): int
+{
+	return get_field( 'login_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_registration_page_id(): int
+{
+	return get_field( 'registration_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_forgot_pass_page_id(): int
+{
+	return get_field( 'forgot_pass_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_profile_page_id(): int
+{
+	return get_field( 'profile_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_memory_creation_page_id(): int
+{
+	return get_field( 'memory_creation_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_order_created_page_id(): int
+{
+	return get_field( 'order_created_page_id', 'option' ) ?: 0;
+}
+

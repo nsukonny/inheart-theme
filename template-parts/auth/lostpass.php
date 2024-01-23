@@ -56,7 +56,7 @@ if( $code === $original_code ){
 <div class="activation-inner wrap-gray">
 	<?php esc_html_e( 'Параметри зміни паролю невірні або пароль вже змінено.', 'inheart' ) ?>
 	<div class="btn-wrap">
-		<a href="<?php get_the_permalink( pll_get_post( 10 ) ) ?>" class="btn md">
+		<a href="<?php get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) ?>" class="btn md">
 			<?php esc_html_e( 'Увійти', 'inheart' ) ?>
 		</a>
 	</div>

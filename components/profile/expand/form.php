@@ -32,7 +32,7 @@ $email		= $data->user_email;
 				'placeholder'	=> __( 'Ваша електронна пошта', 'inheart' ),
 				'value'			=> $email,
 				'autocomplete'	=> 'email',
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/default', null, [
 				'name'			=> 'phone',
@@ -41,7 +41,7 @@ $email		= $data->user_email;
 				'placeholder'	=> __( 'Ваш телефон', 'inheart' ),
 				'value'			=> $phone,
 				'autocomplete'	=> 'phone',
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			?>
 		</fieldset>
@@ -70,14 +70,14 @@ $email		= $data->user_email;
 				'label'			=> __( 'Місто', 'inheart' ),
 				'label_class'	=> 'full',
 				'placeholder'	=> __( 'Почніть вводити назву', 'inheart' ),
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/departments', null, [
 				'name'			=> 'departments',
 				'label'			=> __( 'Номер відділення', 'inheart' ),
 				'label_class'	=> 'full',
 				'placeholder'	=> __( 'Номер відділення', 'inheart' ),
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/default', null, [
 				'name'			=> 'firstname',
@@ -86,7 +86,7 @@ $email		= $data->user_email;
 				'placeholder'	=> __( "Ваше ім'я", 'inheart' ),
 				'value'			=> $first_name,
 				'autocomplete'	=> 'given-name',
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/default', null, [
 				'name'			=> 'lastname',
@@ -95,7 +95,7 @@ $email		= $data->user_email;
 				'placeholder'	=> __( 'Ваше прізвище', 'inheart' ),
 				'value'			=> $last_name,
 				'autocomplete'	=> 'family-name',
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/default', null, [
 				'name'			=> 'fathername',
@@ -104,7 +104,7 @@ $email		= $data->user_email;
 				'placeholder'	=> __( 'По батькові', 'inheart' ),
 				'value'			=> $fathername,
 				'autocomplete'	=> 'additional-name',
-				'required'		=> 1
+				'required'		=> 0
 			] );
 			?>
 		</fieldset>

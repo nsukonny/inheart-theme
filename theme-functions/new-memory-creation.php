@@ -577,7 +577,7 @@ function ih_ajax_save_data_step_5(): void
 
 	wp_send_json_success( [
 		'msg'		=> esc_html__( 'Дані Кроку 5 збережено успішно!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( 951 ) )	// Profile
+		'redirect'	=> get_the_permalink( pll_get_post( ih_get_profile_page_id() ) )	// Profile
 	] );
 }
 

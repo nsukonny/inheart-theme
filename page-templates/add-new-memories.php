@@ -8,7 +8,7 @@
  */
 
 if( ! is_user_logged_in() ){
-	wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );
+	wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) );
 	exit;
 }
 
@@ -50,7 +50,7 @@ $bottom_text = get_field( 'memory_created_bottom' );
 			?>
 			<div class="add-new-memory-bottom flex align-center justify-between hidden">
 				<div><?php echo $bottom_text ?></div>
-				<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="button lg primary">
+				<a href="<?php echo get_the_permalink( pll_get_post( ih_get_memory_creation_page_id() ) ) ?>" class="button lg primary">
 					<?php _e( 'Створити сторінку спогадів', 'inheart' ) ?>
 				</a>
 			</div>

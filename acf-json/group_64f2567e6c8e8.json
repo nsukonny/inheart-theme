@@ -164,6 +164,43 @@
             "append": ""
         },
         {
+            "key": "field_65a6f19224425",
+            "label": "Monobank API",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_65a6f1ad24426",
+            "label": "Токен",
+            "name": "mono_token",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_650614e0a3a54",
             "label": "Login",
             "name": "",
@@ -322,5 +359,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1705352567
+    "modified": 1705439678
 }

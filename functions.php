@@ -10,9 +10,9 @@
 require 'vendor/autoload.php';
 
 const THEME_NAME = 'inheart';
+define( 'THEME_VERSION', mt_rand() );
 define( 'THEME_URI', get_template_directory_uri() );
 define( 'THEME_DIR', get_template_directory() );
-define( 'THEME_VERSION', mt_rand() );
 
 add_action( 'after_setup_theme', 'ih_load_theme_dependencies' );
 /**
@@ -36,6 +36,7 @@ function ih_load_theme_dependencies(): void
 	require_once( 'theme-functions/auth.php' );	// Authorization.
 	require_once( 'theme-functions/new-memory-creation.php' );	// Create new memory.
 	require_once( 'theme-functions/profile-actions.php' );	// Profile pages functions.
+	require_once( 'theme-functions/order-actions.php' );	// Order functions.
 }
 
 add_action( 'init', 'ih_init_theme' );
@@ -142,6 +143,12 @@ function ih_acf_init(): void
 		acf_add_options_sub_page( [
 			'page_title' 	=> __( 'Email Templates' ),
 			'menu_title'	=> __( 'Email Templates' ),
+			'parent_slug'	=> $acf_parent_options['menu_slug']
+		] );
+
+		acf_add_options_sub_page( [
+			'page_title' 	=> __( 'Pages' ),
+			'menu_title'	=> __( 'Pages' ),
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
 	}

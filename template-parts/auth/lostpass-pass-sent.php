@@ -16,7 +16,7 @@ if(
 ){
 	printf(
 		esc_html__( 'Цей Користувач не просив оновлення паролю. %sУвійти%s', 'inheart' ),
-		'<a href="' . get_the_permalink( pll_get_post( 10 ) ) . '">', '</a>'
+		'<a href="' . get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) . '">', '</a>'
 	);
 	return;
 }

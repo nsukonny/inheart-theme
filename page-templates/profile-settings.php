@@ -7,7 +7,10 @@
  * @subpackage inheart
  */
 
-if( ! is_user_logged_in() ) wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );
+if( ! is_user_logged_in() ){
+	wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) );
+	exit;
+}
 
 get_template_part( 'components/header/profile' );
 

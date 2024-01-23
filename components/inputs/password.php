@@ -42,7 +42,7 @@ $lost_pass		= $args['lost_pass'] ?? '';
 	if( $lost_pass ){
 		?>
 		<span class="lostpass-wrapper">
-			<a class="link bright-yellow" href="<?php echo get_the_permalink( pll_get_post( 14 ) ) ?>">
+			<a class="link bright-yellow" href="<?php echo get_the_permalink( pll_get_post( ih_get_forgot_pass_page_id() ) ) ?>">
 				<?php esc_html_e( "Не пам'ятаю пароль", 'inheart' ) ?>
 			</a>
 		</span>

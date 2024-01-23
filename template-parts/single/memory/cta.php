@@ -21,7 +21,7 @@ $lang = $args['lang'] ?? 'uk';
 				<div class="cta-desc">
 					<?php echo pll_translate_string( 'Створіть вічну сторінку спогадів про людину, яка вам була близька. Збережіть спогади для майбутніх поколінь', $lang ) ?>
 				</div>
-				<a href="<?php echo get_the_permalink( pll_get_post( 167 ) ) ?>" class="btn lg primary">
+				<a href="<?php echo get_the_permalink( pll_get_post( ih_get_memory_creation_page_id() ) ) ?>" class="btn lg primary">
 					<?php echo pll_translate_string( 'Створити сторінку спогадів', $lang ) ?>
 				</a>
 			</div>

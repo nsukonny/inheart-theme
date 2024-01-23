@@ -34,7 +34,7 @@ $fullname	= "{$meta['first_name'][0]} {$meta['last_name'][0]}";
 
 	<ul class="header-profile-dropdown">
 		<li class="header-profile-dropdown-item">
-			<a href="<?php echo get_the_permalink( pll_get_post( 951 ) ) ?>" class="flex align-center">
+			<a href="<?php echo get_the_permalink( pll_get_post( ih_get_profile_page_id() ) ) ?>" class="flex align-center">
 			<span class="header-profile-dropdown-icon">
 				<svg class="header-profile-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M0.5 13.4922C0.5 13.0822 0.667765 12.6902 0.964286 12.4071L1.44048 11.9526C5.11151 8.44842 10.8885 8.44842 14.5595 11.9526L15.0357 12.4071C15.3322 12.6902 15.5 13.0822 15.5 13.4922V14C15.5 14.8284 14.8284 15.5 14 15.5H2C1.17157 15.5 0.5 14.8284 0.5 14V13.4922Z" stroke="#F7B941"/>

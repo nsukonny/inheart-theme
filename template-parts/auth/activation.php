@@ -63,7 +63,7 @@ if( $code === $original_code ){
 get_template_part( 'template-parts/auth/activation-fail', null, [
 	'msg' => sprintf(
 		esc_html__( 'Параметри активації невірні або аккаунт вже активований. %sУвійти%s', 'inheart' ),
-		'<a href="' . get_the_permalink( pll_get_post( 10 ) ) . '">', '</a>'
+		'<a href="' . get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) . '">', '</a>'
 	)
 ] );
 

@@ -22,7 +22,7 @@ function ih_block_admin_access(): void
 		&& ! current_user_can( 'editor' )
 		&& ! ( defined( 'DOING_AJAX' ) && DOING_AJAX )
 	){
-		wp_redirect( get_the_permalink( pll_get_post( 10 ) ) );	// To Login page.
+		wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) );	// To Login page.
 		exit;
 	}
 
@@ -37,7 +37,7 @@ function ih_block_admin_access(): void
 			str_contains( $uri, 'creating-a-new-memory-page' )
 		)
 	){
-		wp_redirect( get_the_permalink( pll_get_post( 10 ) ) . '?memory=1' );	// To Login page.
+		wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) . '?memory=1' );	// To Login page.
 		exit;
 	}
 }
@@ -367,7 +367,7 @@ function ih_ajax_lost_password(): void
 
 	wp_send_json_success( [
 		'msg'       => esc_html__( 'Успішно, вітаємо!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( 14 ) ) . "?user=$user_id&send=1"
+		'redirect'	=> get_the_permalink( pll_get_post( ih_get_forgot_pass_page_id() ) ) . "?user=$user_id&send=1"
 	] );
 }
 
@@ -418,7 +418,7 @@ function ih_ajax_new_password(): void
 	// Success!
 	wp_send_json_success( [
 		'msg'		=> esc_html__( 'Успішно, пароль змінено!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( 10 ) )	// To Login page.
+		'redirect'	=> get_the_permalink( pll_get_post( ih_get_login_page_id() ) )	// To Login page.
 	] );
 }
 

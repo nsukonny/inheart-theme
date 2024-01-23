@@ -119,7 +119,7 @@ function ih_ajax_edit_memory_page(): void
 	$_SESSION['memory_page_id']	= $memory_id;
 	$_SESSION['edit_mode']		= 1;
 
-	wp_send_json_success( ['redirect' => get_the_permalink( pll_get_post( 167 ) ) . '?edit=1' ] );
+	wp_send_json_success( ['redirect' => get_the_permalink( pll_get_post( ih_get_memory_creation_page_id() ) ) . '?edit=1' ] );
 }
 
 add_action( 'wp_ajax_ih_ajax_add_person_memory', 'ih_ajax_add_person_memory' );
@@ -425,100 +425,5 @@ function ih_ajax_delete_profile_memory(): void
 		wp_update_post( ['ID' =>  $id, 'post_status' => 'pending'] );
 		wp_send_json_success( ['msg' => __( 'Спогад успішно видалено', 'inheart' )] );
 	}
-}
-
-add_action( 'wp_ajax_ih_ajax_load_cities', 'ih_ajax_load_cities' );
-/**
- * Return cities list from Nova Poshta API.
- *
- * @return void
- */
-function ih_ajax_load_cities(): void
-{
-	if( ! $city = ih_clean( $_POST['city'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
-
-	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
-		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
-
-	$body = json_encode( [
-		'apiKey'		=> $np_api_key,
-		'modelName'		=> 'Address',
-		'calledMethod'	=> 'getSettlements',
-		'methodProperties'	=> [
-			'FindByString'	=> $city,
-			'Warehouse'		=> 1
-		]
-	] );
-	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [
-		'headers'		=> ['Content-Type' => 'application/json; charset=utf-8'],
-		'data_format'	=> 'body',
-		'body'			=> $body
-	] );
-
-	if( empty( $res ) ) wp_send_json_error( ['msg' => __( 'Немає даних', 'inheart' )] );
-
-	$res_body = json_decode( $res['body'], true );
-
-	if( $res_body['success'] === true ) wp_send_json_success( ['cities' => $res_body['data']] );
-
-	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
-}
-
-add_action( 'wp_ajax_ih_ajax_load_departments', 'ih_ajax_load_departments' );
-/**
- * Return city departments list from Nova Poshta API.
- *
- * @return void
- */
-function ih_ajax_load_departments(): void
-{
-	if( ! $ref = ih_clean( $_POST['ref'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
-
-	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
-		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
-
-	$body = json_encode( [
-		'apiKey'		=> $np_api_key,
-		'modelName'		=> 'Address',
-		'calledMethod'	=> 'getWarehouses',
-		'methodProperties'	=> [
-			'SettlementRef' => $ref
-		]
-	] );
-	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [
-		'headers'		=> ['Content-Type' => 'application/json; charset=utf-8'],
-		'data_format'	=> 'body',
-		'body'			=> $body
-	] );
-
-	if( empty( $res ) ) wp_send_json_error( ['msg' => __( 'Немає даних', 'inheart' )] );
-
-	$res_body = json_decode( $res['body'], true );
-
-	if( $res_body['success'] === true ) wp_send_json_success( ['departments' => $res_body['data']] );
-
-	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
-}
-
-add_action( 'wp_ajax_ih_ajax_change_qty', 'ih_ajax_change_qty' );
-/**
- * Change quantity of metal QR-codes.
- *
- * @return void
- */
-function ih_ajax_change_qty(): void
-{
-	if( ! $count = ih_clean( $_POST['count'] ) ?? null )
-		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
-
-	$expanded_id	= get_field( 'expanded_memory_page', 'option' );
-	$qr_id			= get_field( 'qr_code_metal', 'option' );
-	$price			= get_field( 'price', $expanded_id );
-	$price			+= get_field( 'price', $qr_id ) * $count;
-
-	if( ! $expanded_id || ! $qr_id )
-		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
-
-	wp_send_json_success( ['price' => $price] );
 }
 

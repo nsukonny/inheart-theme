@@ -1,0 +1,214 @@
+<?php
+
+add_action( 'wp_ajax_ih_ajax_load_cities', 'ih_ajax_load_cities' );
+/**
+ * Return cities list from Nova Poshta API.
+ *
+ * @return void
+ */
+function ih_ajax_load_cities(): void
+{
+	if( ! $city = ih_clean( $_POST['city'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
+		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
+
+	$body = json_encode( [
+		'apiKey'		=> $np_api_key,
+		'modelName'		=> 'Address',
+		'calledMethod'	=> 'getSettlements',
+		'methodProperties'	=> [
+			'FindByString'	=> $city,
+			'Warehouse'		=> 1
+		]
+	] );
+	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [
+		'headers'		=> ['Content-Type' => 'application/json; charset=utf-8'],
+		'data_format'	=> 'body',
+		'body'			=> $body
+	] );
+
+	if( is_wp_error( $res ) || empty( $res ) ) wp_send_json_error( ['msg' => __( 'Немає даних', 'inheart' )] );
+
+	$res_body = json_decode( $res['body'], true );
+
+	if( $res_body['success'] === true ) wp_send_json_success( ['cities' => $res_body['data']] );
+
+	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_load_departments', 'ih_ajax_load_departments' );
+/**
+ * Return city departments list from Nova Poshta API.
+ *
+ * @return void
+ */
+function ih_ajax_load_departments(): void
+{
+	if( ! $ref = ih_clean( $_POST['ref'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
+		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
+
+	$body = json_encode( [
+		'apiKey'		=> $np_api_key,
+		'modelName'		=> 'Address',
+		'calledMethod'	=> 'getWarehouses',
+		'methodProperties'	=> [
+			'SettlementRef' => $ref
+		]
+	] );
+	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [
+		'headers'		=> ['Content-Type' => 'application/json; charset=utf-8'],
+		'data_format'	=> 'body',
+		'body'			=> $body
+	] );
+
+	if( is_wp_error( $res ) || empty( $res ) ) wp_send_json_error( ['msg' => __( 'Немає даних', 'inheart' )] );
+
+	$res_body = json_decode( $res['body'], true );
+
+	if( $res_body['success'] === true ) wp_send_json_success( ['departments' => $res_body['data']] );
+
+	wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_change_qty', 'ih_ajax_change_qty' );
+/**
+ * Change quantity of metal QR-codes.
+ *
+ * @return void
+ */
+function ih_ajax_change_qty(): void
+{
+	if( ! $count = ih_clean( $_POST['count'] ) ?? null )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	if( ! $price = ih_get_expanded_page_order_price( $count ) )
+		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
+
+	wp_send_json_success( ['price' => $price] );
+}
+
+add_action( 'wp_ajax_ih_ajax_create_order', 'ih_ajax_create_order' );
+/**
+ * Create an Order.
+ *
+ * @return void
+ */
+function ih_ajax_create_order(): void
+{
+	$email			= ih_clean( $_POST['email'] );
+	$phone			= ih_clean( $_POST['phone'] );
+	$city			= ih_clean( $_POST['city'] );
+	$department		= ih_clean( $_POST['departments'] );
+	$firstname		= ih_clean( $_POST['firstname'] );
+	$lastname		= ih_clean( $_POST['lastname'] );
+	$fathername		= ih_clean( $_POST['fathername'] );
+	$qr_count		= ih_clean( $_POST['qr-count-qty'] );
+	$customer_id	= get_current_user_id();
+
+	if(
+		! $email || ! $phone || ! $city || ! $department ||
+		! $firstname || ! $lastname || ! $fathername || ! $qr_count
+	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	if( ! $price = ih_get_expanded_page_order_price( $qr_count ) )
+		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
+
+	if( ! $mono_token = get_field( 'mono_token', 'option' ) )
+		wp_send_json_error( ['msg' => __( 'Невірний або відсутній токен', 'inheart' )] );
+
+	// Make a request to MonoBank.
+	$body = json_encode( [
+		'amount'		=> $price * 100,	// UAH kopecks.
+		'redirectUrl'	=> get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
+		'paymentType'	=> 'debit'
+	] );
+	$res = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
+		'headers'		=> [
+			'Content-Type'	=> 'application/json; charset=utf-8',
+			'X-Token'		=> $mono_token
+		],
+		'data_format'	=> 'body',
+		'body'			=> $body
+	] );
+
+	if( is_wp_error( $res ) || empty( $res ) )
+		wp_send_json_error( ['msg' => __( 'Немає відповіді від банку', 'inheart' )] );
+
+	$res_body = json_decode( $res['body'], true );
+
+	if( empty( $res_body ) )
+		wp_send_json_error( ['msg' => __( 'Помилка під час створення запиту до оплати', 'inheart' )] );
+
+	// Create new Order.
+	$order_data = [
+		'post_title'	=> "Замовлення від $lastname $firstname $fathername (ID: $customer_id)",
+		'post_status'	=> 'publish',
+		'post_type'		=> 'expanded-page'
+	];
+	$order_id = wp_insert_post( wp_slash( $order_data ) );
+
+	if( is_wp_error( $order_id ) )
+		wp_send_json_error( ['msg' => __( 'Не вдалося створити замовлення', 'inheart' )] );
+
+	$ordered = "Розширена сторінка пам'яті - 1 шт. (" . ih_get_expanded_page_price() . " грн)\n" .
+		"QR-код на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_price() . " грн)\n" .
+		"Загальна вартість: $price грн";
+
+	update_field( 'firstname', $firstname, $order_id );
+	update_field( 'lastname', $lastname, $order_id );
+	update_field( 'fathername', $fathername, $order_id );
+	update_field( 'email', $email, $order_id );
+	update_field( 'phone', $phone, $order_id );
+	update_field( 'customer_id', $customer_id, $order_id );
+	update_field( 'city', $city, $order_id );
+	update_field( 'department', $department, $order_id );
+	update_field( 'ordered', $ordered, $order_id );
+
+	update_field( 'invoice_id', $res_body['invoiceId'], $order_id );
+
+	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
+}
+
+function ih_get_invoice_status( int $order_id = 0 ): ?string
+{
+	if( ! $mono_token = get_field( 'mono_token', 'option' ) ) return null;
+
+	// Invoice ID was not passed - get it from the latest Order of the current Customer.
+	if( ! $order_id ){
+		$customer_id	= get_current_user_id();
+		$latest_order	= get_posts( [
+			'post_type'		=> 'expanded-page',
+			'numberposts'	=> 1,
+			'post_status'	=> 'publish',
+			'meta_query' => [ [
+				'key'	=> 'customer_id',
+				'value'	=> $customer_id
+			] ]
+		] );
+
+		if( empty( $latest_order ) ) return null;
+
+		$order_id = $latest_order[0]->ID;
+	}
+
+	$invoice_id	= get_field( 'invoice_id', $order_id );
+	$res		= wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
+		'headers' => ['X-Token' => $mono_token]
+	] );
+
+	if( is_wp_error( $res ) || empty( $res['body'] ) ) return __( 'Помилка під час здійснення запиту', 'inheart' );
+
+	$res_body = json_decode( $res['body'], true );
+
+	if( empty( $res_body['invoiceId'] ) || $res_body['invoiceId'] !== $invoice_id || empty( $res_body['status'] ) )
+		return __( 'Не вдалося отримату відповідь від банку', 'inheart' );;
+
+	$order_status = $res_body['status'];
+	update_field( 'status', $order_status, $order_id );
+
+	return $order_status;
+}
+
