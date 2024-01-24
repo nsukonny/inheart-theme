@@ -1,5 +1,55 @@
 <?php
 
+add_action( 'rest_api_init', 'ih_rest_api_init' );
+function ih_rest_api_init(): void
+{
+	register_rest_route( 'mono/acquiring', '/status', [
+		'methods'  => 'POST',
+		'callback' => 'ih_mono_handle_status',
+	] );
+}
+
+function ih_mono_handle_status( WP_REST_Request $request )
+{
+	$invoice_id = $request->get_param( 'invoiceId' ) ?? null;
+	$status		= $request->get_param( 'status' ) ?? null;
+	$modified	= $request->get_param( 'modifiedDate' ) ?? null;
+
+	if( ! $invoice_id || ! $status || ! $modified ){
+		file_put_contents(ABSPATH . '/orders.log',  'No data' . PHP_EOL, FILE_APPEND );
+		return $request;
+	}
+
+	$order = get_posts( [
+		'post_type'		=> 'expanded-page',
+		'numberposts'	=> -1,
+		'meta_query'	=> [ [
+			'key'	=> 'invoice_id',
+			'value'	=> $invoice_id
+		] ]
+	] );
+
+	if( empty( $order ) ){
+		file_put_contents(ABSPATH . '/orders.log',  "No order with invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
+		return $request;
+	}
+
+	$order_id		= $order[0]->ID;
+	$prev_modified	= get_field( 'status_modified_date', $order_id );
+	$modified		= strtotime( $modified );
+
+	if( $modified <= $prev_modified ){
+		file_put_contents(ABSPATH . '/orders.log',  'Modified date is old' . PHP_EOL, FILE_APPEND );
+		return $request;
+	}
+
+	update_field( 'status', $status, $order_id );
+	update_field( 'status_modified_date', $modified, $order_id );
+	file_put_contents(ABSPATH . '/orders.log',  "Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
+
+	return true;
+}
+
 add_action( 'wp_ajax_ih_ajax_load_cities', 'ih_ajax_load_cities' );
 /**
  * Return cities list from Nova Poshta API.
@@ -123,6 +173,7 @@ function ih_ajax_create_order(): void
 	$body = json_encode( [
 		'amount'		=> $price * 100,	// UAH kopecks.
 		'redirectUrl'	=> get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
+		'webHookUrl'	=> get_bloginfo( 'url' ) . '/wp-json/mono/acquiring/status',
 		'paymentType'	=> 'debit'
 	] );
 	$res = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
@@ -165,9 +216,9 @@ function ih_ajax_create_order(): void
 	update_field( 'customer_id', $customer_id, $order_id );
 	update_field( 'city', $city, $order_id );
 	update_field( 'department', $department, $order_id );
-	update_field( 'ordered', $ordered, $order_id );
-
 	update_field( 'invoice_id', $res_body['invoiceId'], $order_id );
+	update_field( 'status_modified_date', 0, $order_id );
+	update_field( 'ordered', $ordered, $order_id );
 
 	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }
@@ -194,20 +245,29 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 		$order_id = $latest_order[0]->ID;
 	}
 
-	$invoice_id	= get_field( 'invoice_id', $order_id );
-	$res		= wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
+	$invoice_id		= get_field( 'invoice_id', $order_id );
+	$order_status	= get_field( 'status', $order_id );
+	$prev_modified	= get_field( 'status_modified_date', $order_id );
+	$res			= wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
 		'headers' => ['X-Token' => $mono_token]
 	] );
 
-	if( is_wp_error( $res ) || empty( $res['body'] ) ) return __( 'Помилка під час здійснення запиту', 'inheart' );
+	if( is_wp_error( $res ) || empty( $res['body'] ) )
+		return __( 'Помилка під час здійснення запиту', 'inheart' );
 
 	$res_body = json_decode( $res['body'], true );
 
 	if( empty( $res_body['invoiceId'] ) || $res_body['invoiceId'] !== $invoice_id || empty( $res_body['status'] ) )
-		return __( 'Не вдалося отримату відповідь від банку', 'inheart' );;
+		return __( 'Не вдалося отримату відповідь від банку', 'inheart' );
 
-	$order_status = $res_body['status'];
-	update_field( 'status', $order_status, $order_id );
+	$new_status	= $res_body['status'];
+	$modified	= strtotime( $res_body['modifiedDate'] );
+
+	if( $modified > $prev_modified ){
+		$order_status = $new_status;
+		update_field( 'status', $order_status, $order_id );
+		update_field( 'status_modified_date', $modified, $order_id );
+	}
 
 	return $order_status;
 }
