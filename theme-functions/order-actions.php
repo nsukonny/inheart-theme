@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'rest_api_init', 'ih_rest_api_init' );
-function ih_rest_api_init(): void
+add_action( 'rest_api_init', 'ih_rest_api_init_mono' );
+function ih_rest_api_init_mono(): void
 {
 	register_rest_route( 'mono/acquiring', '/status', [
 		'methods'  => 'POST',
