@@ -225,40 +225,25 @@ function ih_ajax_create_order(): void
 
 function ih_get_invoice_status( int $order_id = 0 ): ?string
 {
-	if( ! $mono_token = get_field( 'mono_token', 'option' ) ) return null;
-
 	// Invoice ID was not passed - get it from the latest Order of the current Customer.
-	if( ! $order_id ){
-		$customer_id	= get_current_user_id();
-		$latest_order	= get_posts( [
-			'post_type'		=> 'expanded-page',
-			'numberposts'	=> 1,
-			'post_status'	=> 'publish',
-			'meta_query' => [ [
-				'key'	=> 'customer_id',
-				'value'	=> $customer_id
-			] ]
-		] );
-
-		if( empty( $latest_order ) ) return null;
-
-		$order_id = $latest_order[0]->ID;
-	}
+	if( ! $order_id ) $order_id = ih_get_latest_invoice_id( get_current_user_id() );
 
 	$invoice_id		= get_field( 'invoice_id', $order_id );
 	$order_status	= get_field( 'status', $order_id );
 	$prev_modified	= get_field( 'status_modified_date', $order_id );
-	$res			= wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
+
+	if( ! $mono_token = get_field( 'mono_token', 'option' ) ) return $order_status;
+
+	$res = wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
 		'headers' => ['X-Token' => $mono_token]
 	] );
 
-	if( is_wp_error( $res ) || empty( $res['body'] ) )
-		return __( 'Помилка під час здійснення запиту', 'inheart' );
+	if( is_wp_error( $res ) || empty( $res['body'] ) ) return $order_status;
 
 	$res_body = json_decode( $res['body'], true );
 
 	if( empty( $res_body['invoiceId'] ) || $res_body['invoiceId'] !== $invoice_id || empty( $res_body['status'] ) )
-		return __( 'Не вдалося отримату відповідь від банку', 'inheart' );
+		return $order_status;
 
 	$new_status	= $res_body['status'];
 	$modified	= strtotime( $res_body['modifiedDate'] );
@@ -267,8 +252,26 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 		$order_status = $new_status;
 		update_field( 'status', $order_status, $order_id );
 		update_field( 'status_modified_date', $modified, $order_id );
+		$order_status = get_field( 'status', $order_id );	// Get translated label instead of API Eng status.
 	}
 
 	return $order_status;
+}
+
+function ih_get_latest_invoice_id( int $customer_id ): int
+{
+	$latest_invoice = get_posts( [
+		'post_type'		=> 'expanded-page',
+		'numberposts'	=> 1,
+		'post_status'	=> 'publish',
+		'meta_query' => [ [
+			'key'	=> 'customer_id',
+			'value'	=> $customer_id
+		] ]
+	] );
+
+	if( empty( $latest_invoice ) ) return 0;
+
+	return $latest_invoice[0]->ID;
 }
 

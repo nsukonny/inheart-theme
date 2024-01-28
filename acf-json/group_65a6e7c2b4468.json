@@ -260,7 +260,7 @@
                 "expired": "Час дії вичерпано"
             },
             "default_value": "unknown",
-            "return_format": "value",
+            "return_format": "label",
             "multiple": 0,
             "allow_null": 0,
             "ui": 0,
@@ -307,7 +307,7 @@
             "maxlength": "",
             "rows": 6,
             "placeholder": "",
-            "new_lines": ""
+            "new_lines": "wpautop"
         }
     ],
     "location": [
@@ -328,5 +328,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706135048
+    "modified": 1706444971
 }
