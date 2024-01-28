@@ -16,7 +16,7 @@ function ih_mono_handle_status( WP_REST_Request $request )
 	$modified	= $request->get_param( 'modifiedDate' ) ?? null;
 
 	if( ! $invoice_id || ! $status || ! $modified ){
-		file_put_contents(ABSPATH . '/orders.log',  'No data' . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "No data passed for invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
@@ -46,6 +46,79 @@ function ih_mono_handle_status( WP_REST_Request $request )
 	update_field( 'status', $status, $order_id );
 	update_field( 'status_modified_date', $modified, $order_id );
 	file_put_contents(ABSPATH . '/orders.log',  "Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
+
+	ih_send_email_on_status_change( $status, $order_id );
+
+	return true;
+}
+
+function ih_send_email_on_status_change( string $status, int $order_id ): bool
+{
+	if( ! $status || ! $order_id || get_post_type( $order_id ) !== 'expanded-page' ) return false;
+
+	$invoice_id	= get_field( 'invoice_id', $order_id );
+	$firstname	= get_field( 'firstname', $order_id );
+	$lastname	= get_field( 'lastname', $order_id );
+	$fathername	= get_field( 'fathername', $order_id );
+	$ordered	= get_field( 'ordered', $order_id );
+	$email		= get_field( 'email', $order_id );
+	$subject	= $body = '';
+
+	switch( $status ){
+		case 'created':
+			$subject	= get_field( 'order_created_subject', 'option' );
+			$body		= get_field( 'order_created_body', 'option' );
+			break;
+
+		case 'processing':
+			$subject	= get_field( 'order_processing_subject', 'option' );
+			$body		= get_field( 'order_processing_body', 'option' );
+			break;
+
+		case 'hold':
+			$subject	= get_field( 'order_hold_subject', 'option' );
+			$body		= get_field( 'order_hold_body', 'option' );
+			break;
+
+		case 'success':
+			$subject	= get_field( 'order_success_subject', 'option' );
+			$body		= get_field( 'order_success_body', 'option' );
+			break;
+
+		case 'failure':
+			$subject	= get_field( 'order_failure_subject', 'option' );
+			$body		= get_field( 'order_failure_body', 'option' );
+			break;
+
+		case 'reversed':
+			$subject	= get_field( 'order_reversed_subject', 'option' );
+			$body		= get_field( 'order_reversed_body', 'option' );
+			break;
+
+		case 'expired':
+			$subject	= get_field( 'order_expired_subject', 'option' );
+			$body		= get_field( 'order_expired_body', 'option' );
+			break;
+	}
+
+	if( ! $subject || ! $body ) return false;
+
+	$body = str_replace(
+		['[invoice_id]', '[firstname]', '[lastname]', '[fathername]', '[ordered]'],
+		[$invoice_id, $firstname, $lastname, $fathername, $ordered],
+		$body
+	);
+	$body = str_replace(
+		['https://https://', 'http://https://', 'http://http://'],
+		['https://', 'https://', 'http://'],
+		$body
+	);
+
+	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+	$send = wp_mail( $email, $subject, $body );
+	remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+
+	if( ! $send ) return false;
 
 	return true;
 }
@@ -252,6 +325,7 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 		$order_status = $new_status;
 		update_field( 'status', $order_status, $order_id );
 		update_field( 'status_modified_date', $modified, $order_id );
+		ih_send_email_on_status_change( $order_status, $order_id );
 		$order_status = get_field( 'status', $order_id );	// Get translated label instead of API Eng status.
 	}
 

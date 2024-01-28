@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_648a3f445c270",
-            "label": "Registration",
+            "label": "Регістрація",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -83,7 +83,7 @@
         },
         {
             "key": "field_648b786d6c12b",
-            "label": "Resend Activation Link",
+            "label": "Переслати посилання на активацію",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -140,7 +140,7 @@
         },
         {
             "key": "field_648cc3e1254f8",
-            "label": "Forgot Password",
+            "label": "Забули пароль",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -197,7 +197,7 @@
         },
         {
             "key": "field_6585fe7615890",
-            "label": "Memory Created",
+            "label": "Спогад створено",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -291,6 +291,303 @@
             "toolbar": "full",
             "media_upload": 1,
             "delay": 0
+        },
+        {
+            "key": "field_65b64ceb67739",
+            "label": "Замовлення",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_65b64d836773a",
+            "label": "Тема листа - замовлення створено",
+            "name": "order_created_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Замовлення створено",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b64d896773b",
+            "label": "Тіло листа - замовлення створено",
+            "name": "order_created_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_65b65347de1d3",
+            "label": "Тема листа - замовлення в обробці",
+            "name": "order_processing_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Замовлення в обробці",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b6534bde1d4",
+            "label": "Тіло листа - замовлення в обробці",
+            "name": "order_processing_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_65b653ce3e7a8",
+            "label": "Тема листа - замовлення заблоковано",
+            "name": "order_hold_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Замовлення заблоковано",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b653d23e7a9",
+            "label": "Тіло листа - замовлення заблоковано",
+            "name": "order_hold_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_65b65489676b1",
+            "label": "Тема листа - успішна оплата",
+            "name": "order_success_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Успішна оплата",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b6548e676b2",
+            "label": "Тіло листа - успішна оплата",
+            "name": "order_success_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_65b654f7255c3",
+            "label": "Тема листа - неуспішна оплата",
+            "name": "order_failure_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Неуспішна оплата",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b654fb255c4",
+            "label": "Тіло листа - неуспішна оплата",
+            "name": "order_failure_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_65b6554833db1",
+            "label": "Тема листа - оплата повернена після успіху",
+            "name": "order_reversed_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Оплата повернена після успіху",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b6554b33db2",
+            "label": "Тіло листа - оплата повернена після успіху",
+            "name": "order_reversed_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_65b655818586b",
+            "label": "Тема листа - час дії вичерпано",
+            "name": "order_expired_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Час дії вичерпано",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b655858586c",
+            "label": "Тіло листа - час дії вичерпано",
+            "name": "order_expired_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [
@@ -311,5 +608,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1703538939
+    "modified": 1706448301
 }
