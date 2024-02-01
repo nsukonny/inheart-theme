@@ -9,6 +9,7 @@
 @import '../new-memory/step-1';
 @import '../new-memory/step-2';
 @import '../new-memory/step-3';
+@import '../new-memory/step-3-military';
 @import '../new-memory/step-4';
 @import '../new-memory/step-5';
 @import '../new-memory/step-6';
@@ -92,6 +93,7 @@
 		}
 
 		&-title {
+			max-width: 810px;
 			margin-bottom: 8px;
 
 			@media (min-width: $md) {
@@ -105,7 +107,7 @@
 
 		&-desc {
 			width: 100%;
-			max-width: 503px;
+			max-width: 738px;
 			margin-bottom: 54px;
 			opacity: 0.8
 		}
@@ -292,4 +294,39 @@
 			font-size: $fs-sm
 		}
 	}
+}
+
+////////////////////////
+.new-memory-step-3-military {
+	.new-memory-step-title .button {
+		display: none;
+		margin: 7px 0 0 24px
+	}
+}
+
+.no-rewards-body {
+	flex-grow: 1;
+	padding-bottom: 54px;
+
+	.button {
+		margin-top: 24px
+	}
+}
+
+.no-rewards-img {
+	width: 100%;
+	max-width: 298px;
+	margin-bottom: 12px;
+
+	img {
+		display: block;
+		width: 100%
+	}
+}
+
+.no-rewards-text {
+	font-style: $fs-sm;
+	line-height: normal;
+	color: $icon-disabled;
+	text-align: center
 }

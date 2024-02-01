@@ -37,7 +37,8 @@
                 "classic": "Класичний",
                 "black": "Чорний",
                 "red": "Червоний",
-                "blue": "Блакитний"
+                "blue": "Блакитний",
+                "military": "Військовослужбовець"
             },
             "default_value": "classic",
             "return_format": "value",
@@ -336,6 +337,123 @@
                     "parent_repeater": "field_63d386a9fffdb"
                 }
             ]
+        },
+        {
+            "key": "field_65b9755d9231b",
+            "label": "Step 2 (військовий)",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_65b975759231c",
+            "label": "Рід військ",
+            "name": "army_type",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b975c69231d",
+            "label": "Бригада чи підрозділ",
+            "name": "brigade_type",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b975ff9231e",
+            "label": "Військове звання",
+            "name": "military_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b976299231f",
+            "label": "Посада",
+            "name": "military_position",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_65b9764a92320",
+            "label": "Позивний",
+            "name": "call_sign",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_64ca9a8ec1dcf",
@@ -820,5 +938,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1697054345
+    "modified": 1706653280
 }

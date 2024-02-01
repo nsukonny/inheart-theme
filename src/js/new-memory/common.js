@@ -10,7 +10,9 @@ import { checkStep2 } from './step-2'
 import { checkStep3 } from './step-3'
 import { checkStep4 } from './step-4'
 import { checkStep5 } from './step-5'
+import { checkStep2Military } from './step-2-military'
 
+const militarySteps = [2, 3]
 let footer,
 	progressBar,
 	prevStepBtn,
@@ -28,6 +30,18 @@ export const defineGlobalStepsItems = () => {
 	nextStepBtn	= document.querySelector( '.new-memory-next-step' )
 
 	return ! ( ! footer || ! progressBar || ! prevStepBtn || ! nextStepBtn )
+}
+
+export const checkIsMilitaryStep = stepId => {
+	if( ! militarySteps.includes( stepId ) ) return false
+
+	let stepData = localStorage.getItem( 'ih-step-0' )
+
+	if( ! stepData ) return false
+
+	stepData = JSON.parse( stepData )
+
+	return stepData.theme === 'military'
 }
 
 /**
@@ -55,7 +69,7 @@ export const disallowNextStep = () => {
  * @param {number} percentage	Percents to fill
  */
 export const applyProgress = ( partId = 1, percentage = 100 ) => {
-	const part = progressBar.querySelector( `[data-part="${ partId }"]` )
+	const part = progressBar.querySelector( `[data-part="${ parseInt( partId ) }"]` )
 
 	if( ! part ) return
 
@@ -69,7 +83,9 @@ export const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
 		if( nextStepBtn.disabled ) return
 
-		const nextStepId = parseInt( nextStepBtn.dataset.next )
+		const
+			nextStepId	= parseInt( nextStepBtn.dataset.next ),
+			prevStepId	= checkIsMilitaryStep( nextStepId - 1 ) ? `${ nextStepId - 1 }-military` : nextStepId - 1
 
 		if( ! nextStepId || checkAjaxWorkingStatus() ) return
 
@@ -77,8 +93,8 @@ export const nextStep = () => {
 
 		const formData = new FormData()
 
-		formData.append( 'action', `ih_ajax_save_data_step_${ nextStepId - 1 }` )
-		formData.append( 'stepData', localStorage.getItem( `ih-step-${ nextStepId - 1 }` ) )
+		formData.append( 'action', `ih_ajax_save_data_step_${ prevStepId }` )
+		formData.append( 'stepData', localStorage.getItem( `ih-step-${ prevStepId }` ) )
 
 		ihAjaxRequest( formData ).then( res => {
 			if( res ){
@@ -110,11 +126,13 @@ export const nextStep = () => {
  * @param {number} nextStepId
  */
 const showNextStepSection = nextStepId => {
+	const nextStepIdUpd = checkIsMilitaryStep( nextStepId ) ? `${ nextStepId }-military` : nextStepId
+
 	document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
-	document.querySelector( `#new-memory-step-${ nextStepId }` ).classList.add( 'active' )
+	document.querySelector( `#new-memory-step-${ nextStepIdUpd }` ).classList.add( 'active' )
 	prevStepBtn.classList.remove( 'hidden' )
 	prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
-	isStepFilled( nextStepId )
+	isStepFilled( nextStepIdUpd )
 }
 
 /**
@@ -124,15 +142,17 @@ export const prevStep = () => {
 	prevStepBtn.addEventListener( 'click', () => {
 		if( prevStepBtn.classList.contains( 'hidden' ) ) return
 
-		const prevStepId = parseInt( prevStepBtn.dataset.prev )
+		const
+			prevStepId		= parseInt( prevStepBtn.dataset.prev ),
+			prevStepIdUpd	= checkIsMilitaryStep( prevStepId ) ? `${ prevStepId }-military` : prevStepId
 
 		if( ! prevStepId && prevStepId != '0' ) return
 
 		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
-		document.querySelector( `#new-memory-step-${ prevStepId }` ).classList.add( 'active' )
+		document.querySelector( `#new-memory-step-${ prevStepIdUpd }` ).classList.add( 'active' )
 		applyProgress( prevStepId + 1, 0 )
 
-		isStepFilled( prevStepId )
+		isStepFilled( prevStepIdUpd )
 
 		if( prevStepId == 0 ) prevStepBtn.classList.add( 'hidden' )
 		else prevStepBtn.setAttribute( 'data-prev', prevStepId - 1 )
@@ -147,7 +167,8 @@ export const prevStep = () => {
  * @param {number} stepId
  */
 export const isStepFilled = ( stepId = 0 ) => {
-	let cb	// Callback function for each step, returns true if step is ready, otherwise - false.
+	let cb,	// Callback function for each step, returns true if step is ready, otherwise - false.
+		stepIdUpd = stepId + 1
 
 	switch( stepId ){
 		case 1:
@@ -156,6 +177,11 @@ export const isStepFilled = ( stepId = 0 ) => {
 
 		case 2:
 			cb = checkStep2
+			break
+
+		case '2-military':
+			cb			= checkStep2Military
+			stepIdUpd	= '3-military'
 			break
 
 		case 3:
@@ -176,7 +202,7 @@ export const isStepFilled = ( stepId = 0 ) => {
 
 	if( cb() ){
 		applyProgress( stepId )
-		allowNextStep( stepId + 1 )
+		allowNextStep( stepIdUpd )
 	}else{
 		applyProgress( stepId, 0 )
 		disallowNextStep()

@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * New Memory page template.
+ * Step 2 (Military).
+ *
+ * @see Page Template: New Memory -> Step 2 (Military)
+ *
+ * @package WordPress
+ * @subpackage inheart
+ */
+
+$title				= get_field( 'title_2_military' );
+$memory_page_id		= $_SESSION['memory_page_id'];
+$army_type			= get_field( 'army_type', $memory_page_id );
+$brigade_type		= get_field( 'brigade_type', $memory_page_id );
+$military_title		= get_field( 'military_title', $memory_page_id );
+$military_position	= get_field( 'military_position', $memory_page_id );
+$call_sign			= get_field( 'call_sign', $memory_page_id );
+?>
+
+<section id="new-memory-step-2-military" class="new-memory-step new-memory-step-2-military direction-column">
+	<div class="container direction-column">
+		<div class="new-memory-step-suptitle">
+			<?php esc_html_e( 'Крок 2', 'inheart' ) ?>
+		</div>
+
+		<?php
+		if( $title ){
+			?>
+			<div class="new-memory-step-title">
+				<?php echo $title ?>
+			</div>
+			<?php
+		}
+		?>
+
+		<form class="form-white">
+			<fieldset>
+				<?php
+				get_template_part( 'components/inputs/army', null, [
+					'name'			=> 'army',
+					'label'			=> __( 'Рід військ', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Наприклад "Сухопутні війська"', 'inheart' ),
+					'value'			=> $army_type,
+					'required'		=> 1,
+					'icon_tail'		=> 'arrow-down-s-line.svg',
+					'types'			=> get_field( 'army_types' )
+				] );
+				get_template_part( 'components/inputs/army', null, [
+					'name'			=> 'brigade',
+					'label'			=> __( 'Бригада чи підрозділ', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Наприклад "45-й окремий мотопіхотний б..."', 'inheart' ),
+					'value'			=> $brigade_type,
+					'required'		=> 1,
+					'icon_tail'		=> 'arrow-down-s-line.svg',
+					'types'			=> get_field( 'brigade_types' )
+				] );
+				get_template_part( 'components/inputs/army', null, [
+					'name'			=> 'title',
+					'label'			=> __( 'Військове звання', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Наприклад "Молодший лейтенант"', 'inheart' ),
+					'value'			=> $military_title,
+					'required'		=> 1,
+					'icon_tail'		=> 'arrow-down-s-line.svg',
+					'types'			=> get_field( 'military_titles' )
+				] );
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'position',
+					'label'			=> __( 'Посада', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Наприклад "Кулеметник"', 'inheart' ),
+					'value'			=> $military_position,
+					'required'		=> 0
+				] );
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'call-sign',
+					'label'			=> __( 'Позивний', 'inheart' ),
+					'label_class'	=> 'full',
+					'placeholder'	=> __( 'Позивний', 'inheart' ),
+					'value'			=> $call_sign,
+					'required'		=> 0
+				] );
+				?>
+			</fieldset>
+		</form><!-- .sections-wrapper -->
+</section><!-- #new-memory-step-2-military -->
+

@@ -23,6 +23,8 @@ $lang_changed = isset( $_GET['langchanged'] ) && $_GET['langchanged'] == 1;
 	<?php
 	get_template_part( 'template-parts/new-memory/step-0/step', '0', ['hidden' => $lang_changed] );
 	get_template_part( 'template-parts/new-memory/step-1/step', '1', ['active' => $lang_changed] );
+	get_template_part( 'template-parts/new-memory/step-2-military/step', '2' );
+	get_template_part( 'template-parts/new-memory/step-3-military/step', '3' );
 	get_template_part( 'template-parts/new-memory/step-2/step', '2' );
 	get_template_part( 'template-parts/new-memory/step-3/step', '3' );
 	get_template_part( 'template-parts/new-memory/step-4/step', '4' );

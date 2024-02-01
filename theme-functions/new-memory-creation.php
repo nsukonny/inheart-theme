@@ -71,7 +71,7 @@ function ih_ajax_save_data_step_0(): void
 		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'theme', $step_data['theme'], $_SESSION['memory_page_id'] );
-
+	$_SESSION['step0']['theme'] = $step_data['theme'];
 	wp_send_json_success( ['msg' => esc_html__( 'Тему обрано успішно!', 'inheart' )] );
 }
 
@@ -164,6 +164,35 @@ function ih_ajax_save_data_step_2(): void
 	update_field( 'biography_sections', $sections, $memory_page_id );
 
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 2 збережено успішно!', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_save_data_step_2-military', 'wp_ajax_ih_ajax_save_data_step_2_military' );
+/**
+ * Step 2 Military - save data.
+ *
+ * @return void
+ */
+function wp_ajax_ih_ajax_save_data_step_2_military(): void
+{
+	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+
+	if(
+		! $step_data || ! $memory_page_id || ! isset( $step_data['army'] ) ||
+		! isset( $step_data['brigade'] ) || ! isset( $step_data['title'] )
+	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	update_field( 'army_type', $step_data['army'], $memory_page_id );
+	update_field( 'brigade_type', $step_data['brigade'], $memory_page_id );
+	update_field( 'military_title', $step_data['title'], $memory_page_id );
+
+	if( isset( $step_data['position'] ) )
+		update_field( 'military_position', $step_data['position'], $memory_page_id );
+
+	if( isset( $step_data['call-sign'] ) )
+		update_field( 'call_sign', $step_data['call-sign'], $memory_page_id );
+
+	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 2 (військовий) збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_3', 'ih_ajax_save_data_step_3' );
@@ -561,6 +590,7 @@ function ih_ajax_save_data_step_5(): void
 	// This is the last step. Clean session data and publish memory page.
 	unset( $_SESSION['memory_page_id'] );
 	unset( $_SESSION['edit_mode'] );
+	unset( $_SESSION['step0'] );
 	unset( $_SESSION['step1'] );
 	unset( $_SESSION['step4'] );
 	$first_name		= get_field( 'first_name', $memory_page_id );

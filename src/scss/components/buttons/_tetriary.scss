@@ -1,0 +1,14 @@
+.button.tetriary {
+	border: 1px solid $border-accent;
+	background-color: $bg-primary;
+
+	&:hover {
+		@media (min-width: $xl) {
+			background-color: $bg-accent-subdued-hover
+		}
+	}
+
+	&:active {
+		background-color: $bg-accent-subdued-pressed
+	}
+}

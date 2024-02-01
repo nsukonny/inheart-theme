@@ -27,6 +27,7 @@ import {
 	videoLinkInput, uploadVideoLink
 } from '../new-memory/step-4'
 import { addCoordsFormValidation, legendTipClick } from '../new-memory/step-5'
+import { step2MilitaryFormValidation } from '../new-memory/step-2-military'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
@@ -54,6 +55,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	setActiveSectionContent()
 	dragOrderSections()
 	sectionsContentInput()
+
+	// Step 2 Military
+	step2MilitaryFormValidation()
 
 	// Step 3
 	checkEpitaphContentLength()

@@ -7,6 +7,7 @@ $accent-04					: rgba(247, 185, 65, 0.40);
 
 $light-pink					: #C3A195;
 
+$border-accent				: $accent;
 $border-accent-on-color		: $accent-on-color;
 $border-primary				: rgba(5, 51, 48, 0.30);
 $border-primary-on-color	: rgba(195, 218, 226, 0.24);
@@ -14,6 +15,8 @@ $border-primary-hover		: rgba(5, 51, 48, 0.85);
 $border-danger				: rgba(247, 65, 65, 0.60);
 
 $bg-accent-subdued-hover	: rgba(247, 185, 65, 0.12);
+$bg-accent-subdued-pressed	: #F7E9CD;
+$bg-brown-hover				: #ECDEBF;
 $bg-secondary				: #011C1A;
 $bg-primary					: #F7FAFC;
 $bg-primary-hover			: $border-primary-on-color;
@@ -29,6 +32,7 @@ $text-primary-on-color		: #C3DAE2;
 $text-accent-on-color		: $accent-on-color;
 $text-danger				: #F74141;
 $text-disabled				: $border-primary;
+$M3-sys-light-on-surface	: #1C1B1F;
 
 $icon-accent				: $accent;
 $icon-accent-on-color		: $accent-on-color;

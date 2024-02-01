@@ -1,5 +1,6 @@
 .new-memory {
 	&-themes {
+		position: relative;
 		width: 100%;
 		max-width: 414px;
 		gap: 4px;
@@ -8,17 +9,82 @@
 			gap: 20px
 		}
 
+		&::before {
+			@media (min-width: $lg) {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				right: -128px;
+				width: 1px;
+				height: 100%;
+				background-color: $light-green
+			}
+		}
+
 		&-desc {
 			width: 100%;
-			max-width: 445px;
+			max-width: 413px;
 			margin-bottom: 20px;
 			line-height: $lh-base;
+
+			@media (min-width: $md) {
+				padding-right: 120px
+			}
 
 			p {
 				font-size: 13px;
 
 				@media (min-width: $md) {
 					font-size: 16px
+				}
+			}
+		}
+
+		&-left {
+			margin-bottom: 29px;
+
+			@media (min-width: $md) {
+				padding-right: 128px;
+				margin-bottom: 0
+			}
+		}
+
+		&-right {
+			position: relative;
+			width: 100%;
+			max-width: 414px;
+			padding-top: 30px;
+			border-top: 1px solid $light-green;
+
+			@media (min-width: $lg) {
+				width: auto;
+				padding-top: 0;
+				margin-left: 128px;
+				border-top: none
+			}
+
+			.new-memory-themes-desc {
+				gap: 8px;
+				padding: 0;
+				margin-bottom: 16px;
+
+				@media (min-width: $lg) {
+					max-width: 197px;
+					margin-bottom: 28px
+				}
+
+				svg {
+					display: block;
+					width: 16px;
+				}
+
+				span {
+					width: calc(100% - 24px);
+					line-height: 1.71;
+
+					@media (min-width: $lg) {
+						line-height: $lh-base
+					}
 				}
 			}
 		}
@@ -36,6 +102,10 @@
 		@media (min-width: $md) {
 			width: calc(50% - 10px);
 			border-radius: $radius-theme
+		}
+
+		@media (min-width: $lg) {
+			width: 197px
 		}
 
 		&.active::before {
