@@ -1,5 +1,6 @@
 <?php
 
+// Memory page.
 $labels = [
 	'name'			=> __( 'Сторінка пам`яті', 'inheart' ),
 	'singular_name'	=> __( 'Сторінки пам`яті', 'inheart' ),
@@ -27,6 +28,7 @@ $args = [
 ];
 register_post_type( 'memory_page', $args );
 
+// Subscription plan.
 $labels = [
 	'name'          => __( 'Плани підписки', 'inheart' ),
 	'singular_name' => __( 'План підписки', 'inheart' ),
@@ -53,6 +55,7 @@ $args = [
 ];
 register_post_type( 'subscription_plan', $args );
 
+// Promocode.
 $labels = [
 	'name'          => __( 'Промокоди', 'inheart' ),
 	'singular_name' => __( 'Промокоди', 'inheart' ),
@@ -79,6 +82,7 @@ $args = [
 ];
 register_post_type( 'promocode', $args );
 
+// Memory.
 $labels = [
 	'name'			=> __( 'Спогади', 'inheart' ),
 	'singular_name'	=> __( 'Спогади', 'inheart' ),
@@ -106,6 +110,7 @@ $args = [
 ];
 register_post_type( 'memory', $args );
 
+// Production.
 $labels = [
 	'name'			=> __( 'Товари', 'inheart' ),
 	'singular_name'	=> __( 'Товар', 'inheart' ),
@@ -133,6 +138,7 @@ $args = [
 ];
 register_post_type( 'production', $args );
 
+// Expanded page.
 $labels = [
 	'name'			=> __( 'Замовлення', 'inheart' ),
 	'singular_name'	=> __( 'Замовлення', 'inheart' ),
@@ -148,7 +154,7 @@ $labels = [
 $args = [
 	'labels'				=> $labels,
 	'public'				=> true,
-	'publicly_queryable'	=> true,
+	'publicly_queryable'	=> false,
 	'show_ui'				=> true,
 	'hierarchical'			=> false,
 	'menu_icon'				=> 'dashicons-products',
@@ -159,6 +165,59 @@ $args = [
 	'rewrite'				=> ['slug' => 'expanded-page']
 ];
 register_post_type( 'expanded-page', $args );
+
+// Rewards.
+register_taxonomy( 'rewards', ['reward'], [
+	'label'                 => '',
+	'labels'                => [
+		'name'              => __( 'Види нагород', 'inheart' ),
+		'singular_name'     => __( 'Вид нагороди', 'inheart' ),
+		'search_items'      => __( 'Пошук видів нагород', 'inheart' ),
+		'all_items'         => __( 'Всі види нагород', 'inheart' ),
+		'view_item '        => __( 'Дивитись вид нагород', 'inheart' ),
+		'parent_item'       => __( 'Батьківський вид нагород', 'inheart' ),
+		'parent_item_colon' => __( 'Батьківський вид нагород:', 'inheart' ),
+		'edit_item'         => __( 'Редагувати вид нагород', 'inheart' ),
+		'update_item'       => __( 'Оновити вид нагород', 'inheart' ),
+		'add_new_item'      => __( 'Додати новий вид нагород', 'inheart' ),
+		'new_item_name'     => __( 'Назва нового виду нагород', 'inheart' ),
+		'menu_name'         => __( 'Види нагород', 'inheart' ),
+		'back_to_items'     => __( 'Повернутись до видів нагород', 'inheart' )
+	],
+	'public'                => true,
+	'hierarchical'          => true,
+	'rewrite'               => true,
+	'capabilities'          => [],
+	'show_admin_column'     => true,
+	'show_in_rest'          => true
+] );
+$labels = [
+	'name'			=> __( 'Нагороди', 'inheart' ),
+	'singular_name'	=> __( 'Нагорода', 'inheart' ),
+	'add_new'		=> __( 'Додати нагороду', 'inheart' ),
+	'add_new_item'	=> __( 'Додати нову нагороду', 'inheart' ),
+	'edit_item'		=> __( 'Редагувати', 'inheart' ),
+	'new_item'		=> __( 'Нова нагорода', 'inheart' ),
+	'all_item'		=> __( 'Усі нагороди', 'inheart' ),
+	'view_item'		=> __( 'Дивитись', 'inheart' ),
+	'search_item'	=> __( 'Пошук', 'inheart' ),
+	'menu_item'		=> __( 'Нагорода', 'inheart' )
+];
+$args = [
+	'labels'				=> $labels,
+	'public'				=> true,
+	'publicly_queryable'	=> false,
+	'exclude_from_search'	=> true,
+	'show_ui'				=> true,
+	'hierarchical'			=> false,
+	'menu_icon'				=> 'dashicons-awards',
+	'menu_position'			=> 6,
+	'has_archive'			=> false,
+	'show_in_rest'			=> true,
+	'supports'				=> ['title', 'thumbnail'],
+	'rewrite'				=> ['slug' => 'reward']
+];
+register_post_type( 'reward', $args );
 
 /*
 $labels = array(

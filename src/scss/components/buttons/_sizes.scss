@@ -14,6 +14,17 @@
 		padding: 15px 20px 16px
 	}
 
+	&.xl {
+		min-height: 52px;
+		font-size: $fs-md;
+		line-height: $lh-3;
+		padding: 15px 12px
+	}
+
+	&.fw {
+		width: 100%
+	}
+
 	&.min-width {
 		@media (min-width: $md) {
 			min-width: 226px

@@ -20,7 +20,7 @@ $memory_page_id		= $_SESSION['memory_page_id'];
 <section id="new-memory-step-3-military" class="new-memory-step new-memory-step-3-military direction-column">
 	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 3', 'inheart' ) ?>
+			<?php esc_html_e( 'Крок 1-2 (Військовослужбовець)', 'inheart' ) ?>
 		</div>
 
 		<?php
@@ -68,5 +68,7 @@ $memory_page_id		= $_SESSION['memory_page_id'];
 				<span><?php _e( 'Додати нагороду', 'inheart' ) ?></span>
 			</button>
 		</div>
+
+		<?php get_template_part( 'template-parts/new-memory/step-3-military/add-reward' ) ?>
 </section><!-- #new-memory-step-3-military -->
 
