@@ -73,16 +73,14 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 					'label'			=> __( 'Посада', 'inheart' ),
 					'label_class'	=> 'full',
 					'placeholder'	=> __( 'Наприклад "Кулеметник"', 'inheart' ),
-					'value'			=> $military_position,
-					'required'		=> 0
+					'value'			=> $military_position
 				] );
 				get_template_part( 'components/inputs/default', null, [
 					'name'			=> 'call-sign',
 					'label'			=> __( 'Позивний', 'inheart' ),
 					'label_class'	=> 'full',
 					'placeholder'	=> __( 'Позивний', 'inheart' ),
-					'value'			=> $call_sign,
-					'required'		=> 0
+					'value'			=> $call_sign
 				] );
 				?>
 			</fieldset>

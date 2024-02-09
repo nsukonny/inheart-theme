@@ -1,0 +1,102 @@
+label.label {
+	&-checkbox {
+		position: relative;
+		display: block;
+		font-size: $fs-xs;
+		line-height: 1.16;
+		color: $light-green;
+		padding-left: 25px;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 0;
+			width: 16px;
+			height: 16px;
+		}
+
+		&::before {
+			display: block;
+			background-color: $light-green;
+			border-radius: $radius-checkbox;
+		}
+
+		&::after {
+			display: none;
+			background-image: url('../img/check-white.svg');
+			background-size: 70% auto;
+			background-position: center;
+			background-repeat: no-repeat
+		}
+
+		a {
+			display: inline;
+			color: $bright-yellow;
+
+			&:hover {
+				color: $dark-yellow
+			}
+		}
+	}
+}
+
+input[type='checkbox'] {
+	position: absolute;
+	width: 0;
+	height: 0;
+	opacity: 0;
+	pointer-events: none;
+	z-index: -10;
+
+	&:checked ~ label {
+		&::before {
+			background-color: $dark-yellow
+		}
+
+		&::after {
+			display: flex
+		}
+	}
+}
+
+.checkbox-wrapper {
+	padding: 0 16px;
+
+	&.lg {
+		min-height: 24px;
+
+		label.label-checkbox {
+			font-size: $fs-sm-alt;
+			line-height: $lh-tags-special;
+			color: $text-primary;
+			padding-left: 36px;
+
+			&::before,
+			&::after {
+				width: 24px;
+				height: 24px
+			}
+
+			&::before {
+				background-color: $bg-primary;
+				border: 1px solid $border-primary
+			}
+		}
+
+		input[type='checkbox'] {
+			&:checked ~ label {
+				&::before {
+					background-color: $dark-yellow;
+					border-color: transparent
+				}
+
+				&::after {
+					display: flex
+				}
+			}
+		}
+	}
+}

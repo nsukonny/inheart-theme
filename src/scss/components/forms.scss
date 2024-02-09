@@ -47,95 +47,50 @@ legend.legend {
 	margin: 9px 0 20px
 }
 
-label.label {
-	&-checkbox {
-		position: relative;
-		display: block;
-		font-size: $fs-xs;
-		line-height: 1.16;
-		color: $light-green;
-		padding-left: 25px;
+label.label-file {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: auto;
 
-		&::before,
-		&::after {
-			content: '';
-			position: absolute;
-			top: 50%;
-			transform: translateY(-50%);
-			left: 0;
-			width: 16px;
-			height: 16px;
+	@media (min-width: $md) {
+		flex-direction: row;
+		align-items: center
+	}
+
+	.button.outlined {
+		width: 100%;
+
+		@media (min-width: $md) {
+			width: auto
 		}
 
-		&::before {
-			display: block;
-			background-color: $light-green;
-			border-radius: $radius-checkbox;
-		}
-
-		&::after {
-			display: none;
-			background-image: url('../img/check-white.svg');
-			background-size: 100%;
-			background-position: center;
-			background-repeat: no-repeat
-		}
-
-		a {
-			display: inline;
-			color: $bright-yellow;
-
-			&:hover {
-				color: $dark-yellow
-			}
+		&.added {
+			display: none
 		}
 	}
 
-	&-file {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		width: auto;
+	.input-icon {
+		width: 16px;
+		height: 16px
+	}
 
-		@media (min-width: $md) {
-			flex-direction: row;
-			align-items: center
-		}
+	.label-text {
+		padding: 0
+	}
 
-		.button.outlined {
-			width: 100%;
+	.filename {
+		display: block;
+		max-width: 123px;
+		font-size: $fs-sm;
+		color: $green
+	}
 
-			@media (min-width: $md) {
-				width: auto
-			}
+	&.added .button.outlined {
+		display: none;
 
-			&.added {
-				display: none
-			}
-		}
-
-		.input-icon {
-			width: 16px;
-			height: 16px
-		}
-
-		.label-text {
-			padding: 0
-		}
-
-		.filename {
-			display: block;
-			max-width: 123px;
-			font-size: $fs-sm;
-			color: $green
-		}
-
-		&.added .button.outlined {
-			display: none;
-
-			&.added {
-				display: inline-flex
-			}
+		&.added {
+			display: inline-flex
 		}
 	}
 }
@@ -161,37 +116,12 @@ label.label {
 	}
 }
 
-input {
-	&[type='checkbox'] {
-		position: absolute;
-		width: 0;
-		height: 0;
-		opacity: 0;
-		pointer-events: none;
-		z-index: -10;
-
-		&:checked ~ label {
-			&::before {
-				background-color: $dark-yellow
-			}
-
-			&::after {
-				display: flex
-			}
-		}
-	}
-
-	&[type='file'] {
-		position: absolute;
-		width: 0;
-		height: 0;
-		opacity: 0;
-		pointer-events: none
-	}
-}
-
-.checkbox-wrapper {
-	padding: 0 16px
+input[type='file'] {
+	position: absolute;
+	width: 0;
+	height: 0;
+	opacity: 0;
+	pointer-events: none
 }
 
 .lostpass-wrapper {

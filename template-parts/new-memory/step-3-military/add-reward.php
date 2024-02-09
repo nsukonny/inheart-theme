@@ -87,5 +87,7 @@ $rewards_types = get_terms( ['taxonomy' => 'rewards', 'hide_empty' => true] );
 		}
 		?>
 	</div>
+
+	<?php get_template_part( 'template-parts/new-memory/step-3-military/reward-active-popup' ) ?>
 </div>
 

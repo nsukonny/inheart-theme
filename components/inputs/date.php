@@ -35,7 +35,7 @@ $required		= $args['required'] ?? '';
 		onblur="(this.value === '' ? this.type='text' : this.type='date')"
 	/>
 	<span class="input-icon tail">
-		<?php get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/calendar.svg'] ) ?>
+		<img src="<?php echo THEME_URI ?>/static/img/calendar.svg" alt="" />
 	</span>
 	<span class="hint"></span>
 </label>

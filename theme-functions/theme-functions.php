@@ -35,7 +35,6 @@ function ih_clean( $value ): string
 	return htmlspecialchars( $value );
 }
 
-
 add_filter( 'wp_nav_menu_objects', 'ih_add_acf_data_to_nav_menu', 10, 2 );
 /**
  * Add ACF fields' data to WP nav menus.

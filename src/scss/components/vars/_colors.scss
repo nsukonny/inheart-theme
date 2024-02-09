@@ -19,6 +19,7 @@ $bg-accent-subdued-pressed	: #F7E9CD;
 $bg-brown-hover				: #ECDEBF;
 $bg-secondary				: #011C1A;
 $bg-primary					: #F7FAFC;
+$bg-primary-enhanced		: #C3DAE2;
 $bg-primary-hover			: $border-primary-on-color;
 $bg-primary-pressed			: rgba(195, 218, 226, 0.40);
 $bg-primary-on-color-hover	: rgba(195, 218, 226, 0.08);
@@ -28,7 +29,7 @@ $bg-disabled				: rgba(5, 51, 48, 0.05);
 
 $text-accent				: $accent;
 $text-primary				: $bg-secondary;
-$text-primary-on-color		: #C3DAE2;
+$text-primary-on-color		: $bg-primary-enhanced;
 $text-accent-on-color		: $accent-on-color;
 $text-danger				: #F74141;
 $text-disabled				: $border-primary;
@@ -41,3 +42,5 @@ $icon-danger				: $text-danger;
 $icon-secondary				: rgba(5, 51, 48, 0.4);
 $icon-disabled				: rgba(5, 51, 48, 0.3);
 $icon-disabled-on-color		: $border-primary-on-color;
+
+$military					: #4C4636;

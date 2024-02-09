@@ -59,7 +59,7 @@ export const step2MilitaryFormValidation = () => {
 	}
 }
 
-const openDropdown = e => {
+export const openDropdown = e => {
 	const
 		target		= e.target,
 		label		= target.closest( '.label' ),
@@ -72,7 +72,7 @@ const openDropdown = e => {
 	dropdown.classList.add( 'active' )
 }
 
-const closeDropdown = () => {
+export const closeDropdown = () => {
 	const dropdown = document.querySelector( '.options.active' )
 
 	if( dropdown ) dropdown.classList.remove( 'active' )

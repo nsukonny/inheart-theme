@@ -811,6 +811,51 @@
             "append": ""
         },
         {
+            "key": "field_65c3ef265a448",
+            "label": "Накази",
+            "name": "edicts",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_65c3efbd5a449",
+                    "label": "Наказ",
+                    "name": "name",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_65c3ef265a448"
+                }
+            ]
+        },
+        {
             "key": "field_64bd4a16af78c",
             "label": "Step 4",
             "name": "",
@@ -1210,5 +1255,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706821495
+    "modified": 1707339921
 }

@@ -447,3 +447,21 @@ export const removeLoader = elem => {
 		loader.remove()
 	}
 }
+
+/**
+ * Get date in specific locale.
+ *
+ * @param date
+ * @param locale
+ * @returns {string}
+ */
+export const formatDate = ( date, locale = 'uk' ) => {
+	const options = {
+		year	: 'numeric',
+		month	: 'long',
+		day		: 'numeric',
+		timezone: 'UTC'
+	};
+
+	return new Date( date ).toLocaleString( locale, options )
+}

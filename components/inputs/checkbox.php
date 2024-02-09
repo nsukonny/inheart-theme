@@ -7,6 +7,7 @@
  * @subpackage inheart
  */
 
+$size			= $args['size'] ?? 'sm';
 $name			= $args['name'] ?? '';
 $label			= $args['label'] ?? '';
 $label_class	= $args['label_class'] ?? '';
@@ -14,7 +15,7 @@ $value			= $args['value'] ?? '';
 $required		= $args['required'] ?? '';
 ?>
 
-<div class="checkbox-wrapper">
+<div class="checkbox-wrapper <?php echo esc_attr( $size ) ?>">
 	<input
 		id="<?php echo esc_attr( $name ) ?>"
 		name="<?php echo esc_attr( $name ) ?>"

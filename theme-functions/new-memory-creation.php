@@ -192,7 +192,95 @@ function wp_ajax_ih_ajax_save_data_step_2_military(): void
 	if( isset( $step_data['call-sign'] ) )
 		update_field( 'call_sign', $step_data['call-sign'], $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 2 (військовий) збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1-1 (Військовий) збережено успішно!', 'inheart' )] );
+}
+
+add_action( 'wp_ajax_ih_ajax_filter_rewards', 'ih_ajax_filter_rewards' );
+/**
+ * Step 3 Military - filter rewards.
+ *
+ * @return void
+ */
+function ih_ajax_filter_rewards(): void
+{
+	$slug	= ih_clean( $_POST['slug'] );
+	$s		= ih_clean( $_POST['s'] );
+
+	$args = [
+		'post_type'		=> 'reward',
+		'numberposts'	=> -1,
+		'post_status'	=> 'publish',
+		's'				=> $s
+	];
+	$res = '';
+
+	if( $slug ){
+		$args['rewards']	= $slug;
+		$rewards			= get_posts( $args );
+
+		if( empty( $rewards ) ) wp_send_json_success( ['structure' => __( 'Нагороди за цими критеріями не знайдені', 'inheart' )] );
+
+		$term	= get_term_by( 'slug', $slug, 'rewards' );
+		$res	.= '<h4>' . esc_html( $term->name ) . '</h4><div class="rewards-list flex flex-wrap align-start">';
+
+		foreach( $rewards as $reward )
+			$res .= ih_load_template_part( 'components/cards/reward/preview', null, ['id' => $reward->ID] );
+
+		$res .= '</div>';
+	}else{
+		$rewards_types = get_terms( ['taxonomy' => 'rewards', 'hide_empty' => true] );
+
+		if( $rewards_types && ! is_wp_error( $rewards_types ) ){
+			foreach( $rewards_types as $type ){
+				$args['rewards']	= $type->slug;
+				$rewards			= get_posts( $args );
+
+				if( empty( $rewards ) ) continue;
+
+				$res .= '<h4>' . esc_html( $type->name ) . '</h4><div class="rewards-list flex flex-wrap align-start">';
+
+				foreach( $rewards as $reward )
+					$res .= ih_load_template_part( 'components/cards/reward/preview', null, ['id' => $reward->ID] );
+
+				$res .= '</div>';
+			}
+		}
+	}
+
+	wp_send_json_success( ['structure' => $res] );
+}
+
+add_action( 'wp_ajax_ih_ajax_add_reward', 'ih_ajax_add_reward' );
+/**
+ * Step 3 Military - add reward.
+ *
+ * @return void
+ */
+function ih_ajax_add_reward(): void
+{
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+	$reward_id		= ih_clean( $_POST['id'] );
+	$edict			= ih_clean( $_POST['edict'] );
+	$number			= ih_clean( $_POST['reward-number'] );
+	$date			= ih_clean( $_POST['reward-date'] );
+	$for			= ih_clean( $_POST['reward-for-what'] );
+	$posthumously	= ih_clean( $_POST['posthumously'] );
+
+	if( ! $memory_page_id || ( ! $edict && ! $number && ! $date && ! $for ) )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	$rewards	= get_field( 'rewards', $memory_page_id );
+	$rewards[]	= [
+		'reward_id'		=> $reward_id,
+		'edict'			=> $edict,
+		'reward_number'	=> $number,
+		'reward_date'	=> $date,
+		'for_what'		=> $for,
+		'posthumously'	=> !! $posthumously
+	];
+	update_field( 'rewards', $rewards, $memory_page_id );
+
+	wp_send_json_success( ['msg' => 'Success!!!!'] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_3', 'ih_ajax_save_data_step_3' );

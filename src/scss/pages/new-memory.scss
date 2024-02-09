@@ -332,6 +332,7 @@
 }
 
 .rewards-main-wrap {
+	position: relative;
 	max-width: 100%;
 	padding: 0 32px 32px 0;
 	margin-top: 0
@@ -382,16 +383,32 @@
 	margin-bottom: 76px;
 
 	.button {
-		justify-content: space-between
+		justify-content: space-between;
+
+		&.active {
+			background-color: $bg-primary-hover
+		}
+
+		span {
+			text-align: left
+		}
 	}
 }
 
 .rewards-area {
+	position: relative;
 	width: calc(100% - 413px);
 	padding: 62px 0 0 21px;
 
 	h4 {
 		margin-bottom: 16px
+	}
+
+	.tmp-loader {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%)
 	}
 }
 
@@ -427,15 +444,18 @@
 		padding: 9px 15px 13px
 	}
 
+	* {
+		pointer-events: none
+	}
+
 	&-thumb {
-		width: 115px;
+		max-width: 100%;
 		height: 115px;
 
 		img {
 			display: block;
-			width: 100%;
-			height: 100%;
-			object-fit: cover
+			width: auto;
+			height: 100%
 		}
 	}
 
@@ -462,5 +482,87 @@
 
 	&.active {
 		border-color: $text-accent
+	}
+}
+
+.reward-popup {
+	position: absolute;
+	top: 60px;
+	left: 0;
+	width: 100%;
+	height: calc(100% - 24px);
+	padding-top: 29px;
+	background-color: $white;
+	z-index: 2;
+
+	&-inner {
+		gap: 20px
+	}
+
+	.reward-preview {
+		max-width: 305px;
+		padding: 61px 42px 65px;
+		pointer-events: none;
+
+		&-thumb {
+			height: 217px
+		}
+
+		&-title {
+			font-size: $fs-xl;
+			line-height: $lh-mobile-title-special
+		}
+	}
+
+	&-form {
+		width: 100%;
+		max-width: 413px;
+
+		fieldset {
+			flex-grow: 1
+		}
+
+		&-buttons {
+			gap: 10px;
+			margin-top: 18px;
+
+			.button[type='submit'] {
+				min-width: 198px
+			}
+		}
+	}
+
+	&-text {
+		position: relative;
+		width: 100%;
+		max-width: 398px;
+		align-self: flex-start;
+		font-size: 24px;
+		line-height: $lh-mobile-title-special-lg;
+		color: $military;
+		text-align: center;
+		margin: 65px 0 0 52px;
+
+		&::before,
+		&::after {
+			content: '“';
+			position: absolute;
+			font-family: $ff-title;
+			font-size: 123px;
+			line-height: 0;
+			font-weight: $fw-semibold;
+			color: $bg-primary-enhanced
+		}
+
+		&::before {
+			top: 0;
+			left: -20px
+		}
+
+		&::after {
+			bottom: 0;
+			right: -20px;
+			transform: rotate(180deg)
+		}
 	}
 }
