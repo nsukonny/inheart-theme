@@ -270,17 +270,78 @@ function ih_ajax_add_reward(): void
 		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	$rewards	= get_field( 'rewards', $memory_page_id );
-	$rewards[]	= [
-		'reward_id'		=> $reward_id,
-		'edict'			=> $edict,
-		'reward_number'	=> $number,
-		'reward_date'	=> $date,
-		'for_what'		=> $for,
-		'posthumously'	=> !! $posthumously
-	];
+	$updated	= false;
+
+	if( empty( $rewards ) ){
+		$rewards = [];
+	}else{
+		foreach( $rewards as $key => $r ){
+			$r_id = $r['reward_id'];
+
+			if( $r_id == $reward_id ){
+				$rewards[$key]	= [
+					'reward_id'		=> $reward_id,
+					'edict'			=> $edict,
+					'reward_number'	=> $number,
+					'reward_date'	=> $date,
+					'for_what'		=> $for,
+					'posthumously'	=> !! $posthumously
+				];
+				$updated = true;
+				break;
+			}
+		}
+	}
+
+	if( ! $updated ){
+		$rewards[] = [
+			'reward_id'		=> $reward_id,
+			'edict'			=> $edict,
+			'reward_number'	=> $number,
+			'reward_date'	=> $date,
+			'for_what'		=> $for,
+			'posthumously'	=> !! $posthumously
+		];
+	}
+
 	update_field( 'rewards', $rewards, $memory_page_id );
 
-	wp_send_json_success( ['msg' => 'Success!!!!'] );
+	// Get all rewards to show on the frontend.
+	$res = '';
+	foreach( $rewards as $r )
+		$res .= ih_load_template_part( 'components/cards/reward/preview', 'full', [
+			'id'		=> $r['reward_id'],
+			'reward'	=> $r
+		] );
+
+	wp_send_json_success( [
+		'msg'		=> __( 'Нагороду успішно додано', 'inheart' ),
+		'rewards'	=> $res
+	] );
+}
+
+add_action( 'wp_ajax_ih_ajax_delete_reward', 'ih_ajax_delete_reward' );
+/**
+ * Step 3 Military - delete reward.
+ *
+ * @return void
+ */
+function ih_ajax_delete_reward(): void
+{
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+	$reward_id		= ih_clean( $_POST['id'] );
+
+	if( ! $memory_page_id || ! $reward_id )
+		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+
+	if( ! $rewards = get_field( 'rewards', $memory_page_id ) )
+		wp_send_json_error( ['msg' => esc_html__( 'Нагород немає', 'inheart' )] );
+
+	$rewards_upd = array_filter( $rewards, fn( $reward ) => $reward['reward_id'] != $reward_id );
+
+	update_field( 'rewards', $rewards_upd, $memory_page_id );
+
+	wp_send_json_success( ['msg' => __( 'Нагороду успішно видалено', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_3', 'ih_ajax_save_data_step_3' );
