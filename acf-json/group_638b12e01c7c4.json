@@ -495,6 +495,48 @@
             "rows_per_page": 20,
             "sub_fields": [
                 {
+                    "key": "field_65d4fe4f92c78",
+                    "label": "Створена власноруч",
+                    "name": "reward_custom",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "34",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "ui": 1,
+                    "parent_repeater": "field_65c692be88a96"
+                },
+                {
+                    "key": "field_65d5014b56958",
+                    "label": "Назва створеної власноруч нагороди",
+                    "name": "reward_custom_name",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "66",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_65c692be88a96"
+                },
+                {
                     "key": "field_65c692f188a9c",
                     "label": "ID нагороди",
                     "name": "reward_id",
@@ -1107,5 +1149,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1707513946
+    "modified": 1708458385
 }

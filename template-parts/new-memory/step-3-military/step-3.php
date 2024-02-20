@@ -54,11 +54,14 @@ $no_rewards_class	= empty( $rewards ) ? '' : ' hidden';
 		<div class="has-rewards form-white flex flex-wrap align-start<?php echo $rewards_class ?>">
 			<?php
 			if( ! empty( $rewards ) ){
-				foreach( $rewards as $reward )
-					get_template_part( 'components/cards/reward/preview', 'full', [
+				foreach( $rewards as $reward ){
+					$part_name = $reward['reward_custom'] ? 'custom' : 'full';
+
+					get_template_part( 'components/cards/reward/preview', $part_name, [
 						'id'		=> $reward['reward_id'],
 						'reward'	=> $reward
 					] );
+				}
 			}
 			?>
 		</div>

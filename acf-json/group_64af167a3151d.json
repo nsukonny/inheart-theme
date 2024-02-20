@@ -811,6 +811,26 @@
             "append": ""
         },
         {
+            "key": "field_65d2808adebfa",
+            "label": "Додати нагороду власноруч",
+            "name": "add_custom_reward_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
             "key": "field_65c3ef265a448",
             "label": "Накази",
             "name": "edicts",
@@ -1255,5 +1275,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1707339921
+    "modified": 1708294427
 }

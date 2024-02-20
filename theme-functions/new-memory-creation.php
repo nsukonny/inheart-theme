@@ -260,13 +260,14 @@ function ih_ajax_add_reward(): void
 {
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 	$reward_id		= ih_clean( $_POST['id'] );
+	$custom_name	= ih_clean( $_POST['reward-custom'] );
 	$edict			= ih_clean( $_POST['edict'] );
 	$number			= ih_clean( $_POST['reward-number'] );
 	$date			= ih_clean( $_POST['reward-date'] );
 	$for			= ih_clean( $_POST['reward-for-what'] );
 	$posthumously	= ih_clean( $_POST['posthumously'] );
 
-	if( ! $memory_page_id || ( ! $edict && ! $number && ! $date && ! $for ) )
+	if( ! $memory_page_id || ( ! $reward_id && ! $custom_name ) || ( ! $edict && ! $number && ! $date && ! $for ) )
 		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	$rewards	= get_field( 'rewards', $memory_page_id );
@@ -279,13 +280,15 @@ function ih_ajax_add_reward(): void
 			$r_id = $r['reward_id'];
 
 			if( $r_id == $reward_id ){
-				$rewards[$key]	= [
-					'reward_id'		=> $reward_id,
-					'edict'			=> $edict,
-					'reward_number'	=> $number,
-					'reward_date'	=> $date,
-					'for_what'		=> $for,
-					'posthumously'	=> !! $posthumously
+				$rewards[$key] = [
+					'reward_custom'			=> !! $custom_name,
+					'reward_custom_name'	=> $custom_name,
+					'reward_id'				=> $reward_id,
+					'edict'					=> $edict,
+					'reward_number'			=> $number,
+					'reward_date'			=> $date,
+					'for_what'				=> $for,
+					'posthumously'			=> !! $posthumously
 				];
 				$updated = true;
 				break;
@@ -295,12 +298,14 @@ function ih_ajax_add_reward(): void
 
 	if( ! $updated ){
 		$rewards[] = [
-			'reward_id'		=> $reward_id,
-			'edict'			=> $edict,
-			'reward_number'	=> $number,
-			'reward_date'	=> $date,
-			'for_what'		=> $for,
-			'posthumously'	=> !! $posthumously
+			'reward_custom'			=> !! $custom_name,
+			'reward_custom_name'	=> $custom_name,
+			'reward_id'				=> $reward_id ?: mt_rand( 1000, 9999 ) . mt_rand( 1000, 9999 ) . mt_rand( 1000, 9999 ),
+			'edict'					=> $edict,
+			'reward_number'			=> $number,
+			'reward_date'			=> $date,
+			'for_what'				=> $for,
+			'posthumously'			=> !! $posthumously
 		];
 	}
 
@@ -308,11 +313,14 @@ function ih_ajax_add_reward(): void
 
 	// Get all rewards to show on the frontend.
 	$res = '';
-	foreach( $rewards as $r )
-		$res .= ih_load_template_part( 'components/cards/reward/preview', 'full', [
+	foreach( $rewards as $r ){
+		$part_name = $r['reward_custom'] ? 'custom' : 'full';
+
+		$res .= ih_load_template_part( 'components/cards/reward/preview', $part_name, [
 			'id'		=> $r['reward_id'],
 			'reward'	=> $r
 		] );
+	}
 
 	wp_send_json_success( [
 		'msg'		=> __( 'Нагороду успішно додано', 'inheart' ),

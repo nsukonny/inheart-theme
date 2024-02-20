@@ -12,6 +12,7 @@ import { openDropdown, closeDropdown } from './step-2-military'
 
 const
 	addRewardButtons	= document.querySelectorAll( 'button.add-reward' ),
+	titleButton			= document.querySelector( '#new-memory-step-3-military .new-memory-step-title .add-reward' ),
 	noRewardsBody		= document.querySelector( '.no-rewards-body' ),
 	hasRewardsBody		= document.querySelector( '.has-rewards' ),
 	rewardsMainWrap		= document.querySelector( '.rewards-main-wrap' ),
@@ -26,6 +27,7 @@ const
 const
 	popup						= rewardsMainWrap.querySelector( '.reward-popup' ),
 	popupReward					= popup.querySelector( '.reward-preview' ),
+	popupNoRewardThumb			= popupReward.querySelector( '.reward-preview-no-reward-thumb' ),
 	popupRewardThumb			= popupReward.querySelector( '.reward-preview-thumb' ),
 	popupRewardTitle			= popupReward.querySelector( '.reward-preview-title' ),
 	rewardPopupTextEdict		= rewardPopupText.querySelector( '.reward-popup-text-edict' ),
@@ -34,15 +36,18 @@ const
 	rewardPopupTextFor			= rewardPopupText.querySelector( '.reward-popup-text-for' ),
 	rewardPopupTextPosthumously	= rewardPopupText.querySelector( '.reward-popup-text-posthumously' ),
 	textAfterNumber				= rewardPopupText.querySelector( '.reward-popup-text-number-after' ),
-	textAfterDate				= rewardPopupText.querySelector( '.reward-popup-text-date-after' )
+	textAfterDate				= rewardPopupText.querySelector( '.reward-popup-text-date-after' ),
+	rewardPopupCustomText		= popup.querySelector( '.reward-popup-custom' )
 
 // Reward popup inputs.
 const
-	edictInput		= document.querySelector( '#edict' ),
-	numberInput		= document.querySelector( '#reward-number' ),
-	dateInput		= document.querySelector( '#reward-date' ),
-	forInput		= document.querySelector( '#reward-for-what' ),
-	posthumously	= document.querySelector( '#posthumously' )
+	customLabel		= popup.querySelector( '.label-reward-custom' ),
+	customInput		= popup.querySelector( '#reward-custom' ),
+	edictInput		= popup.querySelector( '#edict' ),
+	numberInput		= popup.querySelector( '#reward-number' ),
+	dateInput		= popup.querySelector( '#reward-date' ),
+	forInput		= popup.querySelector( '#reward-for-what' ),
+	posthumously	= popup.querySelector( '#posthumously' )
 
 export const addReward = () => {
 	if(
@@ -78,7 +83,10 @@ export const addReward = () => {
 
 		popupReward.setAttribute( 'data-id', preview.dataset.id )
 		popupRewardThumb.innerHTML = ''
+		popupNoRewardThumb.classList.add( 'hidden' )
+		popupRewardThumb.classList.remove( 'hidden' )
 		popupRewardThumb.appendChild( previewThumb )
+		popupRewardTitle.classList.add( 'hidden' )
 		popupRewardTitle.innerText = previewTitle
 		preview.classList.add( 'active' )
 		popup.classList.remove( 'hidden' )
@@ -88,8 +96,7 @@ export const addReward = () => {
 			breadcrumbs.querySelector( 'span:last-child' ).classList.add( 'active' )
 		}
 
-		// Scroll to top.
-		rewardsMainWrap.scrollIntoView()
+		window.scrollTo( { top: 0, left: 0 } )
 	} )
 
 	// Close reward popup.
@@ -277,6 +284,7 @@ export const addReward = () => {
 						hasRewardsBody.innerHTML = res.data.rewards
 						hasRewardsBody.classList.remove( 'hidden' )
 						rewardsMainWrap.classList.add( 'hidden' )
+						titleButton.classList.remove( 'hidden' )
 						cleanRewardPopup()
 						break
 
@@ -290,8 +298,29 @@ export const addReward = () => {
 		} )
 	} )
 
+	addCustomReward()
 	deleteReward()
 	editReward()
+}
+
+const addCustomReward = () => {
+	const btn = document.querySelector( 'button.add-custom-reward' )
+
+	if( ! btn ) return
+
+	btn.addEventListener( 'click', () => {
+		popupReward.setAttribute( 'data-id', '' )
+		popupRewardThumb.classList.add( 'hidden' )
+		popupNoRewardThumb.classList.remove( 'hidden' )
+		popupRewardTitle.classList.add( 'hidden' )
+		popup.classList.remove( 'hidden' )
+		customLabel.classList.remove( 'hidden' )
+
+		if( rewardPopupCustomText ) rewardPopupCustomText.classList.remove( 'hidden' )
+
+		window.scrollTo( { top: 0, left: 0 } )
+		btn.blur()
+	} )
 }
 
 /**
@@ -358,6 +387,7 @@ const deleteReward = () => {
 							// If there are no more rewards - show No Rewards screen.
 							if( ! hasRewardsBody.querySelectorAll( '.reward-preview' ).length ){
 								hasRewardsBody.classList.add( 'hidden' )
+								titleButton.classList.add( 'hidden' )
 								document.querySelector( '.no-rewards-body' ).classList.remove( 'hidden' )
 							}
 							break
@@ -394,7 +424,8 @@ const editReward = () => {
 
 		const
 			preview				= target.closest( '.reward-preview' ),
-			previewThumb		= preview.querySelector( '.reward-preview-thumb img' ).cloneNode(),
+			isCustom			= preview.classList.contains( 'custom' ),
+			previewThumb		= ! isCustom ? preview.querySelector( '.reward-preview-thumb img' ).cloneNode() : '',
 			previewTitle		= preview.querySelector( '.reward-preview-title' ).innerText,
 			hiddenEdict			= preview.querySelector( '.reward-preview-edict' ).innerText,
 			hiddenNumber		= preview.querySelector( '.reward-preview-number' ).innerText,
@@ -402,9 +433,22 @@ const editReward = () => {
 			hiddenFor			= preview.querySelector( '.reward-preview-for' ).innerText,
 			hiddenPosthumously	= preview.querySelector( '.reward-preview-posthumously' ).innerText
 
+		// Normal reward.
+		if( ! isCustom ){
+			popupRewardThumb.innerHTML = ''
+			popupNoRewardThumb.classList.add( 'hidden' )
+			popupRewardThumb.classList.remove( 'hidden' )
+			popupRewardThumb.appendChild( previewThumb )
+		}else{
+			popupRewardThumb.classList.add( 'hidden' )
+			popupNoRewardThumb.classList.remove( 'hidden' )
+			rewardPopupCustomText.classList.remove( 'hidden' )
+			customLabel.classList.remove( 'hidden' )
+			customInput.value = previewTitle
+		}
+
 		popupReward.setAttribute( 'data-id', preview.dataset.id )
-		popupRewardThumb.innerHTML = ''
-		popupRewardThumb.appendChild( previewThumb )
+		popupRewardTitle.classList.remove( 'hidden' )
 		popupRewardTitle.innerText = previewTitle
 
 		// Pre-fill popup fields.
@@ -430,6 +474,8 @@ const editReward = () => {
 		hasRewardsBody.classList.add( 'hidden' )
 		rewardsMainWrap.classList.remove( 'hidden' )
 		popup.classList.remove( 'hidden' )
+
+		window.scrollTo( { top: 0, left: 0 } )
 	} )
 }
 
@@ -440,11 +486,14 @@ const cleanRewardPopup = () => {
 	popup.classList.add( 'hidden' )
 	rewardForm.reset()
 
+	customInput.innerText 			= ''
 	rewardPopupTextEdict.innerText 	= ''
 	rewardPopupTextNumber.innerText = ''
 	rewardPopupTextDate.innerText 	= ''
 	rewardPopupTextFor.innerText 	= ''
 
+	rewardPopupCustomText.classList.add( 'hidden' )
+	customLabel.classList.add( 'hidden' )
 	rewardPopupTextPosthumously.classList.add( 'hidden' )
 	textAfterNumber.classList.add( 'hidden' )
 	textAfterDate.classList.add( 'hidden' )

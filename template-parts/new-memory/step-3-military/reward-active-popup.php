@@ -9,18 +9,37 @@
  * @package WordPress
  * @subpackage inheart
  */
+
+$custom_reward_text = get_field( 'add_custom_reward_text' );
 ?>
 
 <div class="reward-popup hidden">
 	<div class="reward-popup-inner flex flex-wrap">
-		<div class="reward-preview flex direction-column align-center">
-			<div class="reward-preview-thumb"></div>
-			<div class="reward-preview-title"></div>
+		<div class="reward-popup-preview">
+			<div class="reward-preview flex direction-column align-center">
+				<div class="reward-preview-no-reward-thumb hidden">
+					<img src="<?php echo THEME_URI ?>/static/img/no-rewards-min.png" alt="" />
+				</div>
+
+				<div class="reward-preview-thumb"></div>
+				<div class="reward-preview-title"></div>
+			</div>
+
+			<?php
+			if( $custom_reward_text )
+				echo '<div class="reward-popup-custom hidden">', esc_html( $custom_reward_text ), '</div>';
+			?>
 		</div>
 
 		<form class="reward-popup-form flex direction-column">
 			<fieldset class="flex flex-wrap justify-between">
 				<?php
+				get_template_part( 'components/inputs/default', null, [
+					'name'			=> 'reward-custom',
+					'label'			=> __( 'Назва нагороди*', 'inheart' ),
+					'label_class'	=> 'full label-reward-custom hidden',
+					'placeholder'	=> __( 'Назва нагороди', 'inheart' ),
+				] );
 				get_template_part( 'components/inputs/army', null, [
 					'name'			=> 'edict',
 					'label'			=> __( 'Наказ*', 'inheart' ),
