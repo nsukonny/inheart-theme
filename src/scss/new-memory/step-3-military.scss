@@ -1,6 +1,10 @@
 .new-memory-step-3-military {
 	.new-memory-step-title .button {
-		margin: 7px 0 0 24px
+		margin: 7px 0 0 auto;
+
+		@media (min-width: $md) {
+			margin-left: 24px
+		}
 	}
 }
 
@@ -36,8 +40,21 @@
 
 	&.form-white {
 		max-width: 100%;
-		padding: 0 32px 32px 0;
-		margin-top: 0
+		padding: 0;
+		margin-top: 0;
+
+		@media (min-width: $md) {
+			padding: 0 32px 32px 0
+		}
+
+		&::before {
+			right: -50vw;
+			width: 200vw;
+
+			@media (min-width: $md) {
+				right: 100%
+			}
+		}
 	}
 }
 
@@ -51,9 +68,13 @@
 		margin-bottom: 20px;
 
 		span {
-			font-size: $fs-xs-alt;
+			font-size: $fs-xs;
 			line-height: $lh-fs-13;
 			color: $text-secondary;
+
+			@media (min-width: $md) {
+				font-size: $fs-xs-alt
+			}
 
 			&.active {
 				color: $text-primary
@@ -100,8 +121,13 @@
 
 .rewards-area {
 	position: relative;
-	width: calc(100% - 413px);
-	padding: 62px 0 0 21px;
+	width: 100%;
+	padding-bottom: 120px;
+
+	@media (min-width: $lg) {
+		width: calc(100% - 413px);
+		padding: 62px 0 0 21px
+	}
 
 	h4 {
 		margin-bottom: 16px

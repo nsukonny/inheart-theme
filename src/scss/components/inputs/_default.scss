@@ -5,7 +5,7 @@ input[type='url'],
 input[type='email'],
 textarea {
 	width: 100%;
-	height: 40px;
+	height: 48px;
 	font-family: $ff;
 	font-size: $fs-md;
 	line-height: $lh-desktop-title-special;
@@ -18,10 +18,6 @@ textarea {
 		box-shadow ease-out $tr,
 		border-color ease-out $tr,
 		background-color ease-out $tr;
-
-	@media (min-width: $lg) {
-		height: 48px
-	}
 
 	&:hover {
 		border-color: $border-primary-hover

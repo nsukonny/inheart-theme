@@ -333,8 +333,12 @@
 	}
 
 	&-no-reward-thumb {
-		height: 120px;
-		margin: auto
+		height: 115px;
+		margin: auto;
+
+		@media (min-width: $md) {
+			height: 120px
+		}
 	}
 
 	&-thumb {
@@ -357,15 +361,18 @@
 
 	&-actions {
 		position: absolute;
-		top: 20px;
-		right: 20px;
+		top: 5px;
+		right: 5px;
 		column-gap: 6px;
 
+		@media (min-width: $xl) {
+			top: 20px;
+			right: 20px
+		}
+
 		&:not(.active) {
-			@media (min-width: $xl) {
-				transition: opacity ease-out $tr;
-				opacity: 0
-			}
+			transition: opacity ease-out $tr;
+			opacity: 0
 		}
 
 		.button {
@@ -375,19 +382,33 @@
 
 	&.full {
 		position: relative;
-		padding: 60px 43px 36px;
+		padding: 30px 19px 19px;
+
+		@media (min-width: $md) {
+			max-width: calc((100% - 40px) / 3)
+		}
 
 		@media (min-width: $xl) {
-			max-width: calc((100% - 60px) / 4)
+			max-width: calc((100% - 60px) / 4);
+			padding: 60px 43px 36px
 		}
 
 		.reward-preview-thumb {
-			height: 217px
+			height: 115px;
+
+			@media (min-width: $xl) {
+				height: 217px
+			}
 		}
 
 		.reward-preview-title {
-			font-size: $fs-xl;
-			line-height: $lh-base
+			font-size: $fs-md;
+			line-height: $lh-desktop-title-special;
+
+			@media (min-width: $xl) {
+				font-size: $fs-xl;
+				line-height: $lh-base
+			}
 		}
 	}
 
@@ -414,16 +435,25 @@
 	left: 0;
 	width: 100%;
 	height: calc(100% - 24px);
-	padding-top: 29px;
+	padding-top: 10px;
 	background-color: $white;
 	z-index: 2;
+
+	@media (min-width: $md) {
+		padding-top: 29px
+	}
 
 	&-inner {
 		gap: 20px
 	}
 
 	&-preview {
-		max-width: 305px
+		width: 100%;
+		order: 1;
+
+		@media (min-width: $xl) {
+			max-width: 305px
+		}
 	}
 
 	&-custom {
@@ -434,10 +464,21 @@
 
 	.reward-preview {
 		width: 100%;
-		max-width: 100%;
-		height: 382px;
-		padding: 61px 42px 65px;
+		max-width: 164px;
+		min-height: 180px;
+		padding: 9px 24px 13px;
+		margin: 0 auto;
 		pointer-events: none;
+
+		@media (min-width: $md) {
+			margin: 0
+		}
+
+		@media (min-width: $lg) {
+			min-height: 382px;
+			max-width: 100%;
+			padding: 61px 42px 65px
+		}
 
 		&-thumb {
 			height: 217px;
@@ -454,6 +495,11 @@
 		position: relative;
 		width: 100%;
 		max-width: 413px;
+		order: 3;
+
+		@media (min-width: $lg) {
+			order: 2
+		}
 
 		fieldset {
 			flex-grow: 1
@@ -483,23 +529,34 @@
 	&-text {
 		position: relative;
 		width: 100%;
-		max-width: 398px;
+		max-width: 221px;
 		align-self: flex-start;
 		font-size: 24px;
 		line-height: $lh-mobile-title-special-lg;
 		color: $military;
 		text-align: center;
-		margin: 65px 0 0 52px;
+		margin: 30px auto;
+		order: 2;
+
+		@media (min-width: $lg) {
+			max-width: 398px;
+			margin: 65px 0 0 52px;
+			order: 3
+		}
 
 		&::before,
 		&::after {
 			content: '“';
 			position: absolute;
 			font-family: $ff-title;
-			font-size: 123px;
+			font-size: 48px;
 			line-height: 0;
 			font-weight: $fw-semibold;
-			color: $bg-primary-enhanced
+			color: $bg-primary-enhanced;
+
+			@media (min-width: $xl) {
+				font-size: 123px
+			}
 		}
 
 		&::before {
@@ -517,5 +574,39 @@
 
 .has-rewards {
 	max-width: 100%;
-	gap: 20px
+	gap: 16px;
+
+	@media (min-width: $lg) {
+		gap: 20px
+	}
+}
+
+.rewards-not-found {
+	position: fixed;
+	bottom: 77px;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	background-color: $white;
+	padding: 16px 20px;
+	z-index: 1;
+
+	@media (min-width: $md) {
+		flex-direction: row;
+		column-gap: 8px
+	}
+
+	@media (min-width: $lg) {
+		bottom: 84px
+	}
+
+	@media (min-width: $xl) {
+		position: relative;
+		bottom: auto;
+		flex-direction: column;
+		align-items: flex-start;
+		z-index: auto
+	}
 }

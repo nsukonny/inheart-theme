@@ -86,7 +86,7 @@ export const addReward = () => {
 		popupNoRewardThumb.classList.add( 'hidden' )
 		popupRewardThumb.classList.remove( 'hidden' )
 		popupRewardThumb.appendChild( previewThumb )
-		popupRewardTitle.classList.add( 'hidden' )
+		popupRewardTitle.classList.remove( 'hidden' )
 		popupRewardTitle.innerText = previewTitle
 		preview.classList.add( 'active' )
 		popup.classList.remove( 'hidden' )
@@ -146,6 +146,10 @@ export const addReward = () => {
 				switch( res.success ){
 					case true:
 						rewardsArea.innerHTML = res.data.structure
+						window.scrollTo( {
+							top: rewardsArea.getBoundingClientRect().top + window.scrollY,
+							behavior: 'smooth'
+						} )
 						break
 
 					case false:
@@ -334,7 +338,7 @@ const deleteReward = () => {
 	hasRewardsBody.addEventListener( 'click', e => {
 		const
 			target	= e.target,
-			clientX	= e.clientX,
+			clientX	= e.clientX < 200 ? 200 : e.clientX,
 			clientY	= e.clientY
 
 		if(
