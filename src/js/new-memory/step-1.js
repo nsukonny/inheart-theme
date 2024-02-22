@@ -7,7 +7,7 @@ import {
 	setAjaxWorkingStatus,
 	setTargetElement
 } from '../common/global'
-import { allowNextStep, applyProgress, disallowNextStep } from './common'
+import { allowNextStep, applyProgress, disallowNextStep, isStepFilled } from './common'
 
 const stepData = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
 let cropper
@@ -153,13 +153,7 @@ export const addMainFormValidation = () => {
 		stepData[index] = value
 		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
 
-		if( checkStep1() ){
-			allowNextStep( 2 )
-			applyProgress( 1 )
-		}else{
-			disallowNextStep()
-			applyProgress( 1, 0 )
-		}
+		isStepFilled( 1 )
 	}
 }
 

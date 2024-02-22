@@ -1,4 +1,4 @@
-import { allowNextStep, disallowNextStep, applyProgress } from './common'
+import { allowNextStep, disallowNextStep, applyProgress, isStepFilled } from './common'
 
 const
 	stepData = localStorage.getItem( 'ih-step-2-military' ) ?
@@ -49,13 +49,7 @@ export const step2MilitaryFormValidation = () => {
 		stepData[index] = value
 		localStorage.setItem( 'ih-step-2-military', JSON.stringify( stepData ) )
 
-		if( checkStep2Military() ){
-			allowNextStep( 3 )
-			applyProgress( 2 )
-		}else{
-			disallowNextStep()
-			applyProgress( 2, 0 )
-		}
+		isStepFilled( '2-military' )
 	}
 }
 
@@ -87,7 +81,7 @@ export const checkStep2Military = () => {
 	const selects	= document.querySelectorAll( '.new-memory-step-2-military .input-wrapper.select input' )
 	let allIsSet	= true
 
-	if( ! selects.length ) return
+	if( ! selects.length ) return false
 
 	selects.forEach( select => {
 		const

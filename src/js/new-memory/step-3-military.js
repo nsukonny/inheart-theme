@@ -502,3 +502,5 @@ const cleanRewardPopup = () => {
 	textAfterNumber.classList.add( 'hidden' )
 	textAfterDate.classList.add( 'hidden' )
 }
+
+export const checkStep3Military = () => true

@@ -11,12 +11,14 @@ import { checkStep3 } from './step-3'
 import { checkStep4 } from './step-4'
 import { checkStep5 } from './step-5'
 import { checkStep2Military } from './step-2-military'
+import { checkStep3Military } from './step-3-military'
 
-const militarySteps = [2, 3]
 let footer,
 	progressBar,
 	prevStepBtn,
-	nextStepBtn
+	nextStepBtn,
+	nextStepIdGlobal,
+	prevStepIdGlobal
 
 /**
  * Define all global variables required for all steps.
@@ -32,9 +34,7 @@ export const defineGlobalStepsItems = () => {
 	return ! ( ! footer || ! progressBar || ! prevStepBtn || ! nextStepBtn )
 }
 
-export const checkIsMilitaryStep = stepId => {
-	if( ! militarySteps.includes( stepId ) ) return false
-
+const isMilitaryTheme = () => {
 	let stepData = localStorage.getItem( 'ih-step-0' )
 
 	if( ! stepData ) return false
@@ -83,27 +83,25 @@ export const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
 		if( nextStepBtn.disabled ) return
 
-		const
-			nextStepId	= parseInt( nextStepBtn.dataset.next ),
-			prevStepId	= checkIsMilitaryStep( nextStepId - 1 ) ? `${ nextStepId - 1 }-military` : nextStepId - 1
-
-		if( ! nextStepId || checkAjaxWorkingStatus() ) return
+		if( ! nextStepIdGlobal || checkAjaxWorkingStatus() ) return
 
 		setAjaxWorkingStatus( true )
 
-		const formData = new FormData()
+		const
+			formData	= new FormData(),
+			dataNext	= parseInt( nextStepBtn.dataset.next )
 
-		formData.append( 'action', `ih_ajax_save_data_step_${ prevStepId }` )
-		formData.append( 'stepData', localStorage.getItem( `ih-step-${ prevStepId }` ) )
+		formData.append( 'action', `ih_ajax_save_data_step_${ prevStepIdGlobal }` )
+		formData.append( 'stepData', localStorage.getItem( `ih-step-${ prevStepIdGlobal }` ) || '' )
 
 		ihAjaxRequest( formData ).then( res => {
 			if( res ){
 				switch( res.success ){
 					case true:
-						showNextStepSection( nextStepId )
+						showNextStepSection()
 
 						// 6th step is the last, need to clean all the data and redirect.
-						if( nextStepId === 6 ){
+						if( dataNext === 6 ){
 							theLastStep()
 							setTimeout( () => window.location.href = res.data.redirect, 3000 )
 						}
@@ -125,14 +123,12 @@ export const nextStep = () => {
  *
  * @param {number} nextStepId
  */
-const showNextStepSection = nextStepId => {
-	const nextStepIdUpd = checkIsMilitaryStep( nextStepId ) ? `${ nextStepId }-military` : nextStepId
-
+const showNextStepSection = () => {
 	document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
-	document.querySelector( `#new-memory-step-${ nextStepIdUpd }` ).classList.add( 'active' )
+	document.querySelector( `#new-memory-step-${ nextStepIdGlobal }` ).classList.add( 'active' )
 	prevStepBtn.classList.remove( 'hidden' )
-	prevStepBtn.setAttribute( 'data-prev', nextStepId - 1 )
-	isStepFilled( nextStepIdUpd )
+	prevStepBtn.setAttribute( 'data-prev', prevStepIdGlobal )
+	isStepFilled( nextStepIdGlobal )
 }
 
 /**
@@ -142,11 +138,12 @@ export const prevStep = () => {
 	prevStepBtn.addEventListener( 'click', () => {
 		if( prevStepBtn.classList.contains( 'hidden' ) ) return
 
-		const
-			prevStepId		= parseInt( prevStepBtn.dataset.prev ),
-			prevStepIdUpd	= checkIsMilitaryStep( prevStepId ) ? `${ prevStepId }-military` : prevStepId
+		let prevStepIdUpd	= prevStepBtn.dataset.prev,
+			prevStepId		= parseInt( prevStepIdUpd )
 
 		if( ! prevStepId && prevStepId != '0' ) return
+
+		if( ! prevStepIdUpd.includes( '-military' ) ) prevStepIdUpd = prevStepId
 
 		document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
 		document.querySelector( `#new-memory-step-${ prevStepIdUpd }` ).classList.add( 'active' )
@@ -155,9 +152,9 @@ export const prevStep = () => {
 		isStepFilled( prevStepIdUpd )
 
 		if( prevStepId == 0 ) prevStepBtn.classList.add( 'hidden' )
-		else prevStepBtn.setAttribute( 'data-prev', prevStepId - 1 )
+		else prevStepBtn.setAttribute( 'data-prev', getPrevStepId( prevStepIdGlobal ) )
 
-		nextStepBtn.setAttribute( 'data-next', prevStepId + 1 )
+		nextStepBtn.setAttribute( 'data-next', nextStepIdGlobal )
 	} )
 }
 
@@ -168,43 +165,75 @@ export const prevStep = () => {
  */
 export const isStepFilled = ( stepId = 0 ) => {
 	let cb,	// Callback function for each step, returns true if step is ready, otherwise - false.
-		stepIdUpd = stepId + 1
+		stepForProgress	= 0,
+		percentage		= 100,
+		falsePercentage	= 0
 
 	switch( stepId ){
 		case 1:
-			cb = checkStep1
+			cb					= checkStep1
+			nextStepIdGlobal	= isMilitaryTheme() ? '2-military' : 2
+			prevStepIdGlobal	= 1
+			stepForProgress		= 1
 			break
 
 		case 2:
-			cb = checkStep2
+			cb					= checkStep2
+			nextStepIdGlobal	= 3
+			prevStepIdGlobal	= 2
+			stepForProgress		= 2
+			falsePercentage		= isMilitaryTheme() ? 66 : 0
 			break
 
 		case '2-military':
-			cb			= checkStep2Military
-			stepIdUpd	= '3-military'
+			cb					= checkStep2Military
+			nextStepIdGlobal 	= '3-military'
+			prevStepIdGlobal 	= '2-military'
+			percentage			= 33
+			stepForProgress		= 2
+			break
+
+		case '3-military':
+			cb					= checkStep3Military
+			nextStepIdGlobal	= 2
+			prevStepIdGlobal	= '3-military'
+			percentage			= 66
+			falsePercentage		= 33
+			stepForProgress		= 2
 			break
 
 		case 3:
-			cb = checkStep3
+			cb					= checkStep3
+			nextStepIdGlobal	= 4
+			prevStepIdGlobal	= 3
+			stepForProgress		= 3
 			break
 
 		case 4:
-			cb = checkStep4
+			cb					= checkStep4
+			nextStepIdGlobal	= 5
+			prevStepIdGlobal	= 4
+			stepForProgress		= 4
 			break
 
 		case 5:
-			cb = checkStep5
+			cb					= checkStep5
+			nextStepIdGlobal	= 6
+			prevStepIdGlobal	= 5
+			stepForProgress		= 5
 			break
 
 		default:
-			cb = checkStep0
+			cb					= checkStep0
+			nextStepIdGlobal	= 1
+			prevStepIdGlobal	= 0
 	}
 
 	if( cb() ){
-		applyProgress( stepId )
-		allowNextStep( stepIdUpd )
+		applyProgress( stepForProgress, percentage )
+		allowNextStep( nextStepIdGlobal )
 	}else{
-		applyProgress( stepId, 0 )
+		applyProgress( stepForProgress, falsePercentage )
 		disallowNextStep()
 	}
 }
@@ -249,4 +278,29 @@ const theLastStep = () => {
 	localStorage.removeItem( 'ih-step-3' )
 	localStorage.removeItem( 'ih-step-4' )
 	localStorage.removeItem( 'ih-step-5' )
+}
+
+const getPrevStepId = stepId => {
+	switch( stepId ){
+		case 2:
+			return isMilitaryTheme() ? '3-military' : 1
+
+		case '2-military':
+			return 1
+
+		case '3-military':
+			return '2-military'
+
+		case 3:
+			return 2
+
+		case 4:
+			return 3
+
+		case 5:
+			return 4
+
+		default:
+			return 0
+	}
 }

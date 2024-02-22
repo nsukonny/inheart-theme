@@ -1,18 +1,18 @@
-import { allowNextStep, applyProgress, disallowNextStep } from './common'
-import { checkStep1 } from './step-1'
+import { allowNextStep, applyProgress, disallowNextStep, isStepFilled } from './common'
 
 const
 	stepData = localStorage.getItem( 'ih-step-3' ) ?
 		JSON.parse( localStorage.getItem( 'ih-step-3' ) ) :
 		{ 'epitaph': '', 'epitaph-lastname': '', 'epitaph-firstname': '', 'epitaph-role': '' }
+let textarea
 
 /**
  * Listen to epitaph textarea changes.
  */
 export const checkEpitaphContentLength = () => {
-	const
-		textarea	= document.querySelector( '.epitaph-text' ),
-		fields		= document.querySelectorAll( '.epitaph input' )
+	const fields = document.querySelectorAll( '.epitaph input' )
+
+	textarea = document.querySelector( '.epitaph-text' )
 
 	if( ! textarea ) return
 
@@ -43,24 +43,21 @@ export const checkEpitaphContentLength = () => {
 		stepData[index] = value
 		localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
 
-		if( checkStep3() ){
-			applyProgress( 3 )
-			allowNextStep( 4 )
-		}else{
-			disallowNextStep()
-			applyProgress( 3, 0 )
-		}
+		isStepFilled( 3 )
 	}
 }
 
 /**
  * Check epitaph textarea length and compare with allowed length.
- *
- * @param {Event} e
  */
-const onEpitaphChange = e => {
+const onEpitaphChange = () => {
+	// This is the first time textarea focused - clean it from the "placeholder" text.
+	if( textarea.classList.contains( 'clear-on-focus' ) ){
+		textarea.value = ''
+		textarea.classList.remove( 'clear-on-focus' )
+	}
+
 	const
-		textarea		= e.target,
 		value			= textarea.value,
 		symbolsTyped	= document.querySelector( '.symbols-count-typed' ),
 		symbolsAllowed	= parseInt( document.querySelector( '.symbols-count-allowed' ).innerText.trim() )
@@ -70,15 +67,8 @@ const onEpitaphChange = e => {
 	stepData.epitaph = value
 	localStorage.setItem( 'ih-step-3', JSON.stringify( stepData ) )
 
-	// This is the first time textarea focused - clean it from the "placeholder" text.
-	if( textarea.classList.contains( 'clear-on-focus' ) ){
-		textarea.value = ''
-		textarea.classList.remove( 'clear-on-focus' )
-	}
-
 	if( ! value ){
-		disallowNextStep()
-		applyProgress( 3, 0 )
+		isStepFilled( 3 )
 		symbolsTyped.innerHTML = 0
 		return
 	}
@@ -88,10 +78,7 @@ const onEpitaphChange = e => {
 
 	symbolsTyped.innerHTML = textarea.value.length
 
-	if( checkStep3() ){
-		applyProgress( 3 )
-		allowNextStep( 4 )
-	}
+	isStepFilled( 3 )
 }
 
 /**
@@ -101,11 +88,11 @@ const onEpitaphChange = e => {
  */
 export const checkStep3 = () => {
 	const
-		epitaphValue	= document.querySelector( '.epitaph-text' ).value,
+		epitaphValue	= textarea.value,
 		fields			= document.querySelectorAll( '.epitaph input' )
 	let isFormValid		= true
 
-	if( ! epitaphValue ) return false
+	if( ! epitaphValue || textarea.classList.contains( 'clear-on-focus' ) ) return false
 
 	if( fields.length ){
 		fields.forEach( field => {

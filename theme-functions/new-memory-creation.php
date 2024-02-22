@@ -195,6 +195,17 @@ function wp_ajax_ih_ajax_save_data_step_2_military(): void
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1-1 (Військовий) збережено успішно!', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_save_data_step_3-military', 'wp_ajax_ih_ajax_save_data_step_3_military' );
+/**
+ * Step 3 Military - save data (it's empty for now).
+ *
+ * @return void
+ */
+function wp_ajax_ih_ajax_save_data_step_3_military(): void
+{
+	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1-2 (Військовий) збережено успішно!', 'inheart' )] );
+}
+
 add_action( 'wp_ajax_ih_ajax_filter_rewards', 'ih_ajax_filter_rewards' );
 /**
  * Step 3 Military - filter rewards.

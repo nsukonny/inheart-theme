@@ -1,5 +1,5 @@
 import Sortable from 'sortablejs'
-import { allowNextStep, disallowNextStep, applyProgress } from './common'
+import { allowNextStep, disallowNextStep, applyProgress, isStepFilled } from './common'
 
 const stepData = localStorage.getItem( 'ih-step-2' ) ? JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : {}
 
@@ -289,15 +289,7 @@ export const sectionsContentInput = () => {
 /**
  * If all textareas are set - can go further.
  */
-const checkIfAllSectionsContentSet = () => {
-	if( checkStep2() ){
-		allowNextStep( 3 )
-		applyProgress( 2 )
-	}else{
-		disallowNextStep()
-		applyProgress( 2, 0 )
-	}
-}
+const checkIfAllSectionsContentSet = () => isStepFilled( 2 )
 
 /**
  * Check if step 2 is ready.
