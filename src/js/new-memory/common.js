@@ -161,7 +161,7 @@ export const prevStep = () => {
 /**
  * Check if specific step is ready.
  *
- * @param {number} stepId
+ * @param stepId
  */
 export const isStepFilled = ( stepId = 0 ) => {
 	let cb,	// Callback function for each step, returns true if step is ready, otherwise - false.
