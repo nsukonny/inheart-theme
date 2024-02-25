@@ -7,7 +7,6 @@ import notify from 'gulp-notify'
 import autoprefixer from 'gulp-autoprefixer'
 import csso from 'gulp-csso'
 import rename from 'gulp-rename'
-import shorthand from 'gulp-shorthand'
 import groupCssMediaQueries	from 'gulp-group-css-media-queries'
 import dartSass from 'sass'
 import gulpSass from 'gulp-sass'
@@ -44,7 +43,6 @@ const scss = () => {
 		.pipe( sass() )
 		.pipe( webpCss() )
 		.pipe( autoprefixer() )
-		.pipe( gulpIf( app.isProd, shorthand() ) )
 		.pipe( gulpIf( app.isProd, groupCssMediaQueries() ) )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulpIf( app.isProd, csso() ) )
@@ -63,7 +61,6 @@ const scssAcf = () => {
 		.pipe( sass() )
 		.pipe( webpCss() )
 		.pipe( autoprefixer() )
-		.pipe( gulpIf( app.isProd, shorthand() ) )
 		.pipe( gulpIf( app.isProd, groupCssMediaQueries() ) )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulpIf( app.isProd, csso() ) )
@@ -82,7 +79,6 @@ const scssPages = () => {
 		.pipe( sass() )
 		.pipe( webpCss() )
 		.pipe( autoprefixer() )
-		.pipe( gulpIf( app.isProd, shorthand() ) )
 		.pipe( gulpIf( app.isProd, groupCssMediaQueries() ) )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulpIf( app.isProd, csso() ) )
