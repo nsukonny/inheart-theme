@@ -2,57 +2,29 @@
 
 /**
  * New Memory page template.
- * Step 2. Section in the sidebar.
+ * Step 2. Section in the sidebar (military).
  *
  * @see Page Template: New Memory -> Step 2
  *
  * @package WordPress
  * @subpackage inheart
  */
-if( ! $section = $args['section'] ?? null ) return;
 
-$memory_page_id		= $_SESSION['memory_page_id'] ?? 0;
-$hide_for_military	= $section['hide_for_military'] ?? null;
-$class				= '';
+if( ! $title = $args['title'] ?? null ) return;
 
-// If this is military theme and section is hidden for military.
-if( $memory_page_id && $hide_for_military ) $class = ' hide-for-military';
-
-$key			= $args['key'] ?? 0;
-$ready_sections	= $args['ready_sections'] ?? null;
-$sec_title		= $section['title'];
-
-// No saved sections and key = 0 - exit (we use 0th section as added by default). No title - exit.
-if( ( empty( $ready_sections ) && ! $key ) || ! $sec_title ) return;
-
-// If this section is already added - exit.
-if( ! empty( $ready_sections ) ){
-	foreach( $ready_sections as $ready_section ){
-		if( $ready_section['index'] == $key ) return;
-	}
-}
-
-$is_custom_title	= $section['is_custom_title'] ? ' custom' : '';
-$thumb				= ( $is_custom_title && $section['thumb'] )
-					? ' data-thumb="' . esc_url( $section['thumb'] ) . '"' : '';
-
-// Custom section exists - exit.
-if( $is_custom_title && ! empty( $ready_section ) ){
-	foreach( $ready_sections as $i => $ready_section ){
-		if( $ready_section['own_title'] ) return;
-	}
-}
+$key	= $args['key'] ?? 0;
+$id		= isset( $args['id'] ) ? 'id="' . esc_attr( $args['id'] ) . '"' : 0;
 ?>
 
 <div
-	class="section flex align-center<?php echo esc_attr( $is_custom_title ), esc_attr( $class ) ?>"
+	<?php echo $id ?>
+	class="section section-military flex align-center"
 	data-order="<?php echo esc_attr( $key ) ?>"
 	data-id="<?php echo esc_attr( $key ) ?>"
-	data-title="<?php echo esc_attr( $sec_title ) ?>"
-	<?php echo $thumb ?>
+	data-title="<?php echo esc_attr( $title ) ?>"
 >
 	<div class="section-label">
-		<?php echo esc_html( $sec_title ) ?>
+		<?php echo esc_html( $title ) ?>
 	</div>
 	<button
 		class="section-add"

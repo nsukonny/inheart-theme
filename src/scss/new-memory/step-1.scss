@@ -2,6 +2,7 @@
 	&-langs {
 		position: relative;
 		width: 100%;
+		max-width: 522px;
 		border: 1px solid $very-dark-green;
 		border-radius: $radius-langs;
 
@@ -15,7 +16,7 @@
 		width: calc(100% / 3);
 		background-color: transparent;
 		border: none;
-		font-size: 13px;
+		font-size: $fs-xs-alt;
 		color: $very-dark-green;
 		padding: 13px 0;
 		cursor: pointer;
@@ -26,6 +27,7 @@
 		@media (min-width: $md) {
 			width: 138px;
 			font-size: $fs-sm;
+			line-height: $lh-mobile-title-special;
 			padding: 16px 0
 		}
 

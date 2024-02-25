@@ -1,4 +1,4 @@
-import { allowNextStep } from './common'
+import { isStepFilled } from './common'
 
 /**
  * Theme selection.
@@ -16,7 +16,7 @@ export const selectTheme = () => {
 
 			theme.classList.add( 'active' )
 			localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: theme.dataset.value } ) )
-			allowNextStep()
+			isStepFilled()
 		} )
 	} )
 }
@@ -31,7 +31,12 @@ export const checkStep0 = () => {
 
 	if( ! activeTheme ) return false
 
-	localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: activeTheme.dataset.value } ) )
+	const theme = activeTheme.dataset.value
+
+	localStorage.setItem( 'ih-step-0', JSON.stringify( { theme } ) )
+
+	if( theme === 'military' ) document.body.classList.add( 'memory-page-theme-military' )
+	else document.body.classList.remove( 'memory-page-theme-military' )
 
 	return true
 }

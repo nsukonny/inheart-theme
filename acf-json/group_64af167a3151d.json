@@ -307,7 +307,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -327,7 +327,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "25",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -347,7 +347,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "",
                 "class": "",
                 "id": ""
             },
@@ -369,7 +369,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "40",
+                        "width": "25",
                         "class": "",
                         "id": ""
                     },
@@ -378,6 +378,27 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
+                    "parent_repeater": "field_64b5a96c75c2e"
+                },
+                {
+                    "key": "field_65da4a88896a1",
+                    "label": "Сховати для військового",
+                    "name": "hide_for_military",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "ui": 1,
                     "parent_repeater": "field_64b5a96c75c2e"
                 },
                 {
@@ -390,7 +411,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "30",
+                        "width": "25",
                         "class": "",
                         "id": ""
                     },
@@ -419,7 +440,7 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": "30",
+                        "width": "25",
                         "class": "",
                         "id": ""
                     },
@@ -436,6 +457,26 @@
                     "parent_repeater": "field_64b5a96c75c2e"
                 }
             ]
+        },
+        {
+            "key": "field_65db687801544",
+            "label": "Підпис секцій для віськового",
+            "name": "sections_desc",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
         },
         {
             "key": "field_65b6c02260a3d",
@@ -1275,5 +1316,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1708294427
+    "modified": 1708878021
 }

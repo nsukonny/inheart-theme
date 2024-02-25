@@ -10,7 +10,7 @@ import {
 	hideElement,
 	showElement
 } from '../common/global'
-import { allowNextStep, applyProgress, disallowNextStep } from './common'
+import { isStepFilled } from './common'
 
 const
 	stepData = localStorage.getItem( 'ih-step-4' ) ?
@@ -121,10 +121,11 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 				imageHTML = getPhotoHTML( data, file.name )
 
 				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
-				showNotification( `Фото ${ file.name } успішно завантажено` )
+				showNotification( data.msg )
 				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
 					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) ) )
-				checkIfStepIsReady()
+
+				isStepFilled( 4 )
 
 				stepData.photos.push( data.attachId )
 				localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
@@ -134,7 +135,7 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 					setTimeout( () => {
 						loader.classList.add( 'hidden' )
 						imagesWrapper.classList.remove( 'hidden' )
-					}, 3000 )
+					}, 2000 )
 				}
 			}
 		}else{
@@ -197,8 +198,8 @@ const applyCBb = ( e, droparea ) => {
 	const
 		inner			= droparea.querySelector( '.droparea-inner' ),
 		imagesWrapper	= droparea.querySelector( '.droparea-images' ),
-		id			= e.target.closest( '.droparea-img-delete' ).dataset.id,
-		formData	= new FormData()
+		id				= e.target.closest( '.droparea-img-delete' ).dataset.id,
+		formData		= new FormData()
 
 	formData.append( 'action', 'ih_ajax_delete_memory_photo' )
 	formData.append( 'id', id )
@@ -216,7 +217,7 @@ const applyCBb = ( e, droparea ) => {
 						inner.classList.remove( 'hidden' )
 					}
 
-					checkIfStepIsReady()
+					isStepFilled( 4 )
 
 					stepData.photos.forEach( ( photoId, i ) => {
 						if( photoId == id ) stepData.photos.splice( i, 1 )
@@ -1017,17 +1018,4 @@ export const checkStep4 = () => {
 	localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
 
 	return true
-}
-
-/**
- * Allow or disallow next step.
- */
-const checkIfStepIsReady = () => {
-	if( checkStep4() ){
-		applyProgress( 4 )
-		allowNextStep( 5 )
-	}else{
-		disallowNextStep()
-		applyProgress( 4, 0 )
-	}
 }

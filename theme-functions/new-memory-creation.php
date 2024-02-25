@@ -71,7 +71,8 @@ function ih_ajax_save_data_step_0(): void
 		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'theme', $step_data['theme'], $_SESSION['memory_page_id'] );
-	$_SESSION['step0']['theme'] = $step_data['theme'];
+	$_SESSION['step0']			= [];
+	$_SESSION['step0']['theme']	= $step_data['theme'];
 	wp_send_json_success( ['msg' => esc_html__( 'Тему обрано успішно!', 'inheart' )] );
 }
 
@@ -158,7 +159,8 @@ function ih_ajax_save_data_step_2(): void
 			'text'		=> $section['text'],
 			'position'	=> $section['position'],
 			'own_title'	=> ( bool ) $section['custom'],
-			'index'		=> $key
+			'index'		=> $key,
+			'photos'	=> $section['photos'] ?? ''
 		];
 
 	update_field( 'biography_sections', $sections, $memory_page_id );

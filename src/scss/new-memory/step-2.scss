@@ -1,3 +1,14 @@
+body.memory-page-theme-military {
+	.sections-military,
+	.sections-military-title {
+		display: block
+	}
+
+	.hide-for-military {
+		display: none
+	}
+}
+
 .new-memory {
 	.sections {
 		&-wrapper {
@@ -18,14 +29,14 @@
 					opacity: 0.7
 				}
 
+				.section-label {
+					margin-right: 10px
+				}
+
 				&.section-add,
 				&.section-remove {
 					color: $bright-yellow;
-					margin-left: 10px;
-
-					@media (min-width: $lg) {
-						margin-left: auto
-					}
+					margin-left: auto
 				}
 
 				&.section-remove {
@@ -54,9 +65,12 @@
 
 		&-sidebar {
 			width: 100%;
+			max-width: 318px;
+			order: 1;
 
 			@media (min-width: $lg) {
 				width: 245px;
+				max-width: none;
 				padding-right: 24px
 			}
 		}
@@ -79,22 +93,16 @@
 				button.section-remove {
 					display: block
 				}
+
+				&.section-military {
+					background-color: $a-bit-blue-white
+				}
 			}
 		}
 
 		&-list {
-			width: 100vw;
-			overflow-x: auto;
-			padding: 0 0 15px $container-padding;
-			margin-left: calc($container-padding * -1);
-
-			@media (min-width: $lg) {
-				width: 100%;
-				flex-direction: column;
-				overflow-x: visible;
-				padding: 0;
-				margin-left: 0
-			}
+			width: 100%;
+			flex-direction: column;
 
 			.section {
 				&.custom {
@@ -107,19 +115,95 @@
 			}
 		}
 
-		&-content {
-			width: 100%;
+		&-desc {
+			order: 2;
+			color: $white;
+			font-size: $fs-sm;
+			line-height: $lh-fs-14;
+			font-weight: $fw-medium;
+			background-color: $military;
+			background-image: url('../../img/military-bg-min.png');
+			background-size: auto 100%;
+			background-position: center;
+			text-align: center;
+			border-radius: $rad-military-desc;
+			padding: 20px 15px;
+			margin-top: 40px;
 
 			@media (min-width: $lg) {
+				order: 3;
+				padding: 20px 56px;
+				margin-top: 60px
+			}
+
+			&-icon {
+				margin-top: 12px
+			}
+
+			svg {
+				display: block
+			}
+		}
+
+		&-content {
+			width: 100%;
+			order: 3;
+			margin-top: 40px;
+
+			@media (min-width: $lg) {
+				order: 2;
 				// Minus sidebar column width.
 				width: calc(100% - 245px);
-				padding-left: 55px
+				padding-left: 55px;
+				margin-top: 0
+			}
+
+			.section-add-photo {
+				margin-top: 16px
 			}
 		}
 
 		&-title {
 			font-size: $fs-sm;
-			margin-bottom: 8px
+			margin: 0 0 8px 4px;
+
+			@media (min-width: $lg) {
+				margin-left: 0
+			}
+		}
+
+		&-military-title,
+		&-military {
+			display: none
+		}
+
+		&-military-title {
+			position: relative;
+			font-size: $fs-xs;
+			text-align: center;
+			margin: 10px 0;
+			color: $dark-green-400;
+
+			&::before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 0;
+				transform: translateY(-50%);
+				height: 1px;
+				width: 100%;
+				background-color: $dark-green-200
+			}
+
+			span {
+				position: relative;
+				padding: 0 8px;
+				background-color: $white
+			}
+		}
+
+		&-military button.section-drag {
+			display: none
 		}
 	}
 
@@ -159,7 +243,7 @@
 			position: relative;
 			width: 100%;
 			color: $black-for-text;
-			padding: 27px 59px 19px 25px;
+			padding: 27px 25px 19px;
 			border-radius: $radius-input;
 			cursor: pointer;
 			transition: background-color ease-out $tr;
@@ -234,7 +318,7 @@
 				border: none;
 				resize: none;
 				background-color: transparent;
-				padding: 0;
+				padding: 0 24px 0 0;
 				overflow-y: hidden;
 				transition: height ease-out $tr;
 				box-shadow: none;
@@ -268,6 +352,76 @@
 					color: #96AAAE
 				}
 			}
+
+			&-form {
+				margin-top: 16px;
+
+				&-add {
+					border-radius: $rad-advantage
+				}
+			}
+
+			&-photos {
+				gap: 20px;
+
+				&:not(:empty) {
+					margin-top: 20px
+				}
+			}
+
+			&-photo {
+				position: relative;
+				width: calc(50% - 10px);
+				height: 124px;
+				border-radius: 28px;
+
+				@media (min-width: $md) {
+					height: 205px
+				}
+
+				img {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: center;
+					border-radius: 28px
+				}
+
+				&-delete {
+					position: absolute;
+					top: 10px;
+					right: 10px;
+					width: 34px;
+					height: 34px;
+					border-radius: 50%;
+					color: #96AAAE;
+					background-color: $white;
+					cursor: pointer;
+					transition: ease-out color $tr;
+
+					@media (min-width: $md) {
+						top: 20px;
+						right: 20px
+					}
+
+					svg {
+						width: 24px;
+						height: auto;
+						pointer-events: none
+					}
+
+					&:hover {
+						color: $red
+					}
+				}
+			}
+		}
+
+		&.section-military {
+			background-color: $military;
 		}
 	}
 }

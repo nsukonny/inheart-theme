@@ -1,7 +1,16 @@
 import Sortable from 'sortablejs'
-import { allowNextStep, disallowNextStep, applyProgress, isStepFilled } from './common'
+import { isStepFilled } from './common'
+import {
+	checkAjaxWorkingStatus,
+	hideAreYouSurePopup,
+	ihAjaxRequest,
+	setAjaxWorkingStatus,
+	showNotification
+} from '../common/global'
 
-const stepData = localStorage.getItem( 'ih-step-2' ) ? JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : {}
+const
+	stepData = localStorage.getItem( 'ih-step-2' ) ?
+		JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : {}
 
 /**
  * Add section to added sections list.
@@ -16,7 +25,7 @@ export const addSection = () => {
 	sectionsWrapper.addEventListener( 'click', e => {
 		const target = e.target
 
-		if( target.closest( '.section-add' ) || ( target.className && target.classList.contains( '.section-add' ) ) ){
+		if( target.closest( '.section-add' ) || ( target.className && target.classList.contains( 'section-add' ) ) ){
 			const
 				addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
 				targetSection			= target.closest( '.section' ),
@@ -41,6 +50,7 @@ export const addSection = () => {
 			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
 			clonedTextarea.value = ''	// Clear value.
 			sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
+			window.scrollTo( { top: sectionsContent.getBoundingClientRect().top + window.scrollY } )
 
 			// If this is a section with a custom title.
 			if( imgUrl ){
@@ -54,6 +64,8 @@ export const addSection = () => {
 			checkIfAllSectionsContentSet()
 		}
 	} )
+
+	deletePhoto()
 }
 
 /**
@@ -61,8 +73,9 @@ export const addSection = () => {
  */
 export const removeSidebarAddedSection = () => {
 	const
-		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
-		sectionsContent	= document.querySelector( '.sections-content' )
+		sectionsWrapper			= document.querySelector( '.sections-sidebar' ),
+		militarySectionsWrapper	= document.querySelector( '.sections-military' ),
+		sectionsContent			= document.querySelector( '.sections-content' )
 
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
@@ -78,7 +91,8 @@ export const removeSidebarAddedSection = () => {
 				targetSection	= target.closest( '.section' ),
 				sectionId		= targetSection.dataset.id,
 				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
-				sectionContent	= sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` )
+				sectionContent	= sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ),
+				isMilitary		= targetSection.classList.contains( 'section-military' )
 
 			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
 
@@ -88,7 +102,10 @@ export const removeSidebarAddedSection = () => {
 			const clonedSection = targetSection.cloneNode( true )
 
 			clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
-			sectionsWrapper.append( clonedSection )
+
+			if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
+			else sectionsWrapper.append( clonedSection )
+
 			targetSection.remove()
 			sectionContent.remove()
 
@@ -107,8 +124,9 @@ export const removeSidebarAddedSection = () => {
  */
 export const removeContentSection = () => {
 	const
-		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
-		sectionsContent	= document.querySelector( '.sections-content' )
+		sectionsWrapper			= document.querySelector( '.sections-sidebar' ),
+		militarySectionsWrapper	= document.querySelector( '.sections-military' ),
+		sectionsContent			= document.querySelector( '.sections-content' )
 
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
@@ -124,7 +142,8 @@ export const removeContentSection = () => {
 				targetContent	= target.closest( '.section-content' ),
 				sectionId		= targetContent.dataset.id,
 				targetSection	= document.querySelector( `.sections-added-list .section[data-id="${ sectionId }"]` ),
-				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' )
+				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
+				isMilitary		= targetSection.classList.contains( 'section-military' )
 
 			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
 
@@ -133,7 +152,9 @@ export const removeContentSection = () => {
 
 			const clonedSection = targetSection.cloneNode( true )
 
-			sectionsWrapper.append( clonedSection )
+			if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
+			else sectionsWrapper.append( clonedSection )
+
 			targetSection.remove()
 			targetContent.remove()
 
@@ -160,15 +181,20 @@ export const setActiveSectionContent = () => {
 
 		if(
 			target.closest( '.section-content' ) ||
-			( target.className && target.classList.contains( '.section-content' ) )
+			( target.className && target.classList.contains( 'section-content' ) )
 		){
+			if(
+				target.className &&
+				( target.classList.contains( 'section-content-photo-delete' ) || target.closest( '.popup-confirm' ) )
+			) return
+
 			const
 				targetSection	= target.closest( '.section-content' ),
 				activeSection	= sectionsContent.querySelector( '.section-content.active' )
 
 			if( activeSection ) activeSection.classList.remove( 'active' )
 
-			targetSection.classList.add( 'active' )
+			if( targetSection ) targetSection.classList.add( 'active' )
 
 			// Focus textarea if target is not input (like custom title).
 			if( target.tagName !== 'INPUT' ) targetSection.querySelector( '.section-content-text' ).focus()
@@ -309,7 +335,8 @@ export const checkStep2 = () => {
 			titleInput	= title.querySelector( '.section-content-title-input' ),
 			value		= area.value,
 			index		= section.dataset.id,
-			isCustom	= section.classList.contains( 'custom' ) ? 1 : ''
+			isCustom	= section.classList.contains( 'custom' ) ? 1 : '',
+			photos		= section.querySelectorAll( '.section-content-photo' )
 
 		if( titleInput ) stepData[index] = { ...stepData[index], title: titleInput.value }
 		else stepData[index] = { ...stepData[index], title: title.innerText }
@@ -320,6 +347,10 @@ export const checkStep2 = () => {
 		stepData[index].text 		= value
 		stepData[index].position 	= i
 		stepData[index].custom 		= isCustom
+		stepData[index].photos 		= []
+
+		if( photos.length ) photos.forEach( photo => stepData[index].photos.push( photo.dataset.id ) )
+
 		localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
 	} )
 
@@ -339,4 +370,85 @@ const duplicateValueToSidebarSection = e => {
 		sidebarSectionTitle	= document.querySelector( `.sections-added-list .section[data-id="${ id }"] .section-label` )
 
 	sidebarSectionTitle.innerHTML = value || 'Свій заголовок'
+}
+
+/**
+ * Delete photo from a section content.
+ */
+const deletePhoto = () => {
+	const contentWrapper = document.querySelector( '.sections-content' )
+
+	if( ! contentWrapper ) return
+
+	const popupConfirm = contentWrapper.querySelector( '.popup-confirm.delete' )
+
+	contentWrapper.addEventListener( 'click', e => {
+		e.stopPropagation()
+
+		const
+			target	= e.target,
+			clientX	= e.clientX < 200 ? 200 : e.clientX,
+			clientY	= e.clientY
+
+		if( ! ( target.className && target.classList.contains( 'section-content-photo-delete' ) ) || ! popupConfirm ) return
+
+		const
+			id					= target.dataset.id,
+			popupConfirmClone	= popupConfirm.cloneNode( true )
+
+		// If popup already exists - exit.
+		if( target.classList.contains( 'active' ) ) return
+
+		target.classList.add( 'active' )
+		target.appendChild( popupConfirmClone )
+		popupConfirmClone.style.left = `${ clientX }px`
+		popupConfirmClone.style.top = `${ clientY }px`
+		popupConfirmClone.classList.remove( 'hidden' )
+		document.body.classList.add( 'overflow-hidden' )
+
+		popupConfirmClone.querySelector( '.popup-confirm-no' ).addEventListener( 'click', () => {
+			popupConfirmClone.remove()
+			document.body.classList.remove( 'overflow-hidden' )
+			target.classList.remove( 'active' )
+		} )
+		popupConfirmClone.querySelector( '.popup-confirm-yes' ).addEventListener( 'click', () => {
+			if( checkAjaxWorkingStatus() ) return
+
+			const formData = new FormData()
+
+			formData.append( 'action', 'ih_ajax_delete_memory_photo' )
+			formData.append( 'id', id )
+
+			ihAjaxRequest( formData ).then( res => {
+				if( res ){
+					switch( res.success ){
+						case true:
+							showNotification( res.data.msg )
+							target.closest( '.section-content-photo' ).remove()
+
+							for( let key of Object.keys( stepData ) ){
+								if( stepData[key].photos ){
+									for( let i = 0; i < stepData[key].photos.length; i++ ){
+										if( stepData[key].photos[i] == id )
+											stepData[key].photos.splice( i, 1 )
+									}
+								}
+							}
+
+							localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+							break
+
+						case false:
+							showNotification( res.data.msg, 'error' )
+							break
+					}
+				}
+
+				setAjaxWorkingStatus( false )
+			} )
+
+			popupConfirmClone.remove()
+			document.body.classList.remove( 'overflow-hidden' )
+		} )
+	} )
 }
