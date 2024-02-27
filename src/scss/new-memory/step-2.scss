@@ -7,6 +7,10 @@ body.memory-page-theme-military {
 	.hide-for-military {
 		display: none
 	}
+
+	.new-memory .sections-desc {
+		display: block
+	}
 }
 
 .new-memory {
@@ -116,6 +120,7 @@ body.memory-page-theme-military {
 		}
 
 		&-desc {
+			display: none;
 			order: 2;
 			color: $white;
 			font-size: $fs-sm;
@@ -246,7 +251,16 @@ body.memory-page-theme-military {
 			padding: 27px 25px 19px;
 			border-radius: $radius-input;
 			cursor: pointer;
-			transition: background-color ease-out $tr;
+			transition:
+				background-color ease-out $tr,
+				opacity ease-out $tr;
+
+			.tmp-loader {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin: -18px 0 0 -18px
+			}
 
 			&:not(:last-child) {
 				margin-bottom: 10px

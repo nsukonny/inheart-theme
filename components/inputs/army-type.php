@@ -7,7 +7,15 @@
  * @subpackage inheart
  */
 
-if( ! $types = $args['types'] ?? null ) return;
+$army_types = get_posts( [
+	'post_type'		=> 'army',
+	'numberposts'	=> -1,
+	'post_status'	=> 'publish',
+	'orderby'		=> 'title',
+	'order'			=> 'ASC'
+] );
+
+if( empty( $army_types ) ) return;
 
 $name			= $args['name'] ?? '';
 $label			= $args['label'] ?? '';
@@ -16,9 +24,8 @@ $type			= $args['type'] ?? 'text';
 $placeholder	= $args['placeholder'] ?? '';
 $value			= $args['value'] ?? '';
 $required		= $args['required'] ?? '';
-$icon_lead		= $args['icon_lead'] ?? '';	// Icon file name with extension. Must be in the folder /static/img/
-$icon_tail		= $args['icon_tail'] ?? '';	// ^ Same here.
-$wrap_class		= $icon_lead ? ' select icon-lead' : ' select';
+$icon_tail		= $args['icon_tail'] ?? '';
+$wrap_class		= ' select';
 $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 ?>
 
@@ -26,13 +33,7 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 	<?php
 	echo ( $label ? '<span class="label-text">' . $label . '</span>' : '' );
 
-	if( $icon_lead || $icon_tail ) echo '<span class="input-wrapper ' . esc_attr( $type ) . esc_attr( $wrap_class ) . '">';
-
-	if( $icon_lead ){
-		echo '<span class="input-icon lead">';
-			get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/' . esc_attr( $icon_lead )] );
-		echo '</span>';
-	}
+	if( $icon_tail ) echo '<span class="input-wrapper ' . esc_attr( $type ) . esc_attr( $wrap_class ) . '">';
 	?>
 
 	<input
@@ -51,16 +52,14 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 		echo '</span>';
 	}
 
-	if( $icon_lead || $icon_tail ) echo '</span>';
+	if( $icon_tail ) echo '</span>';
 
-	if( $types ){
-		echo '<span class="options direction-column">';
+	echo '<span class="options direction-column">';
 
-		foreach( $types as $type )
-			echo '<span class="option">', esc_html( $type['name'] ), '</span>';
+	foreach( $army_types as $army )
+		echo '<span class="option">', esc_html( get_the_title( $army->ID ) ), '</span>';
 
-		echo '</span>';
-	}
+	echo '</span>';
 	?>
 
 	<span class="hint"></span>

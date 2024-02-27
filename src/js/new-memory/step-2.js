@@ -1,9 +1,10 @@
 import Sortable from 'sortablejs'
 import { isStepFilled } from './common'
 import {
+	addLoader,
+	BYTES_IN_MB,
 	checkAjaxWorkingStatus,
-	hideAreYouSurePopup,
-	ihAjaxRequest,
+	ihAjaxRequest, removeLoader,
 	setAjaxWorkingStatus,
 	showNotification
 } from '../common/global'
@@ -12,13 +13,17 @@ const
 	stepData = localStorage.getItem( 'ih-step-2' ) ?
 		JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : {}
 
+let sectionsWrapper,
+	militarySectionsWrapper,
+	sectionsContent
+
 /**
  * Add section to added sections list.
  */
 export const addSection = () => {
-	const
-		sectionsWrapper	= document.querySelector( '.sections-sidebar' ),
-		sectionsContent	= document.querySelector( '.sections-content' )
+	sectionsWrapper			= document.querySelector( '.sections-sidebar' )
+	militarySectionsWrapper	= document.querySelector( '.sections-military' )
+	sectionsContent			= document.querySelector( '.sections-content' )
 
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
@@ -35,6 +40,12 @@ export const addSection = () => {
 				clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' ),
 				randomId				= Math.random() * 9999 + '_' + Math.random() * 9999
 
+			// If a military section is clicked, but theme is not military - exit.
+			if(
+				targetSection.classList.contains( 'section-military' ) &&
+				! document.body.classList.contains( 'memory-page-theme-military' )
+			) return
+
 			// Replace in sidebar.
 			targetSection.remove()
 			addedSectionsWrapper.append( clonedSection )
@@ -49,6 +60,11 @@ export const addSection = () => {
 			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ randomId })` )
 			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
 			clonedTextarea.value = ''	// Clear value.
+
+			// Delete photos in cloned section if they are exist.
+			if( clonedSectionContent.querySelector( '.section-content-photos' ) )
+				clonedSectionContent.querySelector( '.section-content-photos' ).innerHTML = ''
+
 			sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
 			window.scrollTo( { top: sectionsContent.getBoundingClientRect().top + window.scrollY } )
 
@@ -65,6 +81,7 @@ export const addSection = () => {
 		}
 	} )
 
+	uploadSectionPhoto()
 	deletePhoto()
 }
 
@@ -72,11 +89,6 @@ export const addSection = () => {
  * Remove section from sections list.
  */
 export const removeSidebarAddedSection = () => {
-	const
-		sectionsWrapper			= document.querySelector( '.sections-sidebar' ),
-		militarySectionsWrapper	= document.querySelector( '.sections-military' ),
-		sectionsContent			= document.querySelector( '.sections-content' )
-
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
 	sectionsWrapper.addEventListener( 'click', e => {
@@ -123,11 +135,6 @@ export const removeSidebarAddedSection = () => {
  * Remove section from content.
  */
 export const removeContentSection = () => {
-	const
-		sectionsWrapper			= document.querySelector( '.sections-sidebar' ),
-		militarySectionsWrapper	= document.querySelector( '.sections-military' ),
-		sectionsContent			= document.querySelector( '.sections-content' )
-
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
 	sectionsContent.addEventListener( 'click', e => {
@@ -172,8 +179,6 @@ export const removeContentSection = () => {
  * Set active section content.
  */
 export const setActiveSectionContent = () => {
-	const sectionsContent = document.querySelector( '.sections-content' )
-
 	if( ! sectionsContent ) return
 
 	sectionsContent.addEventListener( 'click', e => {
@@ -185,7 +190,8 @@ export const setActiveSectionContent = () => {
 		){
 			if(
 				target.className &&
-				( target.classList.contains( 'section-content-photo-delete' ) || target.closest( '.popup-confirm' ) )
+				( target.classList.contains( 'section-content-photo-delete' ) || target.closest( '.popup-confirm' ) ||
+				target.classList.contains( 'section-content-form-add' ) || target.closest( '.section-content-form-add' ) )
 			) return
 
 			const
@@ -220,9 +226,7 @@ export const setActiveSectionContent = () => {
  * Re-order sections with drag-and-drop events.
  */
 export const dragOrderSections = () => {
-	const
-		wrapper			= document.querySelector( '.sections-added-list' ),
-		contentWrapper	= document.querySelector( '.sections-content' )
+	const wrapper = document.querySelector( '.sections-added-list' )
 
 	Sortable.create( wrapper, {
 		handle	: '.section-drag',
@@ -233,18 +237,18 @@ export const dragOrderSections = () => {
 				oldIndex	= evt.oldIndex,
 				newIndex	= evt.newIndex,
 				step		= oldIndex < newIndex ? 2 : 1,
-				content		= contentWrapper.querySelector( `.section-content[data-id="${ itemId }"]` ),
+				content		= sectionsContent.querySelector( `.section-content[data-id="${ itemId }"]` ),
 				cloned		= content.cloneNode( true ),
-				putBefore	= contentWrapper.querySelector( `.section-content:nth-child(${ newIndex + step })` )
+				putBefore	= sectionsContent.querySelector( `.section-content:nth-child(${ newIndex + step })` )
 
 			if( putBefore ) putBefore.parentNode.insertBefore( cloned, putBefore )
-			else contentWrapper.append( cloned )
+			else sectionsContent.append( cloned )
 
 			content.remove()
 			checkSectionsIndexes()
 		}
 	} )
-	Sortable.create( contentWrapper, {
+	Sortable.create( sectionsContent, {
 		handle	: '.section-drag',
 		onEnd	:  evt => {
 			const
@@ -376,13 +380,11 @@ const duplicateValueToSidebarSection = e => {
  * Delete photo from a section content.
  */
 const deletePhoto = () => {
-	const contentWrapper = document.querySelector( '.sections-content' )
+	if( ! sectionsContent ) return
 
-	if( ! contentWrapper ) return
+	const popupConfirm = sectionsContent.querySelector( '.popup-confirm.delete' )
 
-	const popupConfirm = contentWrapper.querySelector( '.popup-confirm.delete' )
-
-	contentWrapper.addEventListener( 'click', e => {
+	sectionsContent.addEventListener( 'click', e => {
 		e.stopPropagation()
 
 		const
@@ -450,5 +452,91 @@ const deletePhoto = () => {
 			popupConfirmClone.remove()
 			document.body.classList.remove( 'overflow-hidden' )
 		} )
+	} )
+}
+
+/**
+ * Upload section photo.
+ */
+const uploadSectionPhoto = () => {
+	if( ! sectionsContent ) return
+
+	let fileInstance
+
+	const handlePhotosUpload = e => {
+		fileInstance = [...e.target.files]
+
+		if( ! fileInstance.length ) return
+
+		if( fileInstance[0].size > 50 * BYTES_IN_MB ){
+			showNotification( `Не вдалося завантажити фото ${ fileInstance[0].name }`, 'error' )
+			return false
+		}
+
+		const
+			sectionContent		= e.target.closest( '.section-content' ),
+			sectionContentId	= sectionContent.dataset.id
+
+		const processingUploadMediaPhoto = ( file, area ) => {
+			if( ! file || ! area ) return
+
+			const formData = new FormData()
+
+			formData.append( 'file', file )
+			formData.append( 'action', 'ih_ajax_upload_section_photo' )
+
+			addLoader( sectionContent )
+
+			ihAjaxRequest( formData ).then( res => {
+				removeLoader( sectionContent )
+
+				if( res ){
+					switch( res.success ){
+						case true:
+							showNotification( res.data.msg )
+							area.insertAdjacentHTML( 'beforeend', res.data.image )
+
+							const attachId = res.data.attach_id
+
+							// Search section by its ID and add attached photo ID to its photos array.
+							for( let key of Object.keys( stepData ) ){
+								if( key == sectionContentId ) stepData[key].photos.push( attachId )
+							}
+
+							localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+							break
+
+						case false:
+							showNotification( res.data.msg, 'error' )
+							break
+					}
+				}
+
+				setAjaxWorkingStatus( false )
+			} )
+		}
+
+		if( fileInstance[0].type.startsWith( 'image/' ) )
+			processingUploadMediaPhoto( fileInstance[0], sectionContent.querySelector( '.section-content-photos' ) )
+		else
+			showNotification( `Тільки зображення - файл ${ fileInstance[0].name } не є зображенням`, 'warning' )
+	}
+
+	sectionsContent.addEventListener( 'click', e => {
+		e.stopPropagation()
+
+		const target = e.target
+
+		if(
+			! target.className ||
+			! ( target.classList.contains( 'section-content-form-add' ) || target.closest( '.section-content-form-add' ) )
+		) return
+
+		const input = target.closest( '.section-content-form' ).querySelector( 'input.section-add-photo' )
+
+		if( ! input ) return
+
+		input.removeEventListener( 'change', handlePhotosUpload )
+		input.addEventListener( 'change', handlePhotosUpload )
 	} )
 }

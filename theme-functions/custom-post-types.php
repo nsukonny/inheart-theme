@@ -219,6 +219,35 @@ $args = [
 ];
 register_post_type( 'reward', $args );
 
+// Army types.
+$labels = [
+	'name'			=> __( 'Роди військ', 'inheart' ),
+	'singular_name'	=> __( 'Рід військ', 'inheart' ),
+	'add_new'		=> __( 'Додати рід військ', 'inheart' ),
+	'add_new_item'	=> __( 'Додати новий рід військ', 'inheart' ),
+	'edit_item'		=> __( 'Редагувати', 'inheart' ),
+	'new_item'		=> __( 'Новий рід військ', 'inheart' ),
+	'all_item'		=> __( 'Усі роди військ', 'inheart' ),
+	'view_item'		=> __( 'Дивитись', 'inheart' ),
+	'search_item'	=> __( 'Пошук', 'inheart' ),
+	'menu_item'		=> __( 'Роди військ', 'inheart' )
+];
+$args = [
+	'labels'				=> $labels,
+	'public'				=> true,
+	'publicly_queryable'	=> false,
+	'exclude_from_search'	=> true,
+	'show_ui'				=> true,
+	'hierarchical'			=> false,
+	'menu_icon'				=> 'dashicons-superhero-alt',
+	'menu_position'			=> 6,
+	'has_archive'			=> false,
+	'show_in_rest'			=> true,
+	'supports'				=> ['title', 'thumbnail'],
+	'rewrite'				=> ['slug' => 'army']
+];
+register_post_type( 'army', $args );
+
 /*
 $labels = array(
 	'name'          => __( 'Підписки', 'inheart' ),

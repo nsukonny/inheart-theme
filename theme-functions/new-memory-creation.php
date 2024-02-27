@@ -393,6 +393,46 @@ function ih_ajax_save_data_step_3(): void
 	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_upload_section_photo', 'ih_ajax_upload_section_photo' );
+/**
+ * Step 3 - upload bio sections photo.
+ *
+ * @return void
+ */
+function ih_ajax_upload_section_photo(): void
+{
+	$image			= $_FILES['file'];
+	$section_id		= $_FILES['id'];
+	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+
+	// If data is not set - send error.
+	if( ! $image || ! $memory_page_id || ( ! $section_id && $section_id != 0 ) )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$allowed_image_types    = ['image/jpeg', 'image/png'];
+	$max_image_size         = 50_000_000;
+
+	// Check conditions for the image.
+	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
+		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 50 мб', 'inheart' )] );
+
+	require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	require_once( ABSPATH . 'wp-admin/includes/media.php' );
+
+	$attach_id = media_handle_upload( 'file', $memory_page_id );
+
+	if( is_wp_error( $attach_id ) )
+		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
+
+	$image = ih_load_template_part( 'components/memory-page/bio-section-image', null, ['photo' => $attach_id] );
+	wp_send_json_success( [
+		'msg'		=> __( 'Зображення завантажено успішно', 'inheart' ),
+		'image'		=> $image,
+		'attach_id'	=> $attach_id
+	] );
+}
+
 add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo' );
 /**
  * Upload other photos.

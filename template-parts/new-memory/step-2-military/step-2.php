@@ -38,15 +38,14 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 		<form class="form-white">
 			<fieldset>
 				<?php
-				get_template_part( 'components/inputs/army', null, [
+				get_template_part( 'components/inputs/army-type', null, [
 					'name'			=> 'army',
 					'label'			=> __( 'Рід військ', 'inheart' ),
 					'label_class'	=> 'full',
 					'placeholder'	=> __( 'Наприклад "Сухопутні війська"', 'inheart' ),
 					'value'			=> $army_type,
 					'required'		=> 1,
-					'icon_tail'		=> 'arrow-down-s-line.svg',
-					'types'			=> get_field( 'army_types' )
+					'icon_tail'		=> 'arrow-down-s-line.svg'
 				] );
 				get_template_part( 'components/inputs/army', null, [
 					'name'			=> 'brigade',
