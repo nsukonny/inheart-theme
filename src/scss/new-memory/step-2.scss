@@ -385,12 +385,13 @@ body.memory-page-theme-military {
 
 			&-photo {
 				position: relative;
-				width: calc(50% - 10px);
-				height: 124px;
+				width: 100%;
+				aspect-ratio: 1;
 				border-radius: 28px;
+				transition: opacity ease-out $tr;
 
-				@media (min-width: $md) {
-					height: 205px
+				@media (min-width: $sm) {
+					width: calc(50% - 10px)
 				}
 
 				img {

@@ -1,5 +1,5 @@
 import Sortable from 'sortablejs'
-import { isStepFilled } from './common'
+import { isStepFilled, saveStep } from './common'
 import {
 	addLoader,
 	BYTES_IN_MB,
@@ -77,7 +77,7 @@ export const addSection = () => {
 
 			setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
 			sectionsContentInput()	// Add event listeners.
-			checkIfAllSectionsContentSet()
+			isStepFilled( 2 )
 		}
 	} )
 
@@ -122,11 +122,18 @@ export const removeSidebarAddedSection = () => {
 			sectionContent.remove()
 
 			for( let key in stepData ){
-				if( key == sectionId ) delete stepData[key]
+				if( key == sectionId ){
+					let photos = stepData[key].photos
+
+					if( photos ) photos.forEach( photo => deleteContentPhoto( photo ) )
+
+					delete stepData[key]
+				}
 			}
 
 			localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-			checkIfAllSectionsContentSet()
+			isStepFilled( 2 )
+			saveStep( 2 )
 		}
 	} )
 }
@@ -166,11 +173,18 @@ export const removeContentSection = () => {
 			targetContent.remove()
 
 			for( let key in stepData ){
-				if( key == sectionId ) delete stepData[key]
+				if( key == sectionId ){
+					let photos = stepData[key].photos
+
+					if( photos ) photos.forEach( photo => deleteContentPhoto( photo ) )
+
+					delete stepData[key]
+				}
 			}
 
 			localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-			checkIfAllSectionsContentSet()
+			isStepFilled( 2 )
+			saveStep( 2 )
 		}
 	} )
 }
@@ -416,42 +430,55 @@ const deletePhoto = () => {
 		popupConfirmClone.querySelector( '.popup-confirm-yes' ).addEventListener( 'click', () => {
 			if( checkAjaxWorkingStatus() ) return
 
-			const formData = new FormData()
-
-			formData.append( 'action', 'ih_ajax_delete_memory_photo' )
-			formData.append( 'id', id )
-
-			ihAjaxRequest( formData ).then( res => {
-				if( res ){
-					switch( res.success ){
-						case true:
-							showNotification( res.data.msg )
-							target.closest( '.section-content-photo' ).remove()
-
-							for( let key of Object.keys( stepData ) ){
-								if( stepData[key].photos ){
-									for( let i = 0; i < stepData[key].photos.length; i++ ){
-										if( stepData[key].photos[i] == id )
-											stepData[key].photos.splice( i, 1 )
-									}
-								}
-							}
-
-							localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-							break
-
-						case false:
-							showNotification( res.data.msg, 'error' )
-							break
-					}
-				}
-
-				setAjaxWorkingStatus( false )
-			} )
-
+			deleteContentPhoto( id, target )
 			popupConfirmClone.remove()
 			document.body.classList.remove( 'overflow-hidden' )
 		} )
+	} )
+}
+
+/**
+ * Delete section's photo by ID.
+ *
+ * @param {Number} id					Photo ID.
+ * @param {HTMLObjectElement} target	Image wrapper element.
+ */
+const deleteContentPhoto = ( id, target = undefined ) => {
+	const formData = new FormData()
+
+	formData.append( 'action', 'ih_ajax_delete_memory_photo' )
+	formData.append( 'id', id )
+
+	if( target ) addLoader( target.closest( '.section-content-photo' ) )
+
+	ihAjaxRequest( formData ).then( res => {
+		if( target ) removeLoader( target.closest( '.section-content-photo' ) )
+
+		if( res ){
+			switch( res.success ){
+				case true:
+					if( target ) target.closest( '.section-content-photo' ).remove()
+
+					for( let key of Object.keys( stepData ) ){
+						if( stepData[key].photos ){
+							for( let i = 0; i < stepData[key].photos.length; i++ ){
+								if( stepData[key].photos[i] == id )
+									stepData[key].photos.splice( i, 1 )
+							}
+						}
+					}
+
+					localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+					saveStep( 2 )
+					break
+
+				case false:
+					showNotification( res.data.msg, 'error' )
+					break
+			}
+		}
+
+		setAjaxWorkingStatus( false )
 	} )
 }
 
@@ -504,6 +531,7 @@ const uploadSectionPhoto = () => {
 							}
 
 							localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+							saveStep( 2 )
 							break
 
 						case false:

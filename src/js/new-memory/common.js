@@ -118,10 +118,35 @@ export const nextStep = () => {
 	} )
 }
 
+export const saveStep = stepId => {
+	if( ! stepId || checkAjaxWorkingStatus() ) return
+
+	setAjaxWorkingStatus( true )
+
+	const formData = new FormData()
+
+	formData.append( 'action', `ih_ajax_save_data_step_${ stepId }` )
+	formData.append( 'stepData', localStorage.getItem( `ih-step-${ stepId }` ) || '' )
+
+	ihAjaxRequest( formData ).then( res => {
+		if( res ){
+			switch( res.success ){
+				case true:
+					console.log( `Step ${ stepId } saved.` )
+					break
+
+				case false:
+					showNotification( res.data.msg, 'error' )
+					break
+			}
+		}
+
+		setAjaxWorkingStatus( false )
+	} )
+}
+
 /**
  * Hide current and show next step layout.
- *
- * @param {number} nextStepId
  */
 const showNextStepSection = () => {
 	document.querySelector( '.new-memory-step.active' ).classList.remove( 'active' )
