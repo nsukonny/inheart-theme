@@ -16,11 +16,18 @@ $key		= $args['key'] ?? 0;
 $title		= $section['category'];
 $position	= $section['position'];
 $index		= $section['index'];
+$id			= isset( $args['id'] ) ? "id='{$args['id']}'" : '';
+$class		= isset( $args['class'] ) ? " {$args['class']}" : '';
 
 if( ! $title || ( $position != 0 && ! $position ) ) return;
 ?>
 
-<div class="section flex flex-wrap align-center" data-order="<?php echo esc_attr( $position ) ?>" data-id="<?php echo esc_attr( $index ) ?>">
+<div
+	<?php echo $id ?>
+	class="section flex flex-wrap align-center<?php echo $class ?>"
+	data-order="<?php echo esc_attr( $position ) ?>"
+	data-id="<?php echo esc_attr( $index ) ?>"
+>
 	<div class="section-label">
 		<?php echo esc_html( $title ) ?>
 	</div>

@@ -105,7 +105,7 @@ const expandToFull = () => {
 /**
  * Load matching cities list.
  */
-const loadCities = () => {
+export const loadCities = ( withDepartments = true ) => {
 	const
 		cityInput	= document.querySelector( '#city' ),
 		formData	= new FormData()
@@ -175,7 +175,8 @@ const loadCities = () => {
 				cityInput.blur()
 				citiesWrap.classList.add( 'hidden' )
 			}, 10 )
-			loadDepartments( cities[index] )
+
+			if( withDepartments ) loadDepartments( cities[index] )
 		}
 	} )
 

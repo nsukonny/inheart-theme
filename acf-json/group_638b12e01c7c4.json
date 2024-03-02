@@ -368,6 +368,64 @@
             ]
         },
         {
+            "key": "field_65e355a117d0b",
+            "label": "Останній бій",
+            "name": "last_fight",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_65e355f717d12",
+                    "label": "Текст",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_65e3560c17d13",
+                    "label": "Локація",
+                    "name": "location",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                }
+            ]
+        },
+        {
             "key": "field_65b9755d9231b",
             "label": "Крок 2 (військовий)",
             "name": "",
@@ -1178,5 +1236,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1708887170
+    "modified": 1709408827
 }

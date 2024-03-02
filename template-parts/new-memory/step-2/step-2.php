@@ -15,9 +15,17 @@ $desc					= get_field( 'desc_2' );
 $sections_title			= get_field( 'sections_title' );
 $added_sections_title	= get_field( 'added_sections_title' );
 $sections				= get_field( 'sections' );
-$ready_sections			= isset( $_SESSION['memory_page_id'] )
-						? get_field( 'biography_sections', $_SESSION['memory_page_id'] ) : null;
+$sections_count			= count( $sections );
 $sections_desc			= get_field( 'sections_desc' );
+
+if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
+	$ready_sections 		= get_field( 'biography_sections', $memory_page_id );
+	$last_fight				= get_field( 'last_fight', $memory_page_id );
+	$last_fight['index']	= $sections_count + 2;
+}else{
+	$ready_sections	= null;
+	$last_fight		= [];
+}
 
 // Sort array of arrays by position property, maintain keys.
 if( $ready_sections ){
@@ -88,6 +96,18 @@ if( $ready_sections ){
 									]
 								);
 							}
+
+							if( ih_is_set_last_fight( $last_fight ) ){
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar-military',
+									null,
+									[
+										'key'	=> $sections_count + 2,
+										'title'	=> __( 'Останній бій', 'inheart' ),
+										'id'	=> 'last-fight'
+									]
+								);
+							}
 							?>
 						</div><!-- .sections-added-list -->
 					</div><!-- .sections-added -->
@@ -120,7 +140,6 @@ if( $ready_sections ){
 
 						<div class="sections-military">
 							<?php
-							$sections_count = count( $sections );
 							get_template_part(
 								'template-parts/new-memory/step-2/section-sidebar-military',
 								null,
@@ -131,11 +150,13 @@ if( $ready_sections ){
 								null,
 								['key' => $sections_count + 1, 'title' => __( 'Повномасштабне вторгнення', 'inheart' ), 'id' => 'war']
 							);
-							get_template_part(
-								'template-parts/new-memory/step-2/section-sidebar-military',
-								null,
-								['key' => $sections_count + 2, 'title' => __( 'Останній бій', 'inheart' ), 'id' => 'last-fight']
-							);
+
+							if( ! ih_is_set_last_fight( $last_fight ) )
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar-military',
+									null,
+									['key' => $sections_count + 2, 'title' => __( 'Останній бій', 'inheart' ), 'id' => 'last-fight']
+								);
 							?>
 						</div>
 					</div><!-- .sections -->
@@ -169,11 +190,24 @@ if( $ready_sections ){
 							[ 'section' => [ 'category' => $sections[0]['title'] ] ]
 						);
 					}
+
+					if( ih_is_set_last_fight( $last_fight ) )
+						get_template_part( 'template-parts/new-memory/step-2/section-content-last-fight', null, [
+							'section' => $last_fight
+						] );
 					?>
 				</div>
 			</div><!-- .sections-wrapper -->
 			<?php
 		}
 		?>
+	</div><!-- .container -->
+
+	<?php
+	get_template_part( 'template-parts/new-memory/step-2/section-content-last-fight', null, [
+		'section'	=> $last_fight,
+		'class'		=> 'hidden'
+	] );
+	?>
 </section><!-- #new-memory-step-2 -->
 

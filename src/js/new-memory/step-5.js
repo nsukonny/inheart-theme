@@ -1,8 +1,8 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
-import { allowNextStep, applyProgress, disallowNextStep } from './common'
+import { isStepFilled } from './common'
 import { getTargetElement, hideElement, setTargetElement, showElement } from '../common/global'
 
-const stepData = localStorage.getItem( 'ih-step-5' ) ? JSON.parse( localStorage.getItem( 'ih-step-5' ) ) : {}
+const stepData = {}
 
 /**
  * Legend tip button click.
@@ -58,14 +58,7 @@ const checkFieldValue = e => {
 
 	stepData[index] = value
 	localStorage.setItem( 'ih-step-5', JSON.stringify( stepData ) )
-
-	if( checkStep5() ){
-		allowNextStep( 6 )
-		applyProgress( 5 )
-	}else{
-		disallowNextStep()
-		applyProgress( 5, 0 )
-	}
+	isStepFilled( 5 )
 }
 
 /**
@@ -79,7 +72,7 @@ export const checkStep5 = () => {
 		textarea	= document.querySelector( '.new-memory-coords textarea' )
 	let isFormValid	= true
 
-	if( ! fields.length || ! textarea ) return
+	if( ! fields.length || ! textarea ) return false
 
 	stepData.how_to_find = textarea.value
 

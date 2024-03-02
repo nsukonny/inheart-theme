@@ -68,12 +68,12 @@ function ih_ajax_save_data_step_0(): void
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
 	if( ! $step_data || ! isset( $step_data['theme'] ) || ! $memory_page_id )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'theme', $step_data['theme'], $_SESSION['memory_page_id'] );
 	$_SESSION['step0']			= [];
 	$_SESSION['step0']['theme']	= $step_data['theme'];
-	wp_send_json_success( ['msg' => esc_html__( 'Тему обрано успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Тему обрано успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_main_photo', 'ih_ajax_upload_main_photo' );
@@ -89,7 +89,7 @@ function ih_ajax_upload_main_photo(): void
 
 	// If data is not set - send error.
 	if( ! $cropped_image || ! $memory_page_id )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -99,7 +99,7 @@ function ih_ajax_upload_main_photo(): void
 	$_SESSION['step1']['cropped_url']	= wp_get_attachment_image_url( $attach_id, 'full' );
 
 	wp_send_json_success( [
-		'msg'			=> esc_html__( 'Зображення успішно завантажено!', 'inheart' ),
+		'msg'			=> __( 'Зображення успішно завантажено!', 'inheart' ),
 		'url'			=> $_SESSION['step1']['cropped_url'],
 		'short_filename'=> ih_get_shorter_filename( basename( $_SESSION['step1']['cropped_url'] ) )
 	] );
@@ -120,7 +120,7 @@ function ih_ajax_save_data_step_1(): void
 		! $step_data || ! $memory_page_id || ! $step_data['lang'] || ! $step_data['firstname'] ||
 		! $step_data['lastname'] || ! $step_data['fathername'] || ! $step_data['date-of-birth'] ||
 		! $step_data['date-of-death'] || ( ! $step_data['cropped'] && ! has_post_thumbnail( $memory_page_id ) )
-	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'language', $step_data['lang'], $memory_page_id );
 	update_field( 'first_name', $step_data['firstname'], $memory_page_id );
@@ -135,7 +135,7 @@ function ih_ajax_save_data_step_1(): void
 		$_SESSION['step1']['cropped_url'] === $step_data['cropped']
 	) set_post_thumbnail( $memory_page_id, $_SESSION['step1']['cropped_id'] );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1 збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Дані Кроку 1 збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_2', 'ih_ajax_save_data_step_2' );
@@ -148,12 +148,20 @@ function ih_ajax_save_data_step_2(): void
 {
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
-	$sections		= [];
+	$sections		= $last_fight = [];
 
 	if( ! $memory_page_id || empty( $step_data ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	foreach( $step_data as $key => $section )
+	foreach( $step_data as $key => $section ){
+		if( isset( $section['isLastFight'] ) && $section['isLastFight'] == 1 ){
+			$last_fight = [
+				'location'	=> $section['city'],
+				'text'		=> $section['text']
+			];
+			continue;
+		}
+
 		$sections[] = [
 			'category'	=> $section['title'],
 			'text'		=> $section['text'],
@@ -162,10 +170,12 @@ function ih_ajax_save_data_step_2(): void
 			'index'		=> $key,
 			'photos'	=> $section['photos'] ?? ''
 		];
+	}
 
 	update_field( 'biography_sections', $sections, $memory_page_id );
+	update_field( 'last_fight', $last_fight, $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 2 збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Дані Кроку 2 збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_2-military', 'wp_ajax_ih_ajax_save_data_step_2_military' );
@@ -182,7 +192,7 @@ function wp_ajax_ih_ajax_save_data_step_2_military(): void
 	if(
 		! $step_data || ! $memory_page_id || ! isset( $step_data['army'] ) ||
 		! isset( $step_data['brigade'] ) || ! isset( $step_data['title'] )
-	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'army_type', $step_data['army'], $memory_page_id );
 	update_field( 'brigade_type', $step_data['brigade'], $memory_page_id );
@@ -194,7 +204,7 @@ function wp_ajax_ih_ajax_save_data_step_2_military(): void
 	if( isset( $step_data['call-sign'] ) )
 		update_field( 'call_sign', $step_data['call-sign'], $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1-1 (Військовий) збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Дані Кроку 1-1 (Військовий) збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_3-military', 'wp_ajax_ih_ajax_save_data_step_3_military' );
@@ -205,7 +215,7 @@ add_action( 'wp_ajax_ih_ajax_save_data_step_3-military', 'wp_ajax_ih_ajax_save_d
  */
 function wp_ajax_ih_ajax_save_data_step_3_military(): void
 {
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 1-2 (Військовий) збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Дані Кроку 1-2 (Військовий) збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_filter_rewards', 'ih_ajax_filter_rewards' );
@@ -281,7 +291,7 @@ function ih_ajax_add_reward(): void
 	$posthumously	= ih_clean( $_POST['posthumously'] );
 
 	if( ! $memory_page_id || ( ! $reward_id && ! $custom_name ) || ( ! $edict && ! $number && ! $date && ! $for ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$rewards	= get_field( 'rewards', $memory_page_id );
 	$updated	= false;
@@ -353,10 +363,10 @@ function ih_ajax_delete_reward(): void
 	$reward_id		= ih_clean( $_POST['id'] );
 
 	if( ! $memory_page_id || ! $reward_id )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	if( ! $rewards = get_field( 'rewards', $memory_page_id ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Нагород немає', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Нагород немає', 'inheart' )] );
 
 	$rewards_upd = array_filter( $rewards, fn( $reward ) => $reward['reward_id'] != $reward_id );
 
@@ -383,14 +393,14 @@ function ih_ajax_save_data_step_3(): void
 	if(
 		! $memory_page_id || ! $epitaph || ! $epitaph_lastname ||
 		! $epitaph_firstname || ! $epitaph_role
-	) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'epitaphy', $epitaph, $memory_page_id );
 	update_field( 'epitaph_lastname', $epitaph_lastname, $memory_page_id );
 	update_field( 'epitaph_firstname', $epitaph_firstname, $memory_page_id );
 	update_field( 'epitaph_role', $epitaph_role, $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_section_photo', 'ih_ajax_upload_section_photo' );
@@ -446,7 +456,7 @@ function ih_ajax_upload_memory_photo(): void
 
 	// If data is not set - send error.
 	if( ! $image || ! $memory_page_id )
-		wp_send_json_error( ['success' => 0, 'msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
 	$max_image_size         = 50_000_000;
@@ -455,7 +465,7 @@ function ih_ajax_upload_memory_photo(): void
 	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => esc_html__( 'Тільки ( png | jpg | jpeg ) меньше 50 мб', 'inheart' )
+			'msg'       => __( 'Тільки ( png | jpg | jpeg ) меньше 50 мб', 'inheart' )
 		] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
@@ -467,12 +477,12 @@ function ih_ajax_upload_memory_photo(): void
 	if( is_wp_error( $attach_id ) )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => esc_html__( 'Помилка під час завантаження зображення', 'inheart' )
+			'msg'       => __( 'Помилка під час завантаження зображення', 'inheart' )
 		] );
 
 	wp_send_json_success( [
 		'success'	=> 1,
-		'msg'		=> esc_html__( 'Зображення завантажено успішно', 'inheart' ),
+		'msg'		=> __( 'Зображення завантажено успішно', 'inheart' ),
 		'attachId'	=> $attach_id,
 		'url'		=> wp_get_attachment_image_url( $attach_id, 'ih-profile-media' )
 	] );
@@ -489,24 +499,24 @@ function ih_ajax_upload_custom_poster(): void
 	$image = $_FILES['file'];
 
 	// If data is not set - send error.
-	if( ! $image ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if( ! $image ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
 	$max_image_size         = 5_000_000;
 
 	// Check conditions for the image.
 	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
-		wp_send_json_error( ['msg' => esc_html__( 'Тільки ( png | jpg | jpeg ) меньше 5 мб', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 5 мб', 'inheart' )] );
 
 	$filename	= ih_modify_filename( $image['name'] );
 	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['video']['tmp_dir']}/{$filename}" );
 
 	if( ! $moved )
-		wp_send_json_error( ['msg' => esc_html__( 'Помилка під час завантаження зображення', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
 
 	$_SESSION['step4']['video']['shots'][] = "{$_SESSION['step4']['video']['tmp_url']}/{$filename}";
 	wp_send_json_success( [
-		'msg'	=> esc_html__( 'Зображення завантажено успішно', 'inheart' ),
+		'msg'	=> __( 'Зображення завантажено успішно', 'inheart' ),
 		'url'	=> "{$_SESSION['step4']['video']['tmp_url']}/{$filename}"
 	] );
 }
@@ -524,7 +534,7 @@ function ih_ajax_upload_memory_video(): void
 
 	// If data is not set - send error.
 	if( ! $file || ! $memory_page_id )
-		wp_send_json_error( ['success' => 0, 'msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_video_types	= ['video/mp4', 'video/mpeg', 'video/x-msvideo'];
 	$max_file_size			= 1_073_741_824;
@@ -533,7 +543,7 @@ function ih_ajax_upload_memory_video(): void
 	if( ! in_array( $file['type'], $allowed_video_types ) || ( int ) $file['size'] > $max_file_size )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => esc_html__( 'Тільки ( avi | mp4 | mpeg ) меньше 1 гб', 'inheart' )
+			'msg'       => __( 'Тільки ( avi | mp4 | mpeg ) меньше 1 гб', 'inheart' )
 		] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
@@ -545,7 +555,7 @@ function ih_ajax_upload_memory_video(): void
 	if( is_wp_error( $attach_id ) )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => esc_html__( 'Помилка під час завантаження файлу', 'inheart' )
+			'msg'       => __( 'Помилка під час завантаження файлу', 'inheart' )
 		] );
 
 	$attach_path							= get_attached_file( $attach_id );
@@ -573,7 +583,7 @@ function ih_ajax_upload_memory_video(): void
 		if( ! wp_mkdir_p( $uploads_dir ) )
 			wp_send_json_error( [
 				'success'   => 0,
-				'msg'       => esc_html__( 'Помилка під час створення директорії', 'inheart' )
+				'msg'       => __( 'Помилка під час створення директорії', 'inheart' )
 			] );
 	}
 
@@ -589,7 +599,7 @@ function ih_ajax_upload_memory_video(): void
 	$_SESSION['step4']['video']['shots'] = $shots_arr;
 	wp_send_json_success( [
 		'success'	=> 1,
-		'msg'		=> esc_html__( 'Файл завантажено успішно', 'inheart' ),
+		'msg'		=> __( 'Файл завантажено успішно', 'inheart' ),
 		'attachId'	=> $attach_id,
 		'shots'		=> json_encode( $shots_arr )
 	] );
@@ -609,7 +619,7 @@ function ih_ajax_delete_memory_photo(): void
 
 	// If data is not set - send error.
 	if( ! $attach_id || ! $memory_page_id )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	// If we are going to remove a video file - let's remove its attachments, like poster.
 	if( $is_video ){
@@ -632,7 +642,7 @@ function ih_ajax_delete_memory_photo(): void
 		wp_send_json_error( ['msg' => __( "Файл не належить до цієї сторінки пам'яті", 'inheart' )] );
 
 	wp_delete_attachment( $attach_id, true );
-	wp_send_json_success( ['msg' => esc_html__( 'Файл видалено успішно', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Файл видалено успішно', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_set_poster', 'ih_ajax_set_poster' );
@@ -646,7 +656,7 @@ function ih_ajax_set_poster(): void
 	$src = ih_clean( $_POST['src'] );
 
 	// If data is not set - send error.
-	if( ! $src ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if( ! $src ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$step_data		= $_SESSION['step4']['video'] ?? null;
 	$poster_name	= ih_modify_filename( basename( $src ) );
@@ -654,7 +664,7 @@ function ih_ajax_set_poster(): void
 
 	// No file/screenshots data in current session.
 	if( empty( $step_data ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані файлу', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані файлу', 'inheart' )] );
 
 	// Search for selected poster in tmp dir.
 	foreach( $step_data['shots'] as $shot ){
@@ -664,13 +674,13 @@ function ih_ajax_set_poster(): void
 		}
 	}
 
-	if( ! $poster_src ) wp_send_json_error( ['msg' => esc_html__( 'Обраний скрін не існує', 'inheart' )] );
+	if( ! $poster_src ) wp_send_json_error( ['msg' => __( 'Обраний скрін не існує', 'inheart' )] );
 
-	$thumb_desc	= sprintf( esc_html__( 'Постер для файлу з ID: %d', 'inheart' ), $step_data['file_id'] );
+	$thumb_desc	= sprintf( __( 'Постер для файлу з ID: %d', 'inheart' ), $step_data['file_id'] );
 	$poster_id	= media_sideload_image( $poster_src, $step_data['file_id'], $thumb_desc, 'id' );
 
 	if( is_wp_error( $poster_id ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Не вдалося встановити обкладинку', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Не вдалося встановити обкладинку', 'inheart' )] );
 
 	// Set new poster for the video.
 	set_post_thumbnail( $step_data['file_id'], $poster_id );
@@ -683,7 +693,7 @@ function ih_ajax_set_poster(): void
 	unset( $_SESSION['step4']['video'] );
 
 	wp_send_json_success( [
-		'msg'		=> esc_html__( 'Обкладинку встановлено успішно', 'inheart' ),
+		'msg'		=> __( 'Обкладинку встановлено успішно', 'inheart' ),
 		'url'		=> $attach_url,
 		'attachId'	=> $attach_id,
 		'filename'	=> basename( get_attached_file( $attach_id ) ),
@@ -703,7 +713,7 @@ function ih_ajax_save_data_step_4(): void
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
 	if( ! $memory_page_id || empty( $step_data['photos'] ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	update_field( 'photo', $step_data['photos'], $memory_page_id );
 
@@ -753,7 +763,7 @@ function ih_ajax_save_data_step_4(): void
 
 	update_field( 'field_63a16b6567b55', $links, $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_upload_video_link', 'ih_ajax_upload_video_link' );
@@ -767,13 +777,13 @@ function ih_ajax_upload_video_link(): void
 	$link			= isset( $_POST['link'] ) ? esc_url( $_POST['link'] ) : '';
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
-	if( ! $link ) wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+	if( ! $link ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$video_links	= get_field( 'video_links', $memory_page_id ) ?: [];
 	$video_links[]	= ['url' => $link];
 	update_field( 'video_links', $video_links, $memory_page_id );
 
-	wp_send_json_success( ['msg' => esc_html__( 'Посилання на відео збережено успішно!', 'inheart' )] );
+	wp_send_json_success( ['msg' => __( 'Посилання на відео збережено успішно!', 'inheart' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_save_data_step_5', 'ih_ajax_save_data_step_5' );
@@ -788,7 +798,7 @@ function ih_ajax_save_data_step_5(): void
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
 	if( ! $step_data || ! $memory_page_id || ! $step_data['address'] )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => $memory_page_id] );
 
 	// Update Memory page fields.
 	update_field( 'address', $step_data['address'], $memory_page_id );
@@ -811,12 +821,13 @@ function ih_ajax_save_data_step_5(): void
 	$new_title		= "$last_name $first_name $middle_name, " . $born_at . '-' . $died_at;
 	wp_update_post( [
 		'ID'			=> $memory_page_id,
+		'post_name'		=> $memory_page_id,
 		'post_title'	=> $new_title,
 		'post_status'	=> 'publish'
 	] );
 
 	wp_send_json_success( [
-		'msg'		=> esc_html__( 'Дані Кроку 5 збережено успішно!', 'inheart' ),
+		'msg'		=> __( 'Дані Кроку 5 збережено успішно!', 'inheart' ),
 		'redirect'	=> get_the_permalink( pll_get_post( ih_get_profile_page_id() ) )	// Profile
 	] );
 }

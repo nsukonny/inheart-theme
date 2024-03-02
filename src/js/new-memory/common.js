@@ -83,9 +83,7 @@ export const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
 		if( nextStepBtn.disabled ) return
 
-		if( ! nextStepIdGlobal || checkAjaxWorkingStatus() ) return
-
-		setAjaxWorkingStatus( true )
+		if( ! nextStepIdGlobal ) return
 
 		const
 			formData	= new FormData(),
@@ -112,14 +110,12 @@ export const nextStep = () => {
 						break
 				}
 			}
-
-			setAjaxWorkingStatus( false )
 		} )
 	} )
 }
 
 export const saveStep = stepId => {
-	if( ! stepId || checkAjaxWorkingStatus() ) return
+	if( ( ! stepId && stepId !== 0 ) || checkAjaxWorkingStatus() ) return
 
 	setAjaxWorkingStatus( true )
 
@@ -257,6 +253,8 @@ export const isStepFilled = ( stepId = 0 ) => {
 	if( cb() ){
 		applyProgress( stepForProgress, percentage )
 		allowNextStep( nextStepIdGlobal )
+
+		if( stepId != 5 ) saveStep( stepId )
 	}else{
 		applyProgress( stepForProgress, falsePercentage )
 		disallowNextStep()

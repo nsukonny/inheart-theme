@@ -418,3 +418,15 @@ function ih_get_order_created_page_id(): int
 	return get_field( 'order_created_page_id', 'option' ) ?: 0;
 }
 
+/**
+ * Check if last fight fields are set.
+ *
+ * @param array $last_fight	Group field from some memory page.
+ * @return bool	True if data is set, false if not.
+ */
+function ih_is_set_last_fight( array $last_fight = [] ): bool
+{
+	return isset( $last_fight['location'] ) && $last_fight['location'] &&
+		isset( $last_fight['text'] ) && $last_fight['text'];
+}
+

@@ -1,19 +1,19 @@
 import Sortable from 'sortablejs'
-import { isStepFilled, saveStep } from './common'
+import { isStepFilled } from './common'
 import {
 	addLoader,
 	BYTES_IN_MB,
-	checkAjaxWorkingStatus,
+	checkAjaxWorkingStatus, customDebounce,
 	ihAjaxRequest, removeLoader,
 	setAjaxWorkingStatus,
 	showNotification
 } from '../common/global'
+import { loadCities } from '../pages/profile'
 
-const
-	stepData = localStorage.getItem( 'ih-step-2' ) ?
-		JSON.parse( localStorage.getItem( 'ih-step-2' ) ) : {}
+const stepData = {}
 
 let sectionsWrapper,
+	sectionsListWrapper,
 	militarySectionsWrapper,
 	sectionsContent
 
@@ -22,6 +22,7 @@ let sectionsWrapper,
  */
 export const addSection = () => {
 	sectionsWrapper			= document.querySelector( '.sections-sidebar' )
+	sectionsListWrapper		= sectionsWrapper.querySelector( '.sections-list' )
 	militarySectionsWrapper	= document.querySelector( '.sections-military' )
 	sectionsContent			= document.querySelector( '.sections-content' )
 
@@ -30,59 +31,135 @@ export const addSection = () => {
 	sectionsWrapper.addEventListener( 'click', e => {
 		const target = e.target
 
-		if( target.closest( '.section-add' ) || ( target.className && target.classList.contains( 'section-add' ) ) ){
-			const
-				addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
-				targetSection			= target.closest( '.section' ),
-				imgUrl					= targetSection.dataset.thumb || null,
-				clonedSection			= targetSection.cloneNode( true ),
-				clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
-				clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' ),
-				randomId				= Math.random() * 9999 + '_' + Math.random() * 9999
+		if(
+			! target.closest( '.section-add' ) &&
+			! ( target.className && target.classList.contains( 'section-add' ) )
+		) return;
 
-			// If a military section is clicked, but theme is not military - exit.
-			if(
-				targetSection.classList.contains( 'section-military' ) &&
-				! document.body.classList.contains( 'memory-page-theme-military' )
-			) return
+		const
+			addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
+			targetSection			= target.closest( '.section' ),
+			sectionId				= targetSection.id || null,
+			imgUrl					= targetSection.dataset.thumb || null,
+			clonedSection			= targetSection.cloneNode( true ),
+			clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
+			clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' ),
+			randomId				= Math.random() * 9999 + '_' + Math.random() * 9999
 
-			// Replace in sidebar.
-			targetSection.remove()
-			addedSectionsWrapper.append( clonedSection )
+		// If a military section is clicked, but theme is not military - exit.
+		if(
+			targetSection.classList.contains( 'section-military' ) &&
+			! document.body.classList.contains( 'memory-page-theme-military' )
+		) return
 
-			// Add new content.
-			clonedSectionContent.querySelector( 'textarea' ).innerText = ''
-			clonedSectionContent.querySelector( '.section-content-title' ).innerText = clonedSection.querySelector( '.section-label' ).innerText
-			// Change SVG IDs and so on.
-			clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ randomId }`
-			clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ randomId })` )
-			clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ randomId }`
-			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ randomId })` )
-			clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
-			clonedTextarea.value = ''	// Clear value.
+		// Replace in sidebar.
+		targetSection.remove()
+		addedSectionsWrapper.append( clonedSection )
 
-			// Delete photos in cloned section if they are exist.
-			if( clonedSectionContent.querySelector( '.section-content-photos' ) )
-				clonedSectionContent.querySelector( '.section-content-photos' ).innerHTML = ''
+		// Add new content.
+		clonedSectionContent.querySelector( 'textarea' ).innerText = ''
+		clonedSectionContent.querySelector( '.section-content-title' ).innerText = clonedSection.querySelector( '.section-label' ).innerText
+		// Change SVG IDs and so on.
+		clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ randomId }`
+		clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ randomId })` )
+		clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ randomId }`
+		clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ randomId })` )
+		clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
+		clonedTextarea.value = ''	// Clear value.
 
-			sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
-			window.scrollTo( { top: sectionsContent.getBoundingClientRect().top + window.scrollY } )
+		// Delete photos in cloned section if they are exist.
+		if( clonedSectionContent.querySelector( '.section-content-photos' ) )
+			clonedSectionContent.querySelector( '.section-content-photos' ).innerHTML = ''
 
-			// If this is a section with a custom title.
-			if( imgUrl ){
-				clonedSectionContent.classList.add( 'custom' )
-				clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Придумайте заголовок" />'
-				clonedSectionContent.insertAdjacentHTML( 'beforeend', `<img class="section-content-thumb" src="${ imgUrl }" alt="" />` )
-			}
+		if( sectionId === 'last-fight' ) addLastFightSection( clonedSection, clonedSectionContent )
 
-			setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
-			sectionsContentInput()	// Add event listeners.
-			isStepFilled( 2 )
+		sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
+		window.scrollTo( { top: sectionsContent.getBoundingClientRect().top + window.scrollY } )
+
+		if( sectionId === 'last-fight' ) loadCities( false )
+
+		// If this is a section with a custom title.
+		if( imgUrl ){
+			clonedSectionContent.classList.add( 'custom' )
+			clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Придумайте заголовок" />'
+			clonedSectionContent.insertAdjacentHTML( 'beforeend', `<img class="section-content-thumb" src="${ imgUrl }" alt="" />` )
 		}
+
+		setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
+		sectionsContentInput()	// Add event listeners.
+		isStepFilled( 2 )
 	} )
+
+	// For the case if Last Fight section is already added.
+	addLastFightSection( sectionsWrapper.querySelector( '#last-fight' ), sectionsContent.querySelector( '.section-content-last-fight' ) )
+	loadCities( false )
 
 	uploadSectionPhoto()
 	deletePhoto()
+}
+
+/**
+ * Last Fight section is a specific last military section.
+ * It has no photos, but has location field which is using Nova Poshta API.
+ *
+ * @param sidebarSection
+ * @param contentSection
+ */
+const addLastFightSection = ( sidebarSection, contentSection ) => {
+	if( ! sidebarSection || ! contentSection ) return
+
+	// Don't need drag'n'drop for this section.
+	if( sidebarSection.querySelector( '.section-drag' ) ) sidebarSection.querySelector( '.section-drag' ).remove()
+	if( contentSection.querySelector( '.section-drag' ) ) contentSection.querySelector( '.section-drag' ).remove()
+
+	const
+		lastFightSection	= document.querySelector( '.section-content-last-fight.hidden' ),
+		lastFightFormOrigin	= lastFightSection.querySelector( '.section-content-form-np' ),
+		lastFightForm		= lastFightFormOrigin.cloneNode( true ),
+		form				= contentSection.querySelector( '.section-content-form' ),
+		btn					= lastFightForm.querySelector( '.last-fight-show-field' ),
+		input				= lastFightForm.querySelector( '#city' )
+
+	contentSection.classList.add( 'section-content-last-fight' )
+	form.parentNode.insertBefore( lastFightForm, form.nextSibling )
+	form.remove()
+	// Remove original form, because it has the same #city input, Nova Poshta API will not work properly.
+	lastFightFormOrigin.remove()
+
+	btn.addEventListener( 'click', () => {
+		const label = lastFightForm.querySelector( '.section-content-np' )
+
+		if( ! label ) return
+
+		label.classList.remove( 'hidden' )
+		btn.classList.add( 'hidden' )
+	} )
+
+	const onCityInputChange = () => isStepFilled( 2 )
+
+	input.addEventListener( 'input', onCityInputChange )
+	input.addEventListener( 'focus', onCityInputChange )
+	input.addEventListener( 'blur', onCityInputChange )
+}
+
+/**
+ * Remove Last Fight section.
+ * We need to return its form to the hidden original block,
+ * hide input and show button (for the next time it will be added again).
+ *
+ * @param contentSection
+ */
+const removeLastFightSection = contentSection => {
+	if( ! contentSection ) return
+
+	const
+		lastFightSection	= document.querySelector( '.section-content-last-fight.hidden' ),
+		lastFightFormCopy	= contentSection.querySelector( '.section-content-form-np' ).cloneNode( true )
+
+	lastFightFormCopy.querySelector( '.last-fight-show-field' ).classList.remove( 'hidden' )
+	lastFightFormCopy.querySelector( '.section-content-np' ).classList.add( 'hidden' )
+	lastFightFormCopy.querySelector( '#city' ).value = ''
+	lastFightSection.appendChild( lastFightFormCopy )
 }
 
 /**
@@ -99,9 +176,9 @@ export const removeSidebarAddedSection = () => {
 			( target.className && target.classList.contains( '.section-remove' ) )
 		){
 			const
-				sectionsWrapper	= document.querySelector( '.sections-list' ),
 				targetSection	= target.closest( '.section' ),
 				sectionId		= targetSection.dataset.id,
+				sectionRealId	= targetSection.id,
 				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
 				sectionContent	= sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ),
 				isMilitary		= targetSection.classList.contains( 'section-military' )
@@ -116,24 +193,11 @@ export const removeSidebarAddedSection = () => {
 			clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
 
 			if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
-			else sectionsWrapper.append( clonedSection )
+			else sectionsListWrapper.append( clonedSection )
 
-			targetSection.remove()
-			sectionContent.remove()
+			if( sectionRealId === 'last-fight' ) removeLastFightSection( sectionContent )
 
-			for( let key in stepData ){
-				if( key == sectionId ){
-					let photos = stepData[key].photos
-
-					if( photos ) photos.forEach( photo => deleteContentPhoto( photo ) )
-
-					delete stepData[key]
-				}
-			}
-
-			localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-			isStepFilled( 2 )
-			saveStep( 2 )
+			removeSectionStepData( sectionId, targetSection, sectionContent )
 		}
 	} )
 }
@@ -148,45 +212,56 @@ export const removeContentSection = () => {
 		const target = e.target
 
 		if(
-			target.closest( '.section-remove' ) ||
-			( target.className && target.classList.contains( '.section-remove' ) )
-		){
-			const
-				sectionsWrapper	= document.querySelector( '.sections-list' ),
-				targetContent	= target.closest( '.section-content' ),
-				sectionId		= targetContent.dataset.id,
-				targetSection	= document.querySelector( `.sections-added-list .section[data-id="${ sectionId }"]` ),
-				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
-				isMilitary		= targetSection.classList.contains( 'section-military' )
+			! target.closest( '.section-remove' ) &&
+			! ( target.className && target.classList.contains( '.section-remove' ) )
+		) return
 
-			if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
+		const
+			targetContent	= target.closest( '.section-content' ),
+			sectionId		= targetContent.dataset.id,
+			sectionRealId	= sectionsWrapper.querySelector( `.section[data-id="${ sectionId }"]` ).id,
+			targetSection	= document.querySelector( `.sections-added-list .section[data-id="${ sectionId }"]` ),
+			sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
+			isMilitary		= targetSection.classList.contains( 'section-military' )
 
-			// Section content is not empty - double-check if User wants to delete it.
-			if( targetContent.querySelector( '.section-content-text' ).value && ! confirm( 'Дійсно видалити цю секцію?' ) ) return
+		if( ! sectionsAdded.length || sectionsAdded.length < 2 ) return
 
-			const clonedSection = targetSection.cloneNode( true )
+		// Section content is not empty - double-check if User wants to delete it.
+		if( targetContent.querySelector( '.section-content-text' ).value && ! confirm( 'Дійсно видалити цю секцію?' ) ) return
 
-			if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
-			else sectionsWrapper.append( clonedSection )
+		const clonedSection = targetSection.cloneNode( true )
 
-			targetSection.remove()
-			targetContent.remove()
+		if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
+		else sectionsListWrapper.append( clonedSection )
 
-			for( let key in stepData ){
-				if( key == sectionId ){
-					let photos = stepData[key].photos
+		if( sectionRealId === 'last-fight' ) removeLastFightSection( targetContent )
 
-					if( photos ) photos.forEach( photo => deleteContentPhoto( photo ) )
-
-					delete stepData[key]
-				}
-			}
-
-			localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-			isStepFilled( 2 )
-			saveStep( 2 )
-		}
+		removeSectionStepData( sectionId, targetSection, targetContent )
 	} )
+}
+
+/**
+ * Remove section data from stepData by ID.
+ *
+ * @param sectionId
+ * @param sidebarSection
+ * @param contentSection
+ */
+const removeSectionStepData = ( sectionId, sidebarSection, contentSection ) => {
+	for( let key in stepData ){
+		if( key == sectionId ){
+			let photos = stepData[key].photos
+
+			if( photos ) photos.forEach( photo => deleteContentPhoto( photo ) )
+
+			delete stepData[key]
+		}
+	}
+
+	sidebarSection.remove()
+	contentSection.remove()
+	localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
+	isStepFilled( 2 )
 }
 
 /**
@@ -202,10 +277,18 @@ export const setActiveSectionContent = () => {
 			target.closest( '.section-content' ) ||
 			( target.className && target.classList.contains( 'section-content' ) )
 		){
+			// Don't expand content if clicked some of the elements below (yeah... I know...).
 			if(
-				target.className &&
-				( target.classList.contains( 'section-content-photo-delete' ) || target.closest( '.popup-confirm' ) ||
-				target.classList.contains( 'section-content-form-add' ) || target.closest( '.section-content-form-add' ) )
+				( target.className &&
+					(
+						target.classList.contains( 'section-content-photo-delete' ) ||
+						target.classList.contains( 'section-content-form-add' ) ||
+						target.classList.contains( 'last-fight-show-field' ) ||
+						target.classList.contains( 'section-content-np' )
+					)
+				) ||
+				target.closest( '.popup-confirm' ) || target.closest( '.section-content-form-add' ) ||
+				target.closest( '.last-fight-show-field' ) || target.closest( '.section-content-np' )
 			) return
 
 			const
@@ -341,10 +424,10 @@ const checkIfAllSectionsContentSet = () => isStepFilled( 2 )
  * @returns {boolean}
  */
 export const checkStep2 = () => {
-	const textareas	= document.querySelectorAll( '.section-content-text' )
+	const textareas	= sectionsContent.querySelectorAll( '.section-content-text' )
 	let allIsSet	= true
 
-	if( ! textareas.length ) return
+	if( ! textareas.length ) return false
 
 	textareas.forEach( ( area, i ) => {
 		const
@@ -354,13 +437,28 @@ export const checkStep2 = () => {
 			value		= area.value,
 			index		= section.dataset.id,
 			isCustom	= section.classList.contains( 'custom' ) ? 1 : '',
-			photos		= section.querySelectorAll( '.section-content-photo' )
+			photos		= section.querySelectorAll( '.section-content-photo' ),
+			city		= section.querySelector( '#city' ),
+			isLastFight	= section.classList.contains( 'section-content-last-fight' )
 
+		console.log( area )
 		if( titleInput ) stepData[index] = { ...stepData[index], title: titleInput.value }
 		else stepData[index] = { ...stepData[index], title: title.innerText }
 
 		// If textarea or title input is not set.
 		if( ! value || ( titleInput && ! titleInput.value ) ) allIsSet = false
+
+		// If this is Last Fight section.
+		if( isLastFight ){
+			stepData[index].isLastFight = 1
+
+			if( city ){
+				const cityText = city.value
+
+				if( ! cityText ) allIsSet = false
+				else stepData[index].city = city.value
+			}
+		}
 
 		stepData[index].text 		= value
 		stepData[index].position 	= i
@@ -469,7 +567,7 @@ const deleteContentPhoto = ( id, target = undefined ) => {
 					}
 
 					localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-					saveStep( 2 )
+					isStepFilled( 2 )
 					break
 
 				case false:
@@ -531,7 +629,7 @@ const uploadSectionPhoto = () => {
 							}
 
 							localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
-							saveStep( 2 )
+							isStepFilled( 2 )
 							break
 
 						case false:
