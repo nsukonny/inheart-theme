@@ -19,11 +19,15 @@ $custom		= ( isset( $section['own_title'] ) && $section['own_title'] ) ? ' custo
 $index		= $section['index'] ?? 0;
 $thumb		= ( $custom && isset( $sections[$index] ) ) ? $sections[$index]['thumb'] : '';
 $photos		= $section['photos'] ?? null;
+$class		= $args['class'] ?? '';
 
 if( ! $title ) return;
 ?>
 
-<div class="section-content<?php echo esc_attr( $custom ) ?>" data-id="<?php echo esc_attr( $index ) ?>">
+<div
+	class="section-content<?php echo esc_attr( $custom ), ' ', esc_attr( $class ) ?>"
+	data-id="<?php echo esc_attr( $index ) ?>"
+>
 	<div class="section-content-title">
 		<?php
 		if( $custom ){

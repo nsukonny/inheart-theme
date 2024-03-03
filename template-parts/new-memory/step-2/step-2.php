@@ -21,10 +21,16 @@ $sections_desc			= get_field( 'sections_desc' );
 if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 	$ready_sections 		= get_field( 'biography_sections', $memory_page_id );
 	$last_fight				= get_field( 'last_fight', $memory_page_id );
+	$cto					= get_field( 'cto', $memory_page_id );
+	$war					= get_field( 'war', $memory_page_id );
+	$cto['index']			= $sections_count;
+	$cto['category']		= __( 'АТО', 'inheart' );
+	$war['index']			= $sections_count + 1;
+	$war['category']		= __( 'Повномасштабне вторгнення', 'inheart' );
 	$last_fight['index']	= $sections_count + 2;
 }else{
 	$ready_sections	= null;
-	$last_fight		= [];
+	$cto			= $war = $last_fight = [];
 }
 
 // Sort array of arrays by position property, maintain keys.
@@ -97,6 +103,30 @@ if( $ready_sections ){
 								);
 							}
 
+							if( ih_is_set_military_section( $cto ) ){
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar-military',
+									null,
+									[
+										'key'	=> $sections_count,
+										'title'	=> __( 'АТО', 'inheart' ),
+										'id'	=> 'cto'
+									]
+								);
+							}
+
+							if( ih_is_set_military_section( $war ) ){
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar-military',
+									null,
+									[
+										'key'	=> $sections_count + 1,
+										'title'	=> __( 'Повномасштабне вторгнення', 'inheart' ),
+										'id'	=> 'war'
+									]
+								);
+							}
+
 							if( ih_is_set_last_fight( $last_fight ) ){
 								get_template_part(
 									'template-parts/new-memory/step-2/section-sidebar-military',
@@ -140,16 +170,19 @@ if( $ready_sections ){
 
 						<div class="sections-military">
 							<?php
-							get_template_part(
-								'template-parts/new-memory/step-2/section-sidebar-military',
-								null,
-								['key' => $sections_count, 'title' => __( 'АТО', 'inheart' ), 'id' => 'cto']
-							);
-							get_template_part(
-								'template-parts/new-memory/step-2/section-sidebar-military',
-								null,
-								['key' => $sections_count + 1, 'title' => __( 'Повномасштабне вторгнення', 'inheart' ), 'id' => 'war']
-							);
+							if( ! ih_is_set_military_section( $cto ) )
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar-military',
+									null,
+									['key' => $sections_count, 'title' => __( 'АТО', 'inheart' ), 'id' => 'cto']
+								);
+
+							if( ! ih_is_set_military_section( $war ) )
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar-military',
+									null,
+									['key' => $sections_count + 1, 'title' => __( 'Повномасштабне вторгнення', 'inheart' ), 'id' => 'war']
+								);
 
 							if( ! ih_is_set_last_fight( $last_fight ) )
 								get_template_part(
@@ -191,12 +224,24 @@ if( $ready_sections ){
 						);
 					}
 
+					if( ih_is_set_military_section( $cto ) )
+						get_template_part( 'template-parts/new-memory/step-2/section-content', null, [
+							'section'	=> $cto,
+							'class'		=> 'section-content-cto'
+						] );
+
+					if( ih_is_set_military_section( $war ) )
+						get_template_part( 'template-parts/new-memory/step-2/section-content', null, [
+							'section'	=> $war,
+							'class'		=> 'section-content-war'
+						] );
+
 					if( ih_is_set_last_fight( $last_fight ) )
 						get_template_part( 'template-parts/new-memory/step-2/section-content-last-fight', null, [
 							'section' => $last_fight
 						] );
 					?>
-				</div>
+				</div><!-- .sections-content -->
 			</div><!-- .sections-wrapper -->
 			<?php
 		}

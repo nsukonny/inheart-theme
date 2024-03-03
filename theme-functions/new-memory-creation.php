@@ -148,12 +148,28 @@ function ih_ajax_save_data_step_2(): void
 {
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
-	$sections		= $last_fight = [];
+	$sections		= $cto = $war = $last_fight = [];
 
 	if( ! $memory_page_id || empty( $step_data ) )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	foreach( $step_data as $key => $section ){
+		if( isset( $section['isCto'] ) && $section['isCto'] == 1 ){
+			$cto = [
+				'text'		=> $section['text'],
+				'photos'	=> $section['photos'] ?? []
+			];
+			continue;
+		}
+
+		if( isset( $section['isWar'] ) && $section['isWar'] == 1 ){
+			$war = [
+				'text'		=> $section['text'],
+				'photos'	=> $section['photos'] ?? []
+			];
+			continue;
+		}
+
 		if( isset( $section['isLastFight'] ) && $section['isLastFight'] == 1 ){
 			$last_fight = [
 				'location'	=> $section['city'],
@@ -168,11 +184,13 @@ function ih_ajax_save_data_step_2(): void
 			'position'	=> $section['position'],
 			'own_title'	=> ( bool ) $section['custom'],
 			'index'		=> $key,
-			'photos'	=> $section['photos'] ?? ''
+			'photos'	=> $section['photos'] ?? []
 		];
 	}
 
 	update_field( 'biography_sections', $sections, $memory_page_id );
+	update_field( 'cto', $cto, $memory_page_id );
+	update_field( 'war', $war, $memory_page_id );
 	update_field( 'last_fight', $last_fight, $memory_page_id );
 
 	wp_send_json_success( ['msg' => __( 'Дані Кроку 2 збережено успішно!', 'inheart' )] );

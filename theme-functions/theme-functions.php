@@ -419,10 +419,21 @@ function ih_get_order_created_page_id(): int
 }
 
 /**
+ * Check if military section fields are set.
+ *
+ * @param array $section	Group field from some memory page.
+ * @return bool				True if data is set, false if not.
+ */
+function ih_is_set_military_section( array $section = [] ): bool
+{
+	return isset( $section['text'] ) && $section['text'];
+}
+
+/**
  * Check if last fight fields are set.
  *
  * @param array $last_fight	Group field from some memory page.
- * @return bool	True if data is set, false if not.
+ * @return bool				True if data is set, false if not.
  */
 function ih_is_set_last_fight( array $last_fight = [] ): bool
 {

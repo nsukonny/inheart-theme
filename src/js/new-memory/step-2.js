@@ -52,6 +52,10 @@ export const addSection = () => {
 			! document.body.classList.contains( 'memory-page-theme-military' )
 		) return
 
+		// Add specific classname to military section content - need it on step data save.
+		if( targetSection.classList.contains( 'section-military' ) )
+			clonedSectionContent.classList.add( `section-content-${ sectionId }` )
+
 		// Replace in sidebar.
 		targetSection.remove()
 		addedSectionsWrapper.append( clonedSection )
@@ -439,14 +443,21 @@ export const checkStep2 = () => {
 			isCustom	= section.classList.contains( 'custom' ) ? 1 : '',
 			photos		= section.querySelectorAll( '.section-content-photo' ),
 			city		= section.querySelector( '#city' ),
+			isCto		= section.classList.contains( 'section-content-cto' ),
+			isWar		= section.classList.contains( 'section-content-war' ),
 			isLastFight	= section.classList.contains( 'section-content-last-fight' )
 
-		console.log( area )
 		if( titleInput ) stepData[index] = { ...stepData[index], title: titleInput.value }
 		else stepData[index] = { ...stepData[index], title: title.innerText }
 
 		// If textarea or title input is not set.
 		if( ! value || ( titleInput && ! titleInput.value ) ) allIsSet = false
+
+		// If this is CTO section.
+		if( isCto ) stepData[index].isCto = 1
+
+		// If this is War section.
+		if( isWar ) stepData[index].isWar = 1
 
 		// If this is Last Fight section.
 		if( isLastFight ){
