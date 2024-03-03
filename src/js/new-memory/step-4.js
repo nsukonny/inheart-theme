@@ -12,10 +12,7 @@ import {
 } from '../common/global'
 import { isStepFilled } from './common'
 
-const
-	stepData = localStorage.getItem( 'ih-step-4' ) ?
-	JSON.parse( localStorage.getItem( 'ih-step-4' ) ) :
-	{ photos: [], videos: [], links: [{url: '', title: '', position: 0}] }
+const stepData = { photos: [], videos: [], links: [{url: '', title: '', position: 0}] }
 let videoDuration = 0
 
 /**
@@ -932,7 +929,7 @@ export const externalLinkAdd = () => {
 		document.querySelector( '.step-media-links' ).insertAdjacentHTML( 'beforeend', getExternalLinkHTML( id ) )
 		externalLinksFieldsInput()
 		externalLinkDelete()
-		checkStep4()
+		isStepFilled( 4 )
 	} )
 }
 
@@ -965,7 +962,7 @@ const onExternalLinkDelete = e => {
 		document.querySelector( '.step-media-links' ).innerHTML = getExternalLinkHTML()
 		externalLinksFieldsInput()
 		externalLinkDelete()
-		checkStep4()
+		isStepFilled( 4 )
 		document.querySelector( '.media-links-add' ).classList.add( 'hidden' )
 	}
 }

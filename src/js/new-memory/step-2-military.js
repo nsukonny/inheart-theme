@@ -1,8 +1,6 @@
 import { isStepFilled } from './common'
 
-const
-	stepData = localStorage.getItem( 'ih-step-2-military' ) ?
-		JSON.parse( localStorage.getItem( 'ih-step-2-military' ) ) : {}
+const stepData = {}
 
 export const step2MilitaryFormValidation = () => {
 	const fields = document.querySelectorAll( '.new-memory-step-2-military input' )
@@ -43,7 +41,11 @@ export const step2MilitaryFormValidation = () => {
 		options.forEach( option => {
 			option.addEventListener( 'click', () => {
 				field.value = option.innerText
-				setTimeout( () => closeDropdown(), 10 )
+				field.setAttribute( 'data-id', option.dataset.id )
+				setTimeout( () => {
+					closeDropdown()
+					isStepFilled( '2-military' )
+				}, 10 )
 			} )
 		} )
 	} )
@@ -88,7 +90,7 @@ export const checkStep2Military = () => {
 	selects.forEach( select => {
 		const
 			name	= select.name,
-			value	= select.value
+			value	= ( select.id && select.id === 'army' ) ? select.dataset.id : select.value
 
 		stepData[name] = value
 

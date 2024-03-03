@@ -1,9 +1,6 @@
 import { allowNextStep, applyProgress, disallowNextStep, isStepFilled } from './common'
 
-const
-	stepData = localStorage.getItem( 'ih-step-3' ) ?
-		JSON.parse( localStorage.getItem( 'ih-step-3' ) ) :
-		{ 'epitaph': '', 'epitaph-lastname': '', 'epitaph-firstname': '', 'epitaph-role': '' }
+const stepData = { 'epitaph': '', 'epitaph-lastname': '', 'epitaph-firstname': '', 'epitaph-role': '' }
 let textarea
 
 /**

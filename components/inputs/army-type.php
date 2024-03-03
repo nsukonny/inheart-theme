@@ -22,7 +22,8 @@ $label			= $args['label'] ?? '';
 $label_class	= $args['label_class'] ?? 'half';
 $type			= $args['type'] ?? 'text';
 $placeholder	= $args['placeholder'] ?? '';
-$value			= $args['value'] ?? '';
+$army_type_id	= $args['value'] ?? null;
+$value			= $army_type_id ? get_the_title( $army_type_id ) : '';
 $required		= $args['required'] ?? '';
 $icon_tail		= $args['icon_tail'] ?? '';
 $wrap_class		= ' select';
@@ -42,6 +43,7 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 		type="text"
 		placeholder="<?php echo esc_attr( $placeholder ) ?>"
 		value="<?php echo esc_attr( $value ) ?>"
+		data-id="<?php echo esc_attr( $army_type_id ) ?>"
 		<?php echo ( $required ? 'required' : '' ) ?>
 	/>
 
@@ -56,8 +58,12 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 
 	echo '<span class="options direction-column">';
 
-	foreach( $army_types as $army )
-		echo '<span class="option">', esc_html( get_the_title( $army->ID ) ), '</span>';
+	foreach( $army_types as $army ){
+		$army_id = $army->ID;
+		echo '<span class="option" data-id="', esc_attr( $army_id ), '">',
+			esc_html( get_the_title( $army_id ) ),
+		'</span>';
+	}
 
 	echo '</span>';
 	?>
