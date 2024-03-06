@@ -1,3 +1,4 @@
+import html2canvas from 'html2canvas'
 import {
 	checkAjaxWorkingStatus,
 	ihAjaxRequest,
@@ -342,7 +343,7 @@ const theLastMilitaryStep = () => {
 	// Push data to HTML.
 	if( thumb ){
 		screen.querySelector( '.military-created-thumb' )
-			.innerHTML = `<img src="${ thumb }" alt="${ firstName } ${ middleName } ${ lastName }" />`
+			.innerHTML = `<img src="${ thumb }" alt="${ lastName } ${ firstName } ${ middleName }" />`
 	}
 
 	dateBorn.querySelector( '.military-created-date-day' ).innerHTML	= bornDay
@@ -358,7 +359,6 @@ const theLastMilitaryStep = () => {
 
 	screen.querySelector( '.military-created-brigade' ).innerHTML	= brigade
 	screen.querySelector( '.military-created-army p' ).innerHTML	= army
-	// screen.querySelector( '.military-created-share-button' ).href	= `https://www.instagram.com/share?url=${ linkToPage }`
 	screen.querySelector( '.military-created-link-url' ).href		= linkToPage
 	screen.querySelector( '.military-created-link-url' ).innerHTML	= linkToPage.replace( /http(s)?:\/\//, '' )
 	screen.querySelector( '.military-created-qr a' ).href			= qrLink
@@ -369,6 +369,17 @@ const theLastMilitaryStep = () => {
 			`<img src="${ armyThumb }" alt="${ army }" />`
 		)
 	}
+
+	html2canvas( document.querySelector( '.military-created-info' ) ).then( canvas => {
+		canvas.id = 'military-created-canvas'
+		canvas.classList.add( 'hidden' )
+		document.body.appendChild( canvas )
+
+		const shareLink = screen.querySelector( '.military-created-share-button' )
+
+		shareLink.setAttribute( 'download', `${ lastName }_${ firstName }_${ middleName }_preview.png` )
+		shareLink.setAttribute( 'href', canvas.toDataURL( 'image/png' ).replace( 'image/png', 'image/octet-stream' ) )
+	} )
 
 	clearData()
 }
