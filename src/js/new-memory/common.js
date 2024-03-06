@@ -502,7 +502,11 @@ export const instagramPopupEvents = () => {
 
 	const close = popup.querySelector( '.coords-popup-close' )
 
-	button.addEventListener( 'click', () => {
+	button.addEventListener( 'click', e => {
+		if( ! button.classList.contains( 'allow-download' ) ) e.preventDefault()
+		else return
+
+		button.classList.add( 'allow-download' )
 		setTargetElement( '#instagram-popup' )
 		disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
 		showElement( popup )
@@ -511,5 +515,6 @@ export const instagramPopupEvents = () => {
 	close.addEventListener( 'click', () => {
 		hideElement( popup )
 		enableBodyScroll( getTargetElement() )
+		button.click()
 	} )
 }
