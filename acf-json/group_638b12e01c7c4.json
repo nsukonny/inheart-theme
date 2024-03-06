@@ -66,26 +66,6 @@
             "endpoint": 0
         },
         {
-            "key": "field_638b15dd42c99",
-            "label": "Ім'я",
-            "name": "first_name",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "34",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_638b15e642c9a",
             "label": "Прізвище",
             "name": "last_name",
@@ -96,6 +76,26 @@
             "conditional_logic": 0,
             "wrapper": {
                 "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_638b15dd42c99",
+            "label": "Ім'я",
+            "name": "first_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
                 "class": "",
                 "id": ""
             },
@@ -1370,5 +1370,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1709473477
+    "modified": 1709678293
 }

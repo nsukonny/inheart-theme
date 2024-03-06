@@ -30,6 +30,7 @@ $lang_changed = isset( $_GET['langchanged'] ) && $_GET['langchanged'] == 1;
 	get_template_part( 'template-parts/new-memory/step-4/step', '4' );
 	get_template_part( 'template-parts/new-memory/step-5/step', '5' );
 	get_template_part( 'template-parts/new-memory/step-6/step', '6' );
+	get_template_part( 'template-parts/new-memory/step-6/step', '6-military' );
 	?>
 </main>
 

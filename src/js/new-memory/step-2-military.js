@@ -40,8 +40,14 @@ export const step2MilitaryFormValidation = () => {
 		// Select option.
 		options.forEach( option => {
 			option.addEventListener( 'click', () => {
+				const activeOption = label.querySelector( '.option.active' )
+
+				if( activeOption ) activeOption.classList.remove( 'active' )
+
+				option.classList.add( 'active' )
 				field.value = option.innerText
 				field.setAttribute( 'data-id', option.dataset.id )
+				field.setAttribute( 'data-thumb', option.dataset.thumb )
 				setTimeout( () => {
 					closeDropdown()
 					isStepFilled( '2-military' )
@@ -90,9 +96,16 @@ export const checkStep2Military = () => {
 	selects.forEach( select => {
 		const
 			name	= select.name,
-			value	= ( select.id && select.id === 'army' ) ? select.dataset.id : select.value
+			isArmy	= select.id && select.id === 'army',
+			value	= isArmy ? select.dataset.id : select.value
 
 		stepData[name] = value
+
+		// Write text just for the last step.
+		if( isArmy ){
+			stepData.armyTitle 	= select.value
+			stepData.armyThumb 	= select.dataset.thumb
+		}
 
 		if( ! value ) allIsSet = false
 

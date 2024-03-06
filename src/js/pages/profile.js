@@ -79,17 +79,17 @@ const expandToFull = () => {
 
 	if( ! memoriesSection || ! expandSection || ! buttons.length  ) return
 
+	const form = expandSection.querySelector( '.expand-page-form' )
+
 	buttons.forEach( btn => {
 		btn.addEventListener( 'click', () => {
 			const
 				card			= btn.closest( '.memory-card' ),
-				memoryPageId	= card.dataset.id,
-				thumb			= card.querySelector( '.memory-card-thumb-img' ).innerHTML,
-				firstName		= card.querySelector( '.memory-card-firstname' ).innerHTML,
-				lastName		= card.querySelector( '.memory-card-lastname' ).innerHTML
+				memoryPageId	= card.dataset.id
 
 			memoriesSection.classList.add( 'hidden' )
 			expandSection.classList.remove( 'hidden' )
+			form.setAttribute( 'data-page', memoryPageId )
 		} )
 	} )
 

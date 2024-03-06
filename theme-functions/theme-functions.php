@@ -398,6 +398,11 @@ function ih_get_registration_page_id(): int
 	return get_field( 'registration_page_id', 'option' ) ?: 0;
 }
 
+function ih_get_activation_page_id(): int
+{
+	return get_field( 'activation_page_id', 'option' ) ?: 0;
+}
+
 function ih_get_forgot_pass_page_id(): int
 {
 	return get_field( 'forgot_pass_page_id', 'option' ) ?: 0;
@@ -406,6 +411,11 @@ function ih_get_forgot_pass_page_id(): int
 function ih_get_profile_page_id(): int
 {
 	return get_field( 'profile_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_profile_memories_page_id(): int
+{
+	return get_field( 'profile_memories_page_id', 'option' ) ?: 0;
 }
 
 function ih_get_memory_creation_page_id(): int
