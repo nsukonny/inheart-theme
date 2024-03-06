@@ -16,6 +16,7 @@ $is_edit			= isset( $_GET['edit'] ) && $_GET['edit'] == 1;
 $image				= get_field( 'page_created_img' );
 $text				= get_field( 'page_created_text' );
 $text_updated		= get_field( 'page_updated_text' );
+$instagram_note		= get_field( 'instagram_note' );
 $army_type			= get_field( 'army_type', $memory_page_id );
 $brigade_type		= get_field( 'brigade_type', $memory_page_id );
 ?>
@@ -107,5 +108,22 @@ $brigade_type		= get_field( 'brigade_type', $memory_page_id );
 			</a>
 		</div>
 	</div>
+
+	<?php
+	if( $instagram_note ){
+		?>
+		<div id="instagram-popup" class="popup instagram-popup hidden">
+			<div class="popup-inner flex flex-wrap">
+				<div class="coords-popup-text">
+					<?php echo $instagram_note ?>
+				</div>
+				<button class="coords-popup-close" type="button" aria-label="<?php _e( 'Закрити', 'inheart' ) ?>">
+					<?php _e( 'Закрити', 'inheart' ) ?>
+				</button>
+			</div>
+		</div>
+		<?php
+	}
+	?>
 </section><!-- #new-memory-step-6-military -->
 

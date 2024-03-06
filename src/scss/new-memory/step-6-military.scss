@@ -143,3 +143,19 @@
 .military-created-qr .button {
 	min-width: 216px
 }
+
+#instagram-popup {
+	.popup-inner {
+		max-width: 600px;
+		overflow: visible
+	}
+
+	.coords-popup-text {
+		width: 100%;
+		padding: 0;
+
+		* {
+			text-align: center
+		}
+	}
+}

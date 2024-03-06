@@ -1,8 +1,8 @@
 import html2canvas from 'html2canvas'
 import {
-	checkAjaxWorkingStatus,
+	checkAjaxWorkingStatus, getTargetElement, hideElement,
 	ihAjaxRequest,
-	setAjaxWorkingStatus,
+	setAjaxWorkingStatus, setTargetElement, showElement,
 	showNotification
 } from '../common/global'
 import { checkStep0 } from './step-0'
@@ -13,6 +13,7 @@ import { checkStep4 } from './step-4'
 import { checkStep5 } from './step-5'
 import { checkStep2Military } from './step-2-military'
 import { checkStep3Military } from './step-3-military'
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 let footer,
 	progressBar,
@@ -487,4 +488,28 @@ const copyToClipboard = textToCopy => {
 			textArea.remove()
 		} )
 	}
+}
+
+/**
+ * Instagram's notification popup events.
+ */
+export const instagramPopupEvents = () => {
+	const
+		popup	= document.querySelector( '#instagram-popup' ),
+		button	= document.querySelector( '.military-created-share-button' )
+
+	if( ! popup || ! button ) return
+
+	const close = popup.querySelector( '.coords-popup-close' )
+
+	button.addEventListener( 'click', () => {
+		setTargetElement( '#instagram-popup' )
+		disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
+		showElement( popup )
+	} )
+
+	close.addEventListener( 'click', () => {
+		hideElement( popup )
+		enableBodyScroll( getTargetElement() )
+	} )
 }
