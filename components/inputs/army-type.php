@@ -24,7 +24,6 @@ $type			= $args['type'] ?? 'text';
 $placeholder	= $args['placeholder'] ?? '';
 $army_type_id	= $args['value'] ?? null;
 $value			= $army_type_id ? get_the_title( $army_type_id ) : '';
-$thumb			= ( $army_type_id && has_post_thumbnail( $army_type_id ) ) ? get_the_post_thumbnail_url( $army_type_id ) : '';
 $required		= $args['required'] ?? '';
 $icon_tail		= $args['icon_tail'] ?? '';
 $wrap_class		= ' select';
@@ -45,7 +44,6 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 		placeholder="<?php echo esc_attr( $placeholder ) ?>"
 		value="<?php echo esc_attr( $value ) ?>"
 		data-id="<?php echo esc_attr( $army_type_id ) ?>"
-		data-thumb="<?php echo esc_url( $thumb ) ?>"
 		<?php echo ( $required ? 'required' : '' ) ?>
 	/>
 
@@ -62,7 +60,7 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 
 	foreach( $army_types as $army ){
 		$army_id = $army->ID;
-		echo '<span class="option" data-id="', esc_attr( $army_id ), '" data-thumb="', esc_url( get_the_post_thumbnail_url( $army_id ) ), '">',
+		echo '<span class="option" data-id="', esc_attr( $army_id ), '">',
 			esc_html( get_the_title( $army_id ) ),
 		'</span>';
 	}

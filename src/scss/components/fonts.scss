@@ -17,3 +17,29 @@
 	src: url('../fonts/Grafita-Normal.woff2') format('woff2'),
 	url('../fonts/Grafita-Normal.woff') format('woff')
 }
+
+@font-face {
+    font-family: 'UAF Memory';
+    src: url('../fonts/UAFMemory-Regular.eot');
+    src: url('../fonts/UAFMemory-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/UAFMemory-Regular.woff2') format('woff2'),
+    url('../fonts/UAFMemory-Regular.woff') format('woff'),
+    url('../fonts/UAFMemory-Regular.ttf') format('truetype'),
+    url('../fonts/UAFMemory-Regular.svg#UAFMemory-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'UAF Memory';
+    src: url('../fonts/UAFMemory-Bold.eot');
+    src: url('../fonts/UAFMemory-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/UAFMemory-Bold.woff2') format('woff2'),
+    url('../fonts/UAFMemory-Bold.woff') format('woff'),
+    url('../fonts/UAFMemory-Bold.ttf') format('truetype'),
+    url('../fonts/UAFMemory-Bold.svg#UAFMemory-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}

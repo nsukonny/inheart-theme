@@ -59,34 +59,6 @@
             "bidirectional_target": []
         },
         {
-            "key": "field_65e76a9900e56",
-            "label": "Активація",
-            "name": "activation_page_id",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "25",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "page"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "return_format": "id",
-            "multiple": 0,
-            "allow_null": 0,
-            "bidirectional": 0,
-            "ui": 1,
-            "bidirectional_target": []
-        },
-        {
             "key": "field_65a846dd39bb5",
             "label": "Не пам’ятаю пароль",
             "name": "forgot_pass_page_id",
@@ -118,34 +90,6 @@
             "key": "field_65a6f2f178ee1",
             "label": "Профіль",
             "name": "profile_page_id",
-            "aria-label": "",
-            "type": "post_object",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "25",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "page"
-            ],
-            "post_status": [
-                "publish"
-            ],
-            "taxonomy": "",
-            "return_format": "id",
-            "multiple": 0,
-            "allow_null": 0,
-            "bidirectional": 0,
-            "ui": 1,
-            "bidirectional_target": []
-        },
-        {
-            "key": "field_65e76c82976c8",
-            "label": "Спогади",
-            "name": "profile_memories_page_id",
             "aria-label": "",
             "type": "post_object",
             "instructions": "",
@@ -245,5 +189,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1709665434
+    "modified": 1705527025
 }

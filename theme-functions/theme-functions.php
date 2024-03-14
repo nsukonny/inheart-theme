@@ -231,6 +231,24 @@ add_action( 'before_delete_post', function( $id ){
 } );
 
 /**
+ * @param int $number
+ * @return string
+ */
+function numberToRomanRepresentation($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+        foreach ($map as $roman => $int) {
+            if($number >= $int) {
+                $number -= $int;
+                $returnValue .= $roman;
+                break;
+            }
+        }
+    }
+    return $returnValue;
+}
+/**
  * Convert input[type="date"] value to necessary format.
  *
  * @param string $date
@@ -242,7 +260,20 @@ function ih_convert_input_date( string $date, string $format = 'letters', int $m
 {
 	if( ! $date ) return '';
 
+    $time = strtotime( str_replace( '/', '-', $date ) );
 	switch( $format ){
+        case 'rome':
+            return '<div data-date="day">'.date( 'j', $time ).'</div><div data-date="month">'.numberToRomanRepresentation(date( 'm', $time )).'</div><div data-date="year">'.date( 'Y', $time ).'</div>';
+
+        case 'rome-lf':
+            return '<div data-date="day">'
+                . date( 'j', $time )
+                .'</div>.<div data-date="month">'
+                . numberToRomanRepresentation(date( 'm', $time ))
+                . '</div>.<div data-date="year">'
+                . date( 'Y', $time )
+                . '</div>';
+
 		case 'letters':
 			return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
 
@@ -398,11 +429,6 @@ function ih_get_registration_page_id(): int
 	return get_field( 'registration_page_id', 'option' ) ?: 0;
 }
 
-function ih_get_activation_page_id(): int
-{
-	return get_field( 'activation_page_id', 'option' ) ?: 0;
-}
-
 function ih_get_forgot_pass_page_id(): int
 {
 	return get_field( 'forgot_pass_page_id', 'option' ) ?: 0;
@@ -411,11 +437,6 @@ function ih_get_forgot_pass_page_id(): int
 function ih_get_profile_page_id(): int
 {
 	return get_field( 'profile_page_id', 'option' ) ?: 0;
-}
-
-function ih_get_profile_memories_page_id(): int
-{
-	return get_field( 'profile_memories_page_id', 'option' ) ?: 0;
 }
 
 function ih_get_memory_creation_page_id(): int

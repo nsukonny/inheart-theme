@@ -1,8 +1,7 @@
-import html2canvas from 'html2canvas'
 import {
-	checkAjaxWorkingStatus, getTargetElement, hideElement,
+	checkAjaxWorkingStatus,
 	ihAjaxRequest,
-	setAjaxWorkingStatus, setTargetElement, showElement,
+	setAjaxWorkingStatus,
 	showNotification
 } from '../common/global'
 import { checkStep0 } from './step-0'
@@ -13,16 +12,13 @@ import { checkStep4 } from './step-4'
 import { checkStep5 } from './step-5'
 import { checkStep2Military } from './step-2-military'
 import { checkStep3Military } from './step-3-military'
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 
 let footer,
 	progressBar,
 	prevStepBtn,
 	nextStepBtn,
 	nextStepIdGlobal,
-	prevStepIdGlobal,
-	linkToPage,
-	qrLink
+	prevStepIdGlobal
 
 /**
  * Define all global variables required for all steps.
@@ -87,12 +83,11 @@ export const nextStep = () => {
 	nextStepBtn.addEventListener( 'click', () => {
 		if( nextStepBtn.disabled ) return
 
-		// 6th is the last screen just with common info, don't need to make a request.
-		if( ! nextStepIdGlobal || prevStepIdGlobal == 6 || prevStepIdGlobal === '6-military' ) return
+		if( ! nextStepIdGlobal ) return
 
 		const
 			formData	= new FormData(),
-			dataNext	= nextStepBtn.dataset.next
+			dataNext	= parseInt( nextStepBtn.dataset.next )
 
 		formData.append( 'action', `ih_ajax_save_data_step_${ prevStepIdGlobal }` )
 		formData.append( 'stepData', localStorage.getItem( `ih-step-${ prevStepIdGlobal }` ) || '' )
@@ -104,18 +99,9 @@ export const nextStep = () => {
 						showNextStepSection()
 
 						// 6th step is the last, need to clean all the data and redirect.
-						if( dataNext == 6 ){
+						if( dataNext === 6 ){
 							theLastStep()
 							setTimeout( () => window.location.href = res.data.redirect, 3000 )
-						}
-
-						if( dataNext === '6-military' ){
-							linkToPage	= res.data.link
-							qrLink		= res.data.qr_link
-							copyToClipboard( linkToPage )
-								.then( () => console.log( 'Link copied.' ) )
-								.catch( () => console.error( 'Error. Link not copied.' ) )
-							theLastMilitaryStep()
 						}
 						break
 
@@ -253,7 +239,7 @@ export const isStepFilled = ( stepId = 0 ) => {
 
 		case 5:
 			cb					= checkStep5
-			nextStepIdGlobal	= isMilitaryTheme() ? '6-military' : 6
+			nextStepIdGlobal	= 6
 			prevStepIdGlobal	= 5
 			stepForProgress		= 5
 			break
@@ -268,7 +254,7 @@ export const isStepFilled = ( stepId = 0 ) => {
 		applyProgress( stepForProgress, percentage )
 		allowNextStep( nextStepIdGlobal )
 
-		if( stepId != 5 && stepId != 6 && stepId !== '6-military' ) saveStep( stepId )
+		if( stepId != 5 ) saveStep( stepId )
 	}else{
 		applyProgress( stepForProgress, falsePercentage )
 		disallowNextStep()
@@ -279,9 +265,7 @@ export const isStepFilled = ( stepId = 0 ) => {
  * Do some actions on the last step.
  */
 const theLastStep = () => {
-	const
-		screen	= document.querySelector( '#new-memory-step-6' ),
-		step1	= localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : null
+	const step1 = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : null
 
 	if( ! step1 ) return
 
@@ -301,128 +285,22 @@ const theLastStep = () => {
 
 	// Push data to HTML.
 	if( thumb ){
-		screen.querySelector( '.page-created-thumb-img' )
+		document.querySelector( '.page-created-thumb-img' )
 			.innerHTML = `<img src="${ thumb }" alt="${ firstName } ${ middleName } ${ lastName }" />`
 	}
 
-	screen.querySelector( '.page-created-firstname' ).innerHTML	= `${ firstName} ${ middleName }`
-	screen.querySelector( '.page-created-lastname' ).innerHTML	= lastName
-	screen.querySelector( '.page-created-dates' ).innerHTML		= `${ bornAt } - ${ diedAt }`
+	document.querySelector( '.page-created-firstname' ).innerHTML	= `${ firstName} ${ middleName }`
+	document.querySelector( '.page-created-lastname' ).innerHTML	= lastName
+	document.querySelector( '.page-created-dates' ).innerHTML		= `${ bornAt} - ${ diedAt }`
 
-	clearData()
-}
-
-const theLastMilitaryStep = () => {
-	const
-		screen	= document.querySelector( '#new-memory-step-6-military' ),
-		step1	= localStorage.getItem( 'ih-step-1' ) ?
-			JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : null,
-		step2	= localStorage.getItem( 'ih-step-2-military' ) ?
-			JSON.parse( localStorage.getItem( 'ih-step-2-military' ) ) : null
-
-	if( ! screen || ! step1 || ! step2 ) return
-
-	const
-		dateBorn	= screen.querySelector( '.military-created-date-born' ),
-		dateDied	= screen.querySelector( '.military-created-date-died' ),
-		thumb		= step1.cropped || '',
-		firstName	= step1.firstname,
-		middleName	= step1.fathername,
-		lastName	= step1.lastname,
-		bornAtObj	= new Date( step1['date-of-birth'] ),
-		bornDay		= bornAtObj.getDate() < 10 ? `0${ bornAtObj.getDate() }` : bornAtObj.getDate(),
-		bornMonth	= formatMonthsRome( bornAtObj.getMonth() + 1 ),
-		bornYear	= bornAtObj.getFullYear(),
-		diedAtObj	= new Date( step1['date-of-death'] ),
-		diedDay		= diedAtObj.getDate() < 10 ? `0${ diedAtObj.getDate() }` : diedAtObj.getDate(),
-		diedMonth	= formatMonthsRome( diedAtObj.getMonth() + 1 ),
-		diedYear	= diedAtObj.getFullYear(),
-		brigade		= step2.brigade || '',
-		army		= step2.armyTitle || '',
-		armyThumb	= step2.armyThumb || ''
-
-	// Push data to HTML.
-	if( thumb ){
-		screen.querySelector( '.military-created-thumb' )
-			.innerHTML = `<img src="${ thumb }" alt="${ lastName } ${ firstName } ${ middleName }" />`
-	}
-
-	dateBorn.querySelector( '.military-created-date-day' ).innerHTML	= bornDay
-	dateBorn.querySelector( '.military-created-date-month' ).innerHTML	= bornMonth
-	dateBorn.querySelector( '.military-created-date-year' ).innerHTML	= bornYear
-	dateDied.querySelector( '.military-created-date-day' ).innerHTML	= diedDay
-	dateDied.querySelector( '.military-created-date-month' ).innerHTML	= diedMonth
-	dateDied.querySelector( '.military-created-date-year' ).innerHTML	= diedYear
-
-	screen.querySelector( '.military-created-lastname' ).innerHTML		= lastName
-	screen.querySelector( '.military-created-firstname' ).innerHTML		= firstName
-	screen.querySelector( '.military-created-fathername' ).innerHTML	= middleName
-
-	screen.querySelector( '.military-created-brigade' ).innerHTML	= brigade
-	screen.querySelector( '.military-created-army p' ).innerHTML	= army
-	screen.querySelector( '.military-created-link-url' ).href		= linkToPage
-	screen.querySelector( '.military-created-link-url' ).innerHTML	= linkToPage.replace( /http(s)?:\/\//, '' )
-	screen.querySelector( '.military-created-qr a' ).href			= qrLink
-
-	if( armyThumb ){
-		screen.querySelector( '.military-created-army' ).insertAdjacentHTML(
-			'afterbegin',
-			`<img src="${ armyThumb }" alt="${ army }" />`
-		)
-	}
-
-	html2canvas( document.querySelector( '.military-created-info' ) ).then( canvas => {
-		canvas.id = 'military-created-canvas'
-		canvas.classList.add( 'hidden' )
-		document.body.appendChild( canvas )
-
-		const shareLink = screen.querySelector( '.military-created-share-button' )
-
-		shareLink.setAttribute( 'download', `${ lastName }_${ firstName }_${ middleName }_preview.png` )
-		shareLink.setAttribute( 'href', canvas.toDataURL( 'image/png' ).replace( 'image/png', 'image/octet-stream' ) )
-	} )
-
-	clearData()
-}
-
-const formatMonthsRome = monthNumeric => {
-	switch( monthNumeric ){
-		case 1:
-			return 'I'
-
-		case 2:
-			return 'II'
-
-		case 3:
-			return 'III'
-
-		case 4:
-			return 'IV'
-
-		case 5:
-			return 'V'
-
-		case 6:
-			return 'VI'
-
-		case 7:
-			return 'VII'
-
-		case 8:
-			return 'VIII'
-
-		case 9:
-			return 'IX'
-
-		case 10:
-			return 'X'
-
-		case 11:
-			return 'XI'
-
-		default:
-			return 'XII'
-	}
+	// Hide footer, clean localStorage.
+	document.querySelector( '.new-memory-footer' ).classList.add( 'hidden' )
+	localStorage.removeItem( 'ih-step-0' )
+	localStorage.removeItem( 'ih-step-1' )
+	localStorage.removeItem( 'ih-step-2' )
+	localStorage.removeItem( 'ih-step-3' )
+	localStorage.removeItem( 'ih-step-4' )
+	localStorage.removeItem( 'ih-step-5' )
 }
 
 const getPrevStepId = stepId => {
@@ -448,73 +326,4 @@ const getPrevStepId = stepId => {
 		default:
 			return 0
 	}
-}
-
-const clearData = () => {
-	document.querySelector( '.new-memory-footer' ).classList.add( 'hidden' )
-	localStorage.removeItem( 'ih-step-0' )
-	localStorage.removeItem( 'ih-step-1' )
-	localStorage.removeItem( 'ih-step-2' )
-	localStorage.removeItem( 'ih-step-2-military' )
-	localStorage.removeItem( 'ih-step-3' )
-	localStorage.removeItem( 'ih-step-3-military' )
-	localStorage.removeItem( 'ih-step-4' )
-	localStorage.removeItem( 'ih-step-5' )
-}
-
-/**
- * Copy something to clipboard.
- *
- * @param {String} textToCopy	Specific text to copy.
- */
-const copyToClipboard = textToCopy => {
-	// Navigator clipboard api needs a secure context (https).
-	if( navigator.clipboard && window.isSecureContext ){
-		return navigator.clipboard.writeText( textToCopy )
-	}	else {
-		// text area method
-		let textArea = document.createElement( 'textarea' )
-		textArea.value = textToCopy;
-		// Make the textarea out of viewport.
-		textArea.style.position = 'absolute'
-		textArea.style.left = '200%'
-		textArea.style.top = '200%'
-		textArea.style.opacity = 0
-		document.body.appendChild( textArea )
-		textArea.select()
-
-		return new Promise( ( res, rej ) => {
-			document.execCommand( 'copy' ) ? res() : rej()
-			textArea.remove()
-		} )
-	}
-}
-
-/**
- * Instagram's notification popup events.
- */
-export const instagramPopupEvents = () => {
-	const
-		popup	= document.querySelector( '#instagram-popup' ),
-		button	= document.querySelector( '.military-created-share-button' )
-
-	if( ! popup || ! button ) return
-
-	const close = popup.querySelector( '.coords-popup-close' )
-
-	button.addEventListener( 'click', e => {
-		if( ! button.classList.contains( 'allow-download' ) ) e.preventDefault()
-		else return
-
-		button.classList.add( 'allow-download' )
-		setTargetElement( '#instagram-popup' )
-		disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
-		showElement( popup )
-	} )
-
-	close.addEventListener( 'click', () => {
-		hideElement( popup )
-		enableBodyScroll( getTargetElement() )
-		button.click()
-	} )
 }

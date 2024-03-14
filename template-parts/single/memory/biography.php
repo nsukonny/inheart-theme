@@ -14,6 +14,7 @@ $lang		= $args['lang'] ?? 'uk';
 $sections	= get_field( 'biography_sections', $id );
 ?>
 
+
 <section class="single-memory-bio">
 	<div class="container">
 		<h2 class="single-memory-heading">
@@ -33,6 +34,7 @@ $sections	= get_field( 'biography_sections', $id );
 				foreach( $sections as $section ){
 					$title	= $section['category'];
 					$text	= $section['text'];
+                    $media = $section['photos'];
 
 					// Show only full sections.
 					if( ! $title || ! $text ) continue;
@@ -44,7 +46,23 @@ $sections	= get_field( 'biography_sections', $id );
 						<div class="single-memory-bio-text">
 							<?php echo esc_html( $text ) ?>
 						</div>
+                        <?php
+                            if ( !empty( $media ) ):
+                                foreach ( $media as $item ):
+
+                                    $image_url = wp_get_attachment_image_url($item, 'ih-content-full');?>
+
+                                    <div class="single-memory-bio-media">
+                                            <div class="single-memory-bio-media__item">
+                                                <img src="<?php echo esc_url($image_url); ?>"/>
+                                            </div>
+                                    </div>
+                        <?php
+                            endforeach;
+                            endif;
+                        ?>
 					</div>
+
 					<?php
 				}
 				?>

@@ -50,9 +50,10 @@ const textFollowsTheCursor = () => {
 		if( ! text ) return
 
 		overlay.addEventListener( 'mousemove', e => {
-			const
-				x	= e.pageX - overlay.offsetLeft,
-				y	= e.pageY - overlay.offsetTop
+
+			const rect = overlay.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
 
 			text.style.top  = `${ y - 50 }px`
 			text.style.left = `${ x - 47 }px`
@@ -99,23 +100,27 @@ const showHiddenVideos = () => {
 	} )
 }
 
-window.addEventListener( 'scroll', () => {
-	const
-		topContent		= document.querySelector( '.single-memory-epitaph' ),
-		contentBottom	= topContent.getBoundingClientRect().bottom,
-		mapSection		= document.querySelector( '.single-memory-place' ),
-		mapSectionBot	= mapSection.getBoundingClientRect().bottom
+if (!document.body.classList.contains('military'))
+{
+	window.addEventListener( 'scroll', () => {
+		const
+			topContent		= document.querySelector( '.single-memory-epitaph' ),
+			contentBottom	= topContent.getBoundingClientRect().bottom,
+			mapSection		= document.querySelector( '.single-memory-place' ),
+			mapSectionBot	= mapSection.getBoundingClientRect().bottom
 
-	if( contentBottom < 300 ){
-		if( mapSectionBot < window.innerHeight + 100 ){
-			if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
+		if( contentBottom < 300 ){
+			if( mapSectionBot < window.innerHeight + 100 ){
+				if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
+			}else{
+				if( ! document.body.classList.contains( 'theme-light' ) ) document.body.classList.add( 'theme-light' )
+			}
 		}else{
-			if( ! document.body.classList.contains( 'theme-light' ) ) document.body.classList.add( 'theme-light' )
+			if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
 		}
-	}else{
-		if( document.body.classList.contains( 'theme-light' ) ) document.body.classList.remove( 'theme-light' )
-	}
-} )
+	} )
+}
+
 
 const initGoogleMap = async ( mapEl, apiKey ) => {
 	const

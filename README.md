@@ -1,4 +1,4 @@
-# WORDPRESS STARTER THEME.
+# WORDPRESS STARTER THEME
 ## Gulp4, SCSS, JavaScript ES6+, WEBP.
 
 ## Please run all commands from the current theme folder.

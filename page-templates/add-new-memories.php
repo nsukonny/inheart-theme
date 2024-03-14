@@ -14,7 +14,7 @@ if( ! is_user_logged_in() ){
 
 // No destination memory page ID - redirect to Profile Memories.
 if( ! $memory_page = $_GET['mp'] ?? null ){
-	wp_redirect( get_the_permalink( pll_get_post( ih_get_profile_memories_page_id() ) ) );
+	wp_redirect( get_the_permalink( pll_get_post( 1361 ) ) );
 	exit;
 }
 
