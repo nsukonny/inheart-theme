@@ -26,6 +26,10 @@ $idCounter2 = 0;
 $defaultImage = "/wp-content/uploads/2024/02/zolote-sercze-min-306x306.png";
 $rewards = get_field('rewards', $id);
 
+if(!$rewards)
+{
+    return;
+}
 $rewards = array_chunk($rewards, 4);
 
 ?>
