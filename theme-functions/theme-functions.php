@@ -447,7 +447,6 @@ function ih_is_set_military_section( array $section = [] ): bool
  */
 function ih_is_set_last_fight( array $last_fight = [] ): bool
 {
-	return isset( $last_fight['location'] ) && $last_fight['location'] &&
-		isset( $last_fight['text'] ) && $last_fight['text'];
+	return isset( $last_fight['text'] ) && $last_fight['text'];
 }
 

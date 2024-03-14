@@ -466,8 +466,7 @@ export const checkStep2 = () => {
 			if( city ){
 				const cityText = city.value
 
-				if( ! cityText ) allIsSet = false
-				else stepData[index].city = city.value
+				if( cityText ) stepData[index].city = city.value
 			}
 		}
 
