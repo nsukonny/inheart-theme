@@ -52,7 +52,7 @@ function ih_ajax_login(): void
 {
 	// Verify hidden nonce field.
 	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_login_nonce'], 'ih_ajax_login' ) )
-		wp_send_json_error( ['msg' => esc_html__( 'Невірні дані', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$login		= ih_clean( $_POST['email'] );
 	$pass		= trim( str_replace( ' ', '', $_POST['pass'] ) );
@@ -100,7 +100,7 @@ function ih_ajax_login(): void
 			Акаунт не активований.<br />
 			Будь ласка, перевірте свою пошту та розділ Спам.<br />
 			Або спробуйте надіслати посилання на активацію ще раз 
-			<a href="' . get_the_permalink( pll_get_post( 529 ) ) .  '?user=' . $user_id . '&code=fail">тут</a>. 
+			<a href="' . get_the_permalink( pll_get_post( ih_get_activation_page_id() ) ) .  '?user=' . $user_id . '&code=fail">тут</a>. 
 		';
 		wp_send_json_error( ['msg' => $msg] );
 	}

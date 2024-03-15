@@ -1,5 +1,5 @@
 // Common functions for all steps.
-import { defineGlobalStepsItems, isStepFilled, nextStep, prevStep } from '../new-memory/common'
+import { defineGlobalStepsItems, instagramPopupEvents, isStepFilled, nextStep, prevStep } from '../new-memory/common'
 
 // Steps one-by-one.
 import { selectTheme } from '../new-memory/step-0'
@@ -86,4 +86,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Step 5
 	addCoordsFormValidation()
 	legendTipClick()
+
+	// Last screen (military).
+	instagramPopupEvents()
 } )

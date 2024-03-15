@@ -121,7 +121,6 @@ if (!document.body.classList.contains('military'))
 	} )
 }
 
-
 const initGoogleMap = async ( mapEl, apiKey ) => {
 	const
 		lat		= parseFloat( mapEl.dataset.lat ),

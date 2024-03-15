@@ -17,6 +17,8 @@ $theme = get_field('theme', $id);
 $first_name = get_field('first_name', $id);
 $last_name = get_field('last_name', $id);
 $middle_name = get_field('middle_name', $id);
+
+
 $born_at = ih_convert_input_date(get_field('born_at', $id), $theme == 'military' ? 'rome' : null);
 $died_at = ih_convert_input_date(get_field('died_at', $id), $theme == 'military' ? 'rome' : null);
 

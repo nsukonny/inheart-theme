@@ -837,16 +837,19 @@ function ih_ajax_save_data_step_5(): void
 	$born_at		= ih_convert_input_date( get_field( 'born_at', $memory_page_id ), 'dots' );
 	$died_at		= ih_convert_input_date( get_field( 'died_at', $memory_page_id ), 'dots' );
 	$new_title		= "$last_name $first_name $middle_name, " . $born_at . '-' . $died_at;
-	wp_update_post( [
+	$post_id		= wp_update_post( [
 		'ID'			=> $memory_page_id,
 		'post_name'		=> $memory_page_id,
 		'post_title'	=> $new_title,
 		'post_status'	=> 'publish'
 	] );
 
+	$profile_url = get_the_permalink( pll_get_post( ih_get_profile_page_id() ) );
 	wp_send_json_success( [
 		'msg'		=> __( 'Дані Кроку 5 збережено успішно!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( ih_get_profile_page_id() ) )	// Profile
+		'redirect'	=> $profile_url,
+		'link'		=> get_the_permalink( $post_id ),
+		'qr_link'	=> $profile_url . "?expand=$post_id"
 	] );
 }
 

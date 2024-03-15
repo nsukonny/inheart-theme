@@ -93,9 +93,9 @@ function ih_inclusion_enqueue(): void
 	 * Additional pages.
 	 */
 
-	if( is_singular( 'memory_page' ) ){
-		wp_enqueue_style( 'memory', THEME_URI . '/static/css/pages/memory.min.css', [], THEME_VERSION );
-		wp_enqueue_script( 'memory', THEME_URI . '/static/js/single-memory/single-memory.min.js', ['jquery'], THEME_VERSION, true );
+    if( is_singular( 'memory_page' ) ){
+        wp_enqueue_style( 'memory', THEME_URI . '/static/css/pages/memory.min.css', [], THEME_VERSION );
+        wp_enqueue_script( 'memory', THEME_URI . '/static/js/single-memory/single-memory.min.js', ['jquery'], THEME_VERSION, true );
         if (get_field('theme') == 'military')
         {
             wp_enqueue_script('memory-military', THEME_URI . '/static/js/single-memory-military/single-memory-military.min.js', ['jquery'], THEME_VERSION, true);
@@ -104,7 +104,7 @@ function ih_inclusion_enqueue(): void
             wp_enqueue_script('mapbox-geocoder-script', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js', array(), null, false);
             wp_enqueue_style('mapbox-geocoder-style', 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css');
         }
-	}
+    }
 }
 
 add_action( 'acf/init', 'ih_acf_init' );

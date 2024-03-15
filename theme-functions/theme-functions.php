@@ -258,44 +258,44 @@ function numberToRomanRepresentation($number) {
  */
 function ih_convert_input_date( string $date, string $format = 'letters', int $memory_page = 0 ): string
 {
-	if( ! $date ) return '';
+    if( ! $date ) return '';
 
     $time = strtotime( str_replace( '/', '-', $date ) );
-	switch( $format ){
+    switch( $format ){
         case 'rome':
             return '<div data-date="day">'.date( 'j', $time ).'</div><div data-date="month">'.numberToRomanRepresentation(date( 'm', $time )).'</div><div data-date="year">'.date( 'Y', $time ).'</div>';
 
         case 'rome-lf':
             return '<div data-date="day">'
-                . date( 'j', $time )
-                .'</div>.<div data-date="month">'
-                . numberToRomanRepresentation(date( 'm', $time ))
-                . '</div>.<div data-date="year">'
-                . date( 'Y', $time )
-                . '</div>';
+                   . date( 'j', $time )
+                   .'</div>.<div data-date="month">'
+                   . numberToRomanRepresentation(date( 'm', $time ))
+                   . '</div>.<div data-date="year">'
+                   . date( 'Y', $time )
+                   . '</div>';
 
-		case 'letters':
-			return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
+        case 'letters':
+            return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
 
-		case 'lang':
-			$lang		= get_field( 'language', $memory_page );
-			$ua_months	= ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
-			$ru_months	= ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-			$en_months	= ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        case 'lang':
+            $lang		= get_field( 'language', $memory_page );
+            $ua_months	= ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+            $ru_months	= ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            $en_months	= ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-			if( $lang === 'uk' ){
-				$date = date( 'j F Y', strtotime( str_replace( '/', '-', $date ) ) );
-				return str_replace( $en_months, $ua_months, $date );
-			}else if( $lang === 'ru-RU' ){
-				$date = date( 'j F Y', strtotime( str_replace( '/', '-', $date ) ) );
-				return str_replace( $en_months, $ru_months, $date );
-			}else{
-				return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
-			}
+            if( $lang === 'uk' ){
+                $date = date( 'j F Y', strtotime( str_replace( '/', '-', $date ) ) );
+                return str_replace( $en_months, $ua_months, $date );
+            }else if( $lang === 'ru-RU' ){
+                $date = date( 'j F Y', strtotime( str_replace( '/', '-', $date ) ) );
+                return str_replace( $en_months, $ru_months, $date );
+            }else{
+                return date( 'jS M Y', strtotime( str_replace( '/', '-', $date ) ) );
+            }
 
-		default:
-			return date( 'd.m.Y', strtotime( str_replace( '/', '-', $date ) ) );
-	}
+        default:
+            return date( 'd.m.Y', strtotime( str_replace( '/', '-', $date ) ) );
+    }
 }
 
 /**
@@ -429,6 +429,11 @@ function ih_get_registration_page_id(): int
 	return get_field( 'registration_page_id', 'option' ) ?: 0;
 }
 
+function ih_get_activation_page_id(): int
+{
+	return get_field( 'activation_page_id', 'option' ) ?: 0;
+}
+
 function ih_get_forgot_pass_page_id(): int
 {
 	return get_field( 'forgot_pass_page_id', 'option' ) ?: 0;
@@ -437,6 +442,11 @@ function ih_get_forgot_pass_page_id(): int
 function ih_get_profile_page_id(): int
 {
 	return get_field( 'profile_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_profile_memories_page_id(): int
+{
+	return get_field( 'profile_memories_page_id', 'option' ) ?: 0;
 }
 
 function ih_get_memory_creation_page_id(): int

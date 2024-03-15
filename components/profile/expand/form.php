@@ -8,17 +8,18 @@
  * @subpackage inheart
  */
 
-$user_id	= get_current_user_id();
-$meta		= get_user_meta( $user_id );
-$data		= get_userdata( $user_id );
-$first_name	= $meta['first_name'][0] ?? '';
-$last_name	= $meta['last_name'][0] ?? '';
-$fathername	= get_field( 'fathername', "user_{$user_id}" ) ?: '';
-$phone		= get_field( 'phone', "user_{$user_id}" ) ?: '';
-$email		= $data->user_email;
+$page_to_expand	= $args['expand'] ?? '';
+$user_id		= get_current_user_id();
+$meta			= get_user_meta( $user_id );
+$data			= get_userdata( $user_id );
+$first_name		= $meta['first_name'][0] ?? '';
+$last_name		= $meta['last_name'][0] ?? '';
+$fathername		= get_field( 'fathername', "user_{$user_id}" ) ?: '';
+$phone			= get_field( 'phone', "user_{$user_id}" ) ?: '';
+$email			= $data->user_email;
 ?>
 
-<form class="expand-page-form flex">
+<form class="expand-page-form flex" data-page="<?php echo esc_attr( $page_to_expand ) ?>">
 	<div class="expand-page-form-left">
 		<fieldset class="flex flex-wrap">
 			<legend><?php _e( 'Ваші контактні дані для доставки', 'inheart' ) ?></legend>
