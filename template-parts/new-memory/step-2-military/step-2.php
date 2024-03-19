@@ -14,7 +14,6 @@ $title				= get_field( 'title_2_military' );
 $memory_page_id		= $_SESSION['memory_page_id'];
 $army_type			= get_field( 'army_type', $memory_page_id );
 $brigade_type		= get_field( 'brigade_type', $memory_page_id );
-$military_title		= get_field( 'military_title', $memory_page_id );
 $military_position	= get_field( 'military_position', $memory_page_id );
 $call_sign			= get_field( 'call_sign', $memory_page_id );
 ?>
@@ -41,7 +40,7 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 				get_template_part( 'components/inputs/army-type', null, [
 					'name'			=> 'army',
 					'label'			=> __( 'Рід військ', 'inheart' ),
-					'label_class'	=> 'full',
+					'label_class'	=> 'full label-army',
 					'placeholder'	=> __( 'Наприклад "Сухопутні війська"', 'inheart' ),
 					'value'			=> $army_type,
 					'required'		=> 1,
@@ -57,16 +56,7 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 					'icon_tail'		=> 'arrow-down-s-line.svg',
 					'types'			=> get_field( 'brigade_types' )
 				] );
-				get_template_part( 'components/inputs/army', null, [
-					'name'			=> 'title',
-					'label'			=> __( 'Військове звання', 'inheart' ),
-					'label_class'	=> 'full',
-					'placeholder'	=> __( 'Наприклад "Молодший лейтенант"', 'inheart' ),
-					'value'			=> $military_title,
-					'required'		=> 1,
-					'icon_tail'		=> 'arrow-down-s-line.svg',
-					'types'			=> get_field( 'military_titles' )
-				] );
+				get_template_part( 'components/inputs/ranks', null, ['army_type' => $army_type] );
 				get_template_part( 'components/inputs/default', null, [
 					'name'			=> 'position',
 					'label'			=> __( 'Посада', 'inheart' ),

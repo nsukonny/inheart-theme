@@ -61,10 +61,18 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 	echo '<span class="options direction-column">';
 
 	foreach( $army_types as $army ){
-		$army_id = $army->ID;
-		echo '<span class="option" data-id="', esc_attr( $army_id ), '" data-thumb="', esc_url( get_the_post_thumbnail_url( $army_id ) ), '">',
-			esc_html( get_the_title( $army_id ) ),
-		'</span>';
+		$army_id	= $army->ID;
+		$ranks_type	= get_field( 'ranks_type', $army_id );
+		?>
+		<span
+			class="option"
+			data-id="<?php echo esc_attr( $army_id ) ?>"
+			data-thumb="<?php echo esc_url( get_the_post_thumbnail_url( $army_id ) ) ?>"
+			data-ranks="<?php echo esc_attr( $ranks_type ) ?>"
+		>
+			<?php echo esc_html( get_the_title( $army_id ) ) ?>
+		</span>
+		<?php
 	}
 
 	echo '</span>';

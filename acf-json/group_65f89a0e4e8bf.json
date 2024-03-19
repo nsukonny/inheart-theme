@@ -1,0 +1,52 @@
+{
+    "key": "group_65f89a0e4e8bf",
+    "title": "Post Type: Army",
+    "fields": [
+        {
+            "key": "field_65f89a0e38566",
+            "label": "Військові звання",
+            "name": "ranks_type",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "army": "Армійські військові звання",
+                "sea": "Корабельні військові звання",
+                "police": "Спеціальні звання Національної поліції"
+            },
+            "default_value": "army",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "army"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1710791315
+}

@@ -339,6 +339,158 @@
             "bidirectional": 0,
             "ui": 1,
             "bidirectional_target": []
+        },
+        {
+            "key": "field_65f89752ba54d",
+            "label": "Військовий",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_65f89774ba54e",
+            "label": "Армійські військові звання",
+            "name": "army_ranks",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_65f897adba54f",
+                    "label": "Назва",
+                    "name": "rank",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_65f89774ba54e"
+                }
+            ]
+        },
+        {
+            "key": "field_65f897d2ba550",
+            "label": "Корабельні військові звання",
+            "name": "sea_army_ranks",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_65f897d2ba551",
+                    "label": "Назва",
+                    "name": "rank",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_65f897d2ba550"
+                }
+            ]
+        },
+        {
+            "key": "field_65f897e7ba552",
+            "label": "Спеціальні звання Національної поліції",
+            "name": "police_ranks",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_65f897e7ba553",
+                    "label": "Назва",
+                    "name": "rank",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_65f897e7ba552"
+                }
+            ]
         }
     ],
     "location": [
@@ -359,5 +511,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1705439678
+    "modified": 1710790662
 }

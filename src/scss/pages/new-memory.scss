@@ -15,6 +15,10 @@
 @import '../new-memory/step-6';
 @import '../new-memory/step-6-military';
 
+.popup-loader {
+	transition: opacity ease-out $tr
+}
+
 .new-memory {
 	flex-grow: 1;
 	background-color: $a-bit-blue-white;

@@ -30,9 +30,12 @@ import {
 import { addCoordsFormValidation, legendTipClick } from '../new-memory/step-5'
 import { step2MilitaryFormValidation } from '../new-memory/step-2-military'
 import { addReward } from '../new-memory/step-3-military'
+import { TRANSITION_DURATION } from '../common/global'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
+
+	hideLoader()
 
 	// Exit if something is missing.
 	if( ! defineGlobalStepsItems() ) return
@@ -90,3 +93,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Last screen (military).
 	instagramPopupEvents()
 } )
+
+const hideLoader = () => {
+	const loader = document.querySelector( '.popup-loader' )
+
+	if( ! loader ) return
+
+	loader.classList.add( 'opacity-0' )
+	setTimeout( () => loader.remove(), TRANSITION_DURATION )
+}

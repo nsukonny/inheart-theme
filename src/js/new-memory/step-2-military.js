@@ -3,7 +3,7 @@ import { isStepFilled } from './common'
 const stepData = {}
 
 export const step2MilitaryFormValidation = () => {
-	const fields = document.querySelectorAll( '.new-memory-step-2-military input' )
+	const fields = document.querySelectorAll( '.new-memory-step-2-military input:not(#title)' )
 
 	if( ! fields.length ) return
 
@@ -61,6 +61,67 @@ export const step2MilitaryFormValidation = () => {
 
 		if( ! target.closest( '.label' ) ) closeDropdown()
 	} )
+
+	processRanksDropdown()
+}
+
+/**
+ * Ranks dropdown with different options lists.
+ */
+const processRanksDropdown = () => {
+	const
+		field		= document.querySelector( '.new-memory-step-2-military #title' ),
+		armyLabel	= document.querySelector( '.new-memory-step-2-military .label-army' ),
+		armyInput	= armyLabel.querySelector( '#army' ),
+		armyOptions	= armyLabel.querySelectorAll( '.option' )
+
+	if( ! field ) return
+
+	const
+		label	= field.closest( 'label' ),
+		options	= label.querySelectorAll( '.option' )
+
+	field.addEventListener( 'focus', openRanksDropdown )
+	field.addEventListener( 'click', openRanksDropdown )
+
+	if( options.length ){
+		options.forEach( option => {
+			option.addEventListener( 'click', () => {
+				const activeOption = label.querySelector( '.option.active' )
+
+				if( activeOption ) activeOption.classList.remove( 'active' )
+
+				option.classList.add( 'active' )
+				field.value = option.innerText
+				field.setAttribute( 'data-id', option.dataset.id )
+				field.setAttribute( 'data-thumb', option.dataset.thumb )
+				setTimeout( () => {
+					closeRanksDropdown()
+					isStepFilled( '2-military' )
+				}, 10 )
+			} )
+		} )
+	}
+
+	document.addEventListener( 'click', e => {
+		const target = e.target
+
+		if( ! target.closest( 'label.active' ) ) closeRanksDropdown()
+	} )
+
+	if( armyOptions.length ){
+		armyOptions.forEach( option => {
+			option.addEventListener( 'click', () => {
+				const ranksType = option.dataset.ranks
+
+				if( label.classList.contains( `label-${ ranksType }-ranks` ) ) return
+
+				field.value = ''
+				label.classList.remove( 'label-army-ranks', 'label-sea-ranks', 'label-police-ranks' )
+				label.classList.add( `label-${ ranksType }-ranks` )
+			} )
+		} )
+	}
 }
 
 export const openDropdown = e => {
@@ -80,6 +141,22 @@ export const closeDropdown = () => {
 	const dropdown = document.querySelector( '.options.active' )
 
 	if( dropdown ) dropdown.classList.remove( 'active' )
+}
+
+const openRanksDropdown = e => {
+	const
+		target	= e.target,
+		label	= target.closest( '.label' )
+
+	closeRanksDropdown()
+
+	if( label ) label.classList.add( 'active' )
+}
+
+const closeRanksDropdown = () => {
+	const label = document.querySelector( '.new-memory-step-2-military label.active' )
+
+	if( label ) label.classList.remove( 'active' )
 }
 
 /**

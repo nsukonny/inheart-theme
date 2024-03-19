@@ -505,7 +505,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "30",
                 "class": "",
                 "id": ""
             },
@@ -525,7 +525,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "70",
                 "class": "",
                 "id": ""
             },
@@ -533,7 +533,7 @@
             "pagination": 0,
             "min": 0,
             "max": 0,
-            "collapsed": "",
+            "collapsed": "field_65b80c44d6605",
             "button_label": "Додати рядок",
             "rows_per_page": 20,
             "sub_fields": [
@@ -547,7 +547,7 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "50",
                         "class": "",
                         "id": ""
                     },
@@ -557,51 +557,6 @@
                     "prepend": "",
                     "append": "",
                     "parent_repeater": "field_65b80c44d6604"
-                }
-            ]
-        },
-        {
-            "key": "field_65b80efd4b666",
-            "label": "Військове звання",
-            "name": "military_titles",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Додати рядок",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_65b80efd4b667",
-                    "label": "Назва",
-                    "name": "name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_65b80efd4b666"
                 }
             ]
         },
@@ -1308,5 +1263,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1709761764
+    "modified": 1710716739
 }

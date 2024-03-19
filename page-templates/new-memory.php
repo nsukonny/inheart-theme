@@ -20,6 +20,10 @@ $lang_changed = isset( $_GET['langchanged'] ) && $_GET['langchanged'] == 1;
 ?>
 
 <main class="main new-memory flex direction-column" data-initial-step="<?php echo ( $lang_changed ? 1 : 0 ) ?>">
+	<div class="popup popup-loader" style="background-color: #fff">
+		<div class="tmp-loader"></div>
+	</div>
+
 	<?php
 	get_template_part( 'template-parts/new-memory/step-0/step', '0', ['hidden' => $lang_changed] );
 	get_template_part( 'template-parts/new-memory/step-1/step', '1', ['active' => $lang_changed] );
