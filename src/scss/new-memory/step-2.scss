@@ -340,6 +340,7 @@ body.memory-page-theme-military {
 				line-height: $lh-4;
 				color: $black-for-text;
 				border: none;
+				border-radius: 0;
 				resize: none;
 				background-color: transparent;
 				padding: 0 24px 0 0;
@@ -350,15 +351,6 @@ body.memory-page-theme-military {
 				&::placeholder {
 					color: #96AAAE
 				}
-			}
-
-			&-thumb {
-				position: absolute;
-				top: 100%;
-				left: 50%;
-				transform: translate(-50%, -28%);
-				display: block;
-				width: 66px
 			}
 
 			button {

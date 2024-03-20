@@ -17,7 +17,6 @@ $title		= $section['category'];
 $text		= $section['text'] ?? '';
 $custom		= ( isset( $section['own_title'] ) && $section['own_title'] ) ? ' custom' : '';
 $index		= $section['index'] ?? 0;
-$thumb		= ( $custom && isset( $sections[$index] ) ) ? $sections[$index]['thumb'] : '';
 $photos		= $section['photos'] ?? null;
 $class		= $args['class'] ?? '';
 
@@ -112,8 +111,6 @@ if( ! $title ) return;
 		'label_yes'	=> __( 'Видалити', 'inheart' ),
 		'label_no'	=> __( 'Залишити', 'inheart' )
 	] );
-
-	if( $custom ) echo '<img class="section-content-thumb" src="' . esc_url( $thumb ) . '" alt="" />';
 	?>
 </div><!-- .section-content -->
 

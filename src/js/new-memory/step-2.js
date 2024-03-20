@@ -85,8 +85,7 @@ export const addSection = () => {
 		// If this is a section with a custom title.
 		if( imgUrl ){
 			clonedSectionContent.classList.add( 'custom' )
-			clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Придумайте заголовок" />'
-			clonedSectionContent.insertAdjacentHTML( 'beforeend', `<img class="section-content-thumb" src="${ imgUrl }" alt="" />` )
+			clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Вигадайте заголовок" />'
 		}
 
 		setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
@@ -196,8 +195,7 @@ export const removeSidebarAddedSection = () => {
 
 			clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
 
-			if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
-			else sectionsListWrapper.append( clonedSection )
+			returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.order ), clonedSection )
 
 			if( sectionRealId === 'last-fight' ) removeLastFightSection( sectionContent )
 
@@ -235,13 +233,75 @@ export const removeContentSection = () => {
 
 		const clonedSection = targetSection.cloneNode( true )
 
-		if( isMilitary && militarySectionsWrapper ) militarySectionsWrapper.append( clonedSection )
-		else sectionsListWrapper.append( clonedSection )
+		returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.order ), clonedSection )
 
 		if( sectionRealId === 'last-fight' ) removeLastFightSection( targetContent )
 
 		removeSectionStepData( sectionId, targetSection, targetContent )
 	} )
+}
+
+/**
+ * Insert deleted section to its place in the sidebar by its data-order value.
+ *
+ * @param isMilitary
+ * @param order
+ * @param clonedSection
+ */
+const returnSectionToItsPlace = ( isMilitary, order, clonedSection ) => {
+	if( isMilitary && militarySectionsWrapper ){
+		const next = militarySectionsWrapper.querySelector( `.section[data-order="${ order + 1 }"]` )
+
+		if( ! next ){
+			const sections = militarySectionsWrapper.querySelectorAll( '.section' )
+
+			if( ! sections.length ){
+				militarySectionsWrapper.append( clonedSection )
+			}else{
+				let inserted = false
+
+				sections.forEach( section => {
+					const sectionOrder = parseInt( section.dataset.order )
+
+					if( sectionOrder > order ){
+						section.parentNode.insertBefore( clonedSection, section )
+						inserted = true
+					}
+				} )
+
+				if( ! inserted ) militarySectionsWrapper.append( clonedSection )
+			}
+		}else{
+			next.parentNode.insertBefore( clonedSection, next )
+		}
+	}else{
+		const next = sectionsListWrapper.querySelector( `.section[data-order="${ order + 1 }"]` )
+
+		if( ! next ){
+			let sections = sectionsListWrapper.querySelectorAll( '.section' )
+
+			if( ! sections.length ){
+				sectionsListWrapper.append( clonedSection )
+			}else{
+				let inserted = false
+
+				sections.forEach( section => {
+					if( inserted ) return
+
+					const sectionOrder = parseInt( section.dataset.order )
+
+					if( sectionOrder > order ){
+						section.parentNode.insertBefore( clonedSection, section )
+						inserted = true
+					}
+				} )
+
+				if( ! inserted ) sectionsListWrapper.append( clonedSection )
+			}
+		}else{
+			next.parentNode.insertBefore( clonedSection, next )
+		}
+	}
 }
 
 /**
