@@ -63,6 +63,7 @@ export const step2MilitaryFormValidation = () => {
 	} )
 
 	processRanksDropdown()
+	filterBrigades()
 }
 
 /**
@@ -72,7 +73,6 @@ const processRanksDropdown = () => {
 	const
 		field		= document.querySelector( '.new-memory-step-2-military #title' ),
 		armyLabel	= document.querySelector( '.new-memory-step-2-military .label-army' ),
-		armyInput	= armyLabel.querySelector( '#army' ),
 		armyOptions	= armyLabel.querySelectorAll( '.option' )
 
 	if( ! field ) return
@@ -157,6 +157,35 @@ const closeRanksDropdown = () => {
 	const label = document.querySelector( '.new-memory-step-2-military label.active' )
 
 	if( label ) label.classList.remove( 'active' )
+}
+
+/**
+ * Brigades field - filter list on input.
+ */
+const filterBrigades = () => {
+	const field = document.querySelector( '#brigade' )
+
+	if( ! field ) return
+
+	const options = [...field.closest( 'label' ).querySelectorAll( '.option' )]
+
+	if( ! options.length ) return
+
+	const onBrigadeFilter = e => {
+		const value = e.target.value && e.target.value.toLowerCase()
+
+		options.forEach( option => {
+			const name = option.innerText.trim().toLowerCase()
+
+			if( name.includes( value ) ) option.classList.remove( 'hidden' )
+			else option.classList.add( 'hidden' )
+		} )
+	}
+
+	field.addEventListener( 'input', onBrigadeFilter )
+	field.addEventListener( 'change', onBrigadeFilter )
+	field.addEventListener( 'keyup', onBrigadeFilter )
+	field.addEventListener( 'blur', onBrigadeFilter )
 }
 
 /**

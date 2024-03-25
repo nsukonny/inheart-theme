@@ -4,7 +4,9 @@
 	top: calc(100% + 18px);
 	left: 0;
 	width: 100%;
+	min-height: 48px;
 	max-height: 236px;
+	background-color: $white;
 	border-radius: $rad-input;
 	border: 1px solid $border-primary;
 	z-index: 2;

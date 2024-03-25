@@ -516,51 +516,6 @@
             "delay": 0
         },
         {
-            "key": "field_65b80c44d6604",
-            "label": "Бригада чи підрозділ",
-            "name": "brigade_types",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "70",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "field_65b80c44d6605",
-            "button_label": "Додати рядок",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_65b80c44d6605",
-                    "label": "Назва",
-                    "name": "name",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_65b80c44d6604"
-                }
-            ]
-        },
-        {
             "key": "field_64bd2ec52301a",
             "label": "Step 3",
             "name": "",
@@ -1263,5 +1218,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1710716739
+    "modified": 1711397163
 }

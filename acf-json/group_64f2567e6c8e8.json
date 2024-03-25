@@ -367,7 +367,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "34",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -412,7 +412,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -457,7 +457,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -491,6 +491,51 @@
                     "parent_repeater": "field_65f897e7ba552"
                 }
             ]
+        },
+        {
+            "key": "field_6601d28e5e2c0",
+            "label": "Бригади",
+            "name": "brigades",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_6601d2a55e2c1",
+                    "label": "Назва",
+                    "name": "name",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_6601d28e5e2c0"
+                }
+            ]
         }
     ],
     "location": [
@@ -511,5 +556,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1710790662
+    "modified": 1711395512
 }

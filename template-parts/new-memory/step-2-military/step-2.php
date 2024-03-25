@@ -54,7 +54,7 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 					'value'			=> $brigade_type,
 					'required'		=> 1,
 					'icon_tail'		=> 'arrow-down-s-line.svg',
-					'types'			=> get_field( 'brigade_types' )
+					'types'			=> get_field( 'brigades', 'option' )
 				] );
 				get_template_part( 'components/inputs/ranks', null, ['army_type' => $army_type] );
 				get_template_part( 'components/inputs/default', null, [
