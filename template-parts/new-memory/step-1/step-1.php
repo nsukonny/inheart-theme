@@ -21,16 +21,17 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 	$born_at		= ih_convert_date_from_admin_for_input( get_field( 'born_at', $memory_page_id ) );
 	$died_at		= ih_convert_date_from_admin_for_input( get_field( 'died_at', $memory_page_id ) );
 	$thumb_title	= has_post_thumbnail( $memory_page_id )
-					? ih_get_shorter_filename( basename( get_the_post_thumbnail_url( $memory_page_id, 'full' ) ) ) : '';
+		? ih_get_shorter_filename( basename( get_the_post_thumbnail_url( $memory_page_id, 'full' ) ) ) : '';
+	$thumb			= $thumb_title ? get_the_post_thumbnail_url( $memory_page_id, 'full' ) : '';
 }else{
-	$first_name = $last_name = $middle_name = $born_at = $died_at = $thumb_title = '';
+	$first_name = $last_name = $middle_name = $born_at = $died_at = $thumb_title = $thumb = '';
 }
 ?>
 
 <section id="new-memory-step-1" class="new-memory-step new-memory-step-1 direction-column<?php echo esc_attr( $class ) ?>">
 	<div class="container direction-column align-start">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 1', 'inheart' ) ?>
+			<?php _e( 'Крок 1', 'inheart' ) ?>
 		</div>
 
 		<?php
@@ -125,7 +126,13 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 						</svg>
 						<?php esc_html_e( "Змінити пам'ятну фотографію", 'inheart' ) ?>
 					</span>
-					<input id="photo" name="photo" type="file"<?php echo ( $thumb_title ? '' : ' required' ) ?> />
+					<input
+						id="photo"
+						name="photo"
+						type="file"
+						<?php echo ( $thumb_title ? '' : ' required' ) ?>
+						data-cropped="<?php echo esc_url( $thumb ) ?>"
+					/>
 					<span class="filename"><?php echo esc_html( $thumb_title ) ?></span>
 				</label>
 			</fieldset>

@@ -23,7 +23,7 @@ $no_rewards_class	= empty( $rewards ) ? '' : ' hidden';
 <section id="new-memory-step-3-military" class="new-memory-step new-memory-step-3-military direction-column">
 	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 1-2 (Військовослужбовець)', 'inheart' ) ?>
+			<?php _e( 'Крок 3', 'inheart' ) ?>
 		</div>
 
 		<?php

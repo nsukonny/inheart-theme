@@ -77,7 +77,7 @@ $rewards_types = get_terms( ['taxonomy' => 'rewards', 'hide_empty' => true] );
 
 				if( empty( $rewards ) ) continue;
 
-				echo '<h4>', esc_html( $type->name ), '</h4><div class="rewards-list flex flex-wrap align-start">';
+				echo '<h4>', esc_html( $type->name ), '</h4><div class="rewards-list flex flex-wrap">';
 
 				foreach( $rewards as $reward )
 					get_template_part( 'components/cards/reward/preview', null, ['id' => $reward->ID] );

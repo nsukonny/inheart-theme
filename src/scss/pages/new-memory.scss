@@ -16,6 +16,23 @@
 @import '../new-memory/step-6';
 @import '../new-memory/step-6-military';
 
+body.memory-page-theme-military {
+	#new-memory-step-2,
+	#new-memory-step-3,
+	#new-memory-step-4,
+	#new-memory-step-5 {
+		.new-memory-step-suptitle span {
+			&:first-child {
+				display: none
+			}
+
+			&.hidden {
+				display: block !important
+			}
+		}
+	}
+}
+
 .popup-loader {
 	transition: opacity ease-out $tr
 }

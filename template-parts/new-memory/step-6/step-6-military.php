@@ -49,7 +49,7 @@ $brigade_type		= get_field( 'brigade_type', $memory_page_id );
 
 					<div class="military-created-dates flex direction-column">
 						<div class="military-created-date military-created-date-born flex direction-column align-center">
-							<div class="military-created-date-decor">*</div>
+							<div class="military-created-date-decor">❋</div>
 							<div class="military-created-date-inner flex align-center">
 								<div class="military-created-date-left flex direction-column align-center">
 									<span class="military-created-date-day"></span>
@@ -59,7 +59,7 @@ $brigade_type		= get_field( 'brigade_type', $memory_page_id );
 							</div>
 						</div>
 						<div class="military-created-date military-created-date-died flex direction-column align-center">
-							<div class="military-created-date-decor">+</div>
+							<div class="military-created-date-decor">✢</div>
 							<div class="military-created-date-inner flex align-center">
 								<div class="military-created-date-left flex direction-column align-center">
 									<span class="military-created-date-day"></span>

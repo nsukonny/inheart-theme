@@ -26,7 +26,8 @@ $class				= $saved_text ? '' : ' clear-on-focus';
 	<div class="container direction-column">
 		<div class="epitaph-wrapper flex direction-column">
 			<div class="new-memory-step-suptitle">
-				<?php esc_html_e( 'Крок 3', 'inheart' ) ?>
+				<span><?php _e( 'Крок 3', 'inheart' ) ?></span>
+				<span class="hidden"><?php _e( 'Крок 5', 'inheart' ) ?></span>
 			</div>
 
 			<?php

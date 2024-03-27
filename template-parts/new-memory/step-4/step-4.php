@@ -21,7 +21,8 @@ $video_tip		= get_field( 'video_tip' );
 <section id="new-memory-step-4" class="new-memory-step new-memory-step-4 step-media direction-column">
 	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 4', 'inheart' ) ?>
+			<span><?php _e( 'Крок 4', 'inheart' ) ?></span>
+			<span class="hidden"><?php _e( 'Крок 6', 'inheart' ) ?></span>
 		</div>
 
 		<?php

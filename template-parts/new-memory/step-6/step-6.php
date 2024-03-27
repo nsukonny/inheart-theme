@@ -27,8 +27,8 @@ $text_updated	= get_field( 'page_updated_text' );
 			</svg>
 
 			<?php
-			if( $is_edit ) esc_html_e( "Сторінку пам’яті оновлено", 'inheart' );
-			else esc_html_e( "Сторінку пам’яті створено", 'inheart' );
+			if( $is_edit ) _e( "Сторінку пам’яті оновлено", 'inheart' );
+			else _e( "Сторінку пам’яті створено", 'inheart' );
 			?>
 		</div>
 

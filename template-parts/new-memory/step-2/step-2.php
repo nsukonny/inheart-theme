@@ -44,7 +44,8 @@ if( $ready_sections ){
 <section id="new-memory-step-2" class="new-memory-step new-memory-step-2 direction-column">
 	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 2', 'inheart' ) ?>
+			<span><?php _e( 'Крок 2', 'inheart' ) ?></span>
+			<span class="hidden"><?php _e( 'Крок 4', 'inheart' ) ?></span>
 		</div>
 
 		<?php

@@ -21,7 +21,7 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 <section id="new-memory-step-2-military" class="new-memory-step new-memory-step-2-military direction-column">
 	<div class="container direction-column">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 1-1 (Військовослужбовець)', 'inheart' ) ?>
+			<?php _e( 'Крок 2', 'inheart' ) ?>
 		</div>
 
 		<?php

@@ -177,6 +177,9 @@ export const checkStep1 = () => {
 
 		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ) isFormValid = false
 
+		if( index === 'photo' && field.dataset.cropped )
+			stepData.cropped = field.dataset.cropped
+
 		stepData[index] = value
 	} )
 	localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )

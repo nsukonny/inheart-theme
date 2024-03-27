@@ -27,7 +27,8 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 <section id="new-memory-step-5" class="new-memory-step new-memory-step-5 step-coords direction-column">
 	<div class="container direction-column align-start">
 		<div class="new-memory-step-suptitle">
-			<?php esc_html_e( 'Крок 5', 'inheart' ) ?>
+			<span><?php _e( 'Крок 5', 'inheart' ) ?></span>
+			<span class="hidden"><?php _e( 'Крок 7', 'inheart' ) ?></span>
 		</div>
 
 		<?php

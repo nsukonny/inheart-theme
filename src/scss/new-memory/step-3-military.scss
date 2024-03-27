@@ -207,6 +207,10 @@
 		text-align: center;
 		opacity: 0.8;
 		transition: color ease-out $tr;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
 
 		@media (min-width: $xl) {
 			font-size: 11px;
@@ -386,6 +390,7 @@
 		width: 100%;
 		max-width: 221px;
 		align-self: flex-start;
+		font-family: 'UAF Memory', serif;
 		font-size: 24px;
 		line-height: $lh-mobile-title-special-lg;
 		color: $military;

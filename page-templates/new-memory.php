@@ -19,6 +19,30 @@ ih_create_new_memory_page();
 $lang_changed = isset( $_GET['langchanged'] ) && $_GET['langchanged'] == 1;
 ?>
 
+<style>
+    .new-memory .popup {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 100px 20px;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background-color: rgba(0, 0, 0, 0.81);
+        cursor: pointer;
+        overflow-y: auto
+    }
+</style>
+
 <main class="main new-memory flex direction-column" data-initial-step="<?php echo ( $lang_changed ? 1 : 0 ) ?>">
 	<div class="popup popup-loader" style="background-color: #fff">
 		<div class="tmp-loader"></div>
