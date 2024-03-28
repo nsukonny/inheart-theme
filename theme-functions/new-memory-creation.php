@@ -116,18 +116,15 @@ function ih_ajax_save_data_step_1(): void
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
-	if(
-		! $step_data || ! $memory_page_id || ! $step_data['lang'] || ! $step_data['firstname'] ||
-		! $step_data['lastname'] || ! $step_data['fathername'] || ! $step_data['date-of-birth'] ||
-		! $step_data['date-of-death'] || ( ! $step_data['cropped'] && ! has_post_thumbnail( $memory_page_id ) )
-	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+	if( ! $step_data || ! $memory_page_id )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	update_field( 'language', $step_data['lang'], $memory_page_id );
-	update_field( 'first_name', $step_data['firstname'], $memory_page_id );
-	update_field( 'last_name', $step_data['lastname'], $memory_page_id );
-	update_field( 'middle_name', $step_data['fathername'], $memory_page_id );
-	update_field( 'born_at', $step_data['date-of-birth'], $memory_page_id );
-	update_field( 'died_at', $step_data['date-of-death'], $memory_page_id );
+	if( $step_data['lang'] ) update_field( 'language', $step_data['lang'], $memory_page_id );
+	if( $step_data['firstname'] ) update_field( 'first_name', $step_data['firstname'], $memory_page_id );
+	if( $step_data['lastname'] ) update_field( 'last_name', $step_data['lastname'], $memory_page_id );
+	if( $step_data['fathername'] ) update_field( 'middle_name', $step_data['fathername'], $memory_page_id );
+	if( $step_data['date-of-birth'] ) update_field( 'born_at', $step_data['date-of-birth'], $memory_page_id );
+	if( $step_data['date-of-death'] ) update_field( 'died_at', $step_data['date-of-death'], $memory_page_id );
 
 	// Set Memory page thumbnail.
 	if(
@@ -207,14 +204,12 @@ function wp_ajax_ih_ajax_save_data_step_2_military(): void
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
-	if(
-		! $step_data || ! $memory_page_id || ! isset( $step_data['army'] ) ||
-		! isset( $step_data['brigade'] ) || ! isset( $step_data['title'] )
-	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+	if( ! $step_data || ! $memory_page_id )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	update_field( 'army_type', $step_data['army'], $memory_page_id );
-	update_field( 'brigade_type', $step_data['brigade'], $memory_page_id );
-	update_field( 'military_title', $step_data['title'], $memory_page_id );
+	if( $step_data['army'] ) update_field( 'army_type', $step_data['army'], $memory_page_id );
+	if( $step_data['brigade'] ) update_field( 'brigade_type', $step_data['brigade'], $memory_page_id );
+	if( $step_data['title'] ) update_field( 'military_title', $step_data['title'], $memory_page_id );
 
 	if( isset( $step_data['position'] ) )
 		update_field( 'military_position', $step_data['position'], $memory_page_id );
@@ -408,15 +403,13 @@ function ih_ajax_save_data_step_3(): void
 	$epitaph_firstname	= isset( $step_data['epitaph-firstname'] ) ? ih_clean( $step_data['epitaph-firstname'] ) : '';
 	$epitaph_role		= isset( $step_data['epitaph-role'] ) ? ih_clean( $step_data['epitaph-role'] ) : '';
 
-	if(
-		! $memory_page_id || ! $epitaph || ! $epitaph_lastname ||
-		! $epitaph_firstname || ! $epitaph_role
-	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+	if( ! $memory_page_id || ! $step_data )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	update_field( 'epitaphy', $epitaph, $memory_page_id );
-	update_field( 'epitaph_lastname', $epitaph_lastname, $memory_page_id );
-	update_field( 'epitaph_firstname', $epitaph_firstname, $memory_page_id );
-	update_field( 'epitaph_role', $epitaph_role, $memory_page_id );
+	if( $epitaph ) update_field( 'epitaphy', $epitaph, $memory_page_id );
+	if( $epitaph_lastname ) update_field( 'epitaph_lastname', $epitaph_lastname, $memory_page_id );
+	if( $epitaph_firstname ) update_field( 'epitaph_firstname', $epitaph_firstname, $memory_page_id );
+	if( $epitaph_role ) update_field( 'epitaph_role', $epitaph_role, $memory_page_id );
 
 	wp_send_json_success( ['msg' => __( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
 }

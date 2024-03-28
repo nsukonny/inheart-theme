@@ -12,6 +12,13 @@ $fullname	= "{$meta['first_name'][0]} {$meta['last_name'][0]}";
 ?>
 
 <div class="header-profile flex align-center justify-end">
+	<button
+		class="btn lg outlined save-memory-page-progress"
+		data-redirect="<?php echo get_the_permalink( pll_get_post( ih_get_profile_page_id() ) ) ?>"
+	>
+		<?php _e( 'Зберегти та Закрити', 'inheart' ) ?>
+	</button>
+
 	<button class="header-profile-button flex align-center" type="button" aria-label="<?php esc_attr_e( 'Відкрити меню профілю', 'inheart' ) ?>">
 		<svg class="header-profile-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M0.5 13.4922C0.5 13.0822 0.667765 12.6902 0.964286 12.4071L1.44048 11.9526C5.11151 8.44842 10.8885 8.44842 14.5595 11.9526L15.0357 12.4071C15.3322 12.6902 15.5 13.0822 15.5 13.4922V14C15.5 14.8284 14.8284 15.5 14 15.5H2C1.17157 15.5 0.5 14.8284 0.5 14V13.4922Z" stroke="#F7B941"/>

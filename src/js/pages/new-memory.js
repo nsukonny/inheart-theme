@@ -1,5 +1,12 @@
 // Common functions for all steps.
-import { defineGlobalStepsItems, instagramPopupEvents, isStepFilled, nextStep, prevStep } from '../new-memory/common'
+import {
+	defineGlobalStepsItems,
+	instagramPopupEvents,
+	isStepFilled,
+	nextStep,
+	prevStep,
+	saveProgress
+} from '../new-memory/common'
 
 // Steps one-by-one.
 import { selectTheme } from '../new-memory/step-0'
@@ -36,6 +43,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
 	hideLoader()
+	saveProgress()
 
 	// Exit if something is missing.
 	if( ! defineGlobalStepsItems() ) return

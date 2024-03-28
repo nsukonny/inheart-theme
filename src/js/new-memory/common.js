@@ -518,3 +518,24 @@ export const instagramPopupEvents = () => {
 		button.click()
 	} )
 }
+
+/**
+ * Save Memory Page creation progress on header button click.
+ */
+export const saveProgress = () => {
+	const
+		btn		= document.querySelector( '.save-memory-page-progress' ),
+		next	= document.querySelector( '.new-memory-next-step' ),
+		prev	= document.querySelector( '.new-memory-prev-step' )
+
+	if( ! btn || ! next || ! prev ) return
+
+	btn.addEventListener( 'click', () => {
+		const nextStep = next.dataset.next
+		let currentStep
+
+		currentStep = ! nextStep ? 1 : getPrevStepId( nextStep )
+		saveStep( currentStep )
+		setTimeout( () => window.location.href = btn.dataset.redirect, 500 )
+	} )
+}

@@ -33,9 +33,25 @@ body.memory-page-theme-military {
 	}
 }
 
+body.page-template-new-memory {
+	.save-memory-page-progress {
+		display: inline-flex
+	}
+
+	.header-profile-button {
+		display: none
+	}
+}
+
 .popup-loader {
 	transition: opacity ease-out $tr
 }
+
+.save-memory-page-progress {
+	display: none;
+	white-space: nowrap
+}
+
 
 .new-memory {
 	flex-grow: 1;

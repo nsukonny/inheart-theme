@@ -9,7 +9,8 @@ import {
 } from '../common/global'
 import { allowNextStep, applyProgress, disallowNextStep, isStepFilled } from './common'
 
-const stepData = localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
+const stepData = localStorage.getItem( 'ih-step-1' ) ?
+	JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
 let cropper
 
 /**

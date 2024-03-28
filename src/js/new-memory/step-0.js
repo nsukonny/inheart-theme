@@ -35,8 +35,16 @@ export const checkStep0 = () => {
 
 	localStorage.setItem( 'ih-step-0', JSON.stringify( { theme } ) )
 
-	if( theme === 'military' ) document.body.classList.add( 'memory-page-theme-military' )
-	else document.body.classList.remove( 'memory-page-theme-military' )
+	if( theme === 'military' ){
+		const stepData1 = localStorage.getItem( 'ih-step-1' ) ?
+			JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
+
+		stepData1.lang = 'uk'
+		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData1 ) )
+		document.body.classList.add( 'memory-page-theme-military' )
+	}else{
+		document.body.classList.remove( 'memory-page-theme-military' )
+	}
 
 	return true
 }
