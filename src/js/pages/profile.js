@@ -106,24 +106,23 @@ const expandToFull = () => {
  * Load matching cities list.
  */
 export const loadCities = ( withDepartments = true ) => {
-	const
-		cityInput	= document.querySelector( '#city' ),
-		formData	= new FormData()
+	const cityInput	= document.querySelector( '#city' )
 
 	if( ! cityInput ) return
 
 	const citiesWrap = cityInput.closest( 'label' ).querySelector( '.np-cities' )
 
-	formData.append( 'action', 'ih_ajax_load_cities' )
 
 	const onCityInputChange = e => {
 		const
-			input	= e.target,
-			val		= input.value,
-			label	= input.closest( 'label' )
+			formData	= new FormData(),
+			input		= e.target,
+			val			= input.value,
+			label		= input.closest( 'label' )
 
 		if( ! val || ! citiesWrap ) return
 
+		formData.append( 'action', 'ih_ajax_load_cities' )
 		formData.append( 'city', val )
 		disableInput( input )
 		addLoader( label )
