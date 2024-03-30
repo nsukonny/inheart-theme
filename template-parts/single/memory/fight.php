@@ -17,9 +17,16 @@ if ($theme != 'military')
 {
     return;
 }
+
 $lang = $args['lang'] ?? 'uk';
 
 $lastFightSection = get_field( 'last_fight', $id );
+
+if(!isset($lastFightSection['location']) || !isset($lastFightSection['text']))
+{
+    return;
+}
+
 $location = $lastFightSection['location'];
 $text = $lastFightSection['text'];
 $died_at = ih_convert_input_date(get_field('died_at', $id), $theme == 'military' ? 'rome-lf' : null);
