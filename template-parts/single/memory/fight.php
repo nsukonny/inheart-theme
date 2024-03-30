@@ -31,9 +31,9 @@ $location = $lastFightSection['location'];
 $text = $lastFightSection['text'];
 $died_at = ih_convert_input_date(get_field('died_at', $id), $theme == 'military' ? 'rome-lf' : null);
 
-$mapBoxKey = 'pk.eyJ1IjoiYWxleC1hbnRocmFjaXRlIiwiYSI6ImNsczR3bHA2cTE4b3cyanFwZjdmeHMwZWMifQ.37OV-0xU33OMmfs5BRPj8A';
-
+$mapBoxKey = get_field( 'map_box_key', 'option' );
 ?>
+
 <section class="single-memory-fight">
     <div class="single-memory-fight__wrapper">
         <div class="single-memory-fight__section single-memory-fight__section--map">
@@ -46,12 +46,22 @@ $mapBoxKey = 'pk.eyJ1IjoiYWxleC1hbnRocmFjaXRlIiwiYSI6ImNsczR3bHA2cTE4b3cyanFwZjd
                 </div>
 
             </div>
-            <div class="single-memory-fight__map mapbox" id="single_memory_fight_map"
-                 data-long="37.553576"
-                 data-lat="55.725163"
-                 data-region="Київ"
-                 data-location="<?php echo esc_attr($location) ?>"
-                 data-key="<?php echo esc_attr($mapBoxKey) ?>"></div>
+
+			<?php
+			if( $mapBoxKey ){
+				?>
+				<div
+					class="single-memory-fight__map mapbox"
+					id="single_memory_fight_map"
+					data-long="37.553576"
+					data-lat="55.725163"
+					data-region="Київ"
+					data-location="<?php echo esc_attr($location) ?>"
+					data-key="<?php echo esc_attr($mapBoxKey) ?>"
+				></div>
+				<?php
+			}
+			?>
         </div>
         <div class="single-memory-fight__section single-memory-fight__section--over1">
             <canvas></canvas>

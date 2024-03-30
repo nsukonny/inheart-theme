@@ -17,7 +17,7 @@ $longitude = get_field('longitude', $id);
 $latitude = get_field('latitude', $id);
 $how_to_find = get_field('how_to_find', $id);
 $key = get_field('google_maps_api_key', 'option');
-$mapBoxKey = 'pk.eyJ1IjoiYWxleC1hbnRocmFjaXRlIiwiYSI6ImNsczR3bHA2cTE4b3cyanFwZjdmeHMwZWMifQ.37OV-0xU33OMmfs5BRPj8A';
+$mapBoxKey = get_field( 'map_box_key', 'option' );
 ?>
 
 <section class="single-memory-place">

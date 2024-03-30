@@ -358,6 +358,26 @@
             "endpoint": 0
         },
         {
+            "key": "field_6608433916978",
+            "label": "Ключ мапи для сторінки віськового",
+            "name": "map_box_key",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_65f89774ba54e",
             "label": "Армійські військові звання",
             "name": "army_ranks",
@@ -556,5 +576,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1711395512
+    "modified": 1711817648
 }
