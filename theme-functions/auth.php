@@ -256,7 +256,7 @@ function ih_ajax_register(): void
 
 	wp_send_json_success( [
 		'msg'       => esc_html__( 'Успішно. Вітаємо!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( 16 ) ) . "?user=$new_user_id&registered=1"
+		'redirect'	=> get_the_permalink( pll_get_post( ih_get_activation_page_id() ) ) . "?user=$new_user_id&registered=1"
 	] );
 }
 
@@ -302,7 +302,7 @@ function ih_ajax_resend_activation_link(): void
 
 	wp_send_json_success( [
 		'msg'       => esc_html__( 'Успішно. Вітаємо!', 'inheart' ),
-		'redirect'	=> get_the_permalink( pll_get_post( 16 ) ) . "?user=$user_id&registered=1"
+		'redirect'	=> get_the_permalink( pll_get_post( ih_get_activation_page_id() ) ) . "?user=$user_id&registered=1"
 	] );
 }
 

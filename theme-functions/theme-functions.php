@@ -459,6 +459,16 @@ function ih_get_order_created_page_id(): int
 	return get_field( 'order_created_page_id', 'option' ) ?: 0;
 }
 
+function ih_get_create_memory_page_id(): int
+{
+	return get_field( 'create_memory_page_id', 'option' ) ?: 0;
+}
+
+function ih_get_settings_page_id(): int
+{
+	return get_field( 'settings_page_id', 'option' ) ?: 0;
+}
+
 /**
  * Check if military section fields are set.
  *

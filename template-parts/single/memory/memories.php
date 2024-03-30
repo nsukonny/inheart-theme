@@ -11,7 +11,7 @@
 if( ! $id = $args['id'] ?? null ) return;
 
 $lang			= $args['lang'] ?? 'uk';
-$add_memory_url	= get_the_permalink( pll_get_post( 1374 ) ) . '?mp=' . $id;
+$add_memory_url	= get_the_permalink( pll_get_post( ih_get_create_memory_page_id() ) ) . '?mp=' . $id;
 $memories		= get_posts( [
 	'post_type'		=> 'memory',
 	'post_status'	=> 'publish',

@@ -14,7 +14,7 @@ $memory_page_id	= $_GET['mp'] ? ( int ) ih_clean( $_GET['mp'] ) : null;
 
 <h1 class="profile-memories-title flex flex-wrap justify-between align-center">
 	<span class="profile-memories-title-text flex direction-column align-start">
-		<a href="<?php echo get_the_permalink( pll_get_post( 1361 ) ) ?>" class="button button-return flex align-center">
+		<a href="<?php echo get_the_permalink( pll_get_post( ih_get_profile_memories_page_id() ) ) ?>" class="button button-return flex align-center">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 				<path d="M11.828 11.9992L14.657 14.8272L13.243 16.2422L9 11.9992L13.243 7.75619L14.657 9.17119L11.828 11.9992Z" fill="currentColor"></path>
 			</svg>
