@@ -4,8 +4,9 @@ add_action( 'rest_api_init', 'ih_rest_api_init_mono' );
 function ih_rest_api_init_mono(): void
 {
 	register_rest_route( 'mono/acquiring', '/status', [
-		'methods'  => 'POST',
-		'callback' => 'ih_mono_handle_status',
+		'methods'				=> 'POST',
+		'permission_callback'	=> '__return_true',
+		'callback'				=> 'ih_mono_handle_status'
 	] );
 }
 
