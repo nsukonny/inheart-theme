@@ -7,8 +7,6 @@
  * @subpackage inheart
  */
 
-if( ! is_user_logged_in() ) wp_die( esc_html__( 'Тільки авторизовані користувачі', 'inheart' ) );
-
 get_header();
 
 wp_enqueue_style( 'new-memory', THEME_URI . '/static/css/pages/new-memory.min.css', [], THEME_VERSION );

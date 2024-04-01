@@ -47,8 +47,8 @@ export const uploadMainPhoto = () => {
 
 	photo.addEventListener( 'change', () => {
 		const
-			fReader		= new FileReader(),
-			file		= photo.files[0]
+			fReader	= new FileReader(),
+			file	= photo.files[0]
 
 		mainPhotoName = file.name
 		fReader.readAsDataURL( file )
@@ -104,15 +104,9 @@ export const uploadMainPhoto = () => {
 							mainPhotoNameEl.innerHTML = res.data.short_filename
 							mainPhotoNameEl.closest( '.label' ).classList.add( 'added' )
 							stepData.cropped = res.data.url
+							photo.setAttribute( 'data-cropped', stepData.cropped )
 							localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
-
-							if( checkStep1() ){
-								allowNextStep( 2 )
-								applyProgress( 1 )
-							}else{
-								disallowNextStep()
-								applyProgress( 1, 0 )
-							}
+							isStepFilled( 1 )
 							break
 
 						case false:
@@ -153,7 +147,6 @@ export const addMainFormValidation = () => {
 
 		stepData[index] = value
 		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
-
 		isStepFilled( 1 )
 	}
 }

@@ -11,8 +11,17 @@ function ih_create_new_memory_page(): void
 	if( isset( $_SESSION['memory_page_id'] ) ){
 		$edit = ( isset( $_GET['edit'] ) && $_GET['edit'] == 1 ) ? 1 : null;
 
-		// If this is an edit mode - do nothing.
-		if( isset( $_SESSION['edit_mode'] ) && $edit ) return;
+		$user_id	= get_current_user_id();
+		$author_id	= ( int ) get_post_field ( 'post_author', $_SESSION['memory_page_id'] );
+
+		// Current User is not an author of this memory page.
+		if( $user_id !== $author_id ){
+			unset( $_SESSION['edit_mode'] );
+			unset( $_SESSION['memory_page_id'] );
+		}else{
+			// If this is an edit mode - do nothing.
+			if( isset( $_SESSION['edit_mode'] ) && $edit ) return;
+		}
 	}
 
 	// Otherwise - this is not an edit mode
@@ -42,7 +51,7 @@ function ih_create_new_memory_page(): void
 	$post_id = wp_insert_post( wp_slash( $post_data ) );
 
 	if( is_wp_error( $post_id ) ){
-		esc_html_e( "Не вдалося створити нову сторінку пам'яті", 'inheart' );
+		_e( "Не вдалося створити нову сторінку пам'яті", 'inheart' );
 		return;
 	}
 
