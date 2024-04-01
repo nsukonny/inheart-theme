@@ -182,10 +182,16 @@ const filterBrigades = () => {
 		} )
 	}
 
+	const onBrigadeFilterClear = () => {
+		options.forEach( option => option.classList.remove( 'hidden' ) )
+	}
+
 	field.addEventListener( 'input', onBrigadeFilter )
 	field.addEventListener( 'change', onBrigadeFilter )
 	field.addEventListener( 'keyup', onBrigadeFilter )
-	field.addEventListener( 'blur', onBrigadeFilter )
+
+	field.addEventListener( 'focus', onBrigadeFilterClear )
+	field.addEventListener( 'click', onBrigadeFilterClear )
 }
 
 /**

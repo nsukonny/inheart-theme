@@ -96,8 +96,12 @@ body.memory-page-theme-military {
 		}
 
 		&-photo-wrapper {
-			height: 662px;
+			height: 400px;
 			overflow: hidden;
+
+			@media (min-width: $lg) {
+				height: 662px
+			}
 
 			img {
 				max-width: 100%;
@@ -106,7 +110,12 @@ body.memory-page-theme-military {
 		}
 
 		&-buttons {
-			padding: 42px 0 48px
+			row-gap: 30px;
+			padding: 42px 0 0;
+
+			@media (min-width: $lg) {
+				padding-bottom: 48px
+			}
 		}
 
 		.cropper-modal {
@@ -165,6 +174,15 @@ body.memory-page-theme-military {
 				border-right: 2px solid $white;
 				border-bottom: 2px solid $white
 			}
+		}
+	}
+
+	#photo-popup .popup-inner {
+		width: 80%;
+		padding: 30px 10px;
+
+		@media (min-width: $lg) {
+			padding: 30px
 		}
 	}
 
