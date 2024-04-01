@@ -75,7 +75,7 @@ const dateInputOnClick = e => {
 	const target = e.target
 
 	target.type = 'date'
-	target.showPicker()
+	setTimeout( () => target.showPicker(), 10 )
 }
 
 const dateInputOnBlur = e => {
