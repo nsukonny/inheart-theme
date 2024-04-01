@@ -26,14 +26,12 @@ $required		= $args['required'] ?? '';
 	<input
 		id="<?php echo esc_attr( $name ) ?>"
 		name="<?php echo esc_attr( $name ) ?>"
+		class="date-input"
 		type="text"
 		placeholder="<?php echo esc_attr( $placeholder ) ?>"
 		value="<?php echo esc_attr( $value ) ?>"
 		<?php echo ( $autocomplete ? 'autocomplete="' . esc_attr( $autocomplete ) . '"' : '' ) ?>
 		<?php echo ( $required ? 'required' : '' ) ?>
-		onfocus="this.type='date';this.showPicker()"
-		onclick="this.type='date'"
-		onblur="(!this.value ? this.type='text' : this.type='date')"
 	/>
 	<span class="input-icon tail">
 		<img src="<?php echo THEME_URI ?>/static/img/calendar.svg" alt="" />
