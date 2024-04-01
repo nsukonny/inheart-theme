@@ -132,18 +132,20 @@ add_action( 'wp_ajax_ih_ajax_load_cities', 'ih_ajax_load_cities' );
  */
 function ih_ajax_load_cities(): void
 {
-	if( ! $city = ih_clean( $_POST['city'] ) ?? null ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+	if( ! $city = ih_clean( $_POST['city'] ) ?? null )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	if( ! $np_api_key = get_field( 'np_api_key', 'option' ) ?: null )
 		wp_send_json_error( ['msg' => __( 'Невірний або відсутній API Key', 'inheart' )] );
 
-	$body = json_encode( [
+	$all_cities	= ih_clean( $_POST['all'] );
+	$body		= json_encode( [
 		'apiKey'		=> $np_api_key,
 		'modelName'		=> 'Address',
 		'calledMethod'	=> 'getSettlements',
 		'methodProperties'	=> [
 			'FindByString'	=> $city,
-			'Warehouse'		=> 1
+			'Warehouse'		=> $all_cities ? 0 : 1
 		]
 	] );
 	$res = wp_remote_post( 'https://api.novaposhta.ua/v2.0/json/', [

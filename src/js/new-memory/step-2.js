@@ -40,7 +40,7 @@ export const addSection = () => {
 			addedSectionsWrapper	= document.querySelector( '.sections-added-list' ),
 			targetSection			= target.closest( '.section' ),
 			sectionId				= targetSection.id || null,
-			imgUrl					= targetSection.dataset.thumb || null,
+			isCustom				= targetSection.classList.contains( 'custom' ),
 			clonedSection			= targetSection.cloneNode( true ),
 			clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
 			clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' ),
@@ -80,10 +80,10 @@ export const addSection = () => {
 		sectionsContent.append( clonedSectionContent )	// Push new section into the DOM.
 		window.scrollTo( { top: sectionsContent.getBoundingClientRect().top + window.scrollY } )
 
-		if( sectionId === 'last-fight' ) loadCities( false )
+		if( sectionId === 'last-fight' ) loadCities( false, 1 )
 
 		// If this is a section with a custom title.
-		if( imgUrl ){
+		if( isCustom ){
 			clonedSectionContent.classList.add( 'custom' )
 			clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Вигадайте заголовок" />'
 		}
@@ -95,7 +95,7 @@ export const addSection = () => {
 
 	// For the case if Last Fight section is already added.
 	addLastFightSection( sectionsWrapper.querySelector( '#last-fight' ), sectionsContent.querySelector( '.section-content-last-fight' ) )
-	loadCities( false )
+	loadCities( false, 1 )
 
 	uploadSectionPhoto()
 	deletePhoto()
@@ -194,7 +194,6 @@ export const removeSidebarAddedSection = () => {
 			const clonedSection = targetSection.cloneNode( true )
 
 			clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
-
 			returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.order ), clonedSection )
 
 			if( sectionRealId === 'last-fight' ) removeLastFightSection( sectionContent )
@@ -233,6 +232,7 @@ export const removeContentSection = () => {
 
 		const clonedSection = targetSection.cloneNode( true )
 
+		clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
 		returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.order ), clonedSection )
 
 		if( sectionRealId === 'last-fight' ) removeLastFightSection( targetContent )

@@ -33,7 +33,7 @@ if( ! $title ) return;
 			?>
 			<input
 				class="section-content-title-input"
-				placeholder="<?php esc_html_e( 'Придумайте заголовок', 'inheart' ) ?>"
+				placeholder="<?php _e( 'Придумайте заголовок', 'inheart' ) ?>"
 				value="<?php echo esc_attr( $title ) ?>"
 			/>
 			<?php
