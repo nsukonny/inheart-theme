@@ -32,8 +32,8 @@ $required		= $args['required'] ?? '';
 		<?php echo ( $autocomplete ? 'autocomplete="' . esc_attr( $autocomplete ) . '"' : '' ) ?>
 		<?php echo ( $required ? 'required' : '' ) ?>
 		onfocus="this.type='date';this.showPicker()"
-		onclick="this.type='date';this.showPicker()"
-		onblur="(this.value === '' ? this.type='text' : this.type='date')"
+		onclick="this.type='date'"
+		onblur="(!this.value ? this.type='text' : this.type='date')"
 	/>
 	<span class="input-icon tail">
 		<img src="<?php echo THEME_URI ?>/static/img/calendar.svg" alt="" />
