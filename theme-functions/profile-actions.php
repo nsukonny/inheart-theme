@@ -289,7 +289,7 @@ add_action( 'wp_ajax_ih_ajax_load_profile_memories', 'ih_ajax_load_profile_memor
 function ih_ajax_load_profile_memories(): void
 {
 	$type		= ih_clean( $_POST['type'] );	// 'others' | 'yours'
-	$page_id	= ih_clean( $_POST['id'] );	// 'others' | 'yours'
+	$page_id	= ih_clean( $_POST['id'] );
 
 	if( ! $type ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
@@ -309,6 +309,17 @@ function ih_ajax_load_profile_memories(): void
 			'numberposts'   => -1,
 			'author__in'    => $current_user_id
 		] );
+
+		// User has no memory pages.
+		if( empty( $memory_pages ) ){
+			$no_memories = ih_load_template_part(
+				'components/profile/memories/no-memories',
+				null,
+				['id' => $page_id, 'type' => $type]
+			);
+			wp_send_json_success( ['no-memories' => $no_memories] );
+		}
+
 		$memory_pages_ids = [];
 
 		foreach( $memory_pages as $page ) $memory_pages_ids[] = $page->ID;
