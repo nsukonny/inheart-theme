@@ -1180,7 +1180,7 @@ body.single-memory_page.military
 
 
 	background: #4c4636;
-	font-family: 'UAF Memory';
+	font-family: $ff-military;
 
 	& .single-memory-thumb
 	{
@@ -1461,7 +1461,7 @@ body.single-memory_page.military
 				margin-bottom: 70px;
 				font-size: 40px;
 				font-weight: bold;
-				font-family: 'UAF Memory';
+				font-family: $ff-military;
 			}
 
 			&-description
@@ -1664,7 +1664,7 @@ body.single-memory_page.military
 
 	.single-memory-heading
 	{
-		font-family: 'UAF Memory';
+		font-family: $ff-military;
 		color: #011C1A;
 		font-weight: bold !important;
 
@@ -1990,7 +1990,7 @@ body.single-memory_page.military
 	.single-memory-name
 	{
 		color: #fff;
-		font-family: 'UAF Memory';
+		font-family: $ff-military;
 		font-size: clamp(32px, calc(32px + 46 * (100vw / 1280)), 60px);
 
 		span.loaded

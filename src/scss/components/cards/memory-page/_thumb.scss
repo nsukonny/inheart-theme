@@ -55,4 +55,8 @@
 	&.black .memory-card-thumb::after {
 		background: $card-overlay-black
 	}
+
+	&.military .memory-card-thumb::after {
+		background: $card-overlay-military
+	}
 }

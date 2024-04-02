@@ -77,7 +77,9 @@
 		position: relative;
 		flex-grow: 1;
 		width: 100%;
-		padding: 0 20px 23px;
+		padding: 0 0 23px;
+
+		@media (min-width: $xl) {}
 
 		&::after {
 			content: '';
@@ -163,6 +165,21 @@
 
 		.memory-card-fullname {
 			color: $text-primary-on-color
+		}
+	}
+
+	&.military {
+		.memory-card-inner {
+			background-color: $military
+		}
+
+		.single-memory-thumb-border::after {
+			background: linear-gradient(180deg, rgba(6, 32, 83, 0) 55.45%, $military 76.13%)
+		}
+
+		.memory-card-fullname,
+		.memory-card-date {
+			font-family: $ff-military
 		}
 	}
 

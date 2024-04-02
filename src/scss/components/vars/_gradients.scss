@@ -1,7 +1,8 @@
-$card-overlay-green	: linear-gradient(180deg, rgba(1, 28, 26, 0.21) 55.45%, #011C1A 76.13%);
-$card-overlay-blue	: linear-gradient(180deg, rgba(6, 32, 83, 0.00) 55.45%, #062053 76.13%);
-$card-overlay-red	: linear-gradient(180deg, rgba(51, 4, 13, 0.00) 55.45%, #33040D 76.13%);
-$card-overlay-black	: linear-gradient(180deg, rgba(19, 20, 20, 0.00) 55.45%, #131414 76.13%);
+$card-overlay-green		: linear-gradient(180deg, rgba(1, 28, 26, 0.21) 55.45%, #011C1A 76.13%);
+$card-overlay-blue		: linear-gradient(180deg, rgba(6, 32, 83, 0.00) 55.45%, #062053 76.13%);
+$card-overlay-red		: linear-gradient(180deg, rgba(51, 4, 13, 0.00) 55.45%, #33040D 76.13%);
+$card-overlay-black		: linear-gradient(180deg, rgba(19, 20, 20, 0.00) 55.45%, #131414 76.13%);
+$card-overlay-military	: linear-gradient(180deg, rgba(76, 70, 54, 0.21) 55.45%, #4C4636 76.13%);
 
 @mixin card-overlay(){
 	position: absolute;
