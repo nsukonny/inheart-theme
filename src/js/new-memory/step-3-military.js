@@ -8,7 +8,7 @@ import {
 	setAjaxWorkingStatus,
 	showNotification
 } from '../common/global'
-import { openDropdown, closeDropdown } from './step-2-military'
+import { closeDropdown, openDropdown } from './step-2-military'
 
 const
 	addRewardButtons	= document.querySelectorAll( 'button.add-reward' ),
@@ -196,9 +196,18 @@ export const addReward = () => {
 		filter()
 	} )
 
+	const onEdictInputUpdate = e => {
+		const value = e.target.value
+
+		if( ! rewardPopupTextEdict ) return
+
+		rewardPopupTextEdict.innerText = value
+	}
+
 	if( edictInput ){
 		edictInput.addEventListener( 'focus', openDropdown )
 		edictInput.addEventListener( 'click', openDropdown )
+		edictInput.addEventListener( 'input', onEdictInputUpdate )
 
 		const
 			label	= edictInput.closest( '.label' ),
@@ -207,14 +216,9 @@ export const addReward = () => {
 		if( options.length ){
 			options.forEach( option => {
 				option.addEventListener( 'click', () => {
-					const text = option.innerText
-
-					edictInput.value = text
+					edictInput.value = option.innerText
 					setTimeout( () => closeDropdown(), 10 )
-
-					if( ! rewardPopupText ) return
-
-					rewardPopupTextEdict.innerText = text
+					edictInput.dispatchEvent( new Event( 'input' ) )
 				} )
 			} )
 		}
