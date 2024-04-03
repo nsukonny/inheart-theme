@@ -218,7 +218,7 @@ function ih_ajax_change_qty(): void
 	if( ! $price = ih_get_expanded_page_order_price( $count ) )
 		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
 
-	wp_send_json_success( ['price' => $price] );
+	wp_send_json_success( ['price' => number_format( $price, 0, '', ' ' )] );
 }
 
 add_action( 'wp_ajax_ih_ajax_update_order_info', 'ih_ajax_update_order_info' );
@@ -340,6 +340,17 @@ function ih_ajax_create_order(): void
 	update_field( 'invoice_id', $res_body['invoiceId'], $order_id );
 	update_field( 'status_modified_date', 0, $order_id );
 	update_field( 'ordered', $ordered, $order_id );
+
+	// Update Customer's fathername if it's not exists yet.
+	if( ! get_field( 'fathername', "user_$customer_id" ) )
+		update_field( 'fathername', $fathername, "user_$customer_id" );
+
+	// Update Customer's phone if it's not exists yet.
+	if( ! get_field( 'phone', "user_$customer_id" ) )
+		update_field( 'phone', $phone, "user_$customer_id" );
+
+	update_field( 'city', $city, "user_$customer_id" );
+	update_field( 'department', $department, "user_$customer_id" );
 
 	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }

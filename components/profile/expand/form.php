@@ -14,8 +14,10 @@ $meta			= get_user_meta( $user_id );
 $data			= get_userdata( $user_id );
 $first_name		= $meta['first_name'][0] ?? '';
 $last_name		= $meta['last_name'][0] ?? '';
-$fathername		= get_field( 'fathername', "user_{$user_id}" ) ?: '';
-$phone			= get_field( 'phone', "user_{$user_id}" ) ?: '';
+$fathername		= get_field( 'fathername', "user_$user_id" ) ?: '';
+$phone			= get_field( 'phone', "user_$user_id" ) ?: '';
+$city			= get_field( 'city', "user_$user_id" ) ?: '';
+$department		= get_field( 'department', "user_$user_id" ) ?: '';
 $email			= $data->user_email;
 ?>
 
@@ -71,6 +73,7 @@ $email			= $data->user_email;
 				'label'			=> __( 'Місто', 'inheart' ),
 				'label_class'	=> 'full',
 				'placeholder'	=> __( 'Почніть вводити назву', 'inheart' ),
+				'value'			=> $city,
 				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/departments', null, [
@@ -78,6 +81,7 @@ $email			= $data->user_email;
 				'label'			=> __( 'Номер відділення', 'inheart' ),
 				'label_class'	=> 'full',
 				'placeholder'	=> __( 'Номер відділення', 'inheart' ),
+				'value'			=> $department,
 				'required'		=> 0
 			] );
 			get_template_part( 'components/inputs/default', null, [

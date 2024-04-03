@@ -104,8 +104,15 @@ const expandToFull = () => {
 	}
 }
 
+/**
+ * Update Order info, e.g. price, because it depends on Memory page theme.
+ *
+ * @param form
+ */
 const updateOrderInfo = form => {
-	if( ! form ) return
+	const pageId = form.dataset.page
+
+	if( ! form || ! pageId ) return
 
 	const formData = new FormData()
 
@@ -115,7 +122,7 @@ const updateOrderInfo = form => {
 
 	form.classList.add( 'loading' )
 	formData.append( 'action', 'ih_ajax_update_order_info' )
-	formData.append( 'page', form.dataset.page )
+	formData.append( 'page', pageId )
 
 	ihAjaxRequest( formData ).then( res => {
 		form.classList.remove( 'loading' )
@@ -425,12 +432,12 @@ const createOrder = () => {
 
 		setAjaxWorkingStatus( true )
 
-		target.classList.add( 'disabled' )
+		target.classList.add( 'disabled', 'loading' )
 		formData.append( 'action', 'ih_ajax_create_order' )
 		formData.append( 'page', form.dataset.page )
 
 		ihAjaxRequest( formData ).then( res => {
-			target.classList.remove( 'disabled' )
+			target.classList.remove( 'disabled', 'loading' )
 
 			if( res ){
 				switch( res.success ){

@@ -11,6 +11,7 @@ $name			= $args['name'] ?? '';
 $label			= $args['label'] ?? '';
 $label_class	= $args['label_class'] ?? 'half';
 $placeholder	= $args['placeholder'] ?? '';
+$value			= $args['value'] ?? '';
 $required		= $args['required'] ?? '';
 $icon_lead		= $args['icon_lead'] ?? '';	// Icon file name with extension. Must be in the folder /static/img/
 $icon_tail		= $args['icon_tail'] ?? '';	// ^ Same here.
@@ -36,6 +37,7 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 		name="<?php echo esc_attr( $name ) ?>"
 		type="text"
 		placeholder="<?php echo esc_attr( $placeholder ) ?>"
+		value="<?php echo esc_attr( $value ) ?>"
 		<?php echo ( $required ? 'required' : '' ) ?>
 	/>
 	<span class="np-departments flex direction-column"></span>
