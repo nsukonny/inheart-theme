@@ -12,13 +12,15 @@ function ih_rest_api_init_mono(): void
 
 function ih_mono_handle_status( WP_REST_Request $request )
 {
-	wp_die($request->get_param( 'invoiceId' ));
+	date_default_timezone_set('UTC');
+	$current_date = date( 'd.m.Y H:i:s' );
+
 	$invoice_id = $request->get_param( 'invoiceId' ) ?? null;
 	$status		= $request->get_param( 'status' ) ?? null;
 	$modified	= $request->get_param( 'modifiedDate' ) ?? null;
 
 	if( ! $invoice_id || ! $status || ! $modified ){
-		file_put_contents(ABSPATH . '/orders.log',  "No data passed for invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "$current_date __ No data passed for invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
@@ -32,7 +34,7 @@ function ih_mono_handle_status( WP_REST_Request $request )
 	] );
 
 	if( empty( $order ) ){
-		file_put_contents(ABSPATH . '/orders.log',  "No order with invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "$current_date __ No order with invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
@@ -41,13 +43,13 @@ function ih_mono_handle_status( WP_REST_Request $request )
 	$modified		= strtotime( $modified );
 
 	if( $modified <= $prev_modified ){
-		file_put_contents(ABSPATH . '/orders.log',  'Modified date is old' . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "$current_date __ Modified date is old" . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
 	update_field( 'status', $status, $order_id );
 	update_field( 'status_modified_date', $modified, $order_id );
-	file_put_contents(ABSPATH . '/orders.log',  "Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
+	file_put_contents(ABSPATH . '/orders.log',  "$current_date __ Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
 
 	ih_send_email_on_status_change( $status, $order_id );
 

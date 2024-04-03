@@ -91,7 +91,7 @@
         },
         {
             "key": "field_64fcdfbcc229d",
-            "label": "Gogole Maps API",
+            "label": "Google Maps API",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -602,5 +602,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1712174665
+    "modified": 1712185231
 }
