@@ -18,7 +18,7 @@ body.single-memory_page {
 	&.theme-light {
 		background-color: $white;
 
-		// MEMORY THEMES WHEN THEME BECOME LIGHT ON SCROLL
+		// MEMORY THEMES WHEN THEME BECOME LIGHT ON SCROLL.
 		&.black,
 		&.red,
 		&.blue {
@@ -1172,6 +1172,12 @@ body.single-memory_page {
 
 body.single-memory_page.military
 {
+    &.no-scroll
+    {
+        height:100%;
+        overflow: hidden;
+    }
+
 	.single-memory
 	{
 		contain: paint;
@@ -1185,11 +1191,22 @@ body.single-memory_page.military
 
 	& .single-memory-thumb
 	{
+		position: relative;
+		&:after
+		{
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 50%;
+			background: linear-gradient(to top, rgba(76, 70, 54, 0.7), rgba(0, 0, 0, 0));
+		}
 		&-border
 		{
 			&:after
 			{
-				display: block;
+				display: none; // square under the Name
 				background: linear-gradient(180deg, rgba(76, 70, 54, 0.3) 0%, rgba(76, 70, 54, 1) 90%);
 				height: 20%;
 				top: 70%;
@@ -1368,6 +1385,93 @@ body.single-memory_page.military
 		height: 1100vh;
 		position: relative;
 
+		&__item-more
+		{
+			color: #F7B941;
+			line-height: 26px;
+			font-size: 20px;
+			font-weight: 400;
+		}
+		&__modal
+		{
+			color: #4C4636;
+			width: 90%;
+			max-width: 800px;
+			max-height: 90%;
+			position: sticky;
+			border-radius: 30px;
+			left: 0;
+			top: 10vh;
+                        height:80vh;
+			right: 0;
+			margin: auto;
+			background: #fff;
+			padding: 106px 160px;
+                        z-index: 5;
+
+			&__close
+			{
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				cursor: pointer;
+				right: 25px;
+				top: 25px;
+				border: none;
+
+
+				&:after,
+				&:before
+				{
+					content: '';
+					display: block;
+					position: absolute;
+					width: 1px;
+					height: 20px;
+					transform-origin: center;
+					transform: rotate(45deg);
+					background: #011C1A;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					top: 0;
+					margin: auto;
+				}
+
+				&:after
+				{
+					transform: rotate(-45deg);
+				}
+			}
+
+                        &-content
+                        {
+                            overflow: scroll;
+                            height:calc( 80vh - 230px )
+                        }
+
+			&-title
+			{
+
+				font-size: 40px;
+				font-weight: 700;
+				line-height: 52px;
+				color: #011C1A;
+				margin-bottom: 32px;
+			}
+			&-text
+			{
+				color: #4C4636;
+				font-size: 16px;
+				font-weight: 400;
+				line-height: 21px;
+                        }
+
+		}
+
+
+
+
 		&__wrapper
 		{
 			position: sticky;
@@ -1470,7 +1574,9 @@ body.single-memory_page.military
 				font-size: 20px;
 				line-height: 26px;
 				max-width: 640px;
-				margin: 0 auto 75px;
+				margin: 0 auto 10px;
+				max-height: 182px;
+				overflow: hidden;
 			}
 
 			&-place
@@ -1479,7 +1585,7 @@ body.single-memory_page.military
 				padding: 31px 160px 20px;
 				background: #2A2519;
 				border-radius: 12px;
-				margin: 0 auto;
+				margin: 34px auto 0;
 
 				&-inner
 				{
@@ -1993,6 +2099,7 @@ body.single-memory_page.military
 		color: #fff;
 		font-family: $ff-military;
 		font-size: clamp(32px, calc(32px + 46 * (100vw / 1280)), 60px);
+            letter-spacing: 2px;
 
 		span.loaded
 		{

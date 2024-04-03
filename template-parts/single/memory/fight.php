@@ -34,12 +34,22 @@ $died_at = ih_convert_input_date(get_field('died_at', $id), $theme == 'military'
 $mapBoxKey = get_field( 'map_box_key', 'option' );
 ?>
 
+<div class="single-memory-fight__modal hidden">
+    <div class="single-memory-fight__modal__close"></div>
+    <div class="single-memory-fight__modal-content">
+        <h2 class="single-memory-fight__modal-title"><?php echo pll_translate_string( 'Останній бій', $lang ) ?></h2>
+        <p class="single-memory-fight__modal-text"><?php echo esc_html($text); ?></p>
+    </div>
+</div>
+
 <section class="single-memory-fight">
     <div class="single-memory-fight__wrapper">
         <div class="single-memory-fight__section single-memory-fight__section--map">
             <div class="single-memory-fight__start" >
                 <h2 class="single-memory-fight__start-title"><?php echo pll_translate_string( 'Останній бій', $lang ) ?></h2>
                 <p class="single-memory-fight__start-description"><?php echo esc_html($text); ?></p>
+                <span class="single-memory-fight__item-more hidden"><?php echo pll_translate_string('Читати далі', $lang)?></span>
+
                 <div class="single-memory-fight__start-place">
                     <p class="single-memory-fight__start-place__title"><?php echo esc_html($location); ?></p>
                     <p class="single-memory-fight__start-place__country"><?php echo pll_translate_string( 'Україна', $lang ) ?></p>

@@ -9,9 +9,10 @@ jQuery(document).ready(function ($)
     {
         return this.each(function ()
         {
-            let letters = $(this).text().split('');
-            $(this).css({visibility: 'hidden', overflow: 'hidden', position: 'relative'});
-            $(this).width($(this).width());
+            let letters = $(this).text().replace(/\s+/g, ' ').split('');
+            console.log(letters);
+            $(this).css({visibility: 'hidden', overflow: 'hidden', position: 'relative', width:'100vh'});
+            // $(this).width($(this).width());
             $(this).height($(this).height());
 
             let html = '';
@@ -20,12 +21,17 @@ jQuery(document).ready(function ($)
                 html += '<span>' + letters[i] + '</span>';
             }
             $(this).html(html);
-
+            var positions = [];
+            $(this).find('span').each(function (i, e)
+            {
+                positions.push({top:$(this).get(0).offsetTop, left:$(this).get(0).offsetLeft })
+            });
+            console.log(positions);
             $(this).find('span').each(function (i, e)
             {
                 $(this).css({
-                    top: $(this).get(0).offsetTop,
-                    left: $(this).get(0).offsetLeft,
+                    top: positions[i].top,
+                    left: positions[i].left,
                     animationDelay: i * 0.1 + 's'
                 });
             });
@@ -37,14 +43,36 @@ jQuery(document).ready(function ($)
     };
 
     // $(window).load(function()
-    $(document).ready(function()
-    {
+    // {
         $('.single-memory-name').lettering();
-    });
+    // });
 
     /**************************
      *           Fight
      ***************************/
+    checkTextHeight();
+    function checkTextHeight() {
+        var textHeight = $(".single-memory-fight__start-description").outerHeight();
+        if (textHeight > 156) {
+            $(".single-memory-fight__item-more").removeClass("hidden");
+        }
+    }
+
+    $('.single-memory-fight__section--over3').click(function(){
+        if($(this).attr('data-modal') == '1')
+        {
+            $(".single-memory-fight__modal").removeClass('hidden');
+            $('body').addClass('no-scroll');
+        }
+
+    });
+
+    $('.single-memory-fight__modal__close').click(function ()
+    {
+        $('.single-memory-fight__modal').addClass('hidden');
+        $('body').removeClass('no-scroll');
+    });
+
 
     $('.single-memory-fight__section canvas').each(function ()
     {
@@ -70,21 +98,21 @@ jQuery(document).ready(function ($)
 
     $(window).on('scroll', function ()
     {
-        let scrollPos = $(window).scrollTop();
-        let containerTop = $('.single-memory-fight').offset().top;
-        let height = $('.single-memory-fight').height();
-        let percentage = Math.min(height, Math.max(0, scrollPos - containerTop)) / height;
-        if (percentage < 0.25)
-        {
-            $('.single-memory-fight__section--over1').css('opacity', percentage / 0.25);
-        }
-        else if (percentage < 0.5)
-        {
-            $('.single-memory-fight__section--over2').css('opacity', (percentage - 0.25) / 0.25);
-        }
-        else
-        {
-            $('.single-memory-fight__section--over3').css('opacity', (percentage - 0.5) / 0.25);
+        if ($('.single-memory-fight').length) {
+            let scrollPos = $(window).scrollTop();
+            let containerTop = $('.single-memory-fight').offset().top;
+            let height = $('.single-memory-fight').height();
+            let percentage = Math.min(height, Math.max(0, scrollPos - containerTop)) / height;
+            if (percentage < 0.25) {
+                $('.single-memory-fight__section--over1').css('opacity', percentage / 0.25);
+                $('.single-memory-fight__section--over3').css('cursor','pointer').attr('data-modal','1');
+            } else if (percentage < 0.5) {
+                $('.single-memory-fight__section--over2').css('opacity', (percentage - 0.25) / 0.25);
+                $('.single-memory-fight__section--over3').css('cursor','default').attr('data-modal','0');
+            } else {
+                $('.single-memory-fight__section--over3').css('opacity', (percentage - 0.5) / 0.25);
+                $('.single-memory-fight__section--over3').css('cursor','default').attr('data-modal','0');
+            }
         }
     });
 
@@ -219,11 +247,11 @@ jQuery(document).ready(function ($)
             {
                 $(this).addClass('highlighted-1').removeClass('highlighted-2 highlighted-3 highlighted');
             }
-            else if (distance < 150)
+            else if (distance < 250)
             {
                 $(this).addClass('highlighted-2').removeClass('highlighted-1 highlighted-3 highlighted');
             }
-            else if (distance < 200)
+            else if (distance < 500)
             {
                 $(this).addClass('highlighted-3').removeClass('highlighted-1 highlighted-2 highlighted');
             }
