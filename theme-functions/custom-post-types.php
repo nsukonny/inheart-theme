@@ -125,7 +125,7 @@ $labels = [
 ];
 $args = [
 	'labels'				=> $labels,
-	'public'				=> true,
+	'public'				=> false,
 	'publicly_queryable'	=> true,
 	'show_ui'				=> true,
 	'hierarchical'			=> false,

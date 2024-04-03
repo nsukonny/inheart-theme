@@ -12,6 +12,7 @@ function ih_rest_api_init_mono(): void
 
 function ih_mono_handle_status( WP_REST_Request $request )
 {
+	wp_die($request->get_param( 'invoiceId' ));
 	$invoice_id = $request->get_param( 'invoiceId' ) ?? null;
 	$status		= $request->get_param( 'status' ) ?? null;
 	$modified	= $request->get_param( 'modifiedDate' ) ?? null;
@@ -49,6 +50,10 @@ function ih_mono_handle_status( WP_REST_Request $request )
 	file_put_contents(ABSPATH . '/orders.log',  "Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
 
 	ih_send_email_on_status_change( $status, $order_id );
+
+	// Update Memory Page meta if payment is success.
+	if( $status === 'success' && ( $memory_page_id = get_field( 'memory_page_id', $order_id ) ) )
+		update_field( 'is_expanded', 1, $memory_page_id );
 
 	return true;
 }
@@ -216,6 +221,32 @@ function ih_ajax_change_qty(): void
 	wp_send_json_success( ['price' => $price] );
 }
 
+add_action( 'wp_ajax_ih_ajax_update_order_info', 'ih_ajax_update_order_info' );
+/**
+ * Update Order information on page expand.
+ * Main changes depends on military or simple page type.
+ *
+ * @return void
+ */
+function ih_ajax_update_order_info(): void
+{
+	$page_id = ih_clean( $_POST['page'] );
+
+	if( ! $page_id || get_post_type( $page_id ) !== 'memory_page' )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$page_theme = get_field( 'theme', $page_id );
+
+	if( $page_theme === 'military' )
+		wp_send_json_success( [
+			'price' => number_format( ih_get_metal_qr_military_price(), 0, '', ' ' )
+		] );
+
+	wp_send_json_success( [
+		'price' => number_format( ih_get_expanded_page_order_price(), 0, '', ' ' )
+	] );
+}
+
 add_action( 'wp_ajax_ih_ajax_create_order', 'ih_ajax_create_order' );
 /**
  * Create an Order.
@@ -224,6 +255,7 @@ add_action( 'wp_ajax_ih_ajax_create_order', 'ih_ajax_create_order' );
  */
 function ih_ajax_create_order(): void
 {
+	$page_id		= ih_clean( $_POST['page'] );
 	$email			= ih_clean( $_POST['email'] );
 	$phone			= ih_clean( $_POST['phone'] );
 	$city			= ih_clean( $_POST['city'] );
@@ -235,22 +267,29 @@ function ih_ajax_create_order(): void
 	$customer_id	= get_current_user_id();
 
 	if(
-		! $email || ! $phone || ! $city || ! $department ||
+		! $page_id || ! $email || ! $phone || ! $city || ! $department ||
 		! $firstname || ! $lastname || ! $fathername || ! $qr_count
 	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	if( ! $price = ih_get_expanded_page_order_price( $qr_count ) )
+	$page_theme = get_field( 'theme', $page_id );
+
+	if( ! $price = ih_get_expanded_page_order_price( $qr_count, $page_theme === 'military' ) )
 		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
 
 	if( ! $mono_token = get_field( 'mono_token', 'option' ) )
 		wp_send_json_error( ['msg' => __( 'Невірний або відсутній токен', 'inheart' )] );
 
 	// Make a request to MonoBank.
-	$body = json_encode( [
-		'amount'		=> $price * 100,	// UAH kopecks.
-		'redirectUrl'	=> get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
-		'webHookUrl'	=> get_bloginfo( 'url' ) . '/wp-json/mono/acquiring/status',
-		'paymentType'	=> 'debit'
+	$dest	= "Розширена сторінка пам'яті " . get_the_title( $page_id );
+	$body	= json_encode( [
+		'amount'			=> $price * 100,	// UAH kopecks.
+		'redirectUrl'		=> get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
+		'webHookUrl'		=> get_bloginfo( 'url' ) . '/wp-json/mono/acquiring/status',
+		'paymentType'		=> 'debit',
+		'merchantPaymInfo'	=> [
+			'destination'	=> $dest,
+			'comment'		=> $dest
+		]
 	] );
 	$res = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
 		'headers'		=> [
@@ -271,7 +310,7 @@ function ih_ajax_create_order(): void
 
 	// Create new Order.
 	$order_data = [
-		'post_title'	=> "Замовлення від $lastname $firstname $fathername (ID: $customer_id)",
+		'post_title'	=> "Замовлення від $lastname $firstname $fathername (ID: $customer_id, сторінка: $page_id)",
 		'post_status'	=> 'publish',
 		'post_type'		=> 'expanded-page'
 	];
@@ -280,10 +319,16 @@ function ih_ajax_create_order(): void
 	if( is_wp_error( $order_id ) )
 		wp_send_json_error( ['msg' => __( 'Не вдалося створити замовлення', 'inheart' )] );
 
-	$ordered = "Розширена сторінка пам'яті - 1 шт. (" . ih_get_expanded_page_price() . " грн)\n" .
-		"QR-код на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_price() . " грн)\n" .
-		"Загальна вартість: $price грн";
+	if( $page_theme === 'military' ){
+		$ordered = "QR-код військового на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_military_price() . " грн)\n" .
+			"Загальна вартість: $price грн";
+	}else{
+		$ordered = "Розширена сторінка пам'яті - 1 шт. (" . ih_get_expanded_page_price() . " грн)\n" .
+			"QR-код на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_price() . " грн)\n" .
+			"Загальна вартість: $price грн";
+	}
 
+	update_field( 'memory_page_id', $page_id, $order_id );
 	update_field( 'firstname', $firstname, $order_id );
 	update_field( 'lastname', $lastname, $order_id );
 	update_field( 'fathername', $fathername, $order_id );
@@ -330,6 +375,10 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 		update_field( 'status_modified_date', $modified, $order_id );
 		ih_send_email_on_status_change( $order_status, $order_id );
 		$order_status = get_field( 'status', $order_id );	// Get translated label instead of API Eng status.
+
+		// Update Memory Page meta if payment is success.
+		if( $new_status === 'success' && ( $memory_page_id = get_field( 'memory_page_id', $order_id ) ) )
+			update_field( 'is_expanded', 1, $memory_page_id );
 	}
 
 	return $order_status;

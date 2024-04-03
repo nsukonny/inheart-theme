@@ -1,7 +1,7 @@
 <?php
 
 /**
- * memory page preview card.
+ * Memory page preview card.
  *
  * @package WordPress
  * @subpackage inheart
@@ -12,6 +12,7 @@ if( ! $id = $args['id'] ?? null ) return;
 $only_front		= $args['front'] ?? null;
 $date_format	= $args['date_format'] ?? 'dots';
 $mobile_dates	= $args['mobile_dates'] ?? null;
+$is_expanded	= get_field( 'is_expanded', $id ) ? ' expanded' : '';
 $theme			= get_field( 'theme', $id );
 $firstname		= get_field( 'first_name', $id );
 $middlename		= get_field( 'middle_name', $id );
@@ -22,7 +23,10 @@ $died_at		= ih_convert_input_date( get_field( 'died_at', $id ), $date_format, $i
 if( ! $firstname && ! $lastname ) return;
 ?>
 
-<div class="memory-card <?php echo esc_attr( $theme ) ?>" data-id="<?php echo esc_attr( $id ) ?>">
+<div
+	class="memory-card <?php echo esc_attr( $theme . $is_expanded ) ?>"
+	data-id="<?php echo esc_attr( $id ) ?>"
+>
 	<div class="memory-card-inner">
 		<div class="memory-card-top flex direction-column align-center">
 			<?php get_template_part( 'components/cards/memory-page/thumb', null, ['id' => $id] ) ?>
@@ -76,12 +80,19 @@ if( ! $firstname && ! $lastname ) return;
 						</svg>
 						<span class="button-text"><?php esc_html_e( 'Редагувати', 'inheart' ) ?></span>
 					</button>
-					<button class="button dark-mode button-icon-lead expand-to-full" data-id="<?php echo esc_attr( $id ) ?>">
-						<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-							<path d="M8.50016 11.8337L4.58149 14.227L5.64682 9.76033L2.16016 6.77366L6.73682 6.40699L8.50016 2.16699L10.2635 6.40699L14.8408 6.77366L11.3535 9.76033L12.4188 14.227L8.50016 11.8337Z" fill="currentColor"/>
-						</svg>
-						<span class="button-text"><?php esc_html_e( 'Розширити до Повної i замовити qr-код', 'inheart' ) ?></span>
-					</button>
+
+					<?php
+					if( ! $is_expanded ){
+						?>
+						<button class="button dark-mode button-icon-lead expand-to-full" data-id="<?php echo esc_attr( $id ) ?>">
+							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+								<path d="M8.50016 11.8337L4.58149 14.227L5.64682 9.76033L2.16016 6.77366L6.73682 6.40699L8.50016 2.16699L10.2635 6.40699L14.8408 6.77366L11.3535 9.76033L12.4188 14.227L8.50016 11.8337Z" fill="currentColor"/>
+							</svg>
+							<span class="button-text"><?php esc_html_e( 'Розширити до Повної i замовити qr-код', 'inheart' ) ?></span>
+						</button>
+						<?php
+					}
+					?>
 				</div>
 			</div><!-- .memory-card-bottom -->
 			<?php

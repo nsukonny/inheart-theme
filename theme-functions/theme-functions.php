@@ -406,14 +406,28 @@ function ih_get_metal_qr_price(): int
 }
 
 /**
- * Returns the total price of the expanded memory page and metal QRs.
+ * Returns the metal QR-code price for Military page.
  *
- * @param int $qr_count	Count of metal QRs
  * @return int
  */
-function ih_get_expanded_page_order_price( int $qr_count = 1 ): int
+function ih_get_metal_qr_military_price(): int
 {
-	return ih_get_expanded_page_price() + ( ih_get_metal_qr_price() * $qr_count );
+	if( ! $qr_id = get_field( 'qr_code_metal_military', 'option' ) ) return 0;
+
+	return get_field( 'price', $qr_id );
+}
+
+/**
+ * Returns the total price of the expanded memory page and metal QRs.
+ *
+ * @param int  $qr_count Count of metal QRs
+ * @param bool $is_military
+ * @return int
+ */
+function ih_get_expanded_page_order_price( int $qr_count = 1, bool $is_military = false ): int
+{
+	if( $is_military ) return ih_get_metal_qr_military_price() * $qr_count;
+	else return ih_get_expanded_page_price() + ( ih_get_metal_qr_price() * $qr_count );
 }
 
 /**

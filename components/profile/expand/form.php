@@ -112,7 +112,7 @@ $email			= $data->user_email;
 	</div>
 
 	<div class="expand-page-form-right">
-		<?php get_template_part( 'components/profile/expand/form-right' ) ?>
+		<?php get_template_part( 'components/profile/expand/form-right', null, ['expand' => $page_to_expand] ) ?>
 	</div>
 </form><!-- .profile-settings-form -->
 

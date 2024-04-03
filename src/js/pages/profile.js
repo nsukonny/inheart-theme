@@ -22,6 +22,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	loadCities()
 	calculateQRCount()
 	createOrder()
+	updateOrderInfo( document.querySelector( '.expand-page-form' ) )
 } )
 
 /**
@@ -90,6 +91,7 @@ const expandToFull = () => {
 			memoriesSection.classList.add( 'hidden' )
 			expandSection.classList.remove( 'hidden' )
 			form.setAttribute( 'data-page', memoryPageId )
+			updateOrderInfo( form )
 		} )
 	} )
 
@@ -100,6 +102,38 @@ const expandToFull = () => {
 			expandSection.classList.add( 'hidden' )
 		} )
 	}
+}
+
+const updateOrderInfo = form => {
+	if( ! form ) return
+
+	const formData = new FormData()
+
+	if( checkAjaxWorkingStatus() ) return
+
+	setAjaxWorkingStatus( true )
+
+	form.classList.add( 'loading' )
+	formData.append( 'action', 'ih_ajax_update_order_info' )
+	formData.append( 'page', form.dataset.page )
+
+	ihAjaxRequest( formData ).then( res => {
+		form.classList.remove( 'loading' )
+
+		if( res ){
+			switch( res.success ){
+				case true:
+					form.querySelector( 'button[type="submit"] span' ).innerText = res.data.price
+					break
+
+				case false:
+					showNotification( res.data.msg, 'error' )
+					break
+			}
+		}
+
+		setAjaxWorkingStatus( false )
+	} )
 }
 
 /**
@@ -367,7 +401,8 @@ const calculateQRCount = () => {
 		countEl.dispatchEvent( new Event( 'change' ) )
 	}
 
-	countEl.addEventListener( 'change', customDebounce( onQuantityChange, 350 ) )
+	countEl.addEventListener( 'change', onQuantityChange )
+	countEl.addEventListener( 'input', onQuantityChange )
 
 	buttons.forEach( btn => {
 		btn.addEventListener( 'click', onButtonClick )
@@ -392,6 +427,7 @@ const createOrder = () => {
 
 		target.classList.add( 'disabled' )
 		formData.append( 'action', 'ih_ajax_create_order' )
+		formData.append( 'page', form.dataset.page )
 
 		ihAjaxRequest( formData ).then( res => {
 			target.classList.remove( 'disabled' )
