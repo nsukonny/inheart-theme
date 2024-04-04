@@ -166,6 +166,34 @@ $args = [
 ];
 register_post_type( 'expanded-page', $args );
 
+// QR codes.
+$labels = [
+	'name'			=> __( 'QR коди', 'inheart' ),
+	'singular_name'	=> __( 'QR код', 'inheart' ),
+	'add_new'		=> __( 'Додати QR код', 'inheart' ),
+	'add_new_item'	=> __( 'Додати новий QR код', 'inheart' ),
+	'edit_item'		=> __( 'Редагувати', 'inheart' ),
+	'new_item'		=> __( 'Новий QR код', 'inheart' ),
+	'all_item'		=> __( 'Усі QR коди', 'inheart' ),
+	'view_item'		=> __( 'Дивитись', 'inheart' ),
+	'search_item'	=> __( 'Пошук', 'inheart' ),
+	'menu_item'		=> __( 'QR коди', 'inheart' )
+];
+$args = [
+	'labels'				=> $labels,
+	'public'				=> true,
+	'publicly_queryable'	=> true,
+	'show_ui'				=> true,
+	'hierarchical'			=> false,
+	'menu_icon'				=> 'dashicons-admin-links',
+	'menu_position'			=> 6,
+	'has_archive'			=> false,
+	'show_in_rest'			=> true,
+	'supports'				=> ['title'],
+	'rewrite'				=> ['slug' => 'qr']
+];
+register_post_type( 'qr', $args );
+
 // Rewards.
 register_taxonomy( 'rewards', ['reward'], [
 	'label'                 => '',

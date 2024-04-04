@@ -10,7 +10,13 @@ function ih_rest_api_init_mono(): void
 	] );
 }
 
-function ih_mono_handle_status( WP_REST_Request $request )
+/**
+ * MonoBank webhook callback.
+ *
+ * @param WP_REST_Request $request
+ * @return WP_REST_Request
+ */
+function ih_mono_handle_status( WP_REST_Request $request ): WP_REST_Request
 {
 	date_default_timezone_set('UTC');
 	$current_date = date( 'd.m.Y H:i:s' );
@@ -52,14 +58,18 @@ function ih_mono_handle_status( WP_REST_Request $request )
 	file_put_contents(ABSPATH . '/orders.log',  "$current_date __ Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
 
 	ih_send_email_on_status_change( $status, $order_id );
+	ih_check_and_update_order_status( $order_id, $status );
 
-	// Update Memory Page meta if payment is success.
-	if( $status === 'success' && ( $memory_page_id = get_field( 'memory_page_id', $order_id ) ) )
-		update_field( 'is_expanded', 1, $memory_page_id );
-
-	return true;
+	return $request;
 }
 
+/**
+ * Send emails depending on Order status.
+ *
+ * @param string $status
+ * @param int    $order_id
+ * @return bool
+ */
 function ih_send_email_on_status_change( string $status, int $order_id ): bool
 {
 	if( ! $status || ! $order_id || get_post_type( $order_id ) !== 'expanded-page' ) return false;
@@ -388,10 +398,7 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 		update_field( 'status_modified_date', $modified, $order_id );
 		ih_send_email_on_status_change( $order_status, $order_id );
 		$order_status = get_field( 'status', $order_id );	// Get translated label instead of API Eng status.
-
-		// Update Memory Page meta if payment is success.
-		if( $new_status === 'success' && ( $memory_page_id = get_field( 'memory_page_id', $order_id ) ) )
-			update_field( 'is_expanded', 1, $memory_page_id );
+		ih_check_and_update_order_status( $order_id, $new_status );
 	}
 
 	return $order_status;
@@ -412,5 +419,69 @@ function ih_get_latest_invoice_id( int $customer_id ): int
 	if( empty( $latest_invoice ) ) return 0;
 
 	return $latest_invoice[0]->ID;
+}
+
+/**
+ * Check Order status and update necessary data.
+ *
+ * @param int    $order_id
+ * @param string $new_status
+ * @return bool
+ */
+function ih_check_and_update_order_status( int $order_id, string $new_status ): bool
+{
+	// If payment is success.
+	if( $new_status === 'success' && ( $memory_page_id = get_field( 'memory_page_id', $order_id ) ) ){
+		// Update Memory Page meta.
+		update_field( 'is_expanded', 1, $memory_page_id );
+
+		// Create new QR.
+		$qr_data = [
+			'post_type'		=> 'qr',
+			'post_title'	=> "Замовлено для сторінки #$memory_page_id (" . get_the_title( $memory_page_id ) . ")",
+			'post_status'	=> 'draft'
+		];
+		$qr_id = wp_insert_post( wp_slash( $qr_data ) );
+
+		if( is_wp_error( $qr_id ) ) return false;
+
+		wp_update_post( [
+			'ID'			=> $qr_id,
+			'post_name'		=> $qr_id,
+			'post_status'	=> 'publish'
+		] );
+
+		$memory_page_url = get_the_permalink( $memory_page_id );
+		update_field( 'memory_page_id', $memory_page_id, $qr_id );
+		update_field( 'memory_page_url', $memory_page_url, $qr_id );
+
+		/**
+		 * Send email to Admin.
+		 *
+		 * @see Theme Settings -> Email Templates -> QR -> QR Created.
+		 */
+		$subject	= get_field( 'qr_created_subject', 'option' );
+		$body		= get_field( 'qr_created_body', 'option' );
+
+		if( $subject && $body ){
+			$body = str_replace(
+				['[qr_id]', '[qr_admin_url]', '[mp_id]', '[mp_admin_url]', '[mp_url]'],
+				[$qr_id, get_edit_post_link( $qr_id ), $memory_page_id, get_edit_post_link( $memory_page_id ), $memory_page_url],
+				$body
+			);
+			$body = str_replace(
+				['https://https://', 'http://https://', 'http://http://'],
+				['https://', 'https://', 'http://'],
+				$body
+			);
+
+			add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+			wp_mail( get_option( 'admin_email' ), $subject, $body );
+			remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+		}
+
+	}
+
+	return true;
 }
 
