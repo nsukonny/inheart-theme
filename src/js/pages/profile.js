@@ -110,9 +110,11 @@ const expandToFull = () => {
  * @param form
  */
 const updateOrderInfo = form => {
+	if( ! form ) return
+
 	const pageId = form.dataset.page
 
-	if( ! form || ! pageId ) return
+	if( ! pageId ) return
 
 	const formData = new FormData()
 

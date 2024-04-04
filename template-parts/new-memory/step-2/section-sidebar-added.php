@@ -27,6 +27,7 @@ if( ! $title || ( $position != 0 && ! $position ) ) return;
 	class="section flex flex-wrap align-center<?php echo $class ?>"
 	data-order="<?php echo esc_attr( $position ) ?>"
 	data-id="<?php echo esc_attr( $index ) ?>"
+	data-title="<?php echo esc_attr( $title ) ?>"
 >
 	<div class="section-label">
 		<?php echo esc_html( $title ) ?>

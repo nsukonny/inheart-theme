@@ -9,6 +9,7 @@
  * @package WordPress
  * @subpackage inheart
  */
+
 if( ! $section = $args['section'] ?? null ) return;
 
 $memory_page_id		= $_SESSION['memory_page_id'] ?? 0;
