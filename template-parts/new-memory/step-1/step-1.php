@@ -113,7 +113,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 								<rect y="0.265625" width="24" height="24" fill="currentColor"/>
 							</g>
 						</svg>
-						<?php esc_html_e( "Додати пам'ятну фотографію", 'inheart' ) ?>
+						<?php _e( "Додати пам'ятну фотографію", 'inheart' ) ?>
 					</span>
 					<span class="button lg outlined button-icon-lead added">
 						<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +124,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 								<rect y="0.265625" width="24" height="24" fill="currentColor"/>
 							</g>
 						</svg>
-						<?php esc_html_e( "Змінити пам'ятну фотографію", 'inheart' ) ?>
+						<?php _e( "Змінити пам'ятну фотографію", 'inheart' ) ?>
 					</span>
 					<input
 						id="photo"
@@ -146,10 +146,10 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 			</div>
 			<div class="popup-buttons flex flex-wrap align-center justify-center">
 				<button class="btn simple min-width popup-discard-photo">
-					<?php esc_html_e( 'Скасувати', 'inheart' ) ?>
+					<?php _e( 'Скасувати', 'inheart' ) ?>
 				</button>
 				<button class="btn lg primary min-width popup-save-photo">
-					<?php esc_html_e( 'Зберігти', 'inheart' ) ?>
+					<?php _e( 'Зберегти', 'inheart' ) ?>
 				</button>
 			</div>
 		</div>
