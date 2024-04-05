@@ -21,12 +21,18 @@ function ih_mono_handle_status( WP_REST_Request $request ): WP_REST_Request
 	date_default_timezone_set('UTC');
 	$current_date = date( 'd.m.Y H:i:s' );
 
-	$invoice_id = $request->get_param( 'invoiceId' ) ?? null;
-	$status		= $request->get_param( 'status' ) ?? null;
-	$modified	= $request->get_param( 'modifiedDate' ) ?? null;
+	if( ! $req_body = $request->get_body() ?? null ){
+		file_put_contents( ABSPATH . '/orders.log', "$current_date __: No request body provided." . PHP_EOL, FILE_APPEND );
+		return $request;
+	}
+
+	$req_arr	= json_decode( $req_body, true );
+	$invoice_id = $req_arr['invoiceId'] ?? null;
+	$status		= $req_arr['status'] ?? null;
+	$modified	= $req_arr['modifiedDate'] ?? null;
 
 	if( ! $invoice_id || ! $status || ! $modified ){
-		file_put_contents(ABSPATH . '/orders.log',  "$current_date __ No data passed for invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "$current_date __: No invoice data passed." . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
@@ -40,7 +46,7 @@ function ih_mono_handle_status( WP_REST_Request $request ): WP_REST_Request
 	] );
 
 	if( empty( $order ) ){
-		file_put_contents(ABSPATH . '/orders.log',  "$current_date __ No order with invoice ID $invoice_id" . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "$current_date __: No order with provided invoice ID $invoice_id." . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
@@ -49,13 +55,13 @@ function ih_mono_handle_status( WP_REST_Request $request ): WP_REST_Request
 	$modified		= strtotime( $modified );
 
 	if( $modified <= $prev_modified ){
-		file_put_contents(ABSPATH . '/orders.log',  "$current_date __ Modified date is old" . PHP_EOL, FILE_APPEND );
+		file_put_contents(ABSPATH . '/orders.log',  "$current_date __: Invoice modified date is old." . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
 
 	update_field( 'status', $status, $order_id );
 	update_field( 'status_modified_date', $modified, $order_id );
-	file_put_contents(ABSPATH . '/orders.log',  "$current_date __ Order $order_id updated with status $status" . PHP_EOL, FILE_APPEND );
+	file_put_contents(ABSPATH . '/orders.log',  "$current_date __: Order $order_id updated with new status $status." . PHP_EOL, FILE_APPEND );
 
 	ih_send_email_on_status_change( $status, $order_id );
 	ih_check_and_update_order_status( $order_id, $status );
