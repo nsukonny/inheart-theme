@@ -132,11 +132,6 @@ function ih_send_email_on_status_change( string $status, int $order_id ): bool
 		[$invoice_id, $firstname, $lastname, $fathername, $ordered],
 		$body
 	);
-	$body = str_replace(
-		['https://https://', 'http://https://', 'http://http://'],
-		['https://', 'https://', 'http://'],
-		$body
-	);
 
 	add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 	$send = wp_mail( $email, $subject, $body );
@@ -283,11 +278,29 @@ function ih_ajax_create_order(): void
 	$fathername		= ih_clean( $_POST['fathername'] );
 	$qr_count		= ih_clean( $_POST['qr-count-qty'] );
 	$customer_id	= get_current_user_id();
+	$mp_author_id	= ( int ) get_post_field ( 'post_author', $page_id );	// Memory page author ID.
 
+	// No Memory page ID provided or Memory page ID is incorrect.
+	if( ! $page_id || get_post_type( $page_id ) !== 'memory_page' )
+		wp_send_json_error( ['msg' => __( "Невірні дані сторінки пам'яті", 'inheart' )] );
+
+	// Current User is not an author of this Memory page.
+	if( $customer_id !== $mp_author_id )
+		wp_send_json_error( ['msg' => __( "Ви не автор цієї сторінки пам'яті", 'inheart' )] );
+
+	// Memory page is already expanded.
+	if( get_field( 'is_expanded', $page_id ) )
+		wp_send_json_error( ['msg' => __( "Ця сторінка пам'яті вже є розширеною", 'inheart' )] );
+
+	// No QR codes count provided.
+	if( ! $qr_count )
+		wp_send_json_error( ['msg' => __( 'Не вказана кількість QR кодів', 'inheart' )] );
+
+	// Not all fields are filled.
 	if(
-		! $page_id || ! $email || ! $phone || ! $city || ! $department ||
-		! $firstname || ! $lastname || ! $fathername || ! $qr_count
-	) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+		! $email || ! $phone || ! $city || ! $department ||
+		! $firstname || ! $lastname || ! $fathername
+	) wp_send_json_error( ['msg' => __( 'Заповніть всі поля', 'inheart' )] );
 
 	$page_theme = get_field( 'theme', $page_id );
 
@@ -326,6 +339,9 @@ function ih_ajax_create_order(): void
 	if( empty( $res_body ) )
 		wp_send_json_error( ['msg' => __( 'Помилка під час створення запиту до оплати', 'inheart' )] );
 
+	if( ! $invoice_id = $res_body['invoiceId'] ?? null )
+		wp_send_json_error( ['msg' => __( 'Відповідь банку не містить ID рахунку', 'inheart' )] );
+
 	// Create new Order.
 	$order_data = [
 		'post_title'	=> "Замовлення від $lastname $firstname $fathername (ID: $customer_id, сторінка: $page_id)",
@@ -355,9 +371,36 @@ function ih_ajax_create_order(): void
 	update_field( 'customer_id', $customer_id, $order_id );
 	update_field( 'city', $city, $order_id );
 	update_field( 'department', $department, $order_id );
-	update_field( 'invoice_id', $res_body['invoiceId'], $order_id );
+	update_field( 'invoice_id', $invoice_id, $order_id );
 	update_field( 'status_modified_date', 0, $order_id );
 	update_field( 'ordered', $ordered, $order_id );
+
+	/**
+	 * Send email to Admin.
+	 *
+	 * @see Theme Settings -> Email Templates -> Orders -> Order Created.
+	 */
+	$subject	= get_field( 'order_created_subject_admin', 'option' );
+	$body		= get_field( 'order_created_body_admin', 'option' );
+
+	if( $subject && $body ){
+		$body	= str_replace( ['https://[', 'http://['], '[', $body );
+		$body	= str_replace(
+			[
+				'[firstname]', '[lastname]', '[fathername]',
+				'[invoice_id]', '[ordered]', '[order_admin_url]'
+			],
+			[
+				$firstname, $lastname, $fathername,
+				$invoice_id, $ordered, get_edit_post_link( $order_id )
+			],
+			$body
+		);
+
+		add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+		wp_mail( get_option( 'admin_email' ), $subject, $body );
+		remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+	}
 
 	// Update Customer's fathername if it's not exists yet.
 	if( ! get_field( 'fathername', "user_$customer_id" ) )
@@ -470,14 +513,28 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 		$body		= get_field( 'qr_created_body', 'option' );
 
 		if( $subject && $body ){
-			$body = str_replace(
-				['[qr_id]', '[qr_admin_url]', '[mp_id]', '[mp_admin_url]', '[mp_url]'],
-				[$qr_id, get_edit_post_link( $qr_id ), $memory_page_id, get_edit_post_link( $memory_page_id ), $memory_page_url],
-				$body
-			);
-			$body = str_replace(
-				['https://https://', 'http://https://', 'http://http://'],
-				['https://', 'https://', 'http://'],
+			$firstname	= get_field( 'firstname', $order_id );
+			$lastname	= get_field( 'lastname', $order_id );
+			$fathername	= get_field( 'fathername', $order_id );
+			$email		= get_field( 'email', $order_id );
+			$phone		= get_field( 'phone', $order_id );
+			$city		= get_field( 'city', $order_id );
+			$department	= get_field( 'department', $order_id );
+
+			$body	= str_replace( ['https://[', 'http://['], '[', $body );
+			$body	= str_replace(
+				[
+					'[qr_id]', '[qr_admin_url]', '[mp_id]',
+					'[mp_admin_url]', '[mp_url]', '[firstname]',
+					'[lastname]', '[fathername]', '[email]',
+					'[phone]', '[city]', '[department]'
+				],
+				[
+					$qr_id, get_edit_post_link( $qr_id ), $memory_page_id,
+					get_edit_post_link( $memory_page_id ), $memory_page_url, $firstname,
+					$lastname, $fathername, $email,
+					$phone, $city, $department
+				],
 				$body
 			);
 
@@ -485,7 +542,6 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 			wp_mail( get_option( 'admin_email' ), $subject, $body );
 			remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 		}
-
 	}
 
 	return true;
