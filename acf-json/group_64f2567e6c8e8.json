@@ -91,7 +91,7 @@
         },
         {
             "key": "field_64fcdfbcc229d",
-            "label": "Gogole Maps API",
+            "label": "Google Maps API",
             "name": "",
             "aria-label": "",
             "type": "tab",
@@ -298,7 +298,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "34",
                 "class": "",
                 "id": ""
             },
@@ -324,7 +324,33 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "production"
+            ],
+            "post_status": "",
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_660db62016fa8",
+            "label": "QR-код на металевій пластині (Військовий)",
+            "name": "qr_code_metal_military",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Товар для отримання ціни металевого QR-коду",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
                 "class": "",
                 "id": ""
             },
@@ -576,5 +602,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1711817648
+    "modified": 1712185231
 }

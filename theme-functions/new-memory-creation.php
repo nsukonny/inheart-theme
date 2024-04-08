@@ -557,13 +557,13 @@ function ih_ajax_upload_memory_video(): void
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_video_types	= ['video/mp4', 'video/mpeg', 'video/x-msvideo'];
-	$max_file_size			= 1_073_741_824;
+	$max_file_size			= 209_715_200;
 
 	// Check conditions for the image.
 	if( ! in_array( $file['type'], $allowed_video_types ) || ( int ) $file['size'] > $max_file_size )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => __( 'Тільки ( avi | mp4 | mpeg ) меньше 1 гб', 'inheart' )
+			'msg'       => __( 'Тільки ( avi | mp4 | mpeg ) меньше 200 мб', 'inheart' )
 		] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );

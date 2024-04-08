@@ -8,19 +8,25 @@
  * @subpackage inheart
  */
 
+$page_to_expand = $args['expand'] ?? '';
 $photo			= get_field( 'photo_placeholder' );
 $advantages		= get_field( 'advantages' );
 $advantages_pro	= get_field( 'advantages_pro' );
 $title_qr		= get_field( 'title_qr' );
 $photo_qr		= get_field( 'photo_qr' );
 $desc_qr		= get_field( 'desc_qr' );
-$expanded_id	= get_field( 'expanded_memory_page', 'option' );
-$qr_id			= get_field( 'qr_code_metal', 'option' );
 $full_price		= 0;
 
-if( $expanded_id && get_post_type( $expanded_id ) === 'production' ) $full_price += get_field( 'price', $expanded_id );
+if( $page_to_expand ){
+	$page_theme = get_field( 'theme', $page_to_expand );
 
-if( $qr_id && get_post_type( $qr_id ) === 'production' ) $full_price += get_field( 'price', $qr_id );
+	if( $page_theme === 'military' )
+		$full_price = ih_get_metal_qr_military_price();
+	else
+		$full_price = ih_get_expanded_page_order_price();
+}else{
+	$full_price = ih_get_expanded_page_order_price();
+}
 ?>
 
 <div class="expand-page-form-right flex direction-column">

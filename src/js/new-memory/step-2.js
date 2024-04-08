@@ -15,7 +15,8 @@ const stepData = {}
 let sectionsWrapper,
 	sectionsListWrapper,
 	militarySectionsWrapper,
-	sectionsContent
+	sectionsContent,
+	originalContentSection
 
 /**
  * Add section to added sections list.
@@ -25,6 +26,7 @@ export const addSection = () => {
 	sectionsListWrapper		= sectionsWrapper.querySelector( '.sections-list' )
 	militarySectionsWrapper	= document.querySelector( '.sections-military' )
 	sectionsContent			= document.querySelector( '.sections-content' )
+	originalContentSection	= document.querySelector( '.section-content.original' )
 
 	if( ! sectionsWrapper || ! sectionsContent ) return
 
@@ -42,7 +44,7 @@ export const addSection = () => {
 			sectionId				= targetSection.id || null,
 			isCustom				= targetSection.classList.contains( 'custom' ),
 			clonedSection			= targetSection.cloneNode( true ),
-			clonedSectionContent	= sectionsContent.querySelector( '.section-content' ).cloneNode( true ),
+			clonedSectionContent	= originalContentSection.cloneNode( true ),
 			clonedTextarea			= clonedSectionContent.querySelector( '.section-content-text' ),
 			randomId				= Math.random() * 9999 + '_' + Math.random() * 9999
 
@@ -61,13 +63,23 @@ export const addSection = () => {
 		addedSectionsWrapper.append( clonedSection )
 
 		// Add new content.
+		clonedSectionContent.className = 'section-content'
 		clonedSectionContent.querySelector( 'textarea' ).innerText = ''
 		clonedSectionContent.querySelector( '.section-content-title' ).innerText = clonedSection.querySelector( '.section-label' ).innerText
+
 		// Change SVG IDs and so on.
-		clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ randomId }`
-		clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ randomId })` )
-		clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ randomId }`
-		clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ randomId })` )
+		if( clonedSectionContent.querySelector( '[id^="content-drag-"]' ) )
+			clonedSectionContent.querySelector( '[id^="content-drag-"]' ).id = `content-drag-${ randomId }`
+
+		if( clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ) )
+			clonedSectionContent.querySelector( '[mask^="url(#content-drag-"]' ).setAttribute( 'mask', `url(#content-drag-${ randomId })` )
+
+		if( clonedSectionContent.querySelector( '[id^="content-remove-"]' ) )
+			clonedSectionContent.querySelector( '[id^="content-remove-"]' ).id = `content-remove-${ randomId }`
+
+		if( clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ) )
+			clonedSectionContent.querySelector( '[mask^="url(#content-remove-"]' ).setAttribute( 'mask', `url(#content-remove-${ randomId })` )
+
 		clonedSectionContent.setAttribute( 'data-id', clonedSection.dataset.id )
 		clonedTextarea.value = ''	// Clear value.
 
@@ -193,8 +205,7 @@ export const removeSidebarAddedSection = () => {
 
 			const clonedSection = targetSection.cloneNode( true )
 
-			clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
-			returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.order ), clonedSection )
+			returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.id ), clonedSection )
 
 			if( sectionRealId === 'last-fight' ) removeLastFightSection( sectionContent )
 
@@ -232,8 +243,7 @@ export const removeContentSection = () => {
 
 		const clonedSection = targetSection.cloneNode( true )
 
-		clonedSection.querySelector( '.section-label' ).innerText = clonedSection.dataset.title
-		returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.order ), clonedSection )
+		returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.id ), clonedSection )
 
 		if( sectionRealId === 'last-fight' ) removeLastFightSection( targetContent )
 
@@ -248,9 +258,9 @@ export const removeContentSection = () => {
  * @param order
  * @param clonedSection
  */
-const returnSectionToItsPlace = ( isMilitary, order, clonedSection ) => {
+const returnSectionToItsPlace = ( isMilitary, id, clonedSection ) => {
 	if( isMilitary && militarySectionsWrapper ){
-		const next = militarySectionsWrapper.querySelector( `.section[data-order="${ order + 1 }"]` )
+		const next = militarySectionsWrapper.querySelector( `.section[data-id="${ id + 1 }"]` )
 
 		if( ! next ){
 			const sections = militarySectionsWrapper.querySelectorAll( '.section' )
@@ -263,7 +273,7 @@ const returnSectionToItsPlace = ( isMilitary, order, clonedSection ) => {
 				sections.forEach( section => {
 					const sectionOrder = parseInt( section.dataset.order )
 
-					if( sectionOrder > order ){
+					if( sectionOrder > id ){
 						section.parentNode.insertBefore( clonedSection, section )
 						inserted = true
 					}
@@ -275,7 +285,7 @@ const returnSectionToItsPlace = ( isMilitary, order, clonedSection ) => {
 			next.parentNode.insertBefore( clonedSection, next )
 		}
 	}else{
-		const next = sectionsListWrapper.querySelector( `.section[data-order="${ order + 1 }"]` )
+		const next = sectionsListWrapper.querySelector( `.section[data-id="${ id + 1 }"]` )
 
 		if( ! next ){
 			let sections = sectionsListWrapper.querySelectorAll( '.section' )
@@ -290,7 +300,7 @@ const returnSectionToItsPlace = ( isMilitary, order, clonedSection ) => {
 
 					const sectionOrder = parseInt( section.dataset.order )
 
-					if( sectionOrder > order ){
+					if( sectionOrder > id ){
 						section.parentNode.insertBefore( clonedSection, section )
 						inserted = true
 					}
@@ -432,11 +442,13 @@ export const dragOrderSections = () => {
 }
 
 const checkSectionsIndexes = () => {
-	const sections = document.querySelectorAll( '.section-content' )
+	const sections = document.querySelectorAll( '.section-content:not(.hidden)' )
 
 	if( ! sections.length ) return
 
-	sections.forEach( ( section, i ) => stepData[section.dataset.id].position = i )
+	sections.forEach( ( section, i ) => {
+		stepData[section.dataset.id].position = i
+	} )
 	localStorage.setItem( 'ih-step-2', JSON.stringify( stepData ) )
 }
 

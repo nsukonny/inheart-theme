@@ -42,6 +42,21 @@ function ih_block_admin_access(): void
 	}
 }
 
+add_action( 'template_redirect', 'ih_template_redirect' );
+/**
+ * Redirect user depending on some conditions.
+ *
+ * @return void
+ */
+function ih_template_redirect(): void
+{
+	// Redirect from QR single page to its connected Memory page.
+	if( is_singular( 'qr' ) && ( $redirect = get_field( 'memory_page_url' ) ) ){
+		wp_redirect( $redirect );
+		exit;
+	}
+}
+
 add_action( 'wp_ajax_nopriv_ih_ajax_login', 'ih_ajax_login' );
 /**
  * Custom login logic.

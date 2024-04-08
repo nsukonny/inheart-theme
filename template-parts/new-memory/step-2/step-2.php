@@ -250,6 +250,7 @@ if( $ready_sections ){
 	</div><!-- .container -->
 
 	<?php
+	get_template_part( 'template-parts/new-memory/step-2/section-content-original' );
 	get_template_part( 'template-parts/new-memory/step-2/section-content-last-fight', null, [
 		'section'	=> $last_fight,
 		'class'		=> 'hidden'

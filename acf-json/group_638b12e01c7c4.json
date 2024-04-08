@@ -3,6 +3,43 @@
     "title": "Сторінка пам'яті",
     "fields": [
         {
+            "key": "field_660dc442d9eef",
+            "label": "Загальна інформація",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_660dc458d9ef0",
+            "label": "Розширена сторінка",
+            "name": "is_expanded",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_64ca98a8c1dcc",
             "label": "Step 0",
             "name": "",
@@ -1370,5 +1407,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1709761737
+    "modified": 1712179012
 }

@@ -30,7 +30,7 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 			<?php esc_html_e( 'Перетягніть відеофайл сюди', 'inheart' ) ?>
 		</div>
 		<div class="droparea-desc">
-			<p><?php esc_html_e( 'AVI, MP4, або MPEG до 1 гб', 'inheart' ) ?></p>
+			<p><?php esc_html_e( 'AVI, MP4, або MPEG до 200 мб', 'inheart' ) ?></p>
 		</div>
 		<label for="file-video" class="label-button btn sm gray br-24">
 			<span class="label-button-text">

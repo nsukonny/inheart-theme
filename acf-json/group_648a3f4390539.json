@@ -310,6 +310,46 @@
             "endpoint": 0
         },
         {
+            "key": "field_6611cec21dadf",
+            "label": "Тема листа - замовлення створено (Адміністратору)",
+            "name": "order_created_subject_admin",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Замовлення створено",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6611ced71dae0",
+            "label": "Тіло листа - замовлення створено (Адміністратору)",
+            "name": "order_created_body_admin",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [invoice_id], [firstname], [lastname], [fathername], [ordered], [order_admin_url]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
             "key": "field_65b64d836773a",
             "label": "Тема листа - замовлення створено",
             "name": "order_created_subject",
@@ -588,6 +628,63 @@
             "toolbar": "full",
             "media_upload": 1,
             "delay": 0
+        },
+        {
+            "key": "field_660f167fa1e4a",
+            "label": "QR коди",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_660f1694a1e4b",
+            "label": "Тема листа - QR код створено (Адміністратору)",
+            "name": "qr_created_subject",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Новий QR код створено",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_660f1698a1e4c",
+            "label": "Тіло листа - QR код створено (Адміністратору)",
+            "name": "qr_created_body",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Ви можете користуватися цими плейсхолдерами: [qr_id], [qr_admin_url], [mp_id], [mp_admin_url], [mp_url], [firstname], [lastname], [fathername], [email], [phone], [city], [department]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "75",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [
@@ -608,5 +705,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706448301
+    "modified": 1712443397
 }
