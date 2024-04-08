@@ -18,6 +18,7 @@ $latitude = get_field('latitude', $id);
 $how_to_find = get_field('how_to_find', $id);
 $key = get_field('google_maps_api_key', 'option');
 $mapBoxKey = get_field( 'map_box_key', 'option' );
+
 ?>
 
 <section class="single-memory-place">
@@ -43,9 +44,9 @@ $mapBoxKey = get_field( 'map_box_key', 'option' );
                 <?php
                 endif;
 
-            elseif ($latitude && $longitude && $mapBoxKey) :
+            elseif ( $mapBoxKey && $longitude && $latitude ) :
                 ?>
-                <div id="single-memory-place-map"
+                <div id="single-memory-place-map2"
                      class="single-memory-place__map mapbox"
                      data-long="<?php echo esc_attr($longitude) ?>"
                      data-lat="<?php echo esc_attr($latitude) ?>"

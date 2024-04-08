@@ -30,8 +30,8 @@ if(!isset($lastFightSection['location']) || !isset($lastFightSection['text']))
 $location = $lastFightSection['location'];
 $text = $lastFightSection['text'];
 $died_at = ih_convert_input_date(get_field('died_at', $id), $theme == 'military' ? 'rome-lf' : null);
-
 $mapBoxKey = get_field( 'map_box_key', 'option' );
+
 ?>
 
 <div class="single-memory-fight__modal hidden">

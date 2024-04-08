@@ -66,7 +66,7 @@ $rewards = array_chunk($rewards, 4);
                                         <?php echo esc_html($rewardTitle); ?>
                                     </div>
                                     <div class="single-memory-rewards__item-degree">
-                                        III ступеня *
+
                                     </div>
                                 </div>
 
@@ -77,7 +77,7 @@ $rewards = array_chunk($rewards, 4);
                                     <?php echo esc_html($rewardTitle); ?>
                                 </div>
                                 <div class="single-memory-rewards__item-degree">
-                                    III ступеня *
+
                                 </div>
 
                                 <div class="single-memory-rewards__item-description">
@@ -128,7 +128,7 @@ $rewards = array_chunk($rewards, 4);
                             <?php echo esc_html($rewardTitle); ?>
                         </div>
                         <div class="single-memory-rewards__item-degree">
-                            III ступеня
+                            
                         </div>
                         <div class="single-memory-rewards__item-description">
                             <?php

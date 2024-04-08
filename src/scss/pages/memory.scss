@@ -1394,6 +1394,7 @@ body.single-memory_page.military
 		}
 		&__modal
 		{
+			text-align: center;
 			color: #4C4636;
 			width: 90%;
 			max-width: 800px;
@@ -1402,12 +1403,35 @@ body.single-memory_page.military
 			border-radius: 30px;
 			left: 0;
 			top: 10vh;
-                        height:80vh;
+					//height:80vh;
 			right: 0;
 			margin: auto;
 			background: #fff;
-			padding: 106px 160px;
+			padding: 106px 40px;
                         z-index: 5;
+			overflow-x:hidden;
+
+			scrollbar-width: thin;
+			scrollbar-color: #C69A39 rgba(1, 28, 26, 0.12);
+
+			&::-webkit-scrollbar {
+				width: 12px;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: rgba(1, 28, 26, 0.12);
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: #C69A39;
+				border-radius: 10px;
+				border: 3px solid rgba(1, 28, 26, 0.12);
+			}
+			&-content
+			{
+				padding: 0 120px;
+			}
+
 
 			&__close
 			{
@@ -1446,13 +1470,13 @@ body.single-memory_page.military
 
                         &-content
                         {
-                            overflow: scroll;
+                            overflow: auto;
                             height:calc( 80vh - 230px )
                         }
 
 			&-title
 			{
-
+				text-align: center;
 				font-size: 40px;
 				font-weight: 700;
 				line-height: 52px;
@@ -1466,6 +1490,38 @@ body.single-memory_page.military
 				font-weight: 400;
 				line-height: 21px;
                         }
+
+		}
+		@media screen and (max-width: 1320px)
+		{
+			&__modal
+			{
+				padding: 106px 40px;
+
+				&-content
+				{
+					padding: 0 84px;
+				}
+			}
+
+
+		}
+		@media screen and (max-width: 750px)
+		{
+			&__modal
+			{
+				width: 100vw;
+				height: 100vh;
+				top: 0;
+				padding: 70px 8px 0;
+				border-radius: 0;
+
+				&-content
+				{
+					height: 100%;
+					padding: 0 8px;
+				}
+			}
 
 		}
 
@@ -2096,6 +2152,7 @@ body.single-memory_page.military
 
 	.single-memory-name
 	{
+		width: 100vw;
 		color: #fff;
 		font-family: $ff-military;
 		font-size: clamp(32px, calc(32px + 46 * (100vw / 1280)), 60px);
@@ -2194,22 +2251,46 @@ body.single-memory_page.military
 
 			&:first-child
 			{
-				left: -15%;
+				left: 25%;
 			}
 
 			&:last-child
 			{
-				right: -15%;
+				right: 25%;
 			}
-			@media screen and (max-width: 1000px) {
+			@media screen and (max-width: 1520px) {
 				&:first-child
 				{
-					left: -5%;
+					left: 20%;
 				}
 
 				&:last-child
 				{
-					right: -5%;
+					right: 20%;
+				}
+
+			}
+			@media screen and (max-width: 1320px) {
+				&:first-child
+				{
+					left: 10%;
+				}
+
+				&:last-child
+				{
+					right: 10%;
+				}
+
+			}
+			@media screen and (max-width: 1000px) {
+				&:first-child
+				{
+					left: 5%;
+				}
+
+				&:last-child
+				{
+					right: 5%;
 				}
 
 			}
@@ -2238,6 +2319,18 @@ body.single-memory_page.military
 			padding: 50px;
 			display: flex;
 			flex-wrap: wrap;
+
+			&-army
+			{
+				height: 36px;
+				vertical-align: middle;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+
+
 			&-img
 			{
 				margin-right: 20px;
@@ -2295,6 +2388,11 @@ body.single-memory_page.military
 		@media screen and (max-width: 1320px) {
 			&__panel {
 				padding: 50px 0;
+
+				&-army
+				{
+					display: block;
+				}
 
 				&-img
 				{

@@ -11,8 +11,9 @@ jQuery(document).ready(function ($)
         {
             let letters = $(this).text().replace(/\s+/g, ' ').split('');
             console.log(letters);
-            $(this).css({visibility: 'hidden', overflow: 'hidden', position: 'relative', width:'100vh'});
-            // $(this).width($(this).width());
+            // $(this).css({visibility: 'hidden', overflow: 'hidden', position: 'relative', width:'100vh'});
+            $(this).css({visibility: 'hidden', overflow: 'hidden', position: 'relative', width:'100vw'});
+            //$(this).width($(this).width()); // було закоментовано
             $(this).height($(this).height());
 
             let html = '';
@@ -122,7 +123,9 @@ jQuery(document).ready(function ($)
     if (typeof mapboxgl !== 'undefined' && typeof MapboxGeocoder !== 'undefined') {
 
         $('.mapbox').each(function () {
-            let fightAdress = $(this).attr('data-location');
+            let fightAddress = $(this).attr('data-location');
+
+            // console.log(fightAddress, $(this).attr('id'), [$(this).attr('data-long'), $(this).attr('data-lat')]);
             mapboxgl.accessToken = $(this).attr('data-key');
 
             let map = new mapboxgl.Map({
@@ -131,70 +134,32 @@ jQuery(document).ready(function ($)
                 zoom: 17,
                 attributionControl: false,
                 style: 'mapbox://styles/alex-anthracite/clssv42xu00wk01qx2r2gbmpr',
-                hash: true,
+                hash: false,
             });
 
-            let geocoder = new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                mapboxgl: mapboxgl,
-                marker: false,
-                showSearch: false,
-            });
-
-            map.addControl(geocoder);
-
-            geocoder.on('result', function (e) {
-                let coordinates = e.result.center;
-
-                map.flyTo({
-                    center: coordinates,
-                    zoom: 12,
+            if (fightAddress && typeof fightAddress === 'string') {
+                let geocoder = new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    mapboxgl: mapboxgl,
+                    marker: false,
+                    showSearch: false,
                 });
-            });
-            // geocoder.query(fightAdress);
-            if (fightAdress && typeof fightAdress === 'string') {
-                geocoder.query(fightAdress);
-            }
 
-            if ($(this).attr('data-region')) {
+                map.addControl(geocoder);
 
-                map.on("load", function () {
+                geocoder.on('result', function (e) {
+                    let coordinates = e.result.center;
 
-
-                    // Add a vector source for admin-1 boundaries
-                    map.addSource("admin-1", {
-                        type: "vector",
-                        url: "mapbox://mapbox.boundaries-adm1-v4",
-                        promoteId: "mapbox_id"
+                    map.flyTo({
+                        center: coordinates,
+                        zoom: 12,
                     });
-
-                    // Define a filter for US worldview boundaries
-                    let worldviewFilter = [
-                        "any",
-                        ["==", "all", ["get", "worldview"]],
-                        ["in", "UA", ["get", "worldview"]]
-                    ];
-
-                    // Add a style layer with the admin-1 source below map labels
-                    map.addLayer(
-                        {
-                            id: "admin-1-fill",
-                            type: "fill",
-                            source: "admin-1",
-                            "source-layer": "boundaries_admin_1",
-                            filter: worldviewFilter,
-                            paint: {
-                                "fill-color": "#CCCCCC",
-                                "fill-opacity": 0.5
-                            }
-                        },
-                        // This final argument indicates that we want to add the Boundaries layer
-                        // before the `waterway-label` layer that is in the map from the Mapbox
-                        // Light style. This ensures the admin polygons are rendered below any labels
-                        "waterway-label"
-                    );
                 });
+
+                geocoder.query(fightAddress);
+
             }
+
         });
     };
 
