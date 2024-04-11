@@ -9,8 +9,7 @@
  * @subpackage inheart
  */
 
-$logo			= get_field( 'header_logo_light', 'option' );
-$copyright		= '&copy; Inheart ' . date( 'Y' ) . '. All rights reserved.';
+$logo = get_field( 'header_logo_light', 'option' );
 ?>
 
 			<?php
@@ -61,9 +60,7 @@ $copyright		= '&copy; Inheart ' . date( 'Y' ) . '. All rights reserved.';
 						</div>
 
 						<div class="footer-bottom flex flex-wrap align-center">
-							<div class="footer-copyright">
-								<?php echo $copyright ?>
-							</div>
+							<div class="footer-copyright">&copy; Inheart 2022. All rights reserved.</div>
 
 							<?php
 							wp_nav_menu( [

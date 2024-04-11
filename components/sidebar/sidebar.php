@@ -45,6 +45,22 @@ $logo = get_field( 'header_logo_light', 'option' );
 				</svg>
 				<?php _e( 'Вийти з профилю', 'inheart' ) ?>
 			</button>
+
+			<div class="sidebar-footer-info">
+				<div class="footer-copyright">&copy; Inheart 2022. All rights reserved.</div>
+
+				<?php
+				wp_nav_menu( [
+					'theme_location'	=> 'footer_bottom_menu',
+					'container'			=> 'nav',
+					'container_class'	=> 'footer-bottom-nav'
+				] );
+				?>
+
+				<div class="sidebar-footer-by">
+					<img src="<?php echo THEME_URI ?>/static/img/designed-by.svg" alt="Designed by Anthracite" />
+				</div>
+			</div>
 		</footer>
 	</div><!-- .sidebar-inner -->
 </aside>
