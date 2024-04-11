@@ -11,9 +11,9 @@
 if( ! $id = $args['id'] ?? null ) return;
 
 $lang		= $args['lang'] ?? 'uk';
-$sections	= get_field( 'biography_sections', $id );
-$ctoSection = get_field('cto', $id);
-$warSection = get_field('war', $id);
+$sections	= get_field( 'biography_sections', $id ) ?? [];
+$ctoSection = get_field('cto', $id) ?? [];
+$warSection = get_field('war', $id) ?? [];
 
 $sections[] = array_merge(['category' => pll_translate_string( 'ATO', $lang ), 'position' => 99], $ctoSection);
 $sections[] = array_merge(['category' => pll_translate_string( 'Повномасштабне вторгнення', $lang ), 'position' => 99], $warSection);
