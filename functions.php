@@ -175,3 +175,20 @@ function ih_js_vars_for_frontend(): void
 	echo '<script type="text/javascript">window.wpData = ' . json_encode( $variables ) . ';</script>';
 }
 
+/**
+ * Rewrite all redirects from home page to profile page.
+ *
+ * @param string $location The path or URL to redirect to.
+ *
+ * @return string|false
+ */
+function rewrite_redirect_to_profile(string $location): bool|string
+{
+    if (home_url() === $location) {
+        return get_the_permalink(pll_get_post(ih_get_profile_page_id()));
+    }
+
+    return $location;
+}
+
+add_filter('wp_redirect', 'rewrite_redirect_to_profile');
