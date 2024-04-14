@@ -71,7 +71,7 @@ function ih_ajax_login(): void
 
 	$login		= ih_clean( $_POST['email'] );
 	$pass		= trim( str_replace( ' ', '', $_POST['pass'] ) );
-//	$referer	= ih_clean( $_POST['referer'] );
+	$referer	= ih_clean( $_POST['referer'] );
 	$errors		= [];
 
 	// If data is not set - send error.
@@ -133,11 +133,29 @@ function ih_ajax_login(): void
 
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id, true );
+	// No referer - check global options.
+	$redirect = $referer ?: ( get_field( 'redirect_after_login', 'option' ) ?: home_url( '/' ) );
 
 	wp_send_json_success( [
 		'msg'		=> sprintf( esc_html__( 'Вітаємо, %s!', 'inheart' ), $user->display_name ),
-		'redirect'	=> get_field( 'redirect_after_login', 'option' ) ?: home_url( '/' )
+		'redirect'	=> $redirect
 	] );
+}
+
+add_filter( 'login_redirect', 'ih_login_redirect', 10, 3 );
+/**
+ * Redirect user after successful login.
+ *
+ * @param string $redirect_to URL to redirect to.
+ * @param string $request     URL the user is coming from.
+ * @param object $user        Logged user's data.
+ * @return string
+ */
+function ih_login_redirect( string $redirect_to, string $request, object $user ): string
+{
+	$http_referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+	return $http_referer ?: ( get_field( 'redirect_after_login', 'option' ) ?: home_url( '/' ) );
 }
 
 add_action( 'wp_ajax_ih_ajax_logout', 'ih_ajax_logout' );
