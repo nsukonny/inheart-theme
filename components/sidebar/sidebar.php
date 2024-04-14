@@ -57,9 +57,9 @@ $logo = get_field( 'header_logo_light', 'option' );
 				] );
 				?>
 
-				<div class="sidebar-footer-by">
+				<a href="https://www.anthracite.studio/" class="sidebar-footer-by" target="_blank">
 					<img src="<?php echo THEME_URI ?>/static/img/designed-by.svg" alt="Designed by Anthracite" />
-				</div>
+				</a>
 			</div>
 		</footer>
 	</div><!-- .sidebar-inner -->

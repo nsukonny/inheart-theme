@@ -198,5 +198,9 @@
 				width: 100%
 			}
 		}
+
+		&:not(.delete) .button.popup-confirm-yes {
+			color: $success-primary
+		}
 	}
 }

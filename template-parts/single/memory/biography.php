@@ -38,9 +38,9 @@ $sections[] = array_merge(['category' => pll_translate_string( 'Повномас
             <div class="single-memory-bio-sections">
                 <?php
                 foreach( $sections as $section ){
-                    $title	= $section['category'];
-                    $text	= $section['text'];
-                    $media = $section['photos'];
+                    $title	= $section['category'] ?? '';
+                    $text	= $section['text'] ?? '';
+                    $media	= $section['photos'] ?? [];
 
                     // Show only full sections.
                     if( ! $title || ! $text ) continue;

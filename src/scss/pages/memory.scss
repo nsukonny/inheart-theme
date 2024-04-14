@@ -1000,8 +1000,8 @@ body.single-memory_page {
 			order: 1;
 
 			@media (min-width: $xl) {
-				width: calc(100% - 759px);
-				margin-left: auto;
+				width: calc(100% - 630px);
+				padding-left: 129px;
 				order: 2
 			}
 
@@ -1169,7 +1169,9 @@ body.single-memory_page {
 	}
 }
 
-
+/**
+ * MILITARY PAGE.
+ */
 body.single-memory_page.military
 {
     &.no-scroll
