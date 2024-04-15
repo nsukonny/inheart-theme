@@ -57,6 +57,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Step 1.
 	selectLanguage()
+
 	uploadMainPhoto()
 	addMainFormValidation()
 	prevStep()

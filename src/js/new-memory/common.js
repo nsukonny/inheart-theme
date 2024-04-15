@@ -96,6 +96,7 @@ export const nextStep = () => {
 
 		formData.append( 'action', `ih_ajax_save_data_step_${ prevStepIdGlobal }` )
 		formData.append( 'stepData', localStorage.getItem( `ih-step-${ prevStepIdGlobal }` ) || '' )
+		pushToDataLayer( dataNext )
 
 		ihAjaxRequest( formData ).then( res => {
 			if( res ){
@@ -126,6 +127,56 @@ export const nextStep = () => {
 			}
 		} )
 	} )
+}
+
+/**
+ * Push data to Google Tag Manager data layer.
+ * @see https://developers.google.com/tag-platform/tag-manager/datalayer
+ *
+ * @param nextStep
+ */
+const pushToDataLayer = nextStep => {
+	if( ! nextStep ) return
+
+	window.dataLayer = window.dataLayer || []
+
+	switch( nextStep ){
+		case '1':
+			window.dataLayer.push( { 'event': 'continue-step-1' } )
+			break;
+
+		case '2':
+			window.dataLayer.push( { 'event': 'continue-step-2' } )
+			break;
+
+		case '2-military':
+			window.dataLayer.push( { 'event': 'continue-step-2-military' } )
+			break;
+
+		case '3':
+			window.dataLayer.push( { 'event': 'continue-step-3' } )
+			break;
+
+		case '3-military':
+			window.dataLayer.push( { 'event': 'continue-step-3-military' } )
+			break;
+
+		case '4':
+			window.dataLayer.push( { 'event': 'continue-step-4' } )
+			break;
+
+		case '5':
+			window.dataLayer.push( { 'event': 'continue-step-5' } )
+			break;
+
+		case '6':
+			window.dataLayer.push( { 'event': 'continue-step-6' } )
+			break;
+
+		case '6-military':
+			window.dataLayer.push( { 'event': 'continue-step-6-military' } )
+			break;
+	}
 }
 
 export const saveStep = stepId => {
