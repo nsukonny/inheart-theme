@@ -7,13 +7,16 @@
  * @subpackage inheart
  */
 
+$memory_page = $_GET['mp'] ?? null;
+
 if( ! is_user_logged_in() ){
+	$_SESSION['redirect_to_mp'] = get_the_permalink( $memory_page );
 	wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) );
 	exit;
 }
 
 // No destination memory page ID - redirect to Profile Memories.
-if( ! $memory_page = $_GET['mp'] ?? null ){
+if( ! $memory_page ){
 	wp_redirect( get_the_permalink( pll_get_post( ih_get_profile_memories_page_id() ) ) );
 	exit;
 }

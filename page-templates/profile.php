@@ -12,6 +12,12 @@ if( ! is_user_logged_in() ){
 	exit;
 }
 
+// Redirect to the same Memory page where User wanted to leave his memory.
+if( isset( $_SESSION['redirect_to_mp'] ) && $_SESSION['redirect_to_mp'] ){
+	wp_redirect( $_SESSION['redirect_to_mp'] );
+	exit;
+}
+
 get_template_part( 'components/header/profile' );
 
 wp_enqueue_style( 'profile', THEME_URI . '/static/css/pages/profile.min.css', [], THEME_VERSION );

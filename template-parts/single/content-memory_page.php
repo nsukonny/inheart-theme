@@ -9,6 +9,9 @@
 
 if( ! is_singular( 'memory_page' ) ) return;
 
+// Unset redirect to Memory page (was added when not authorized User wanted to leave his memory).
+if( isset( $_SESSION['redirect_to_mp'] ) && $_SESSION['redirect_to_mp'] ) unset( $_SESSION['redirect_to_mp'] );
+
 $id		= get_the_ID();
 $lang	= get_field( 'language', $id );
 ?>
