@@ -68,7 +68,7 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 
 		<div class="form-submit">
 			<div class="note note-with-icon"></div>
-			<button class="btn lg primary full" type="submit">
+			<button class="btn lg primary full" type="submit" disabled>
 				<?php esc_html_e( 'Зареєструватись', 'inheart' ) ?>
 			</button>
 		</div>
