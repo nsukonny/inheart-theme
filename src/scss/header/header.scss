@@ -12,7 +12,18 @@
 	&.logo-only {
 		.header-langs {
 			position: relative;
-			z-index: 1
+			column-gap: 15px;
+			z-index: 1;
+			margin-bottom: 0;
+
+			@media (min-width: $xl) {
+				column-gap: 9px
+			}
+
+			.lang-item {
+				opacity: 1;
+				transform: translateY(0)
+			}
 		}
 	}
 
