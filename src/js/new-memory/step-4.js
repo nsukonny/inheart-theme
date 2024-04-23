@@ -63,6 +63,7 @@ export const uploadMediaPhotos = () => {
  * @param file
  * @param index
  * @param droparea
+ * @param count
  */
 const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 	if( ! file || ! droparea ) return
@@ -300,8 +301,10 @@ export const uploadMediaVideo = () => {
 		video.src = URL.createObjectURL( fileInstance[0] )
 		video.ondurationchange = () => videoDuration = getPrettyVideoDuration( video.duration )
 
-		if( fileInstance[0].size > 1024 * BYTES_IN_MB ){
-			showNotification( 'Не більше 1 гб', 'error' )
+		if( fileInstance[0].size > 200 * BYTES_IN_MB ){
+			showNotification( 'Не більше 200 Мб', 'error' )
+			e.target.value = ''
+			setAjaxWorkingStatus( false )
 			return false
 		}
 
