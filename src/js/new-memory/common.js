@@ -138,7 +138,7 @@ export const nextStep = () => {
 const pushToDataLayer = nextStep => {
 	if( ! nextStep ) return
 
-	window.dataLayer = []
+	window.dataLayer = window.dataLayer || []
 
 	switch( nextStep ){
 		case '1':
