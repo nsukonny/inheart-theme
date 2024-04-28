@@ -4,13 +4,11 @@ import { submitAuthForm } from '../common/global'
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
-	checkFormStatus()
+	checkFormStatus( document.querySelector( '#form-register' ) )
 	submitAuthForm( '#form-register', 'ih_ajax_register' )
 } )
 
-const checkFormStatus = () => {
-	const form = document.querySelector( '#form-register' )
-
+export const checkFormStatus = form => {
 	if( ! form ) return
 
 	const fields = form.querySelectorAll( 'input:not([type="hidden"])' )

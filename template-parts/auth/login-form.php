@@ -58,7 +58,7 @@ $memory_tip			= get_field( 'memory_page_creation_tip' );
 
 		<div class="form-submit">
 			<div class="note note-with-icon"></div>
-			<button class="btn lg primary full" type="submit">
+			<button class="btn lg primary full" type="submit" disabled>
 				<?php esc_html_e( 'Увійти', 'inheart' ) ?>
 			</button>
 		</div>
