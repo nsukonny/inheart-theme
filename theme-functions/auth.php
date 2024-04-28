@@ -69,10 +69,9 @@ function ih_ajax_login(): void
 	if( empty( $_POST ) || ! wp_verify_nonce( $_POST['ih_login_nonce'], 'ih_ajax_login' ) )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	$login		= ih_clean( $_POST['email'] );
-	$pass		= trim( str_replace( ' ', '', $_POST['pass'] ) );
-	$referer	= ih_clean( $_POST['referer'] );
-	$errors		= [];
+	$login	= ih_clean( $_POST['email'] );
+	$pass	= trim( str_replace( ' ', '', $_POST['pass'] ) );
+	$errors	= [];
 
 	// If data is not set - send error.
 	if( ! $login || ! $pass ){
@@ -134,7 +133,7 @@ function ih_ajax_login(): void
 	wp_set_current_user( $user_id );
 	wp_set_auth_cookie( $user_id, true );
 	// No referer - check global options.
-	$redirect = $referer ?: ( get_field( 'redirect_after_login', 'option' ) ?: home_url( '/' ) );
+	$redirect = get_field( 'redirect_after_login', 'option' ) ?: home_url( '/' );
 
 	wp_send_json_success( [
 		'msg'		=> sprintf( esc_html__( 'Вітаємо, %s!', 'inheart' ), $user->display_name ),
