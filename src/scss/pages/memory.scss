@@ -348,6 +348,7 @@ body.single-memory_page {
 		font-weight: $fw-semibold;
 		color: $light-green;
 		text-align: center;
+		word-break: break-word;
 
 		@media (min-width: $md) {
 			font-size: 90px
@@ -426,6 +427,10 @@ body.single-memory_page {
 			max-width: 758px
 		}
 
+		* {
+			word-break: break-word
+		}
+
 		&-text {
 			font-size: $fs-md;
 			line-height: $lh-4;
@@ -484,6 +489,11 @@ body.single-memory_page {
 			font-size: 24px;
 			line-height: normal;
 			margin-bottom: 19px
+		}
+
+		&-title,
+		&-text {
+			word-break: break-word
 		}
 	}
 
@@ -561,14 +571,20 @@ body.single-memory_page {
 			margin-bottom: 19px
 		}
 
+		&-content {
+			word-break: break-word
+		}
+
 		&-name {
 			line-height: normal;
-			margin-bottom: 2px
+			margin-bottom: 2px;
+			word-break: break-word
 		}
 
 		&-role {
 			font-size: $fs-xs-alt;
 			color: #7E969B;
+			word-break: break-word;
 
 			@media (min-width: $lg) {
 				font-size: $fs-sm
@@ -998,6 +1014,7 @@ body.single-memory_page {
 			color: $light-blue;
 			transition: color ease-out $tr;
 			order: 1;
+			word-break: break-word;
 
 			@media (min-width: $xl) {
 				width: calc(100% - 630px);

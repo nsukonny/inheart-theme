@@ -74,19 +74,22 @@
 		font-weight: $fw-semibold;
 		padding: 0 64px;
 		margin: 24px 0;
-		text-align: center
+		text-align: center;
+		word-break: break-word
 	}
 
 	&-fullname {
 		line-height: $lh-3;
 		text-align: center;
-		margin-bottom: 4px
+		margin-bottom: 4px;
+		word-break: break-word
 	}
 
 	&-role {
 		font-size: 15px;
 		line-height: $lh-5;
 		text-align: center;
-		color: rgba(5, 51, 48, 0.4)
+		color: rgba(5, 51, 48, 0.4);
+		word-break: break-word
 	}
 }
