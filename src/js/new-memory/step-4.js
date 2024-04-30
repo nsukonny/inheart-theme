@@ -41,8 +41,8 @@ export const uploadMediaPhotos = () => {
 
 		// Loop through all files.
 		for( let i = 0; i < fileInstance.length; i++ ){
-			if( fileInstance[i].size > 50 * BYTES_IN_MB ){
-				showNotification( `Не вдалося завантажити фото ${ fileInstance[i].name }`, 'error' )
+			if( fileInstance[i].size > 10 * BYTES_IN_MB ){
+				showNotification( 'MAX 10 Mb', 'error' )
 				return false
 			}
 
@@ -301,8 +301,8 @@ export const uploadMediaVideo = () => {
 		video.src = URL.createObjectURL( fileInstance[0] )
 		video.ondurationchange = () => videoDuration = getPrettyVideoDuration( video.duration )
 
-		if( fileInstance[0].size > 200 * BYTES_IN_MB ){
-			showNotification( 'Не більше 200 Мб', 'error' )
+		if( fileInstance[0].size > 100 * BYTES_IN_MB ){
+			showNotification( 'MAX 100 Mb', 'error' )
 			e.target.value = ''
 			setAjaxWorkingStatus( false )
 			return false
@@ -758,8 +758,8 @@ const onCustomPosterInputChange = e => {
 
 	const file = fileInstance[0]
 
-	if( file.size > 5 * BYTES_IN_MB ){
-		showNotification( 'Розмір повинен бути меньше 5 мб', 'error' )
+	if( file.size > 10 * BYTES_IN_MB ){
+		showNotification( 'MAX 10 Mb', 'error' )
 		return false
 	}
 
