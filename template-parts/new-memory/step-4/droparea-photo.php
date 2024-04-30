@@ -31,7 +31,7 @@ $photos = ( isset( $_SESSION['memory_page_id'] ) && get_field( 'photo', $_SESSIO
 		</div>
 		<div class="droparea-desc">
 			<p><?php esc_html_e( 'Потрібна щонайменше 1 фотографія', 'inheart' ) ?></p>
-			<p><?php esc_html_e( 'PNG, JPG, або JPEG до 50 мб', 'inheart' ) ?></p>
+			<p><?php esc_html_e( 'PNG, JPG, або JPEG до 10 мб', 'inheart' ) ?></p>
 		</div>
 		<label for="file-photo" class="label-button btn sm gray br-24">
 			<span class="label-button-text">
