@@ -479,13 +479,13 @@ function ih_ajax_upload_memory_photo(): void
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
-	$max_image_size         = 50_000_000;
+	$max_image_size         = 10_485_760;   // 10 Mb
 
 	// Check conditions for the image.
 	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => __( 'Тільки ( png | jpg | jpeg ) меньше 50 мб', 'inheart' )
+			'msg'       => __( 'Тільки ( png | jpg | jpeg ) меньше 10 мб', 'inheart' )
 		] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
@@ -522,11 +522,11 @@ function ih_ajax_upload_custom_poster(): void
 	if( ! $image ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
-	$max_image_size         = 5_000_000;
+	$max_image_size         = 10_485_760;   // 10 Mb
 
 	// Check conditions for the image.
 	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
-		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 5 мб', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 10 мб', 'inheart' )] );
 
 	$filename	= ih_modify_filename( $image['name'] );
 	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['video']['tmp_dir']}/{$filename}" );
@@ -557,13 +557,13 @@ function ih_ajax_upload_memory_video(): void
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_video_types	= ['video/mp4', 'video/mpeg', 'video/x-msvideo'];
-	$max_file_size			= 209_715_200;
+	$max_file_size			= 104_857_600;  // 100 Mb
 
 	// Check conditions for the image.
 	if( ! in_array( $file['type'], $allowed_video_types ) || ( int ) $file['size'] > $max_file_size )
 		wp_send_json_error( [
 			'success'   => 0,
-			'msg'       => __( 'Тільки ( avi | mp4 | mpeg ) меньше 200 мб', 'inheart' )
+			'msg'       => __( 'Тільки ( avi | mp4 | mpeg ) меньше 100 мб', 'inheart' )
 		] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
