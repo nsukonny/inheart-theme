@@ -675,8 +675,8 @@ const uploadSectionPhoto = () => {
 
 		if( ! fileInstance.length ) return
 
-		if( fileInstance[0].size > 50 * BYTES_IN_MB ){
-			showNotification( `Не вдалося завантажити фото ${ fileInstance[0].name }`, 'error' )
+		if( fileInstance[0].size > 10 * BYTES_IN_MB ){
+			showNotification( 'MAX 10 Mb', 'error' )
 			return false
 		}
 

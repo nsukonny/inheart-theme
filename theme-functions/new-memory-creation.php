@@ -440,11 +440,11 @@ function ih_ajax_upload_section_photo(): void
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
-	$max_image_size         = 50_000_000;
+	$max_image_size         = 10_485_760;   // 10 Mb
 
 	// Check conditions for the image.
 	if( ! in_array( $image['type'], $allowed_image_types ) || ( int ) $image['size'] > $max_image_size )
-		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 50 мб', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 10 мб', 'inheart' )] );
 
 	require_once( ABSPATH . 'wp-admin/includes/image.php' );
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
