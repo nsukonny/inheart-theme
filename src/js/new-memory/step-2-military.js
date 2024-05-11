@@ -219,7 +219,8 @@ export const checkStep2Military = () => {
 			stepData.armyThumb 	= select.dataset.thumb
 		}
 
-		if( ! value ) allIsSet = false
+		// Dropdown value is required.
+		// if( ! value ) allIsSet = false
 
 		localStorage.setItem( 'ih-step-2-military', JSON.stringify( stepData ) )
 	} )

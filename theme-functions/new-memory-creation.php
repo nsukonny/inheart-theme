@@ -412,7 +412,7 @@ function ih_ajax_save_data_step_3(): void
 	$epitaph_firstname	= isset( $step_data['epitaph-firstname'] ) ? ih_clean( $step_data['epitaph-firstname'] ) : '';
 	$epitaph_role		= isset( $step_data['epitaph-role'] ) ? ih_clean( $step_data['epitaph-role'] ) : '';
 
-	if( ! $memory_page_id || ! $step_data )
+	if( ! $memory_page_id )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	if( $epitaph ) update_field( 'epitaphy', $epitaph, $memory_page_id );
@@ -729,13 +729,14 @@ add_action( 'wp_ajax_ih_ajax_save_data_step_4', 'ih_ajax_save_data_step_4' );
  */
 function ih_ajax_save_data_step_4(): void
 {
-	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
-	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+	$step_data      = isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
+	$memory_page_id = $_SESSION['memory_page_id'] ?? null;
+	$photos         = $step_data['photos'] ?? null;
 
-	if( ! $memory_page_id || empty( $step_data['photos'] ) )
+	if( ! $memory_page_id )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	update_field( 'photo', $step_data['photos'], $memory_page_id );
+	update_field( 'photo', $photos, $memory_page_id );
 
 	// Videos.
 	$videos = null;
@@ -817,8 +818,8 @@ function ih_ajax_save_data_step_5(): void
 	$step_data		= isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 
-	if( ! $step_data || ! $memory_page_id || ! $step_data['address'] )
-		wp_send_json_error( ['msg' => $memory_page_id] );
+	if( ! $memory_page_id )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
 	// Update Memory page fields.
 	update_field( 'address', $step_data['address'], $memory_page_id );

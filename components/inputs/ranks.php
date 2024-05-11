@@ -28,7 +28,6 @@ $military_title	= get_field( 'military_title', $_SESSION['memory_page_id'] );
 			type="text"
 			placeholder="<?php esc_attr_e( 'Наприклад "Молодший лейтенант"', 'inheart' ) ?>"
 			value="<?php echo esc_attr( $military_title ) ?>"
-			required
 		/>
 		<span class="input-icon tail">
 			<?php get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/arrow-down-s-line.svg'] ) ?>

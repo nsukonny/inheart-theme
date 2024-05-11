@@ -85,11 +85,10 @@ const onEpitaphChange = () => {
  */
 export const checkStep3 = () => {
 	const
-		epitaphValue	= textarea.value,
-		fields			= document.querySelectorAll( '.epitaph input' )
-	let isFormValid		= true
+		fields		= document.querySelectorAll( '.epitaph input' )
+	let isFormValid	= true
 
-	if( ! epitaphValue || textarea.classList.contains( 'clear-on-focus' ) ) return false
+	if( textarea.classList.contains( 'clear-on-focus' ) ) return false
 
 	if( fields.length ){
 		fields.forEach( field => {

@@ -62,8 +62,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 					'label_class'	=> 'full',
 					'placeholder'	=> __( 'Адреса', 'inheart' ),
 					'value'			=> $address,
-					'autocomplete'	=> 'address',
-					'required'		=> 1
+					'autocomplete'	=> 'address'
 				] );
 				get_template_part( 'components/inputs/default', null, [
 					'name'			=> 'detail_address',

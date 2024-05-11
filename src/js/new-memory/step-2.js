@@ -523,7 +523,7 @@ export const checkStep2 = () => {
 		else stepData[index] = { ...stepData[index], title: title.innerText }
 
 		// If textarea or title input is not set.
-		if( ! value || ( titleInput && ! titleInput.value ) ) allIsSet = false
+		if( titleInput && ! titleInput.value ) allIsSet = false
 
 		// If this is CTO section.
 		if( isCto ) stepData[index].isCto = 1

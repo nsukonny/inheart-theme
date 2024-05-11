@@ -43,7 +43,6 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 					'label_class'	=> 'full label-army',
 					'placeholder'	=> __( 'Наприклад "Сухопутні війська"', 'inheart' ),
 					'value'			=> $army_type,
-					'required'		=> 1,
 					'icon_tail'		=> 'arrow-down-s-line.svg'
 				] );
 				get_template_part( 'components/inputs/army', null, [
@@ -52,7 +51,6 @@ $call_sign			= get_field( 'call_sign', $memory_page_id );
 					'label_class'	=> 'full',
 					'placeholder'	=> __( 'Наприклад "45-й окремий мотопіхотний б..."', 'inheart' ),
 					'value'			=> $brigade_type,
-					'required'		=> 1,
 					'icon_tail'		=> 'arrow-down-s-line.svg',
 					'types'			=> get_field( 'brigades', 'option' )
 				] );

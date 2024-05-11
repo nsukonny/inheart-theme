@@ -60,8 +60,7 @@ $class				= $saved_text ? '' : ' clear-on-focus';
 						'label_class'	=> 'half',
 						'placeholder'	=> __( 'Прізвище', 'inheart' ),
 						'value'			=> $epitaph_lastname,
-						'autocomplete'	=> 'family-name',
-						'required'		=> 1
+						'autocomplete'	=> 'family-name'
 					] );
 					get_template_part( 'components/inputs/default', null, [
 						'name'			=> 'epitaph-firstname',
@@ -69,16 +68,14 @@ $class				= $saved_text ? '' : ' clear-on-focus';
 						'label_class'	=> 'half end',
 						'placeholder'	=> __( "Ім'я", 'inheart' ),
 						'value'			=> $epitaph_firstname,
-						'autocomplete'	=> 'given-name',
-						'required'		=> 1
+						'autocomplete'	=> 'given-name'
 					] );
 					get_template_part( 'components/inputs/default', null, [
 						'name'			=> 'epitaph-role',
 						'label'			=> __( 'Ким доводилися померлому', 'inheart' ),
 						'label_class'	=> 'full',
 						'placeholder'	=> __( 'Ким доводилися померлому', 'inheart' ),
-						'value'			=> $epitaph_role,
-						'required'		=> 1
+						'value'			=> $epitaph_role
 					] );
 					?>
 				</fieldset>

@@ -169,7 +169,9 @@ export const checkStep1 = () => {
 			index	= field.name,
 			value	= field.value
 
-		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ) isFormValid = false
+		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ){
+			isFormValid = false
+		}
 
 		if( index === 'photo' && field.dataset.cropped )
 			stepData.cropped = field.dataset.cropped

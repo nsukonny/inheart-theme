@@ -982,7 +982,7 @@ export const checkStep4 = () => {
 		videos	= document.querySelectorAll( '.droparea-video-loaded' ),
 		links	= document.querySelectorAll( '.step-media-link' )
 
-	if( photos.length < 1 ) return false
+	// if( ! photos.length ) return false
 
 	stepData.photos = []
 	photos.forEach( photo => stepData.photos.push( photo.querySelector( '.droparea-img-delete' ).dataset.id ) )
