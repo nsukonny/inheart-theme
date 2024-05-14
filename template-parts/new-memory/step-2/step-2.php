@@ -128,7 +128,7 @@ if( $ready_sections ){
 								);
 							}
 
-							if( ih_is_set_last_fight( $last_fight ) ){
+							if( ih_is_set_military_section( $last_fight ) ){
 								get_template_part(
 									'template-parts/new-memory/step-2/section-sidebar-military',
 									null,
@@ -185,7 +185,7 @@ if( $ready_sections ){
 									['key' => $sections_count + 1, 'title' => __( 'Повномасштабне вторгнення', 'inheart' ), 'id' => 'war']
 								);
 
-							if( ! ih_is_set_last_fight( $last_fight ) )
+							if( ! ih_is_set_military_section( $last_fight ) )
 								get_template_part(
 									'template-parts/new-memory/step-2/section-sidebar-military',
 									null,
@@ -237,7 +237,7 @@ if( $ready_sections ){
 							'class'		=> 'section-content-war'
 						] );
 
-					if( ih_is_set_last_fight( $last_fight ) )
+					if( ih_is_set_military_section( $last_fight ) )
 						get_template_part( 'template-parts/new-memory/step-2/section-content-last-fight', null, [
 							'section' => $last_fight
 						] );

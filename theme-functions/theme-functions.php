@@ -494,14 +494,3 @@ function ih_is_set_military_section( array $section = [] ): bool
 	return isset( $section['text'] ) && $section['text'];
 }
 
-/**
- * Check if last fight fields are set.
- *
- * @param array $last_fight	Group field from some memory page.
- * @return bool				True if data is set, false if not.
- */
-function ih_is_set_last_fight( array $last_fight = [] ): bool
-{
-	return isset( $last_fight['text'] ) && $last_fight['text'];
-}
-
