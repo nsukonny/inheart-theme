@@ -93,7 +93,7 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 		progress.value 			= percent
 	} )
 
-	cancel.addEventListener( 'click', () => {
+	const cancelUpload = () => {
 		xhr.abort()
 		progress.value = 0
 		setTimeout( () => {
@@ -103,7 +103,9 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 			if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
 				inner.classList.remove( 'hidden' )
 		}, 500 )
-	} )
+	}
+
+	cancel.addEventListener( 'click', cancelUpload )
 
 	xhr.open( 'POST', ajaxUrl, true )
 	xhr.send( dropareaData )
@@ -135,6 +137,9 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 						imagesWrapper.classList.remove( 'hidden' )
 					}, 2000 )
 				}
+			}else{
+				showNotification( data.msg, 'error' )
+				cancelUpload()
 			}
 		}else{
 			// If no images loaded yet.
@@ -143,6 +148,7 @@ const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
 			else imagesWrapper.classList.remove( 'hidden' )
 
 			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
+			cancelUpload()
 		}
 	}
 }
@@ -375,15 +381,16 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 		progress.value 			= percent
 	} )
 
-	cancel.addEventListener( 'click', () => {
+	const cancelUpload = () => {
 		xhr.abort()
 		progress.value = 0
 		setTimeout( () => {
 			inner.classList.remove( 'hidden' )
 			loader.classList.add( 'hidden' )
 		}, 500 )
-	} )
+	}
 
+	cancel.addEventListener( 'click', cancelUpload )
 	xhr.open( 'POST', ajaxUrl, true )
 	xhr.send( dropareaData )
 
@@ -412,6 +419,9 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 				}
 
 				showNotification( `Файл ${ file.name } успішно завантажено` )
+			}else{
+				showNotification( data.msg, 'error' )
+				cancelUpload()
 			}
 		}else{
 			// If no videos loaded yet.
@@ -419,6 +429,7 @@ const processingUploadMediaVideo = ( file, droparea ) => {
 			else videosWrapper.classList.remove( 'hidden' )
 
 			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
+			cancelUpload()
 		}
 
 		setAjaxWorkingStatus( false )

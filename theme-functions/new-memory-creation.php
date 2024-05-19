@@ -478,6 +478,16 @@ function ih_ajax_upload_memory_photo(): void
 	if( ! $image || ! $memory_page_id )
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
+	$is_expanded = get_field( 'is_expanded', $memory_page_id );
+	$photos      = get_field( 'photo', $memory_page_id );
+
+	// Simple page can attach only <= 4 photos.
+	if( ! $is_expanded && count( $photos ) >= 4 )
+		wp_send_json_error( [
+			'success' => 0,
+			'msg'     => __( 'Ви не можете завантажити більше зображень у цьому тарифі', 'inheart' )
+		] );
+
 	$allowed_image_types    = ['image/jpeg', 'image/png'];
 	$max_image_size         = 10_485_760;   // 10 Mb
 
@@ -555,6 +565,15 @@ function ih_ajax_upload_memory_video(): void
 	// If data is not set - send error.
 	if( ! $file || ! $memory_page_id )
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$is_expanded = get_field( 'is_expanded', $memory_page_id );
+
+	// Simple page can't upload videos.
+	if( ! $is_expanded )
+		wp_send_json_error( [
+			'success' => 0,
+			'msg' => __( 'Ви не можете завантажувати відео у цьому тарифі', 'inheart' )
+		] );
 
 	$allowed_video_types	= ['video/mp4', 'video/mpeg', 'video/x-msvideo'];
 	$max_file_size			= 104_857_600;  // 100 Mb
@@ -736,7 +755,11 @@ function ih_ajax_save_data_step_4(): void
 	if( ! $memory_page_id )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	update_field( 'photo', $photos, $memory_page_id );
+	$is_expanded = get_field( 'is_expanded', $memory_page_id );
+
+	// Simple page can attach only <= 4 photos.
+	if( ( ! $is_expanded && count( $photos ) <= 4 ) || $is_expanded )
+		update_field( 'photo', $photos, $memory_page_id );
 
 	// Videos.
 	$videos = null;
@@ -782,7 +805,7 @@ function ih_ajax_save_data_step_4(): void
 		$links = empty( $links ) ? null : $links;
 	}
 
-	update_field( 'field_63a16b6567b55', $links, $memory_page_id );
+	if( $is_expanded ) update_field( 'field_63a16b6567b55', $links, $memory_page_id );
 
 	wp_send_json_success( ['msg' => __( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }

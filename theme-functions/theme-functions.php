@@ -494,3 +494,17 @@ function ih_is_set_military_section( array $section = [] ): bool
 	return isset( $section['text'] ) && $section['text'];
 }
 
+/**
+ * Register custom column for the memory pages.
+ */
+add_filter( 'manage_memory_page_posts_columns', function( $defaults ){
+	$defaults['is-expanded'] = 'Розширена';
+
+	return $defaults;
+} );
+add_action( 'manage_memory_page_posts_custom_column', function( $column_name, $post_id ){
+	if( $column_name == 'is-expanded' ){
+		echo ( get_field( 'is_expanded', $post_id ) ? 'Так' : 'Ні' );
+	}
+}, 10, 2 );
+
