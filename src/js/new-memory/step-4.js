@@ -262,9 +262,11 @@ export const setDefaultDeletePhoto = () => {
  * Set click listener by default to video delete buttons.
  */
 export const setDefaultDeleteVideo = () => {
-	const
-		droparea	= document.querySelector( '.droparea-video' ),
-		buttons		= droparea.querySelectorAll( '.droparea-img-delete' )
+	const droparea = document.querySelector( '.droparea-video' )
+
+	if( ! droparea ) return
+
+	const buttons = droparea.querySelectorAll( '.droparea-img-delete' )
 
 	if( ! buttons.length ) return
 
@@ -283,6 +285,8 @@ export const uploadMediaVideo = () => {
 		droparea	= document.querySelector( '.droparea-video' ),
 		inputs		= document.querySelectorAll( '.file-video' )
 	let fileInstance
+
+	if( ! droparea || ! inputs.length ) return;
 
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach( event => {
 		document.addEventListener( event, evt => evt.preventDefault() )
