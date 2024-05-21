@@ -30,6 +30,7 @@ function ih_load_theme_dependencies(): void
 
 	// Hide admin bar for everyone on the frontend.
 	if( ! is_admin() ) show_admin_bar( false );
+	else require_once( 'theme-functions/admin-functions.php' );
 
 	require_once( 'theme-functions/acf-fc-templates-generator.php' );	// Auto-generate ACF Flexible Content templates files.
 	require_once( 'theme-functions/theme-functions.php' );	// Please place all custom functions declarations in this file.

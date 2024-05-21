@@ -539,15 +539,15 @@ function ih_ajax_upload_custom_poster(): void
 		wp_send_json_error( ['msg' => __( 'Тільки ( png | jpg | jpeg ) меньше 10 мб', 'inheart' )] );
 
 	$filename	= ih_modify_filename( $image['name'] );
-	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['video']['tmp_dir']}/{$filename}" );
+	$moved		= move_uploaded_file( $image['tmp_name'], "{$_SESSION['step4']['video']['tmp_dir']}/$filename" );
 
 	if( ! $moved )
 		wp_send_json_error( ['msg' => __( 'Помилка під час завантаження зображення', 'inheart' )] );
 
-	$_SESSION['step4']['video']['shots'][] = "{$_SESSION['step4']['video']['tmp_url']}/{$filename}";
+	$_SESSION['step4']['video']['shots'][] = "{$_SESSION['step4']['video']['tmp_url']}/$filename";
 	wp_send_json_success( [
 		'msg'	=> __( 'Зображення завантажено успішно', 'inheart' ),
-		'url'	=> "{$_SESSION['step4']['video']['tmp_url']}/{$filename}"
+		'url'	=> "{$_SESSION['step4']['video']['tmp_url']}/$filename"
 	] );
 }
 
