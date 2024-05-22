@@ -479,7 +479,7 @@ function ih_ajax_upload_memory_photo(): void
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
 	$is_expanded = get_field( 'is_expanded', $memory_page_id );
-	$photos      = get_field( 'photo', $memory_page_id );
+	$photos      = get_field( 'photo', $memory_page_id ) ?: [];
 
 	// Simple page can attach only <= 4 photos.
 	if( ! $is_expanded && count( $photos ) >= 4 )
@@ -750,7 +750,7 @@ function ih_ajax_save_data_step_4(): void
 {
 	$step_data      = isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id = $_SESSION['memory_page_id'] ?? null;
-	$photos         = $step_data['photos'] ?? null;
+	$photos         = $step_data['photos'] ?? [];
 
 	if( ! $memory_page_id )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
