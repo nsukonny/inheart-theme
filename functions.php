@@ -132,32 +132,32 @@ function ih_acf_init(): void
 	// Options sub-pages.
 	if( function_exists( 'acf_add_options_sub_page' ) && $acf_parent_options ){
 		acf_add_options_sub_page( [
-			'page_title' 	=> __( 'Global' ),
-			'menu_title'	=> __( 'Global' ),
+			'page_title' 	=> 'Global',
+			'menu_title'	=> 'Global',
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
 
 		acf_add_options_sub_page( [
-			'page_title' 	=> __( 'Header' ),
-			'menu_title'	=> __( 'Header' ),
+			'page_title' 	=> 'Header',
+			'menu_title'	=> 'Header',
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
 
 		acf_add_options_sub_page( [
-			'page_title' 	=> __( 'Footer' ),
-			'menu_title'	=> __( 'Footer' ),
+			'page_title' 	=> 'Footer',
+			'menu_title'	=> 'Footer',
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
 
 		acf_add_options_sub_page( [
-			'page_title' 	=> __( 'Email Templates' ),
-			'menu_title'	=> __( 'Email Templates' ),
+			'page_title' 	=> 'Email Templates',
+			'menu_title'	=> 'Email Templates',
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
 
 		acf_add_options_sub_page( [
-			'page_title' 	=> __( 'Pages' ),
-			'menu_title'	=> __( 'Pages' ),
+			'page_title' 	=> 'Pages',
+			'menu_title'	=> 'Pages',
 			'parent_slug'	=> $acf_parent_options['menu_slug']
 		] );
 	}
