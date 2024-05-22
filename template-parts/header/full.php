@@ -3,15 +3,15 @@
 /**
  * Header template.
  *
- * @see Options -> Header.
+ * @see        Options -> Header.
  *
- * @package WordPress
+ * @package    WordPress
  * @subpackage inheart
  */
 
-$logo_dark	= get_field( 'header_logo_dark', 'option' );
-$logo_light	= get_field( 'header_logo_light', 'option' );
-$socials	= get_field( 'social_icons', 'option' );
+$logo_dark  = get_field( 'header_logo_dark', 'option' );
+$logo_light = get_field( 'header_logo_light', 'option' );
+$socials    = get_field( 'social_icons', 'option' );
 ?>
 
 <header class="header full">
@@ -27,23 +27,26 @@ $socials	= get_field( 'social_icons', 'option' );
 					if( ! is_user_logged_in() ) get_template_part( 'template-parts/header/actions' );
 
 					wp_nav_menu( [
-						'theme_location'	=> 'header_menu',
-						'container'			=> 'nav',
-						'container_class'	=> 'header-nav',
-						'container_id'		=> 'header-nav'
+						'theme_location'  => 'header_menu',
+						'container'       => 'nav',
+						'container_class' => 'header-nav',
+						'container_id'    => 'header-nav'
 					] );
 
 					if( ! empty( $socials ) ){
 						echo '<div class="header-nav-icons flex align-center justify-center">';
 
-						foreach(  $socials as $soc ){
-							$icon	= $soc['icon'];
-							$url	= $soc['url'];
+						foreach( $socials as $soc ){
+							$icon = $soc['icon'];
+							$url  = $soc['url'];
 
 							if( ! $icon || ! $url ) continue;
 							?>
 							<a href="<?php echo esc_url( $url ) ?>" target="_blank">
-								<?php echo wp_get_attachment_image( $icon['id'], 'icon', false, ['loading' => 'lazy', 'class' => 'style-svg'] ) ?>
+								<?php echo wp_get_attachment_image( $icon['id'], 'icon', false, [
+									'loading' => 'lazy',
+									'class'   => 'style-svg'
+								] ) ?>
 							</a>
 							<?php
 						}
@@ -54,16 +57,14 @@ $socials	= get_field( 'social_icons', 'option' );
 				</div>
 
 				<button
-					class="header-menu-button flex align-center"
-					type="button"
+					class="header-menu-button flex align-center" type="button"
 					aria-label="<?php esc_attr_e( 'Відкрити меню', 'inheart' ) ?>"
 				>
 					<span class="header-menu-button-lines">
 						<span></span>
 						<span></span>
 						<span></span>
-					</span>
-					<span class="header-menu-button-label">
+					</span> <span class="header-menu-button-label">
 						<?php esc_html_e( 'Меню', 'inheart' ) ?>
 					</span>
 				</button>
@@ -74,7 +75,7 @@ $socials	= get_field( 'social_icons', 'option' );
 			</div>
 
 			<div class="header-logo flex align-center">
-				<a href="<?php echo home_url( '/profile' ) ?>">
+				<a href="<?php echo ih_get_logo_url() ?>">
 					<?php
 					echo wp_get_attachment_image( $logo_dark['id'], 'ih-logo', false, ['class' => 'dark'] );
 					echo wp_get_attachment_image( $logo_light['id'], 'ih-logo', false, ['class' => 'light'] );
@@ -83,8 +84,7 @@ $socials	= get_field( 'social_icons', 'option' );
 			</div>
 
 			<?php
-			if( is_user_logged_in() ) get_template_part( 'template-parts/header/profile' );
-			else get_template_part( 'template-parts/header/actions' );
+			if( is_user_logged_in() ) get_template_part( 'template-parts/header/profile' );else get_template_part( 'template-parts/header/actions' );
 			?>
 		</div><!-- .header-inner -->
 	</div><!-- .container -->

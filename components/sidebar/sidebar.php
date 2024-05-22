@@ -16,7 +16,7 @@ $logo = get_field( 'header_logo_light', 'option' );
 			<?php
 			if( $logo ){
 				?>
-				<a class="header-logo flex align-center" href="<?php echo get_the_permalink( pll_get_post( 2 ) ) ?>">
+				<a class="header-logo flex align-center" href="<?php echo ih_get_logo_url() ?>">
 					<?php echo wp_get_attachment_image( $logo['id'], 'ih-logo' ) ?>
 				</a>
 				<?php

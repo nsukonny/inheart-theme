@@ -495,16 +495,16 @@ function ih_is_set_military_section( array $section = [] ): bool
 }
 
 /**
- * Register custom column for the memory pages.
+ * Get correct URL for the site logo.
+ *
+ * @return string
  */
-add_filter( 'manage_memory_page_posts_columns', function( $defaults ){
-	$defaults['is-expanded'] = 'Розширена';
+function ih_get_logo_url(): string
+{
+	$logged_page_id = get_field( 'logo_url_logged_in', 'option' );
+	$logged_url     = $logged_page_id ? get_the_permalink( pll_get_post( $logged_page_id ) ) : get_the_permalink( pll_get_post( ih_get_profile_page_id() ) );
+	$not_logged_url = get_field( 'logo_url_not_logged_in', 'option' ) ?: home_url( '/' );
 
-	return $defaults;
-} );
-add_action( 'manage_memory_page_posts_custom_column', function( $column_name, $post_id ){
-	if( $column_name == 'is-expanded' ){
-		echo ( get_field( 'is_expanded', $post_id ) ? 'Так' : 'Ні' );
-	}
-}, 10, 2 );
+	return is_user_logged_in() ? $logged_url : $not_logged_url;
+}
 
