@@ -508,3 +508,20 @@ function ih_get_logo_url(): string
 	return is_user_logged_in() ? $logged_url : $not_logged_url;
 }
 
+/**
+ * Convert WP post status to Ukrainian language.
+ *
+ * @param string $status
+ * @return string
+ */
+function ih_ukr_post_status( string $status ): string
+{
+	if( ! $status ) return '';
+
+	return match ( $status ) {
+		'draft'   => 'Чернетка',
+		'publish' => 'Опубліковано',
+		default   => 'Невідомо'
+	};
+}
+

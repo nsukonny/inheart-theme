@@ -93,12 +93,11 @@ function ih_inclusion_enqueue(): void
 	/**
 	 * Additional pages.
 	 */
-
     if( is_singular( 'memory_page' ) ){
         wp_enqueue_style( 'memory', THEME_URI . '/static/css/pages/memory.min.css', [], THEME_VERSION );
         wp_enqueue_script( 'memory', THEME_URI . '/static/js/single-memory/single-memory.min.js', ['jquery'], THEME_VERSION, true );
-        if (get_field('theme') == 'military')
-        {
+
+        if (get_field('theme') == 'military'){
             wp_enqueue_script('memory-military', THEME_URI . '/static/js/single-memory-military/single-memory-military.min.js', ['jquery'], THEME_VERSION, true);
             wp_enqueue_style('mapbox-gl-style', 'https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css');
             wp_enqueue_script('mapbox-gl-script', 'https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js', array(), null, false);

@@ -1,0 +1,41 @@
+:root {
+    --c-darkgrey: #323232
+}
+
+* {
+    box-sizing: border-box
+}
+
+.email-addresses {
+    font-size: 14px
+}
+
+.wrap.email-addresses-wrap > h2.email-addresses-title {
+    font-weight: 700;
+    margin-bottom: 20px
+}
+
+.email-addresses-row {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--c-darkgrey)
+}
+
+.email-addresses-row:first-child {
+    border-top: 1px solid var(--c-darkgrey)
+}
+
+.email-addresses-row:first-child .email-addresses-col {
+    text-align: center;
+    font-weight: 700
+}
+
+.email-addresses-col {
+    width: 25%;
+    border-right: 1px solid var(--c-darkgrey);
+    padding: 10px 20px
+}
+
+.email-addresses-col:first-child {
+    border-left: 1px solid var(--c-darkgrey)
+}
