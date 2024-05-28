@@ -39,3 +39,7 @@
 .email-addresses-col:first-child {
     border-left: 1px solid var(--c-darkgrey)
 }
+
+.download-form {
+    margin-top: 20px
+}

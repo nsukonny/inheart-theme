@@ -65,7 +65,7 @@ function ih_admin_get_memory_page_attachments( int $post_id ): float
 	return bcdiv( $size, 1048576, 2 );
 }
 
-add_action('admin_enqueue_scripts', 'ih_admin_enqueue');
+add_action( 'admin_enqueue_scripts', 'ih_admin_enqueue' );
 /**
  * Admin enqueue.
  *
@@ -73,8 +73,10 @@ add_action('admin_enqueue_scripts', 'ih_admin_enqueue');
  */
 function ih_admin_enqueue(): void
 {
-	if( isset( $_GET['page'] ) && $_GET['page'] === 'email-addresses' )
-		wp_enqueue_style( 'additional-features', THEME_URI . '/additional-features/admin/css/additional-features.css', [], THEME_VERSION );
+	if( isset( $_GET['page'] ) && $_GET['page'] === 'email-addresses' ){
+		wp_enqueue_style( 'additional-features', THEME_URI .
+		                                         '/additional-features/admin/css/additional-features.css', [], THEME_VERSION );
+	}
 }
 
 add_action( 'admin_menu', function(){
@@ -93,6 +95,12 @@ function ih_menu_email_addresses(): void
 	<?php
 }
 
+/**
+ * Outputs html row layout for the table.
+ *
+ * @param array $data
+ * @return void
+ */
 function ih_print_email_addresses_row( array $data ): void
 {
 	if( empty( $data ) ) return;
@@ -102,5 +110,78 @@ function ih_print_email_addresses_row( array $data ): void
 	foreach( $data as $col ) echo '<div class="email-addresses-col">', $col, '</div>';
 
 	echo '</div>';
+}
+
+/**
+ * Show browser download dialog for generated CSV file.
+ *
+ * @param $fileName
+ * @param $assocDataArray
+ * @return void
+ */
+function outputCsv( $fileName, $assocDataArray ): void
+{
+	ob_clean();
+	header( 'Pragma: public' );
+	header( 'Expires: 0' );
+	header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+	header( 'Cache-Control: private', false );
+	header( 'Content-Type: text/csv' );
+	header( 'Content-Disposition: attachment;filename=' . $fileName );
+
+	if( isset( $assocDataArray['0'] ) ){
+		$fp = fopen( 'php://output', 'w' );
+
+		foreach( $assocDataArray as $values ) fputcsv( $fp, $values, ';' );
+
+		fclose( $fp );
+	}
+
+	ob_flush();
+}
+
+add_action( 'admin_init', 'ih_download_csv' );
+/**
+ * Create CSV file from the array of arrays and download from browser.
+ *
+ * @return void
+ */
+function ih_download_csv(): void
+{
+	if( ! isset( $_POST['download-csv'] ) ) return;
+
+	if( ! $users = get_users() ) return;
+
+	$data = [['email' => 'Пошта', 'name' => "Ім'я", 'memory_page' => "Сторінка пам'яті", 'status' => 'Статус']];
+
+	foreach( $users as $user ){
+		$user_id      = $user->ID;
+		$user_email   = $user->user_email;
+		$user_name    = $user->display_name;
+		$memory_pages = get_posts( [
+			'post_type'   => 'memory_page',
+			'numberposts' => -1,
+			'post_status' => 'any',
+			'author__in'  => $user_id
+		] );
+
+		if( empty( $memory_pages ) ) continue;
+
+		foreach( $memory_pages as $memory_page ){
+			$mp_id     = $memory_page->ID;
+			$mp_title  = $memory_page->post_title;
+			$is_paid   = get_field( 'is_expanded', $mp_id ) ? 'Платна' : 'Безкоштовна';
+			$mp_status = ih_ukr_post_status( get_post_status( $mp_id ) ) . ', ' . $is_paid;
+			$data[]    = [
+				'email'       => $user_email,
+				'name'        => $user_name,
+				'memory_page' => $mp_title,
+				'status'      => $mp_status
+			];
+		}
+	}
+
+	outputCsv( 'emails.csv', $data );
+	exit;
 }
 
