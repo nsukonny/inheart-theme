@@ -225,10 +225,15 @@ add_action( 'wp_ajax_ih_ajax_change_qty', 'ih_ajax_change_qty' );
  */
 function ih_ajax_change_qty(): void
 {
-	if( ! $count = ih_clean( $_POST['count'] ) ?? null )
+	$count          = isset( $_POST['count'] ) ? ih_clean( $_POST['count'] ) : null;
+	$memory_page_id = isset( $_POST['memoryPage'] ) ? ih_clean( $_POST['memoryPage'] ) : null;
+
+	if( ! $count || ! $memory_page_id )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	if( ! $price = ih_get_expanded_page_order_price( $count ) )
+	$page_theme = get_field( 'theme', $memory_page_id );
+
+	if( ! $price = ih_get_expanded_page_order_price( $count, $page_theme === 'military' ) )
 		wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
 
 	wp_send_json_success( ['price' => number_format( $price, 0, '', ' ' )] );
@@ -287,10 +292,6 @@ function ih_ajax_create_order(): void
 	// Current User is not an author of this Memory page.
 	if( $customer_id !== $mp_author_id )
 		wp_send_json_error( ['msg' => __( "Ви не автор цієї сторінки пам'яті", 'inheart' )] );
-
-	// Memory page is already expanded.
-	if( get_field( 'is_expanded', $page_id ) )
-		wp_send_json_error( ['msg' => __( "Ця сторінка пам'яті вже є розширеною", 'inheart' )] );
 
 	// No QR codes count provided.
 	if( ! $qr_count )
@@ -357,8 +358,7 @@ function ih_ajax_create_order(): void
 		$ordered = "QR-код військового на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_military_price() . " грн)\n" .
 			"Загальна вартість: $price грн";
 	}else{
-		$ordered = "Розширена сторінка пам'яті - 1 шт. (" . ih_get_expanded_page_price() . " грн)\n" .
-			"QR-код на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_price() . " грн)\n" .
+		$ordered = "QR-код на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_price() . " грн)\n" .
 			"Загальна вартість: $price грн";
 	}
 

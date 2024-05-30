@@ -330,9 +330,10 @@ const loadDepartments = city => {
 const calculateQRCount = () => {
 	const
 		buttonsWrap = document.querySelector( '.qr-count-buttons' ),
-		priceBtn	= document.querySelector( '.full-price-btn' )
+		priceBtn = document.querySelector( '.full-price-btn' ),
+		form = document.querySelector( '.expand-page-form' )
 
-	if( ! buttonsWrap || ! priceBtn ) return
+	if( ! buttonsWrap || ! priceBtn || ! form ) return
 
 	const
 		buttons	= buttonsWrap.querySelectorAll( '.button.qty' ),
@@ -351,7 +352,8 @@ const calculateQRCount = () => {
 		const
 			target		= e.target,
 			value		= target.value,
-			formData	= new FormData()
+			formData	= new FormData(),
+			memoryPage	= form.dataset.page
 
 		if( checkAjaxWorkingStatus() || ! value ) return
 
@@ -363,6 +365,7 @@ const calculateQRCount = () => {
 
 		formData.append( 'action', 'ih_ajax_change_qty' )
 		formData.append( 'count', value )
+		formData.append( 'memoryPage', memoryPage )
 
 		ihAjaxRequest( formData ).then( res => {
 			target.classList.remove( 'disabled' )

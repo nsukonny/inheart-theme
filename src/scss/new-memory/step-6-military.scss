@@ -4,12 +4,27 @@
 	}
 }
 
+.military-created-desc {
+	max-width: 591px;
+
+	@media (min-width: $sm) {
+		text-align: center
+	}
+}
+
+.military-created-qr {
+	margin: 19px 0 43px;
+
+	.button {
+		min-width: 216px
+	}
+}
+
 .military-created-inner {
 	width: 100%;
 	max-width: 800px;
 	background-color: $white;
 	padding: 20px;
-	margin: 40px 0;
 	border-radius: $rad-advantage;
 
 	@media (min-width: $sm) {
@@ -139,10 +154,6 @@
 	&:hover {
 		text-decoration: none
 	}
-}
-
-.military-created-qr .button {
-	min-width: 216px
 }
 
 #instagram-popup {
