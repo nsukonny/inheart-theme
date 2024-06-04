@@ -520,7 +520,7 @@ function ih_ukr_post_status( string $status ): string
 
 	return match ( $status ) {
 		'draft'   => 'Чернетка',
-		'publish' => 'Опубліковано',
+		'publish' => 'Опублікована',
 		default   => 'Невідомо'
 	};
 }
