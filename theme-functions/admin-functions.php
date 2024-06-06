@@ -8,6 +8,18 @@
  */
 
 /**
+ * Register custom column for the QR CPT.
+ */
+add_filter( 'manage_qr_posts_columns', function( $defaults ){
+	$defaults['finished'] = 'Завершено';
+
+	return $defaults;
+} );
+add_action( 'manage_qr_posts_custom_column', function( $column_name, $post_id ){
+	if( $column_name === 'finished' ) echo( get_field( 'finished', $post_id ) ? 'Так' : 'Ні' );
+}, 10, 2 );
+
+/**
  * Register custom column for the memory pages.
  */
 add_filter( 'manage_memory_page_posts_columns', function( $defaults ){
