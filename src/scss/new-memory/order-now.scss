@@ -1,0 +1,78 @@
+.order-now {
+	padding: 64px 0 0;
+	opacity: 0;
+	transition: opacity ease-out $tr;
+
+	.popup-inner {
+		max-width: 847px;
+		border-radius: 20px 20px 0 0;
+		padding: 0;
+		margin: auto 0 0;
+		opacity: 0;
+		transform: translateY(50%);
+		transition:
+			opacity ease-out calc($tr * 2),
+			transform ease-out calc($tr * 2);
+
+		@media (min-width: $md) {
+			border-radius: 20px;
+			margin: auto 0
+		}
+	}
+
+	&-image {
+		width: 100%;
+		aspect-ratio: 16 / 8.1;
+
+		@media (min-width: $md) {
+			width: 36%;
+			aspect-ratio: unset;
+			margin-bottom: 0
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover
+		}
+	}
+
+	&-body {
+		width: 100%;
+		text-align: center;
+		padding: 15px 20px 100px;
+
+		@media (min-width: $md) {
+			width: 64%;
+			padding: 58px;
+			text-align: left
+		}
+	}
+
+	&-title {
+		font-size: 30px;
+		margin-bottom: 10px;
+
+		@media (min-width: $md) {
+			font-size: 28px
+		}
+	}
+
+	&-text {
+		margin-bottom: 20px
+	}
+
+	&-submit:not(:last-child) {
+		margin-bottom: 16px
+	}
+
+	&-decline:not(:last-child) {
+		margin-bottom: 10px
+	}
+
+	&-note {
+		font-size: $fs-sm;
+		color: $text-secondary;
+		text-align: center
+	}
+}

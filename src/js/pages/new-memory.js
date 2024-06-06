@@ -101,6 +101,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Last screen (military).
 	instagramPopupEvents()
+
+	orderNowPopup()
 } )
 
 const hideLoader = () => {
@@ -110,4 +112,26 @@ const hideLoader = () => {
 
 	loader.classList.add( 'opacity-0' )
 	setTimeout( () => loader.remove(), TRANSITION_DURATION )
+}
+
+const orderNowPopup = () => {
+	const popup = document.querySelector( '.popup.order-now' )
+
+	if( ! popup ) return
+
+	const
+		inner      = popup.querySelector( '.popup-inner' ),
+		declineBtn = popup.querySelector( '.order-now-decline' )
+
+	// Close & remove popup.
+	declineBtn.addEventListener( 'click', () => popup.remove() )
+	popup.addEventListener( 'click', e => {
+		const target = e.target
+
+		if( target.className && target.classList.contains( 'popup' ) ) popup.remove()
+	} )
+
+	setTimeout( () => popup.classList.remove( 'hidden' ), 1000 )
+	setTimeout( () => popup.classList.add( 'fade-in' ), 1010 )
+	setTimeout( () => inner.classList.add( 'fade-in-up' ), 1350 )
 }

@@ -1,0 +1,8 @@
+.fade-in {
+	opacity: 1 !important;
+
+	&-up {
+		opacity: 1 !important;
+		transform: translateY(0) !important
+	}
+}
