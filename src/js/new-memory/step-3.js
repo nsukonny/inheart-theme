@@ -48,12 +48,6 @@ export const checkEpitaphContentLength = () => {
  * Check epitaph textarea length and compare with allowed length.
  */
 const onEpitaphChange = () => {
-	// This is the first time textarea focused - clean it from the "placeholder" text.
-	if( textarea.classList.contains( 'clear-on-focus' ) ){
-		textarea.value = ''
-		textarea.classList.remove( 'clear-on-focus' )
-	}
-
 	const
 		value			= textarea.value,
 		symbolsTyped	= document.querySelector( '.symbols-count-typed' ),
@@ -87,8 +81,6 @@ export const checkStep3 = () => {
 	const
 		fields		= document.querySelectorAll( '.epitaph input' )
 	let isFormValid	= true
-
-	if( textarea.classList.contains( 'clear-on-focus' ) ) return false
 
 	if( fields.length ){
 		fields.forEach( field => {

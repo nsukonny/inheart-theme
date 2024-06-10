@@ -415,10 +415,10 @@ function ih_ajax_save_data_step_3(): void
 	if( ! $memory_page_id )
 		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	if( $epitaph ) update_field( 'epitaphy', $epitaph, $memory_page_id );
-	if( $epitaph_lastname ) update_field( 'epitaph_lastname', $epitaph_lastname, $memory_page_id );
-	if( $epitaph_firstname ) update_field( 'epitaph_firstname', $epitaph_firstname, $memory_page_id );
-	if( $epitaph_role ) update_field( 'epitaph_role', $epitaph_role, $memory_page_id );
+	update_field( 'epitaphy', $epitaph, $memory_page_id );
+	update_field( 'epitaph_lastname', $epitaph_lastname, $memory_page_id );
+	update_field( 'epitaph_firstname', $epitaph_firstname, $memory_page_id );
+	update_field( 'epitaph_role', $epitaph_role, $memory_page_id );
 
 	wp_send_json_success( ['msg' => __( 'Дані Кроку 3 збережено успішно!', 'inheart' )] );
 }
