@@ -12,6 +12,7 @@ $date_start     = isset( $_POST['date-start'] ) && $_POST['date-start'] ? $_POST
 $date_end       = isset( $_POST['date-end'] ) && $_POST['date-end'] ? $_POST['date-end'] : date( 'Y-m-d' );
 $mp_post_status = isset( $_POST['mp-status'] ) && $_POST['mp-status'] ? $_POST['mp-status'] : '';
 $mp_is_expanded = isset( $_POST['mp-is-expanded'] ) && $_POST['mp-is-expanded'] ? $_POST['mp-is-expanded'] : '';
+$users_export   = [];
 
 if( $date_start && $date_end ){
 	// Reset dates if they are incorrect.
@@ -94,6 +95,7 @@ if( $date_start && $date_end ){
 
 			foreach( $users as $user ){
 				$user_id    = $user->ID;
+				$user_ids[] = $user_id;
 				$user_email = $user->user_email;
 				$user_name  = $user->display_name;
 				$registered = $user->user_registered;
@@ -126,11 +128,15 @@ if( $date_start && $date_end ){
 
 				if( empty( $memory_pages ) ) continue;
 
+				$users_export[] = $user_id;
+
 				foreach( $memory_pages as $key => $memory_page ){
 					$mp_id     = $memory_page->ID;
-					$mp_link   =
-						'<a href="' . get_edit_post_link( $mp_id ) . '" target="_blank">' . $memory_page->post_title .
-						'</a>';
+					$mp_link   = '<a href="' .
+					             get_edit_post_link( $mp_id ) .
+					             '" target="_blank">' .
+					             $memory_page->post_title .
+					             '</a>';
 					$is_paid   = get_field( 'is_expanded', $mp_id ) ? 'Платна' : 'Безкоштовна';
 					$mp_status = ih_ukr_post_status( get_post_status( $mp_id ) ) . ', ' . $is_paid;
 					ih_print_email_addresses_row( [
@@ -152,6 +158,11 @@ if( $date_start && $date_end ){
 	if( $users ){
 		?>
 		<form method="post" class="download-form" action="">
+			<input type="hidden" name="csv-user-ids" value="<?php echo implode( ',', $users_export ) ?>"/>
+			<input type="hidden" name="csv-date-start" value="<?php echo $date_start ?>"/>
+			<input type="hidden" name="csv-date-end" value="<?php echo $date_end ?>"/>
+			<input type="hidden" name="csv-mp-status" value="<?php echo $mp_post_status ?>"/>
+			<input type="hidden" name="csv-mp-is-expanded" value="<?php echo $mp_is_expanded ?>"/>
 			<input type="submit" name="download-csv" class="button-primary" value="Скачати CSV"/>
 		</form>
 		<?php
