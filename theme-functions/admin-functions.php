@@ -162,20 +162,83 @@ function ih_download_csv(): void
 {
 	if( ! isset( $_POST['download-csv'] ) ) return;
 
-	if( ! $users = get_users() ) return;
+	$date_start     = isset( $_POST['csv-date-start'] ) && $_POST['csv-date-start'] ? $_POST['csv-date-start'] : '';
+	$date_end       = isset( $_POST['csv-date-end'] ) && $_POST['csv-date-end'] ? $_POST['csv-date-end']
+		: date( 'Y-m-d' );
+	$mp_post_status = isset( $_POST['csv-mp-status'] ) && $_POST['csv-mp-status'] ? $_POST['csv-mp-status'] : '';
+	$mp_is_expanded = isset( $_POST['csv-mp-is-expanded'] ) && $_POST['csv-mp-is-expanded'] ? $_POST['csv-mp-is-expanded'] : '';
+	$users          = ( isset( $_POST['csv-user-ids'] ) && $_POST['csv-user-ids'] )
+		? explode( ',', $_POST['csv-user-ids'] ) : [];
 
-	$data = [['email' => 'Пошта', 'name' => "Ім'я", 'memory_page' => "Сторінка пам'яті", 'status' => 'Статус']];
+	if( ! empty( $users ) ){
+		if( $date_start && $date_end ){
+			// Reset dates if they are incorrect.
+			if( strtotime( $date_start ) > strtotime( $date_end ) ){
+				$users = get_users( ['include' => array_map( fn( $el ) => ( int ) $el, $users )] );
+			}else{    // Dates are OK.
+				$users = get_users( [
+					'include'    => array_map( fn( $el ) => ( int ) $el, $users ),
+					'date_query' => [
+						[
+							'after'     => "$date_start 00:00:00",
+							'before'    => "$date_end 23:59:59",
+							'inclusive' => true
+						]
+					]
+				] );
+			}
+		}else{
+			$users = get_users( ['include' => array_map( fn( $el ) => ( int ) $el, $users )] );
+		}
+	}else{
+		$users = get_users();
+	}
+
+	if( empty( $users ) ) return;
+
+	$data  = [
+		[
+			'index'       => '#',
+			'email'       => 'Пошта',
+			'registered'  => 'Зареєстрований',
+			'name'        => "Ім'я",
+			'memory_page' => "Сторінка пам'яті",
+			'status'      => 'Статус'
+		]
+	];
+	$index = 1;
 
 	foreach( $users as $user ){
 		$user_id      = $user->ID;
 		$user_email   = $user->user_email;
 		$user_name    = $user->display_name;
-		$memory_pages = get_posts( [
+		$registered   = $user->user_registered;
+		$mp_args    = [
 			'post_type'   => 'memory_page',
 			'numberposts' => -1,
-			'post_status' => 'any',
+			'post_status' => $mp_post_status ?: 'any',
 			'author__in'  => $user_id
-		] );
+		];
+
+		if( $mp_is_expanded === 'paid' ){
+			$mp_args['meta_key']   = 'is_expanded';
+			$mp_args['meta_value'] = true;
+		}else if( $mp_is_expanded === 'free' ){
+			$mp_args['meta_query'] = [
+				[
+					'key'     => 'is_expanded',
+					'value'   => true,
+					'compare' => '!='
+				],
+				[
+					'key'     => 'is_expanded',
+					'compare' => 'NOT EXISTS'
+				],
+				'relation' => 'OR'
+			];
+		}
+
+		$memory_pages = get_posts( $mp_args );
 
 		if( empty( $memory_pages ) ) continue;
 
@@ -185,11 +248,14 @@ function ih_download_csv(): void
 			$is_paid   = get_field( 'is_expanded', $mp_id ) ? 'Платна' : 'Безкоштовна';
 			$mp_status = ih_ukr_post_status( get_post_status( $mp_id ) ) . ', ' . $is_paid;
 			$data[]    = [
+				'index'       => $index,
 				'email'       => $user_email,
+				'registered'  => date( 'd.m.Y', strtotime( $registered ) ),
 				'name'        => $user_name,
 				'memory_page' => $mp_title,
 				'status'      => $mp_status
 			];
+			$index++;
 		}
 	}
 

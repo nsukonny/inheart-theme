@@ -1,5 +1,6 @@
 :root {
-    --c-darkgrey: #323232
+    --c-darkgrey: #323232;
+    --radius: 10px
 }
 
 * {
@@ -15,6 +16,52 @@
     margin-bottom: 20px
 }
 
+.email-addresses-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+    background-color: #d0d0d0;
+    padding: 10px;
+    border-radius: var(--radius)
+}
+
+.email-addresses-filters fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 45%;
+    flex-grow: 1;
+    border: 1px solid var(--c-darkgrey);
+    border-radius: var(--radius);
+    padding: 10px
+}
+
+legend {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px
+}
+
+.email-addresses-filter {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    flex-grow: 1
+}
+
+.email-addresses-filter input[type="date"],
+.email-addresses-filter select {
+    flex-grow: 1
+}
+
+.email-addresses-submit {
+    width: 100%
+}
+
 .email-addresses-row {
     display: flex;
     flex-wrap: wrap;
@@ -26,17 +73,30 @@
 }
 
 .email-addresses-row:first-child .email-addresses-col {
-    text-align: center;
+    justify-content: center;
     font-weight: 700
 }
 
+.email-addresses-row:nth-child(even) {
+    background-color: #e1e1e1
+}
+
+.email-addresses-row:nth-child(odd) {
+    background-color: #d0d0d0
+}
+
 .email-addresses-col {
-    width: 25%;
+    display: flex;
+    align-items: center;
+    width: 19%;
     border-right: 1px solid var(--c-darkgrey);
-    padding: 10px 20px
+    padding: 10px
 }
 
 .email-addresses-col:first-child {
+    width: 5%;
+    padding: 10px 0;
+    justify-content: center;
     border-left: 1px solid var(--c-darkgrey)
 }
 
