@@ -94,6 +94,10 @@
 					border-radius: 50%;
 					background-color: $text-secondary
 				}
+
+				&:not(.active) {
+					cursor: pointer
+				}
 			}
 		}
 	}

@@ -11,43 +11,44 @@ import {
 import { closeDropdown, openDropdown } from './step-2-military'
 
 const
-	addRewardButtons	= document.querySelectorAll( 'button.add-reward' ),
-	titleButton			= document.querySelector( '#new-memory-step-3-military .new-memory-step-title .add-reward' ),
-	noRewardsBody		= document.querySelector( '.no-rewards-body' ),
-	hasRewardsBody		= document.querySelector( '.has-rewards' ),
-	rewardsMainWrap		= document.querySelector( '.rewards-main-wrap' ),
-	rewardsArea			= document.querySelector( '.rewards-area' ),
-	searchForm			= document.querySelector( 'form.rewards-search' ),
-	search				= document.querySelector( '#search-reward' ),
-	rewardForm			= document.querySelector( '.reward-popup-form' ),
-	decline				= document.querySelector( '.reward-popup-form-decline' ),
-	rewardPopupText		= document.querySelector( '.reward-popup-text' )
+	addRewardButtons = document.querySelectorAll( 'button.add-reward' ),
+	titleButton      = document.querySelector( '#new-memory-step-3-military .new-memory-step-title .add-reward' ),
+	noRewardsBody    = document.querySelector( '.no-rewards-body' ),
+	hasRewardsBody   = document.querySelector( '.has-rewards' ),
+	rewardsMainWrap  = document.querySelector( '.rewards-main-wrap' ),
+	rewardsArea      = document.querySelector( '.rewards-area' ),
+	searchForm       = document.querySelector( 'form.rewards-search' ),
+	search           = document.querySelector( '#search-reward' ),
+	rewardForm       = document.querySelector( '.reward-popup-form' ),
+	decline          = document.querySelector( '.reward-popup-form-decline' ),
+	rewardPopupText  = document.querySelector( '.reward-popup-text' ),
+	breadcrumbs      = document.querySelector( '.rewards-sidebar-breadcrumbs' )
 
 // Reward popup.
 const
-	popup						= rewardsMainWrap.querySelector( '.reward-popup' ),
-	popupReward					= popup.querySelector( '.reward-preview' ),
-	popupNoRewardThumb			= popupReward.querySelector( '.reward-preview-no-reward-thumb' ),
-	popupRewardThumb			= popupReward.querySelector( '.reward-preview-thumb' ),
-	popupRewardTitle			= popupReward.querySelector( '.reward-preview-title' ),
-	rewardPopupTextEdict		= rewardPopupText.querySelector( '.reward-popup-text-edict' ),
-	rewardPopupTextNumber		= rewardPopupText.querySelector( '.reward-popup-text-number' ),
-	rewardPopupTextDate			= rewardPopupText.querySelector( '.reward-popup-text-date' ),
-	rewardPopupTextFor			= rewardPopupText.querySelector( '.reward-popup-text-for' ),
-	rewardPopupTextPosthumously	= rewardPopupText.querySelector( '.reward-popup-text-posthumously' ),
-	textAfterNumber				= rewardPopupText.querySelector( '.reward-popup-text-number-after' ),
-	textAfterDate				= rewardPopupText.querySelector( '.reward-popup-text-date-after' ),
-	rewardPopupCustomText		= popup.querySelector( '.reward-popup-custom' )
+	popup                       = rewardsMainWrap.querySelector( '.reward-popup' ),
+	popupReward                 = popup.querySelector( '.reward-preview' ),
+	popupNoRewardThumb          = popupReward.querySelector( '.reward-preview-no-reward-thumb' ),
+	popupRewardThumb            = popupReward.querySelector( '.reward-preview-thumb' ),
+	popupRewardTitle            = popupReward.querySelector( '.reward-preview-title' ),
+	rewardPopupTextEdict        = rewardPopupText.querySelector( '.reward-popup-text-edict' ),
+	rewardPopupTextNumber       = rewardPopupText.querySelector( '.reward-popup-text-number' ),
+	rewardPopupTextDate         = rewardPopupText.querySelector( '.reward-popup-text-date' ),
+	rewardPopupTextFor          = rewardPopupText.querySelector( '.reward-popup-text-for' ),
+	rewardPopupTextPosthumously = rewardPopupText.querySelector( '.reward-popup-text-posthumously' ),
+	textAfterNumber             = rewardPopupText.querySelector( '.reward-popup-text-number-after' ),
+	textAfterDate               = rewardPopupText.querySelector( '.reward-popup-text-date-after' ),
+	rewardPopupCustomText       = popup.querySelector( '.reward-popup-custom' )
 
 // Reward popup inputs.
 const
-	customLabel		= popup.querySelector( '.label-reward-custom' ),
-	customInput		= popup.querySelector( '#reward-custom' ),
-	edictInput		= popup.querySelector( '#edict' ),
-	numberInput		= popup.querySelector( '#reward-number' ),
-	dateInput		= popup.querySelector( '#reward-date' ),
-	forInput		= popup.querySelector( '#reward-for-what' ),
-	posthumously	= popup.querySelector( '#posthumously' )
+	customLabel  = popup.querySelector( '.label-reward-custom' ),
+	customInput  = popup.querySelector( '#reward-custom' ),
+	edictInput   = popup.querySelector( '#edict' ),
+	numberInput  = popup.querySelector( '#reward-number' ),
+	dateInput    = popup.querySelector( '#reward-date' ),
+	forInput     = popup.querySelector( '#reward-for-what' ),
+	posthumously = popup.querySelector( '#posthumously' )
 
 export const addReward = () => {
 	if(
@@ -68,16 +69,15 @@ export const addReward = () => {
 	// Click on a reward.
 	rewardsMainWrap.addEventListener( 'click', e => {
 		const
-			target	= e.target,
-			preview	= target.closest( '.reward-preview' )
+			target  = e.target,
+			preview = target.closest( '.reward-preview' )
 
 		if( ! preview || ! popup ) return
 
 		const
-			activePreview		= document.querySelector( '.reward-preview.active' ),
-			breadcrumbs			= document.querySelector( '.rewards-sidebar-breadcrumbs' ),
-			previewThumb		= preview.querySelector( '.reward-preview-thumb img' ).cloneNode(),
-			previewTitle		= preview.querySelector( '.reward-preview-title' ).innerText
+			activePreview = document.querySelector( '.reward-preview.active' ),
+			previewThumb  = preview.querySelector( '.reward-preview-thumb img' ).cloneNode(),
+			previewTitle  = preview.querySelector( '.reward-preview-title' ).innerText
 
 		if( activePreview ) activePreview.classList.remove( 'active' )
 
@@ -104,9 +104,7 @@ export const addReward = () => {
 		decline.addEventListener( 'click', e => {
 			e.preventDefault()
 
-			const
-				activePreview	= document.querySelector( '.reward-preview.active' ),
-				breadcrumbs		= document.querySelector( '.rewards-sidebar-breadcrumbs' )
+			const activePreview = document.querySelector( '.reward-preview.active' )
 
 			if( activePreview ) activePreview.classList.remove( 'active' )
 
@@ -130,8 +128,8 @@ export const addReward = () => {
 		setAjaxWorkingStatus( true )
 
 		const
-			formData	= new FormData(),
-			activeBtn	= document.querySelector( '.rewards-type-filter.active' )
+			formData  = new FormData(),
+			activeBtn = document.querySelector( '.rewards-type-filter.active' )
 
 		formData.append( 'action', 'ih_ajax_filter_rewards' )
 		formData.append( 'slug', activeBtn ? activeBtn.dataset.slug : '' )
@@ -210,8 +208,8 @@ export const addReward = () => {
 		edictInput.addEventListener( 'input', onEdictInputUpdate )
 
 		const
-			label	= edictInput.closest( '.label' ),
-			options	= label.querySelectorAll( '.option' )
+			label   = edictInput.closest( '.label' ),
+			options = label.querySelectorAll( '.option' )
 
 		if( options.length ){
 			options.forEach( option => {
@@ -275,8 +273,8 @@ export const addReward = () => {
 		setAjaxWorkingStatus( true )
 
 		const
-			formData	= new FormData( rewardForm ),
-			rewardId	= popupReward.dataset.id
+			formData = new FormData( rewardForm ),
+			rewardId = popupReward.dataset.id
 
 		formData.append( 'action', 'ih_ajax_add_reward' )
 		formData.append( 'id', rewardId )
@@ -305,6 +303,20 @@ export const addReward = () => {
 			setAjaxWorkingStatus( false )
 		} )
 	} )
+
+	if( breadcrumbs && popup ){
+		const
+			bcFirst = breadcrumbs.querySelector( 'span:first-child' ),
+			bcLast  = breadcrumbs.querySelector( 'span:last-child' )
+
+		bcFirst.addEventListener( 'click', () => {
+			if( bcLast.classList.contains( 'active' ) && ! popup.classList.contains( 'hidden' ) ){
+				bcLast.classList.remove( 'active' )
+				bcFirst.classList.add( 'active' )
+				popup.classList.add( 'hidden' )
+			}
+		} )
+	}
 
 	addCustomReward()
 	deleteReward()
@@ -341,9 +353,9 @@ const deleteReward = () => {
 
 	hasRewardsBody.addEventListener( 'click', e => {
 		const
-			target	= e.target,
-			clientX	= e.clientX < 200 ? 200 : e.clientX,
-			clientY	= e.clientY
+			target  = e.target,
+			clientX = e.clientX < 200 ? 200 : e.clientX,
+			clientY = e.clientY
 
 		if(
 			! target.className ||
@@ -362,7 +374,7 @@ const deleteReward = () => {
 		buttonsWrap.classList.add( 'active' )
 		buttonsWrap.appendChild( popupConfirmClone )
 		popupConfirmClone.style.left = `${ clientX }px`
-		popupConfirmClone.style.top = `${ clientY }px`
+		popupConfirmClone.style.top  = `${ clientY }px`
 		popupConfirmClone.classList.remove( 'hidden' )
 		document.body.classList.add( 'overflow-hidden' )
 
@@ -375,9 +387,9 @@ const deleteReward = () => {
 			if( checkAjaxWorkingStatus() ) return
 
 			const
-				reward		= target.closest( '.reward-preview' ),
-				memoryId	= reward.dataset.id || '',
-				formData	= new FormData()
+				reward   = target.closest( '.reward-preview' ),
+				memoryId = reward.dataset.id || '',
+				formData = new FormData()
 
 			formData.append( 'action', 'ih_ajax_delete_reward' )
 			formData.append( 'id', memoryId )
@@ -431,15 +443,15 @@ const editReward = () => {
 		) return
 
 		const
-			preview				= target.closest( '.reward-preview' ),
-			isCustom			= preview.classList.contains( 'custom' ),
-			previewThumb		= ! isCustom ? preview.querySelector( '.reward-preview-thumb img' ).cloneNode() : '',
-			previewTitle		= preview.querySelector( '.reward-preview-title' ).innerText,
-			hiddenEdict			= preview.querySelector( '.reward-preview-edict' ).innerText,
-			hiddenNumber		= preview.querySelector( '.reward-preview-number' ).innerText,
-			hiddenDate			= preview.querySelector( '.reward-preview-date' ).innerText,
-			hiddenFor			= preview.querySelector( '.reward-preview-for' ).innerText,
-			hiddenPosthumously	= preview.querySelector( '.reward-preview-posthumously' ).innerText
+			preview            = target.closest( '.reward-preview' ),
+			isCustom           = preview.classList.contains( 'custom' ),
+			previewThumb       = ! isCustom ? preview.querySelector( '.reward-preview-thumb img' ).cloneNode() : '',
+			previewTitle       = preview.querySelector( '.reward-preview-title' ).innerText,
+			hiddenEdict        = preview.querySelector( '.reward-preview-edict' ).innerText,
+			hiddenNumber       = preview.querySelector( '.reward-preview-number' ).innerText,
+			hiddenDate         = preview.querySelector( '.reward-preview-date' ).innerText,
+			hiddenFor          = preview.querySelector( '.reward-preview-for' ).innerText,
+			hiddenPosthumously = preview.querySelector( '.reward-preview-posthumously' ).innerText
 
 		// Normal reward.
 		if( ! isCustom ){
@@ -460,16 +472,16 @@ const editReward = () => {
 		popupRewardTitle.innerText = previewTitle
 
 		// Pre-fill popup fields.
-		edictInput.value 	= hiddenEdict
-		numberInput.value 	= hiddenNumber
-		dateInput.value 	= hiddenDate
-		forInput.value 		= hiddenFor
+		edictInput.value  = hiddenEdict
+		numberInput.value = hiddenNumber
+		dateInput.value   = hiddenDate
+		forInput.value    = hiddenFor
 
 		// Pre-fill popup texts.
-		rewardPopupTextEdict.innerText	= hiddenEdict
-		rewardPopupTextNumber.innerText	= `№ ${ hiddenNumber }`
-		rewardPopupTextDate.innerText	= formatDate( hiddenDate )
-		rewardPopupTextFor.innerText	= hiddenFor
+		rewardPopupTextEdict.innerText  = hiddenEdict
+		rewardPopupTextNumber.innerText = `№ ${ hiddenNumber }`
+		rewardPopupTextDate.innerText   = formatDate( hiddenDate )
+		rewardPopupTextFor.innerText    = hiddenFor
 
 		if( hiddenPosthumously ){
 			posthumously.checked = true
@@ -494,11 +506,11 @@ const cleanRewardPopup = () => {
 	popup.classList.add( 'hidden' )
 	rewardForm.reset()
 
-	customInput.innerText 			= ''
-	rewardPopupTextEdict.innerText 	= ''
+	customInput.innerText           = ''
+	rewardPopupTextEdict.innerText  = ''
 	rewardPopupTextNumber.innerText = ''
-	rewardPopupTextDate.innerText 	= ''
-	rewardPopupTextFor.innerText 	= ''
+	rewardPopupTextDate.innerText   = ''
+	rewardPopupTextFor.innerText    = ''
 
 	rewardPopupCustomText.classList.add( 'hidden' )
 	customLabel.classList.add( 'hidden' )

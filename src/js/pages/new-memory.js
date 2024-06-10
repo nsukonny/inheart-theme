@@ -125,11 +125,6 @@ const orderNowPopup = () => {
 
 	// Close & remove popup.
 	declineBtn.addEventListener( 'click', () => popup.remove() )
-	popup.addEventListener( 'click', e => {
-		const target = e.target
-
-		if( target.className && target.classList.contains( 'popup' ) ) popup.remove()
-	} )
 
 	setTimeout( () => popup.classList.remove( 'hidden' ), 1000 )
 	setTimeout( () => popup.classList.add( 'fade-in' ), 1010 )
