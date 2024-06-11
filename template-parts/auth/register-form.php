@@ -55,7 +55,8 @@ $http_referer = $_SERVER['HTTP_REFERER'] ?? '';
 				'name'			=> 'agreement',
 				'label'			=> sprintf(
 					__( 'Погоджуюсь з умовами %sположення про обробку і захист персональних даних%s та %sофертою%s', 'inheart' ),
-					'<a href="/">', '</a>', '<a href="/">', '</a>',
+					'<a href="https://www.inheart.memorial/privacy-policy" target="_blank">', '</a>',
+					'<a href="https://www.inheart.memorial/cookie-policy" target="_blank">', '</a>'
 				),
 				'label_class'	=> 'dark',
 				'required'		=> 1

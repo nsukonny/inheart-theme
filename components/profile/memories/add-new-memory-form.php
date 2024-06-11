@@ -54,7 +54,8 @@ $memory_created	= get_field( 'memory_created' );
 				<?php
 				printf(
 					__( 'Погоджуюсь з умовами %sположення про обробку і захист персональних даних%s та %sофертою%s', 'inheart' ),
-					'<a href="/">', '</a>', '<a href="/">', '</a>',
+					'<a href="https://www.inheart.memorial/privacy-policy" target="_blank">', '</a>',
+					'<a href="https://www.inheart.memorial/cookie-policy" target="_blank">', '</a>'
 				);
 				?>
 			</label>
@@ -66,7 +67,7 @@ $memory_created	= get_field( 'memory_created' );
 		?>
 		<div class="memory-created hidden">
 			<div class="memory-created-text">
-				<?php echo $memory_created?>
+				<?php echo $memory_created ?>
 			</div>
 
 			<a href="<?php echo esc_url( basename( $_SERVER['REQUEST_URI'] ) ) ?>" class="button lg outlined button-icon-lead">
