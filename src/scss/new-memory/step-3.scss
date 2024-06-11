@@ -15,6 +15,7 @@
 		}
 
 		fieldset {
+			position: relative;
 			flex-grow: 1
 		}
 
@@ -23,12 +24,7 @@
 			width: 100%;
 			color: $black-for-text;
 			font-family: $ff;
-			background-color: transparent;
-			border: none;
-			border-radius: 0;
-			resize: none;
-			padding: 0;
-			box-shadow: none
+			resize: none
 		}
 	}
 }
