@@ -27,11 +27,11 @@ $photos = ( isset( $_SESSION['memory_page_id'] ) && get_field( 'photo', $_SESSIO
 			</svg>
 		</div>
 		<div class="droparea-title">
-			<?php esc_html_e( 'Перетягніть фотокартки сюди', 'inheart' ) ?>
+			<?php _e( 'Перетягніть фотокартки сюди', 'inheart' ) ?>
 		</div>
 		<div class="droparea-desc">
-			<p><?php esc_html_e( 'Потрібна щонайменше 1 фотографія', 'inheart' ) ?></p>
-			<p><?php esc_html_e( 'PNG, JPG, або JPEG до 10 мб', 'inheart' ) ?></p>
+			<p><?php _e( 'Потрібна щонайменше 1 фотографія', 'inheart' ) ?></p>
+			<p><?php _e( 'PNG, JPG, або JPEG до 10 мб', 'inheart' ) ?></p>
 		</div>
 		<label for="file-photo" class="label-button btn sm gray br-24">
 			<span class="label-button-text">
@@ -76,7 +76,7 @@ $photos = ( isset( $_SESSION['memory_page_id'] ) && get_field( 'photo', $_SESSIO
 					</g>
 				</svg>
 				<span class="label-button btn sm gray br-24 label-button-text">
-					<?php esc_html_e( 'Завантажити ще', 'inheart' ) ?>
+					<?php _e( 'Завантажити ще', 'inheart' ) ?>
 				</span>
 				<input id="file-photo-more" class="file-photo" type="file" name="file-photo-more" multiple />
 			</label>
@@ -88,11 +88,11 @@ $photos = ( isset( $_SESSION['memory_page_id'] ) && get_field( 'photo', $_SESSIO
 			<span>0</span>%
 		</div>
 		<div class="droparea-loader-note">
-			<?php esc_html_e( 'Завантаження фотокартки...', 'inheart' ) ?>
+			<?php _e( 'Завантаження фотокартки...', 'inheart' ) ?>
 		</div>
 		<progress value="0" max="100"></progress>
 		<button class="btn md gray droparea-loader-cancel" type="button">
-			<?php esc_html_e( 'Відмінити', 'inheart' ) ?>
+			<?php _e( 'Скасувати', 'inheart' ) ?>
 		</button>
 	</div>
 </div><!-- .droparea -->

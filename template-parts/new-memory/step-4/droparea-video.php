@@ -27,14 +27,14 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 			</svg>
 		</div>
 		<div class="droparea-title">
-			<?php esc_html_e( 'Перетягніть відеофайл сюди', 'inheart' ) ?>
+			<?php _e( 'Перетягніть відеофайл сюди', 'inheart' ) ?>
 		</div>
 		<div class="droparea-desc">
-			<p><?php esc_html_e( 'AVI, MP4, або MPEG до 100 мб', 'inheart' ) ?></p>
+			<p><?php _e( 'AVI, MP4, або MPEG до 100 мб', 'inheart' ) ?></p>
 		</div>
 		<label for="file-video" class="label-button btn sm gray br-24">
 			<span class="label-button-text">
-				<?php esc_html_e( 'Завантажити з пристрою', 'inheart' ) ?>
+				<?php _e( 'Завантажити з пристрою', 'inheart' ) ?>
 			</span>
 			<input id="file-video" class="file-video" type="file" name="file-video" accept="video/mp4, video/mpeg, video/x-msvideo, video/avi" />
 		</label>
@@ -60,7 +60,7 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 				</svg>
 				<label for="file-video-more" class="label-button btn sm gray br-24">
 				<span class="label-button-text">
-					<?php esc_html_e( 'Завантажити ще', 'inheart' ) ?>
+					<?php _e( 'Завантажити ще', 'inheart' ) ?>
 				</span>
 					<input id="file-video-more" class="file-video" type="file" name="file-video-more" />
 				</label>
@@ -73,20 +73,20 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 			<span>0</span>%
 		</div>
 		<div class="droparea-loader-note">
-			<?php esc_html_e( 'Завантаження відеофайла...', 'inheart' ) ?>
+			<?php _e( 'Завантаження відеофайла...', 'inheart' ) ?>
 		</div>
 		<progress value="0" max="100"></progress>
 		<button class="btn md gray droparea-loader-cancel" type="button">
-			<?php esc_html_e( 'Відмінити', 'inheart' ) ?>
+			<?php _e( 'Скасувати', 'inheart' ) ?>
 		</button>
 	</div><!-- .droparea-loader -->
 
 	<div class="droparea-thumbs flex direction-column align-center justify-end hidden">
 		<div class="droparea-thumbs-text">
-			<?php esc_html_e( 'Виберіть обкладинку для відео', 'inheart' ) ?>
+			<?php _e( 'Виберіть обкладинку для відео', 'inheart' ) ?>
 		</div>
 		<button class="btn md gray droparea-thumbs-save" type="button">
-			<?php esc_html_e( 'Зберегти', 'inheart' ) ?>
+			<?php _e( 'Зберегти', 'inheart' ) ?>
 		</button>
 
 		<div class="droparea-thumbs-list flex flex-wrap">
@@ -100,7 +100,7 @@ $videos	= ( isset( $_SESSION['memory_page_id'] ) && get_field( 'video', $_SESSIO
 					</g>
 				</svg>
 				<span class="droparea-thumb-load-text">
-					<?php esc_html_e( 'Завантажити обкладинку', 'inheart' ) ?>
+					<?php _e( 'Завантажити обкладинку', 'inheart' ) ?>
 				</span>
 				<input id="file-load-poster" class="file-load-poster" type="file" name="file-load-poster" accept="image/jpeg, image/png" />
 			</label>
