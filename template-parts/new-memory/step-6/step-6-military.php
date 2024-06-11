@@ -46,7 +46,7 @@ $full_price     = ih_get_expanded_page_order_price( 1, true );
 					/>
 				</svg>
 				<span class="button-text">
-					<?php _e( "Замовити QR-код за $full_price грн", 'inheart' ) ?>
+					<?php printf( __( "Замовити QR-код за %s грн", 'inheart' ), $full_price ) ?>
 				</span> </a>
 		</div>
 

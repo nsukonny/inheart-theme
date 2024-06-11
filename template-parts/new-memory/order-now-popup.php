@@ -49,7 +49,7 @@ $full_price         = ih_get_expanded_page_order_price( 1, true );
 				href="<?php echo get_the_permalink( pll_get_post( ih_get_profile_page_id() ) ), "?expand=", esc_attr( $memory_page_id ) ?>"
 				class="button primary lg order-now-submit"
 			>
-				<?php _e( "Замовити QR-код за $full_price грн", 'inheart' ) ?>
+				<?php printf( __( "Замовити QR-код за %s грн", 'inheart' ), $full_price ) ?>
 			</a>
 
 			<button class="btn lg outlined order-now-decline">
