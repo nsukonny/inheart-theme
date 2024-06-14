@@ -312,24 +312,24 @@ function ih_ajax_create_order(): void
 		wp_send_json_error( ['msg' => __( 'Невірний або відсутній токен', 'inheart' )] );
 
 	// Make a request to MonoBank.
-	$dest	= "Розширена сторінка пам'яті " . get_the_title( $page_id );
-	$body	= json_encode( [
-		'amount'			=> $price * 100,	// UAH kopecks.
-		'redirectUrl'		=> get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
-		'webHookUrl'		=> get_bloginfo( 'url' ) . '/wp-json/mono/acquiring/status',
-		'paymentType'		=> 'debit',
-		'merchantPaymInfo'	=> [
-			'destination'	=> $dest,
-			'comment'		=> $dest
+	$dest = "Розширена сторінка пам'яті " . get_the_title( $page_id );
+	$body = json_encode( [
+		'amount'           => $price * 100,    // UAH kopecks.
+		'redirectUrl'      => get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
+		'webHookUrl'       => get_bloginfo( 'url' ) . '/wp-json/mono/acquiring/status',
+		'paymentType'      => 'debit',
+		'merchantPaymInfo' => [
+			'destination' => $dest,
+			'comment'     => $dest
 		]
 	] );
-	$res = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
-		'headers'		=> [
-			'Content-Type'	=> 'application/json; charset=utf-8',
-			'X-Token'		=> $mono_token
+	$res  = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
+		'headers'     => [
+			'Content-Type' => 'application/json; charset=utf-8',
+			'X-Token'      => $mono_token
 		],
-		'data_format'	=> 'body',
-		'body'			=> $body
+		'data_format' => 'body',
+		'body'        => $body
 	] );
 
 	if( is_wp_error( $res ) || empty( $res ) )
@@ -384,21 +384,25 @@ function ih_ajax_create_order(): void
 	$body		= get_field( 'order_created_body_admin', 'option' );
 
 	if( $subject && $body ){
-		$body	= str_replace( ['https://[', 'http://['], '[', $body );
-		$body	= str_replace(
-			[
-				'[firstname]', '[lastname]', '[fathername]',
-				'[invoice_id]', '[ordered]', '[order_admin_url]'
-			],
-			[
-				$firstname, $lastname, $fathername,
-				$invoice_id, $ordered, get_edit_post_link( $order_id )
-			],
-			$body
-		);
+		$body = str_replace( ['https://[', 'http://['], '[', $body );
+		$body = str_replace( [
+			'[firstname]',
+			'[lastname]',
+			'[fathername]',
+			'[invoice_id]',
+			'[ordered]',
+			'[order_admin_url]'
+		], [
+			$firstname,
+			$lastname,
+			$fathername,
+			$invoice_id,
+			$ordered,
+			get_edit_post_link( $order_id )
+		], $body );
 
 		add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-		wp_mail( get_option( 'admin_email' ), $subject, $body );
+		wp_mail( ih_get_order_emails_array(), $subject, $body );
 		remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 	}
 
@@ -513,33 +517,44 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 		$body		= get_field( 'qr_created_body', 'option' );
 
 		if( $subject && $body ){
-			$firstname	= get_field( 'firstname', $order_id );
-			$lastname	= get_field( 'lastname', $order_id );
-			$fathername	= get_field( 'fathername', $order_id );
-			$email		= get_field( 'email', $order_id );
-			$phone		= get_field( 'phone', $order_id );
-			$city		= get_field( 'city', $order_id );
-			$department	= get_field( 'department', $order_id );
-
-			$body	= str_replace( ['https://[', 'http://['], '[', $body );
-			$body	= str_replace(
-				[
-					'[qr_id]', '[qr_admin_url]', '[mp_id]',
-					'[mp_admin_url]', '[mp_url]', '[firstname]',
-					'[lastname]', '[fathername]', '[email]',
-					'[phone]', '[city]', '[department]'
-				],
-				[
-					$qr_id, get_edit_post_link( $qr_id ), $memory_page_id,
-					get_edit_post_link( $memory_page_id ), $memory_page_url, $firstname,
-					$lastname, $fathername, $email,
-					$phone, $city, $department
-				],
-				$body
-			);
+			$firstname  = get_field( 'firstname', $order_id );
+			$lastname   = get_field( 'lastname', $order_id );
+			$fathername = get_field( 'fathername', $order_id );
+			$email      = get_field( 'email', $order_id );
+			$phone      = get_field( 'phone', $order_id );
+			$city       = get_field( 'city', $order_id );
+			$department = get_field( 'department', $order_id );
+			$body       = str_replace( ['https://[', 'http://['], '[', $body );
+			$body       = str_replace( [
+				'[qr_id]',
+				'[qr_admin_url]',
+				'[mp_id]',
+				'[mp_admin_url]',
+				'[mp_url]',
+				'[firstname]',
+				'[lastname]',
+				'[fathername]',
+				'[email]',
+				'[phone]',
+				'[city]',
+				'[department]'
+			], [
+				$qr_id,
+				get_edit_post_link( $qr_id ),
+				$memory_page_id,
+				get_edit_post_link( $memory_page_id ),
+				$memory_page_url,
+				$firstname,
+				$lastname,
+				$fathername,
+				$email,
+				$phone,
+				$city,
+				$department
+			], $body );
 
 			add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-			wp_mail( get_option( 'admin_email' ), $subject, $body );
+			wp_mail( ih_get_order_emails_array(), $subject, $body );
 			remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
 		}
 	}

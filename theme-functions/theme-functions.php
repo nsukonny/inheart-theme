@@ -525,3 +525,27 @@ function ih_ukr_post_status( string $status ): string
 	};
 }
 
+/**
+ * Prepare emails array for the letters with new Orders info.
+ *
+ * @return array
+ */
+function ih_get_order_emails_array(): array
+{
+	$admin_email = get_option( 'admin_email' );
+	$emails      = get_field( 'orders_email_list', 'option' ) ?? [];
+	$emails_arr  = [];
+
+	if( ! empty( $emails ) ){
+		foreach( $emails as $email ){
+			if( ! $address = $email['email'] ?? '' ) continue;
+
+			$emails_arr[] = $address;
+		}
+	}
+
+	array_unshift( $emails_arr, $admin_email );
+
+	return $emails_arr;
+}
+

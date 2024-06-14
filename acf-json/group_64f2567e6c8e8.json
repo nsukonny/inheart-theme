@@ -610,6 +610,69 @@
                     "parent_repeater": "field_6601d28e5e2c0"
                 }
             ]
+        },
+        {
+            "key": "field_666cadc30130c",
+            "label": "Замовлення",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_666cadd20130d",
+            "label": "Пошти для повідомлень",
+            "name": "orders_email_list",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Сюди будуть дублюватись ті ж самі листи, що й на пошту Адміністратора",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Додати рядок",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_666cae6b0130e",
+                    "label": "Пошта",
+                    "name": "email",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_666cadd20130d"
+                }
+            ]
         }
     ],
     "location": [
@@ -630,5 +693,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1716913360
+    "modified": 1718398585
 }
