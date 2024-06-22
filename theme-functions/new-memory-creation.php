@@ -229,6 +229,73 @@ function wp_ajax_ih_ajax_save_data_step_2_military(): void
 	wp_send_json_success( ['msg' => __( 'Дані Кроку 1-1 (Військовий) збережено успішно!', 'inheart' )] );
 }
 
+add_action( 'wp_ajax_ih_ajax_load_cities_from_local_json', 'ih_ajax_load_cities_from_local_json' );
+/**
+ * Return cities list from local JSON file.
+ *
+ * @return void
+ */
+function ih_ajax_load_cities_from_local_json(): void
+{
+	if( ! $city = ih_clean( $_POST['city'] ) ?? null )
+		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+
+	$city = mb_strtolower( $city );
+
+	if( empty( $_SESSION['cities_json'] ) ){
+		$res      = file_get_contents( get_template_directory() . '/src/api/ua_locations.json' );
+		$res_body = json_decode( $res, true );
+
+		if( empty( $res_body ) ) wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
+
+		$_SESSION['cities_json'] = $res_body;
+	}else{
+		$res_body = $_SESSION['cities_json'];
+	}
+
+	$cities = [];
+
+	foreach( $res_body as $c ){
+		if(
+			! str_contains( mb_strtolower( $c['public_name']['uk'] ), mb_strtolower( $city ) ) ||
+			( $c['type'] === 'DISTRICT' || $c['type'] === 'COMMUNITY' || $c['type'] === 'STATE' )
+		) continue;
+
+		$city_full_name = isset( $c['parent_id'] )
+			? ih_get_city_parent( $c['parent_id'], $res_body, $c['public_name']['uk'] )
+			: $c['public_name']['uk'];
+
+		$cities[] = ['name' => $city_full_name];
+	}
+
+	wp_send_json_success( ['cities' => $cities] );
+}
+
+/**
+ * Recursive get full name of the city with its district and so on.
+ *
+ * @param int    $parent_id
+ * @param array  $cities
+ * @param string $parent_full_name
+ * @return string
+ */
+function ih_get_city_parent( int $parent_id, array $cities, string $parent_full_name = '' ): string
+{
+	foreach( $cities as $parent ){
+		if( $parent['id'] !== $parent_id ) continue;
+
+		$parent_full_name .= ', ' . $parent['public_name']['uk'];
+
+		// ID 1 means Ukraine, don't need it in the name string.
+		if( isset( $parent['parent_id'] ) && $parent['parent_id'] !== 1 )
+			$parent_full_name = ih_get_city_parent( $parent['parent_id'], $cities, $parent_full_name );
+
+		break;
+	}
+
+	return $parent_full_name;
+}
+
 add_action( 'wp_ajax_ih_ajax_save_data_step_3-military', 'wp_ajax_ih_ajax_save_data_step_3_military' );
 /**
  * Step 3 Military - save data (it's empty for now).

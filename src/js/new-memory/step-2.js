@@ -1,22 +1,103 @@
 import Sortable from 'sortablejs'
 import { isStepFilled } from './common'
 import {
-	addLoader,
 	BYTES_IN_MB,
-	checkAjaxWorkingStatus, customDebounce,
-	ihAjaxRequest, removeLoader,
+	addLoader,
+	removeLoader,
+	checkAjaxWorkingStatus,
+	ihAjaxRequest,
 	setAjaxWorkingStatus,
-	showNotification
+	showNotification, disableInput, enableInput, customDebounce
 } from '../common/global'
-import { loadCities } from '../pages/profile'
 
 const stepData = {}
+let cities
 
 let sectionsWrapper,
 	sectionsListWrapper,
 	militarySectionsWrapper,
 	sectionsContent,
 	originalContentSection
+
+const loadCities = () => {
+	const cityInput	= document.querySelector( '#city' )
+
+	if( ! cityInput ) return
+
+	const citiesWrap = cityInput.closest( 'label' ).querySelector( '.np-cities' )
+
+	const onCityInputChange = e => {
+		const
+			formData = new FormData(),
+			input    = e.target,
+			val      = input.value,
+			label    = input.closest( 'label' )
+
+		if( ! val || ! citiesWrap ) return
+
+		formData.append( 'action', 'ih_ajax_load_cities_from_local_json' )
+		formData.append( 'city', val )
+		disableInput( input )
+		addLoader( label )
+		citiesWrap.classList.add( 'hidden' )
+		ihAjaxRequest( formData ).then( res => {
+			enableInput( input )
+			removeLoader( label )
+			input.focus()
+
+			if( res ){
+				switch( res.success ){
+					case true:
+						cities = Object.values( res.data.cities )
+						citiesWrap.innerHTML = ''
+
+						if( cities.length ){
+							cities.forEach( ( city, index ) => {
+								citiesWrap.insertAdjacentHTML(
+									'beforeend',
+									`<span class="np-city" data-index="${ index }">${ city.name }</span>`
+								)
+							} )
+							citiesWrap.classList.remove( 'hidden' )
+						}
+						break
+
+					case false:
+						console.error( res.data.msg )
+						break
+				}
+			}
+		} ).catch( err => {
+			enableInput( input )
+			removeLoader( label )
+			console.error( err.message )
+		} )
+	}
+
+	cityInput.addEventListener( 'input', customDebounce( onCityInputChange ) )
+	cityInput.addEventListener( 'focus', () => citiesWrap.classList.remove( 'hidden' ) )
+
+	citiesWrap.addEventListener( 'click', e => {
+		e.stopPropagation()
+
+		const target = e.target
+
+		if( target.className && target.classList.contains( 'np-city' ) ){
+			cityInput.value = target.innerText
+			setTimeout( () => {
+				cityInput.blur()
+				citiesWrap.classList.add( 'hidden' )
+			}, 10 )
+		}
+	} )
+
+	document.addEventListener( 'click', e => {
+		if(
+			! citiesWrap.classList.contains( 'hidden' ) &&
+			e.target.id !== 'city'
+		) citiesWrap.classList.add( 'hidden' )
+	} )
+}
 
 /**
  * Add section to added sections list.
