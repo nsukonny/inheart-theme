@@ -39,7 +39,7 @@ switch( $type ){
 		<?php
 		echo do_shortcode(
 		'[google_login
-			button_text="' . esc_html__( 'Авторізація через Google', 'inheart' ) . '"
+			button_text="' . esc_html__( 'Авторизація через Google', 'inheart' ) . '"
 			redirect_to="' . home_url() . '" /]'
 		);
 		?>
