@@ -23,8 +23,8 @@ $key			= $args['key'] ?? 0;
 $ready_sections	= $args['ready_sections'] ?? null;
 $sec_title		= $section['title'];
 
-// No saved sections and key = 0 - exit (we use 0th section as added by default). No title - exit.
-if( ( empty( $ready_sections ) && ! $key ) || ! $sec_title ) return;
+// No title - exit.
+if( ! $sec_title ) return;
 
 // If this section is already added - exit.
 if( ! empty( $ready_sections ) ){
@@ -38,7 +38,7 @@ $thumb				= ( $is_custom_title && $section['thumb'] )
 					? ' data-thumb="' . esc_url( $section['thumb'] ) . '"' : '';
 
 // Custom section exists - exit.
-if( $is_custom_title && ! empty( $ready_section ) ){
+if( $is_custom_title && ! empty( $ready_sections ) ){
 	foreach( $ready_sections as $i => $ready_section ){
 		if( $ready_section['own_title'] ) return;
 	}

@@ -549,3 +549,14 @@ function ih_get_order_emails_array(): array
 	return $emails_arr;
 }
 
+/**
+ * Prettify data output.
+ *
+ * @param $data
+ * @return void
+ */
+function ih_prettify_data( $data ): void
+{
+	echo '<pre>', print_r( $data, 1 ), '</pre>';
+}
+

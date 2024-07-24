@@ -12,12 +12,13 @@
 
 if( ! $section = $args['section'] ?? null ) return;
 
-$key		= $args['key'] ?? 0;
-$title		= $section['category'];
-$position	= $section['position'];
-$index		= $section['index'];
-$id			= isset( $args['id'] ) ? "id='{$args['id']}'" : '';
-$class		= isset( $args['class'] ) ? " {$args['class']}" : '';
+$key          = $args['key'] ?? 0;
+$title        = $section['category'];
+$position     = $section['position'];
+$index        = $section['index'];
+$custom_class = $section['own_title'] ? ' custom' : '';
+$id           = isset( $args['id'] ) ? "id='{$args['id']}'" : '';
+$class        = isset( $args['class'] ) ? " {$args['class']}$custom_class" : $custom_class;
 
 if( ! $title || ( $position != 0 && ! $position ) ) return;
 ?>

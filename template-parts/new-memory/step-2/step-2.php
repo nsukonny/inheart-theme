@@ -156,12 +156,26 @@ if( $ready_sections ){
 
 						<div class="sections-list">
 							<?php
-							foreach( $sections as $key => $section )
+							// Always show section with the custom title.
+							$section_with_custom_title = array_values( array_filter( $sections, fn( $section ) => $section['is_custom_title'] ) );
+
+							if( ! empty( $section_with_custom_title ) )
 								get_template_part(
 									'template-parts/new-memory/step-2/section-sidebar',
 									null,
-									['key' => $key, 'section' => $section, 'ready_sections' => $ready_sections]
+									['key' => 1, 'section' => $section_with_custom_title[0]]
 								);
+
+							foreach( $sections as $key => $section ){
+								// Custom title section is always there, don't need it again.
+								if( $section['is_custom_title'] ) continue;
+
+								get_template_part( 'template-parts/new-memory/step-2/section-sidebar', null, [
+									'key'            => $key,
+									'section'        => $section,
+									'ready_sections' => $ready_sections
+								] );
+							}
 							?>
 						</div>
 

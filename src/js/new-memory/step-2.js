@@ -139,8 +139,9 @@ export const addSection = () => {
 		if( targetSection.classList.contains( 'section-military' ) )
 			clonedSectionContent.classList.add( `section-content-${ sectionId }` )
 
-		// Replace in sidebar.
-		targetSection.remove()
+		// Replace in sidebar, if this is a not a custom title section.
+		if( ! isCustom ) targetSection.remove()
+
 		addedSectionsWrapper.append( clonedSection )
 
 		// Add new content.
@@ -177,8 +178,20 @@ export const addSection = () => {
 
 		// If this is a section with a custom title.
 		if( isCustom ){
+			const customTitleSectionId = sectionsWrapper.querySelectorAll( '.section' ).length
+			let customSectionsCounter = 0
+
 			clonedSectionContent.classList.add( 'custom' )
 			clonedSectionContent.querySelector( '.section-content-title' ).innerHTML = '<input class="section-content-title-input" placeholder="Вигадайте заголовок" />'
+			addedSectionsWrapper.querySelectorAll( '.section' ).forEach( section => {
+				if( section.classList.contains( 'custom' ) ) customSectionsCounter++
+			} )
+
+			// Set unique data-id attr.
+			clonedSection.setAttribute( 'data-id', customTitleSectionId )
+			clonedSectionContent.setAttribute( 'data-id', customTitleSectionId )
+			// Remove add icon, not need it.
+			clonedSection.querySelector( '.section-add' ).remove()
 		}
 
 		setTimeout( () => clonedSectionContent.click(), 10 )	// Set it as active.
@@ -275,6 +288,7 @@ export const removeSidebarAddedSection = () => {
 				targetSection	= target.closest( '.section' ),
 				sectionId		= targetSection.dataset.id,
 				sectionRealId	= targetSection.id,
+				isCustom		= targetSection.classList.contains( 'custom' ),
 				sectionsAdded	= document.querySelectorAll( '.sections-added-list .section' ),
 				sectionContent	= sectionsContent.querySelector( `.section-content[data-id="${ sectionId }"]` ),
 				isMilitary		= targetSection.classList.contains( 'section-military' )
@@ -286,7 +300,7 @@ export const removeSidebarAddedSection = () => {
 
 			const clonedSection = targetSection.cloneNode( true )
 
-			returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.id ), clonedSection )
+			if( ! isCustom ) returnSectionToItsPlace( isMilitary, parseInt( clonedSection.dataset.id ), clonedSection )
 
 			if( sectionRealId === 'last-fight' ) removeLastFightSection( sectionContent )
 
@@ -336,7 +350,7 @@ export const removeContentSection = () => {
  * Insert deleted section to its place in the sidebar by its data-order value.
  *
  * @param isMilitary
- * @param order
+ * @param id
  * @param clonedSection
  */
 const returnSectionToItsPlace = ( isMilitary, id, clonedSection ) => {
