@@ -332,9 +332,9 @@ function ih_ajax_create_order(): void
                     'unit'  => 'шт.',
                     'icon'  => $thumb,
                     'code'  => base64_encode($dest.'-'.time())
-                ],
-            ],
-        ],
+                ]
+            ]
+        ]
 	] );
 	$res  = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
 		'headers'     => [
