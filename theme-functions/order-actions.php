@@ -312,16 +312,29 @@ function ih_ajax_create_order(): void
 		wp_send_json_error( ['msg' => __( 'Невірний або відсутній токен', 'inheart' )] );
 
 	// Make a request to MonoBank.
-	$dest = "Розширена сторінка пам'яті " . get_the_title( $page_id );
-	$body = json_encode( [
-		'amount'           => $price * 100,    // UAH kopecks.
-		'redirectUrl'      => get_the_permalink( pll_get_post( ih_get_order_created_page_id() ) ),
-		'webHookUrl'       => get_bloginfo( 'url' ) . '/wp-json/mono/acquiring/status',
-		'paymentType'      => 'debit',
-		'merchantPaymInfo' => [
-			'destination' => $dest,
-			'comment'     => $dest
-		]
+    $dest   = "Розширена сторінка пам'яті ".get_the_title($page_id);
+    $amount = $price * 100;
+    $thumb  = has_post_thumbnail($page_id) ? get_the_post_thumbnail_url($page_id, 'thumbnail') : '';
+    $body   = json_encode([
+        'amount'           => $amount,    // UAH kopecks.
+        'redirectUrl'      => get_the_permalink(pll_get_post(ih_get_order_created_page_id())),
+        'webHookUrl'       => get_bloginfo('url').'/wp-json/mono/acquiring/status',
+        'paymentType'      => 'debit',
+        'merchantPaymInfo' => [
+            'destination' => $dest,
+            'comment'     => $dest,
+            'basketOrder' => [
+                [
+                    'name'  => $dest,
+                    'qty'   => 1,
+                    'sum'   => $amount,
+                    'total' => $amount,
+                    'unit'  => 'шт.',
+                    'icon'  => $thumb,
+                    'code'  => base64_encode($dest.'-'.time())
+                ],
+            ],
+        ],
 	] );
 	$res  = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
 		'headers'     => [
