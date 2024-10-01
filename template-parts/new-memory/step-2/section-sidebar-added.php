@@ -16,7 +16,7 @@ $key          = $args['key'] ?? 0;
 $title        = $section['category'];
 $position     = $section['position'];
 $index        = $section['index'];
-$custom_class = $section['own_title'] ? ' custom' : '';
+$custom_class = isset($section['own_title']) ? ' custom' : '';
 $id           = isset( $args['id'] ) ? "id='{$args['id']}'" : '';
 $class        = isset( $args['class'] ) ? " {$args['class']}$custom_class" : $custom_class;
 
