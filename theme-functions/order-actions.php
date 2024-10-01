@@ -354,8 +354,7 @@ function ih_ajax_create_order(): void
 		wp_send_json_error( ['msg' => __( 'Помилка під час створення запиту до оплати', 'inheart' )] );
 
 	if( ! $invoice_id = $res_body['invoiceId'] ?? null )
-		wp_send_json_error( ['msg' => $res_body] );
-//		wp_send_json_error( ['msg' => __( 'Відповідь банку не містить ID рахунку', 'inheart' )] );
+		wp_send_json_error( ['msg' => __( 'Відповідь банку не містить ID рахунку', 'inheart' )] );
 
 	// Create new Order.
 	$order_data = [
