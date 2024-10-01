@@ -281,9 +281,9 @@ function ih_ajax_create_order(): void
 	$firstname		= ih_clean( $_POST['firstname'] );
 	$lastname		= ih_clean( $_POST['lastname'] );
 	$fathername		= ih_clean( $_POST['fathername'] );
-	$qr_count		= ih_clean( $_POST['qr-count-qty'] );
+	$qr_count		= (int) ih_clean( $_POST['qr-count-qty'] );
 	$customer_id	= get_current_user_id();
-	$mp_author_id	= ( int ) get_post_field ( 'post_author', $page_id );	// Memory page author ID.
+	$mp_author_id	= (int) get_post_field ( 'post_author', $page_id );	// Memory page author ID.
 
 	// No Memory page ID provided or Memory page ID is incorrect.
 	if( ! $page_id || get_post_type( $page_id ) !== 'memory_page' )
@@ -326,8 +326,8 @@ function ih_ajax_create_order(): void
             'basketOrder' => [
                 [
                     'name'  => $dest,
-                    'qty'   => 1,
-                    'sum'   => $amount,
+                    'qty'   => $qr_count,
+                    'sum'   => $amount / $qr_count,
                     'total' => $amount,
                     'unit'  => 'шт.',
                     'icon'  => $thumb,
@@ -354,7 +354,8 @@ function ih_ajax_create_order(): void
 		wp_send_json_error( ['msg' => __( 'Помилка під час створення запиту до оплати', 'inheart' )] );
 
 	if( ! $invoice_id = $res_body['invoiceId'] ?? null )
-		wp_send_json_error( ['msg' => __( 'Відповідь банку не містить ID рахунку', 'inheart' )] );
+		wp_send_json_error( ['msg' => $res_body] );
+//		wp_send_json_error( ['msg' => __( 'Відповідь банку не містить ID рахунку', 'inheart' )] );
 
 	// Create new Order.
 	$order_data = [
