@@ -1204,7 +1204,6 @@ body.single-memory_page.military
 
 
 
-
 	background: #4c4636;
 	font-family: $ff-military;
 
@@ -2367,7 +2366,7 @@ body.single-memory_page.military
 			&-item
 			{
 				width: 25%;
-				height: 50px;
+				min-height: 50px;
 				font-size: 20px;
 				font-weight: bold;
 				line-height: 26px;
