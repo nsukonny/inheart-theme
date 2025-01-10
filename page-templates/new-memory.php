@@ -15,6 +15,7 @@ wp_enqueue_script( 'new-memory', THEME_URI . '/static/js/new-memory/new-memory.m
 ih_create_new_memory_page();
 
 $lang_changed = isset( $_GET['langchanged'] ) && $_GET['langchanged'] == 1;
+$theme        = isset( $_SESSION['memory_page_id'] ) ? get_field( 'theme', $_SESSION['memory_page_id'] ) : '';
 ?>
 
 <style>
@@ -49,14 +50,21 @@ $lang_changed = isset( $_GET['langchanged'] ) && $_GET['langchanged'] == 1;
 	<?php
 	get_template_part( 'template-parts/new-memory/step-0/step', '0', ['hidden' => $lang_changed] );
 	get_template_part( 'template-parts/new-memory/step-1/step', '1', ['active' => $lang_changed] );
-	get_template_part( 'template-parts/new-memory/step-2-military/step', '2' );
-	get_template_part( 'template-parts/new-memory/step-3-military/step', '3' );
+
+	if ( $theme === 'military' ) {
+		get_template_part( 'template-parts/new-memory/step-2-military/step', '2' );
+		get_template_part( 'template-parts/new-memory/step-3-military/step', '3' );
+	}
+
 	get_template_part( 'template-parts/new-memory/step-2/step', '2' );
 	get_template_part( 'template-parts/new-memory/step-3/step', '3' );
 	get_template_part( 'template-parts/new-memory/step-4/step', '4' );
 	get_template_part( 'template-parts/new-memory/step-5/step', '5' );
 	get_template_part( 'template-parts/new-memory/step-6/step', '6' );
-	get_template_part( 'template-parts/new-memory/step-6/step', '6-military' );
+
+	if ( $theme === 'military' ) {
+		get_template_part( 'template-parts/new-memory/step-6/step', '6-military' );
+	}
 	?>
 </main>
 

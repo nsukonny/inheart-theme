@@ -26,29 +26,29 @@ const
 
 // Reward popup.
 const
-	popup                       = rewardsMainWrap.querySelector( '.reward-popup' ),
-	popupReward                 = popup.querySelector( '.reward-preview' ),
-	popupNoRewardThumb          = popupReward.querySelector( '.reward-preview-no-reward-thumb' ),
-	popupRewardThumb            = popupReward.querySelector( '.reward-preview-thumb' ),
-	popupRewardTitle            = popupReward.querySelector( '.reward-preview-title' ),
-	rewardPopupTextEdict        = rewardPopupText.querySelector( '.reward-popup-text-edict' ),
-	rewardPopupTextNumber       = rewardPopupText.querySelector( '.reward-popup-text-number' ),
-	rewardPopupTextDate         = rewardPopupText.querySelector( '.reward-popup-text-date' ),
-	rewardPopupTextFor          = rewardPopupText.querySelector( '.reward-popup-text-for' ),
-	rewardPopupTextPosthumously = rewardPopupText.querySelector( '.reward-popup-text-posthumously' ),
-	textAfterNumber             = rewardPopupText.querySelector( '.reward-popup-text-number-after' ),
-	textAfterDate               = rewardPopupText.querySelector( '.reward-popup-text-date-after' ),
-	rewardPopupCustomText       = popup.querySelector( '.reward-popup-custom' )
+	popup                       = rewardsMainWrap ? rewardsMainWrap.querySelector( '.reward-popup' ) : undefined,
+	popupReward                 = popup ? popup.querySelector( '.reward-preview' ) : undefined,
+	popupNoRewardThumb          = popupReward ? popupReward.querySelector( '.reward-preview-no-reward-thumb' ): undefined,
+	popupRewardThumb            = popupReward ? popupReward.querySelector( '.reward-preview-thumb' ): undefined,
+	popupRewardTitle            = popupReward ? popupReward.querySelector( '.reward-preview-title' ): undefined,
+	rewardPopupTextEdict        = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-edict' ) : undefined,
+	rewardPopupTextNumber       = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-number' ) : undefined,
+	rewardPopupTextDate         = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-date' ) : undefined,
+	rewardPopupTextFor          = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-for' ) : undefined,
+	rewardPopupTextPosthumously = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-posthumously' ) : undefined,
+	textAfterNumber             = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-number-after' ) : undefined,
+	textAfterDate               = rewardPopupText ? rewardPopupText.querySelector( '.reward-popup-text-date-after' ) : undefined,
+	rewardPopupCustomText       = popup ? popup.querySelector( '.reward-popup-custom' ) : undefined
 
 // Reward popup inputs.
 const
-	customLabel  = popup.querySelector( '.label-reward-custom' ),
-	customInput  = popup.querySelector( '#reward-custom' ),
-	edictInput   = popup.querySelector( '#edict' ),
-	numberInput  = popup.querySelector( '#reward-number' ),
-	dateInput    = popup.querySelector( '#reward-date' ),
-	forInput     = popup.querySelector( '#reward-for-what' ),
-	posthumously = popup.querySelector( '#posthumously' )
+	customLabel  = popup ? popup.querySelector( '.label-reward-custom' ) : undefined,
+	customInput  = popup ? popup.querySelector( '#reward-custom' ) : undefined,
+	edictInput   = popup ? popup.querySelector( '#edict' ) : undefined,
+	numberInput  = popup ? popup.querySelector( '#reward-number' ) : undefined,
+	dateInput    = popup ? popup.querySelector( '#reward-date' ) : undefined,
+	forInput     = popup ? popup.querySelector( '#reward-for-what' ) : undefined,
+	posthumously = popup ? popup.querySelector( '#posthumously' ) : undefined
 
 export const addReward = () => {
 	if(
