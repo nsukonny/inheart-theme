@@ -10,13 +10,14 @@
  * @subpackage inheart
  */
 
-$is_expanded = isset( $_SESSION['memory_page_id'] ) ? get_field( 'is_expanded', $_SESSION['memory_page_id'] ) : '';
-$title       = get_field( 'title_4' );
-$desc        = get_field( 'desc_4' );
-$photo_title = get_field( 'photo_title' );
-$photo_tip   = get_field( 'photo_tip' );
-$video_title = get_field( 'video_title' );
-$video_tip   = get_field( 'video_tip' );
+$is_expanded    = isset( $_SESSION['memory_page_id'] ) ? get_field( 'is_expanded', $_SESSION['memory_page_id'] ) : '';
+$selected_theme = isset( $_SESSION['memory_page_id'] ) ? get_field( 'theme', $_SESSION['memory_page_id'] ) : '';
+$title          = get_field( 'title_4' );
+$desc           = get_field( 'desc_4' );
+$photo_title    = get_field( 'photo_title' );
+$photo_tip      = get_field( 'photo_tip' );
+$video_title    = get_field( 'video_title' );
+$video_tip      = get_field( 'video_tip' );
 ?>
 
 <section id="new-memory-step-4" class="new-memory-step new-memory-step-4 step-media direction-column">
@@ -56,7 +57,7 @@ $video_tip   = get_field( 'video_tip' );
 
 			<?php
 			// Videos and links are not available in the simple page type.
-			if( $is_expanded ){
+			if( $is_expanded || $selected_theme === 'military' ){
 				?>
 				<fieldset>
 					<legend class="flex flex-wrap align-end">

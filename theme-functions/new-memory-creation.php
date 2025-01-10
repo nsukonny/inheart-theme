@@ -628,6 +628,7 @@ function ih_ajax_upload_memory_video(): void
 {
 	$file			= $_FILES['file'];
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
+	$theme          = $memory_page_id ? get_field( 'theme', $memory_page_id ) : '';
 
 	// If data is not set - send error.
 	if( ! $file || ! $memory_page_id )
@@ -636,7 +637,7 @@ function ih_ajax_upload_memory_video(): void
 	$is_expanded = get_field( 'is_expanded', $memory_page_id );
 
 	// Simple page can't upload videos.
-	if( ! $is_expanded )
+	if( ! $is_expanded && $theme !== 'military' )
 		wp_send_json_error( [
 			'success' => 0,
 			'msg' => __( 'Ви не можете завантажувати відео у цьому тарифі', 'inheart' )
@@ -813,6 +814,7 @@ function ih_ajax_save_data_step_4(): void
 {
 	$step_data      = isset( $_POST['stepData'] ) ? json_decode( stripslashes( $_POST['stepData'] ), true ) : null;
 	$memory_page_id = $_SESSION['memory_page_id'] ?? null;
+	$theme          = isset( $memory_page_id ) ? get_field( 'theme', $memory_page_id ) : '';
 	$photos         = $step_data['photos'] ?? [];
 
 	if( ! $memory_page_id )
@@ -820,9 +822,11 @@ function ih_ajax_save_data_step_4(): void
 
 	$is_expanded = get_field( 'is_expanded', $memory_page_id );
 
-	// Simple page can attach only <= 4 photos.
-	if( ( ! $is_expanded && count( $photos ) <= 4 ) || $is_expanded )
+	// Simple page can attach only <= 4 photos. Expanded page and military page have no limits.
+	if( ( ! $is_expanded && count( $photos ) <= 4 ) || $is_expanded || $theme === 'military' )
 		update_field( 'photo', $photos, $memory_page_id );
+	else
+		wp_send_json_error( ['msg' => __( 'Ви не можете завантажити більше 4 фотокарток у цьому тарифі', 'inheart' )] );
 
 	// Videos.
 	$videos = null;

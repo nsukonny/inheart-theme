@@ -1,10 +1,14 @@
 import { isStepFilled } from './common'
+import { ihAjaxRequest, showNotification } from '../common/global'
 
 /**
  * Theme selection.
  */
 export const selectTheme = () => {
-	const themes = document.querySelectorAll( '.new-memory-theme' )
+	const
+		themes       = document.querySelectorAll( '.new-memory-theme' ),
+		activeTheme  = document.querySelector( '.new-memory-theme.active' )
+	let initialTheme = activeTheme ? activeTheme.dataset.value : undefined
 
 	if( ! themes.length ) return
 
@@ -16,7 +20,33 @@ export const selectTheme = () => {
 
 			theme.classList.add( 'active' )
 			localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: theme.dataset.value } ) )
-			isStepFilled()
+
+			// Update page when changed from military to simple theme OR back.
+			if(
+				( initialTheme === 'military' && theme.dataset.value !== 'military' ) ||
+				( initialTheme !== 'military' && theme.dataset.value === 'military' )
+			){
+				const formData = new FormData()
+
+				formData.append( 'action', `ih_ajax_save_data_step_0` )
+				formData.append( 'stepData', localStorage.getItem( `ih-step-0` ) || '' )
+
+				ihAjaxRequest( formData ).then( res => {
+					if( res ){
+						switch( res.success ){
+							case true:
+								window.location.reload()
+								break
+
+							case false:
+								showNotification( res.data.msg, 'error' )
+								break
+						}
+					}
+				} )
+			} else {
+				isStepFilled()
+			}
 		} )
 	} )
 }
