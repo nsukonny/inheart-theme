@@ -872,7 +872,8 @@ function ih_ajax_save_data_step_4(): void
 		$links = empty( $links ) ? null : $links;
 	}
 
-	if( $is_expanded ) update_field( 'field_63a16b6567b55', $links, $memory_page_id );
+	if( $is_expanded || $theme === 'military' )
+		update_field( 'field_63a16b6567b55', $links, $memory_page_id );
 
 	wp_send_json_success( ['msg' => __( 'Дані Кроку 4 збережено успішно!', 'inheart' )] );
 }
