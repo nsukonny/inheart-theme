@@ -23,7 +23,7 @@ $args = [
 	'menu_position'			=> 6,
 	'has_archive'			=> true,
 	'show_in_rest'			=> true,
-	'supports'				=> ['title', 'author', 'thumbnail'],
+	'supports'				=> ['title', 'author', 'thumbnail', 'revisions'],
 	'rewrite'				=> ['slug' => 'memory']
 ];
 register_post_type( 'memory_page', $args );
