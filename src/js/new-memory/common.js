@@ -193,7 +193,7 @@ export const saveStep = stepId => {
 		if( res ){
 			switch( res.success ){
 				case true:
-					console.log( `Step ${ stepId } saved.` )
+					// Step ${ stepId } saved.
 					break
 
 				case false:
@@ -478,26 +478,29 @@ const formatMonthsRome = monthNumeric => {
 
 const getPrevStepId = stepId => {
 	switch( stepId ){
-		case 2:
-			return isMilitaryTheme() ? '3-military' : 1
+		case '2':
+			return isMilitaryTheme() ? '3-military' : '1'
 
 		case '2-military':
-			return 1
+			return '1'
 
 		case '3-military':
 			return '2-military'
 
-		case 3:
-			return 2
+		case '3':
+			return '2'
 
-		case 4:
-			return 3
+		case '4':
+			return '3'
 
-		case 5:
-			return 4
+		case '5':
+			return '4'
+
+		case '6-military':
+			return '5'
 
 		default:
-			return 0
+			return '0'
 	}
 }
 
@@ -575,9 +578,9 @@ export const instagramPopupEvents = () => {
  */
 export const saveProgress = () => {
 	const
-		btn		= document.querySelector( '.save-memory-page-progress' ),
-		next	= document.querySelector( '.new-memory-next-step' ),
-		prev	= document.querySelector( '.new-memory-prev-step' )
+		btn  = document.querySelector( '.save-memory-page-progress' ),
+		next = document.querySelector( '.new-memory-next-step' ),
+		prev = document.querySelector( '.new-memory-prev-step' )
 
 	if( ! btn || ! next || ! prev ) return
 
@@ -585,7 +588,7 @@ export const saveProgress = () => {
 		const nextStep = next.dataset.next
 		let currentStep
 
-		currentStep = ! nextStep ? 1 : getPrevStepId( nextStep )
+		currentStep = ! nextStep || nextStep === '0' ? '1' : getPrevStepId( nextStep )
 		saveStep( currentStep )
 		setTimeout( () => window.location.href = btn.dataset.redirect, 500 )
 	} )
