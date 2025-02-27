@@ -54,7 +54,7 @@ function ih_mono_handle_status( WP_REST_Request $request ): WP_REST_Request
 	$prev_modified	= get_field( 'status_modified_date', $order_id );
 	$modified		= strtotime( $modified );
 
-	if( $modified <= $prev_modified ){
+    if( 'success' !== $status && ( $modified <= $prev_modified ) ){
 		file_put_contents(ABSPATH . '/orders.log',  "$current_date __: Invoice modified date is old." . PHP_EOL, FILE_APPEND );
 		return $request;
 	}
