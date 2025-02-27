@@ -539,7 +539,7 @@ add_action( 'wp_ajax_ih_ajax_upload_memory_photo', 'ih_ajax_upload_memory_photo'
 function ih_ajax_upload_memory_photo(): void
 {
 	$image			= $_FILES['file'];
-	$images_count	= $_POST['count'] ?? 1;
+	$images_count	= isset( $_POST['count'] ) ? ( int ) ih_clean( $_POST['count'] ) : 1;
 	$memory_page_id	= $_SESSION['memory_page_id'] ?? null;
 	$theme          = $memory_page_id ? get_field( 'theme', $memory_page_id ) : '';
 
@@ -547,11 +547,15 @@ function ih_ajax_upload_memory_photo(): void
 	if( ! $image || ! $memory_page_id )
 		wp_send_json_error( ['success' => 0, 'msg' => __( 'Невірні дані', 'inheart' )] );
 
-	$is_expanded = get_field( 'is_expanded', $memory_page_id );
-	$photos      = get_field( 'photo', $memory_page_id ) ?: [];
+	$is_expanded        = get_field( 'is_expanded', $memory_page_id );
+	$photos             = get_field( 'photo', $memory_page_id ) ?: [];
+	$saved_photos_count = count( $photos );
 
 	// Simple page can attach only <= 4 photos.
-	if( ! $is_expanded && $theme !== 'military' && ( count( $photos ) >= 4 || $images_count > 4 ) )
+	if(
+		! $is_expanded && $theme !== 'military'
+		&& ( $saved_photos_count >= 4 || $images_count > 4 || $saved_photos_count + $images_count > 4 )
+	)
 		wp_send_json_error( [
 			'success' => 0,
 			'msg'     => __( 'Ви не можете завантажити більше зображень у цьому тарифі', 'inheart' )
