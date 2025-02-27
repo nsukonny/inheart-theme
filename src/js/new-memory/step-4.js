@@ -34,7 +34,7 @@ export const uploadMediaPhotos = () => {
 		droparea.addEventListener( event, () => droparea.classList.remove( 'dragover' ) )
 	} )
 
-	const handlePhotosUpload = e => {
+	const handlePhotosUpload = async e => {
 		fileInstance = e.target.tagName === 'INPUT' ? [...e.target.files] : [...e.dataTransfer.files]
 
 		if( ! fileInstance.length ) return
@@ -47,7 +47,7 @@ export const uploadMediaPhotos = () => {
 			}
 
 			if( fileInstance[i].type.startsWith( 'image/' ) )
-				processingUploadMediaPhoto( fileInstance[i], i, droparea, fileInstance.length )
+				await processingUploadMediaPhoto( fileInstance[i], i, droparea, fileInstance.length )
 			else
 				showNotification( `Тільки зображення - файл ${ fileInstance[i].name } не є зображенням`, 'warning' )
 		}
@@ -65,92 +65,97 @@ export const uploadMediaPhotos = () => {
  * @param droparea
  * @param count
  */
-const processingUploadMediaPhoto = ( file, index, droparea, count ) => {
+const processingUploadMediaPhoto = async ( file, index, droparea, count ) => {
 	if( ! file || ! droparea ) return
 
-	const
-		loader			= droparea.querySelector( '.droparea-loader' ),
-		percentsValue	= loader.querySelector( '.droparea-loader-percents span' ),
-		progress		= loader.querySelector( 'progress' ),
-		cancel			= loader.querySelector( '.droparea-loader-cancel' ),
-		inner			= droparea.querySelector( '.droparea-inner' ),
-		imagesWrapper	= droparea.querySelector( '.droparea-images' ),
-		dropareaData	= new FormData(),
-		xhr				= new XMLHttpRequest()
-
-	dropareaData.append( 'file', file )
-	dropareaData.append( 'action', 'ih_ajax_upload_memory_photo' )
-
-	xhr.upload.addEventListener( 'progress', e => {
+	await new Promise( resolve => {
 		const
-			bytesLoaded = e.loaded,
-			bytesTotal	= e.total,
-			percent		= parseInt( ( bytesLoaded / bytesTotal ) * 100 )
+			loader			= droparea.querySelector( '.droparea-loader' ),
+			percentsValue	= loader.querySelector( '.droparea-loader-percents span' ),
+			progress		= loader.querySelector( 'progress' ),
+			cancel			= loader.querySelector( '.droparea-loader-cancel' ),
+			inner			= droparea.querySelector( '.droparea-inner' ),
+			imagesWrapper	= droparea.querySelector( '.droparea-images' ),
+			dropareaData	= new FormData(),
+			xhr				= new XMLHttpRequest()
 
-		inner.classList.add( 'hidden' )
-		loader.classList.remove( 'hidden' )
-		percentsValue.innerHTML = percent
-		progress.value 			= percent
-	} )
+		dropareaData.append( 'file', file )
+		dropareaData.append( 'action', 'ih_ajax_upload_memory_photo' )
+		dropareaData.append( 'count', count )
 
-	const cancelUpload = () => {
-		xhr.abort()
-		progress.value = 0
-		setTimeout( () => {
-			loader.classList.add( 'hidden' )
-
-			// No images - just show inner.
-			if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
-				inner.classList.remove( 'hidden' )
-		}, 500 )
-	}
-
-	cancel.addEventListener( 'click', cancelUpload )
-
-	xhr.open( 'POST', ajaxUrl, true )
-	xhr.send( dropareaData )
-
-	xhr.onload = () => {
-		if( xhr.status == 200 ){
+		xhr.upload.addEventListener( 'progress', e => {
 			const
-				response	= JSON.parse( xhr.response ),
-				data		= response.data
-			let imageHTML	= ''
+				bytesLoaded = e.loaded,
+				bytesTotal	= e.total,
+				percent		= parseInt( ( bytesLoaded / bytesTotal ) * 100 )
 
-			if( data.success == 1 ){
-				imageHTML = getPhotoHTML( data, file.name )
+			inner.classList.add( 'hidden' )
+			loader.classList.remove( 'hidden' )
+			percentsValue.innerHTML = percent
+			progress.value 			= percent
+		} )
 
-				imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
-				showNotification( data.msg )
-				imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
-					.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) ) )
+		const cancelUpload = () => {
+			xhr.abort()
+			progress.value = 0
+			setTimeout( () => {
+				loader.classList.add( 'hidden' )
 
-				isStepFilled( 4 )
+				// No images - just show inner.
+				if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
+					inner.classList.remove( 'hidden' )
+			}, 500 )
+		}
 
-				stepData.photos.push( data.attachId )
-				localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+		cancel.addEventListener( 'click', cancelUpload )
 
-				// Show images wrapper if the last images was loaded.
-				if( index === count - 1 ){
-					setTimeout( () => {
-						loader.classList.add( 'hidden' )
-						imagesWrapper.classList.remove( 'hidden' )
-					}, 2000 )
+		xhr.open( 'POST', ajaxUrl, true )
+		xhr.send( dropareaData )
+
+		xhr.onload = async () => {
+			if( xhr.status == 200 ){
+				const
+					response	= JSON.parse( xhr.response ),
+					data		= response.data
+				let imageHTML	= ''
+
+				if( data.success == 1 ){
+					imageHTML = getPhotoHTML( data, file.name )
+
+					imagesWrapper.querySelector( '.droparea-images-load' ).insertAdjacentHTML( 'beforebegin', imageHTML )
+					showNotification( data.msg )
+					imagesWrapper.querySelector( `.droparea-img-delete[data-id="${ data.attachId }"]` )
+						.addEventListener( 'click', e => showAreYouSurePopup( e.target, cancelCBb, () => applyCBb( e, droparea ) ) )
+
+					isStepFilled( 4 )
+
+					stepData.photos.push( data.attachId )
+					localStorage.setItem( 'ih-step-4', JSON.stringify( stepData ) )
+
+					// Show images wrapper if the last images was loaded.
+					if( index === count - 1 ){
+						setTimeout( () => {
+							loader.classList.add( 'hidden' )
+							imagesWrapper.classList.remove( 'hidden' )
+						}, 2000 )
+					}
+				}else{
+					showNotification( data.msg, 'error' )
+					cancelUpload()
 				}
 			}else{
-				showNotification( data.msg, 'error' )
+				// If no images loaded yet.
+				if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
+					inner.classList.remove( 'hidden' )
+				else imagesWrapper.classList.remove( 'hidden' )
+
+				showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
 				cancelUpload()
 			}
-		}else{
-			// If no images loaded yet.
-			if( ! document.querySelectorAll( '.droparea-img-loaded:not(.droparea-video-loaded)' ).length )
-				inner.classList.remove( 'hidden' )
-			else imagesWrapper.classList.remove( 'hidden' )
 
-			showNotification( `Помилка ${ xhr.status }. Повторіть спробу пізніше.`, 'warning' )
-			cancelUpload()
+			resolve( xhr.response )
 		}
-	}
+	} )
 }
 
 /**
