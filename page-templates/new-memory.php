@@ -69,6 +69,6 @@ $theme        = isset( $_SESSION['memory_page_id'] ) ? get_field( 'theme', $_SES
 </main>
 
 <?php
-get_template_part( 'template-parts/new-memory/order-now-popup' );
+//get_template_part( 'template-parts/new-memory/order-now-popup' );
 get_template_part( 'template-parts/new-memory/footer', null, ['active_back' => $lang_changed] );
 
