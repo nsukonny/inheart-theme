@@ -10,8 +10,8 @@
  * @subpackage inheart
  */
 
-$language	= get_locale();
-$lang_uk	= ( ! $language || $language === 'uk' ) ? ' active' : '';
+$language = get_locale();
+$lang_uk  = ( ! $language || $language === 'uk' ) ? ' active' : '';
 ?>
 
 <div class="new-memory-langs inline-flex flex-wrap">
@@ -21,13 +21,6 @@ $lang_uk	= ( ! $language || $language === 'uk' ) ? ' active' : '';
 		data-lang="uk"
 	>
 		<?php esc_html_e( 'Українська', 'inheart' ) ?>
-	</a>
-	<a
-		href="<?php echo get_the_permalink( get_page_by_path( 'sozdanie-straniczy-pamyati' )->ID ) ?>?langchanged=1"
-		class="new-memory-lang<?php echo ( $language === 'ru_RU' ? ' active' : '' ) ?>"
-		data-lang="ru_RU"
-	>
-		<?php esc_html_e( 'Російська', 'inheart' ) ?>
 	</a>
 	<a
 		href="<?php echo get_the_permalink( get_page_by_path( 'creating-a-new-memory-page' )->ID ) ?>?langchanged=1"

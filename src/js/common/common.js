@@ -1,12 +1,13 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import { getTargetElement, setTargetElement } from './global'
+import { initDatepickers } from '../new-memory/step-1'
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	'use strict'
 
 	toggleMenu()
 	toggleProfileMenu()
-	toggleDatePicker()
+	initDatepickers()
 } )
 
 const toggleMenu = () => {
@@ -57,32 +58,4 @@ const toggleProfileMenu = () => {
 		if( wrapper.classList.contains( 'opened' ) && ! target.closest( '.header-profile' ) )
 			wrapper.classList.remove( 'opened' )
 	} )
-}
-
-const toggleDatePicker = () => {
-	const inputs = document.querySelectorAll( '.date-input' )
-
-	if( ! inputs.length ) return
-
-	inputs.forEach( input => {
-		input.addEventListener( 'click', dateInputOnClick )
-		input.addEventListener( 'focus', dateInputOnClick )
-		input.addEventListener( 'blur', dateInputOnBlur )
-	} )
-}
-
-const dateInputOnClick = e => {
-	const target = e.target
-
-	target.type = 'date'
-	setTimeout( () => target.showPicker(), 10 )
-}
-
-const dateInputOnBlur = e => {
-	const
-		target	= e.target,
-		value	= target.value
-
-	if( ! value  ) target.type = 'text'
-	else target.type = 'date'
 }

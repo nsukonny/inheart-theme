@@ -1,4 +1,4 @@
-import { allowNextStep, applyProgress, disallowNextStep, isStepFilled } from './common'
+import { isStepFilled } from './common'
 
 const stepData = { 'epitaph': '', 'epitaph-lastname': '', 'epitaph-firstname': '', 'epitaph-role': '' }
 let textarea

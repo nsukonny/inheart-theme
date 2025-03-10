@@ -11,6 +11,7 @@
 if( ! $title = get_field( 'memory_pages_title' ) ?: null ) return;
 
 $hide_button = $args['hide_button'] ?? '';
+$draft       = $args['draft'] ?? null;
 ?>
 
 <h1 class="profile-memories-title flex flex-wrap justify-between align-center">
@@ -30,7 +31,11 @@ $hide_button = $args['hide_button'] ?? '';
 		if( ! $hide_button ){
 			?>
 			<a class="button primary lg" href="<?php echo get_the_permalink( pll_get_post( ih_get_memory_creation_page_id() ) ) ?>">
-				<?php _e( "Створити сторінку пам'яті", 'inheart' ) ?>
+				<?php
+				$draft
+					? _e( 'Продовжити створення сторінки', 'inheart' )
+					: _e( "Створити сторінку пам'яті", 'inheart' );
+				?>
 			</a>
 			<?php
 		}

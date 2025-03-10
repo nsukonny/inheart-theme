@@ -251,12 +251,12 @@ function numberToRomanRepresentation($number) {
 /**
  * Convert input[type="date"] value to necessary format.
  *
- * @param string $date
+ * @param $date
  * @param string $format	'letters' | 'dots' | 'lang'
  * @param int $memory_page	Memory page ID.
  * @return string
  */
-function ih_convert_input_date( string $date, string $format = 'letters', int $memory_page = 0 ): string
+function ih_convert_input_date( $date, string $format = 'letters', int $memory_page = 0 ): string
 {
     if( ! $date ) return '';
 

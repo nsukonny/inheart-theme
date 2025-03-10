@@ -1,4 +1,5 @@
 import Cropper from 'cropperjs'
+import datepicker from 'js-datepicker'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import {
 	checkAjaxWorkingStatus,
@@ -7,11 +8,54 @@ import {
 	setAjaxWorkingStatus,
 	setTargetElement
 } from '../common/global'
-import { allowNextStep, applyProgress, disallowNextStep, isStepFilled } from './common'
+import { isStepFilled } from './common'
 
 const stepData = localStorage.getItem( 'ih-step-1' ) ?
 	JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
 let cropper
+
+/**
+ * Use JS-Datepicker for the dates.
+ */
+export const initDatepickers = () => {
+	const
+		inputs      = document.querySelectorAll( '.date-input' ),
+		currentLang = document.documentElement.getAttribute( 'lang' ),
+		ukrMonths   = [
+			'Січень',
+			'Лютий',
+			'Березень',
+			'Квітень',
+			'Травень',
+			'Червень',
+			'Липень',
+			'Серпень',
+			'Вересень',
+			'Жовтень',
+			'Листопад',
+			'Грудень'
+		],
+		ukrDays     = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+
+	if ( ! inputs.length ) return
+
+	inputs.forEach( input => {
+		datepicker( input, {
+			formatter: (input, date, instance) => {
+				input.value = date.toLocaleDateString()
+			},
+			position: 'tl',
+			startDate: input.id === 'date-of-birth' ?
+				new Date(1930, 0, 1) : new Date(2014, 0, 1),
+			overlayPlaceholder: currentLang === 'uk' && 'Рік (4 цифри)',
+			overlayButton: currentLang === 'uk' && 'Підтвердити',
+			customMonths: currentLang === 'uk' && ukrMonths,
+			customOverlayMonths: currentLang === 'uk' && ukrMonths,
+			customDays: currentLang === 'uk' && ukrDays,
+			startDay: currentLang === 'uk' && 1
+		} )
+	} )
+}
 
 /**
  * Select memory language.
@@ -61,7 +105,7 @@ export const uploadMainPhoto = () => {
 				aspectRatio	: 302 / 389,
 				movable		: false,
 				rotatable	: false,
-				scalable	: false,
+				scalable	: true,
 				zoomable	: false,
 				zoomOnTouch	: false
 			} )

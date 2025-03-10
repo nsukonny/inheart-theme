@@ -21,7 +21,7 @@ body.memory-page-theme-military {
 
 	&-lang {
 		position: relative;
-		width: calc(100% / 3);
+		width: 50%;
 		background-color: transparent;
 		border: none;
 		font-size: $fs-xs-alt;
@@ -47,19 +47,11 @@ body.memory-page-theme-military {
 			}
 		}
 
-		&:nth-of-type(2).active ~ .new-memory-lang-bg {
-			left: calc(100% / 3);
+		&:last-of-type.active ~ .new-memory-lang-bg {
+			left: calc(50% - 2px);
 
 			@media (min-width: $md) {
 				left: 141px
-			}
-		}
-
-		&:last-of-type.active ~ .new-memory-lang-bg {
-			left: calc((100% / 3) * 2);
-
-			@media (min-width: $md) {
-				left: 279px
 			}
 		}
 
@@ -70,7 +62,7 @@ body.memory-page-theme-military {
 		&-bg {
 			position: absolute;
 			top: 2px;
-			width: calc(100% / 3);
+			width: 50%;
 			height: 41px;
 			background-color: $very-dark-green;
 			border-radius: $radius-langs;
@@ -96,15 +88,10 @@ body.memory-page-theme-military {
 		}
 
 		&-photo-wrapper {
-			height: 400px;
 			overflow: hidden;
 
-			@media (min-width: $lg) {
-				height: 662px
-			}
-
 			img {
-				max-width: 100%;
+				width: 100%;
 				max-height: 100%
 			}
 		}
@@ -177,18 +164,69 @@ body.memory-page-theme-military {
 		}
 	}
 
-	#photo-popup .popup-inner {
-		width: 80%;
-		padding: 30px 10px;
+	#photo-popup {
+		padding: 20px;
 
-		@media (min-width: $lg) {
-			padding: 30px
+		.popup-inner {
+			display: flex;
+			flex-direction: column-reverse;
+			width: 94%;
+			padding: 30px 10px;
+
+			@media (min-width: $lg) {
+				padding: 30px
+			}
+
+			.popup-buttons {
+				padding: 0 0 30px
+			}
 		}
 	}
 
 	&-step-1 {
 		label.label-file .filename {
 			margin-left: 10px
+		}
+	}
+
+	// JS-Datepicker
+	.qs-datepicker-container {
+		width: 100%;
+		min-width: 260px;
+		font-family: $ff;
+		border-radius: $radius-input
+	}
+
+	.qs-controls {
+		color: $bright-yellow;
+		padding: 10px 0;
+		background-color: $very-dark-green;
+
+		.qs-arrow {
+			&.qs-left::after {
+				border-right-color: $bright-yellow
+			}
+
+			&.qs-right::after {
+				border-left-color: $bright-yellow
+			}
+		}
+	}
+
+	.qs-square {
+		height: 2em;
+
+		&:not(.qs-empty):not(.qs-disabled):not(.qs-day):not(.qs-active):hover {
+			background: $bright-yellow
+		}
+
+		&.qs-active {
+			background: $dark-yellow
+		}
+
+		&.qs-day {
+			font-size: $fs-sm;
+			color: $dark-yellow
 		}
 	}
 }
