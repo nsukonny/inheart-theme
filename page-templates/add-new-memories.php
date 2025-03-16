@@ -11,7 +11,7 @@ $memory_page = $_GET['mp'] ?? null;
 
 if( ! is_user_logged_in() ){
 	$_SESSION['redirect_to_mp'] = get_the_permalink( $memory_page );
-	wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) );
+	wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) . '?memory=1' );
 	exit;
 }
 

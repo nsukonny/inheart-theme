@@ -37,7 +37,7 @@ function ih_block_admin_access(): void
 			str_contains( $uri, 'creating-a-new-memory-page' )
 		)
 	){
-		wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) . '?memory=1' );	// To Login page.
+		wp_redirect( get_the_permalink( pll_get_post( ih_get_login_page_id() ) ) );	// To Login page.
 		exit;
 	}
 }
