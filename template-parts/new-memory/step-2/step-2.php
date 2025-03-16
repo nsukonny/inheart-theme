@@ -10,13 +10,14 @@
  * @subpackage inheart
  */
 
-$title					= get_field( 'title_2' );
-$desc					= get_field( 'desc_2' );
-$sections_title			= get_field( 'sections_title' );
-$added_sections_title	= get_field( 'added_sections_title' );
-$sections				= get_field( 'sections' );
-$sections_count			= count( $sections );
-$sections_desc			= get_field( 'sections_desc' );
+$title                = get_field( 'title_2' );
+$desc                 = get_field( 'desc_2' );
+$sections_title       = get_field( 'sections_title' );
+$added_sections_title = get_field( 'added_sections_title' );
+$sections             = get_field( 'sections' );
+$sections_count       = count( $sections );
+$sections_desc        = get_field( 'sections_desc' );
+$first_section_added  = false;
 
 if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 	$ready_sections 		= get_field( 'biography_sections', $memory_page_id );
@@ -90,6 +91,7 @@ if( $ready_sections ){
 										['key' => $key, 'section' => $section]
 									);
 							}else{
+								$first_section_added = true;
 								get_template_part(
 									'template-parts/new-memory/step-2/section-sidebar',
 									'added',
@@ -157,18 +159,26 @@ if( $ready_sections ){
 						<div class="sections-list">
 							<?php
 							// Always show section with the custom title.
-							$section_with_custom_title = array_values( array_filter( $sections, fn( $section ) => $section['is_custom_title'] ) );
+							$section_with_custom_title = array_values( array_filter(
+								$sections,
+								fn( $section ) => $section['is_custom_title']
+							) );
 
-							if( ! empty( $section_with_custom_title ) )
-								get_template_part(
-									'template-parts/new-memory/step-2/section-sidebar',
+							if ( ! empty( $section_with_custom_title ) ) {
+								get_template_part( 'template-parts/new-memory/step-2/section-sidebar',
 									null,
-									['key' => 1, 'section' => $section_with_custom_title[0]]
+									[ 'key' => 1, 'section' => $section_with_custom_title[0] ]
 								);
+							}
 
 							foreach( $sections as $key => $section ){
-								// Custom title section is always there, don't need it again.
-								if( $section['is_custom_title'] ) continue;
+								// Custom title section is always there; also if first section was already added.
+								if(
+									$section['is_custom_title'] ||
+									( $key === 0 && $first_section_added )
+								) {
+									continue;
+								}
 
 								get_template_part( 'template-parts/new-memory/step-2/section-sidebar', null, [
 									'key'            => $key,
