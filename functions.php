@@ -192,3 +192,110 @@ function rewrite_redirect_to_profile(string $location): bool|string
 }
 
 add_filter('wp_redirect', 'rewrite_redirect_to_profile');
+
+/**
+ * Adds a live chat bot script to the footer of the website.
+ *
+ * This function outputs a script tag that loads a live chat bot from an external source.
+ * The script is loaded asynchronously to avoid blocking page rendering.
+ *
+ * @return void
+ */
+function add_live_chat_bot() {
+    ?>
+    <script src="https://cdn.pulse.is/livechat/loader.js" data-live-chat-id="67dbfd8379266126cf05a4f3" async></script>
+    <?php
+}
+
+add_action( 'wp_footer', 'add_live_chat_bot' );
+
+function add_live_chat_bot_custom_btn() {
+    ?>
+    <style>
+        .contact-btn-custom {
+            position: fixed;
+            top: 50%;
+            right: -80px;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: center center;
+            padding: 0 15px;
+            background-color: rgb(1, 28, 26);
+            color: rgb(255, 255, 255);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 30px;
+            height: 34px;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 0 3px #9b9b9b;
+            user-select: none;
+            white-space: nowrap;
+            -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;
+            text-align: center;
+            -webkit-appearance: none;
+            transition: transform 0.15s ease-in-out;
+            margin: 0 10px;
+            z-index: 9999;
+        }
+
+        .contact-btn-custom:hover {
+            transform: translateY(-50%) rotate(-90deg) scale(1.05);
+        }
+    </style>
+
+    <button type="button" id="openChat" class="contact-btn-custom" title="Зворотній зв'язок" tabindex="0">Зворотній зв'язок</button>
+    <?php
+}
+
+add_action('wp_footer', 'add_live_chat_bot_custom_btn');
+
+function add_live_chat_bot_custom_btn_logic() {
+	?>
+	<script>
+        document.addEventListener('spLiveChatLoaded', function () {
+            const chatElement = document.querySelector('sp-live-chat');
+            const openChatBtn = document.getElementById("openChat");
+        
+            // Utility: wait for element inside shadowRoot
+            function waitForShadowElement(selector, callback) {
+                const interval = setInterval(() => {
+                    if (chatElement?.shadowRoot) {
+                        const el = chatElement.shadowRoot.querySelector(selector);
+                        if (el) {
+                            clearInterval(interval);
+                            callback(el);
+                        }
+                    }
+                }, 50);
+            }
+        
+            // Hide the default floating chat button when available
+            waitForShadowElement('.widget-fab', (widgetFab) => {
+                widgetFab.style.display = 'none';
+            });
+        
+            // Handle custom button click
+            openChatBtn.addEventListener("click", function () {
+                waitForShadowElement('.widget-fab', (widgetFab) => {
+                    widgetFab.click();               // Open the chat
+                    widgetFab.style.display = 'none'; // Hide system button again if it reappears
+					openChatBtn.style.display = 'none'; // Hide custom button
+                    // Wait for close button to appear and bind handler once
+                    waitForShadowElement('.button-close', (closeBtn) => {
+                        closeBtn.addEventListener('click', () => {
+							openChatBtn.style.display = 'block'; // Show custom button again
+                            waitForShadowElement('.widget-fab', (fab) => {
+                                fab.style.display = 'none'; // Hide default chat button again
+                            });
+                        }, { once: true });
+                    });
+                });
+            });
+        });
+    </script>
+		<?php
+}
+
+add_action( 'wp_footer', 'add_live_chat_bot_custom_btn_logic' );

@@ -30,7 +30,6 @@ export let setAjaxWorkingStatus = status => isAjaxWorking = status
 export let ihAjaxRequest = async ( formData, settings = {} ) => {
 	let defaultSettings	= { method: 'post', ...settings, body: formData },
 		response		= await fetch( ajaxUrl, defaultSettings )
-
 	return await response.json()
 }
 

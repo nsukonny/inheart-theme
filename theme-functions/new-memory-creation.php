@@ -237,13 +237,13 @@ add_action( 'wp_ajax_ih_ajax_load_cities_from_local_json', 'ih_ajax_load_cities_
  */
 function ih_ajax_load_cities_from_local_json(): void
 {
-	if( ! $city = ih_clean( $_POST['city'] ) ?? null )
-		wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
+	$city = ih_clean( $_POST['city'] ?? '' );
+	if( ! $city ) wp_send_json_error( ['msg' => __( 'Невірні дані', 'inheart' )] );
 
-	$city = mb_strtolower( $city );
+	$searchCity = mb_strtolower( $city );
 
 	if( empty( $_SESSION['cities_json'] ) ){
-		$res      = file_get_contents( get_template_directory() . '/src/api/ua_locations.json' );
+		$res = file_get_contents( get_template_directory() . '/src/api/ua_locations.json' );
 		$res_body = json_decode( $res, true );
 
 		if( empty( $res_body ) ) wp_send_json_error( ['msg' => __( 'Помилка', 'inheart' )] );
@@ -256,14 +256,17 @@ function ih_ajax_load_cities_from_local_json(): void
 	$cities = [];
 
 	foreach( $res_body as $c ){
-		if(
-			! str_contains( mb_strtolower( $c['public_name']['uk'] ), mb_strtolower( $city ) ) ||
-			( $c['type'] === 'DISTRICT' || $c['type'] === 'COMMUNITY' || $c['type'] === 'STATE' )
-		) continue;
+		$type = $c['type'];
+		if( $type === 'DISTRICT' || $type === 'COMMUNITY' || $type === 'STATE' ) continue;
+
+		$cityName = $c['public_name']['uk'];
+		$cityNameLower = mb_strtolower( $cityName );
+
+		if( strpos( $cityNameLower, $searchCity ) === false ) continue;
 
 		$city_full_name = isset( $c['parent_id'] )
-			? ih_get_city_parent( $c['parent_id'], $res_body, $c['public_name']['uk'] )
-			: $c['public_name']['uk'];
+			? ih_get_city_parent( $c['parent_id'], $res_body, $cityName )
+			: $cityName;
 
 		$cities[] = ['name' => $city_full_name];
 	}
@@ -326,7 +329,7 @@ function ih_ajax_filter_rewards(): void
 	];
 	$res = '';
 
-	if( $slug ){
+	if( $slug && $slug != 'usi_nagorodi'){
 		$args['rewards']	= $slug;
 		$rewards			= get_posts( $args );
 

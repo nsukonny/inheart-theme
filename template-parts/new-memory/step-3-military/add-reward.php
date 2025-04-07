@@ -10,7 +10,12 @@
  * @subpackage inheart
  */
 
-$rewards_types = get_terms( ['taxonomy' => 'rewards', 'hide_empty' => true] );
+$rewards_types = get_terms( ['taxonomy' => 'rewards', 'hide_empty' => false] );
+usort( $rewards_types, function( $a, $b ){
+	if( $a->slug === 'usi_nagorodi' ) return -1;
+	if( $b->slug === 'usi_nagorodi' ) return 1;
+	return 0;
+} );
 ?>
 
 <div class="rewards-main-wrap form-white flex flex-wrap hidden">
@@ -40,7 +45,13 @@ $rewards_types = get_terms( ['taxonomy' => 'rewards', 'hide_empty' => true] );
 
 			foreach( $rewards_types as $type ){
 				?>
-				<button class="button xl fw button-icon-tail rewards-type-filter" data-slug="<?php echo esc_attr( $type->slug ) ?>">
+					<?php
+						$class = 'button xl fw button-icon-tail rewards-type-filter';
+						if ( $type->slug === 'usi_nagorodi' ) {
+							$class .= ' active';
+						}
+					?>
+				<button class="<?php echo esc_attr( $class ) ?>" data-slug="<?php echo esc_attr( $type->slug ) ?>">
 					<span class="button-text"><?php echo esc_html( $type->name ) ?></span>
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M10.7826 7.33312L7.20663 3.75712L8.1493 2.81445L13.3346 7.99979L8.1493 13.1851L7.20663 12.2425L10.7826 8.66645H2.66797V7.33312H10.7826Z" fill="#F7B941"/>

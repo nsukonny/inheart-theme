@@ -9,9 +9,10 @@
  * @package WordPress
  * @subpackage inheart
  */
-
+$edit = 		$_GET['edit'] ?? false;
 $class			= isset( $args['hidden'] ) && $args['hidden'] ? '' : ' active';
 $title			= get_field( 'title_0' );
+$title_edit		= get_field( 'title_0_edit' );
 $desc			= get_field( 'desc_0' );
 $themes_desc	= get_field( 'themes_desc' );
 $theme_military	= get_field( 'theme_military_thumb' );
@@ -21,10 +22,17 @@ $selected		= isset( $_SESSION['memory_page_id'] ) ? get_field( 'theme', $_SESSIO
 <section id="new-memory-step-0" class="new-memory-step new-memory-step-0 direction-column<?php echo esc_attr( $class ) ?>">
 	<div class="container direction-column">
 		<?php
-		if( $title ){
+		if( $title && !$edit ){
 			?>
 			<div class="new-memory-step-title">
 				<?php echo $title ?>
+			</div>
+			<?php
+		}
+		if( $title && $edit){
+				?>
+			<div class="new-memory-step-title">
+				<?php echo $title_edit ?>
 			</div>
 			<?php
 		}

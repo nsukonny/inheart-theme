@@ -27,14 +27,14 @@ const loadCities = () => {
 	const citiesWrap = cityInput.closest( 'label' ).querySelector( '.np-cities' )
 
 	const onCityInputChange = e => {
+		
 		const
 			formData = new FormData(),
 			input    = e.target,
-			val      = input.value,
+			val      = input.value.trim(),
 			label    = input.closest( 'label' )
-
-		if( ! val || ! citiesWrap ) return
-
+		
+		if (!val || val.length < 3 || !citiesWrap) return;
 		formData.append( 'action', 'ih_ajax_load_cities_from_local_json' )
 		formData.append( 'city', val )
 		disableInput( input )
@@ -607,7 +607,7 @@ export const checkStep2 = () => {
 			titleInput	= title.querySelector( '.section-content-title-input' ),
 			value		= area.value,
 			index		= section.dataset.id,
-			isCustom	= section.classList.contains( 'custom' ) ? 1 : '',
+			isCustom	= section.classList.contains('custom'),
 			photos		= section.querySelectorAll( '.section-content-photo' ),
 			city		= section.querySelector( '#city' ),
 			isCto		= section.classList.contains( 'section-content-cto' ),

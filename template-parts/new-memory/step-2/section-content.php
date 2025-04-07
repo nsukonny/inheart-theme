@@ -44,7 +44,7 @@ if( ! $title ) return;
 	</div>
 	<textarea
 		class="section-content-text"
-		placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"
+		placeholder="<?php esc_attr_e( 'Напишіть детальну біографію', 'inheart' ) ?>"
 	><?php echo esc_html( $text ) ?></textarea>
 
 	<button

@@ -29,7 +29,7 @@ $class = isset( $args['class'] ) ? " {$args['class']}" : '';
 	<div class="section-content-title"><?php _e( 'Останній бій', 'inheart' ) ?></div>
 	<textarea
 		class="section-content-text"
-		placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"
+		placeholder="<?php esc_attr_e( 'Напишіть детальну біографію', 'inheart' ) ?>"
 	><?php echo esc_html( $text ) ?></textarea>
 
 	<button

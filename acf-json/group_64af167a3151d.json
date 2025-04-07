@@ -189,6 +189,26 @@
             "delay": 0
         },
         {
+            "key": "field_67ec2402915b8",
+            "label": "Title edit",
+            "name": "title_0_edit",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
             "key": "field_64af16e79ef36",
             "label": "Description",
             "name": "desc_0",
@@ -724,6 +744,26 @@
             "toolbar": "full",
             "media_upload": 0,
             "delay": 0
+        },
+        {
+            "key": "field_64bd3c3d7d492",
+            "label": "Epitaph Initial Text",
+            "name": "epitaph_init_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_64bd3c697d493",
@@ -1356,5 +1396,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1718054911
+    "modified": 1743529058
 }

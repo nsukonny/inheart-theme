@@ -102,7 +102,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Last screen (military).
 	instagramPopupEvents()
 
-	orderNowPopup()
+	// orderNowPopup()
 } )
 
 const hideLoader = () => {

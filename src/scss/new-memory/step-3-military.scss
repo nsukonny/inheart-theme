@@ -159,6 +159,9 @@
 
 .reward-preview {
 	width: 100%;
+	height: 220px;
+	max-height: 220px;
+	justify-content: space-between;
 	max-width: calc(50% - 8px);
 	gap: 10px;
 	background-color: $white;

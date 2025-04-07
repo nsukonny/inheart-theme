@@ -158,33 +158,44 @@ if( $ready_sections ){
 
 						<div class="sections-list">
 							<?php
-							// Always show section with the custom title.
-							$section_with_custom_title = array_values( array_filter(
+							// Find the section with a custom title separately
+							$section_with_custom_title = array_values(array_filter(
 								$sections,
-								fn( $section ) => $section['is_custom_title']
-							) );
+								fn($section) => $section['is_custom_title']
+							));
 
-							if ( ! empty( $section_with_custom_title ) ) {
-								get_template_part( 'template-parts/new-memory/step-2/section-sidebar',
-									null,
-									[ 'key' => 1, 'section' => $section_with_custom_title[0] ]
-								);
-							}
+							// First, output all regular sections
+							foreach( $sections as $key => $section ) {
+								if ( $section['is_custom_title'] ) {
+									continue; // skip it for now, we’ll render it later
+								}
 
-							foreach( $sections as $key => $section ){
-								// Custom title section is always there; also if first section was already added.
-								if(
-									$section['is_custom_title'] ||
-									( $key === 0 && $first_section_added )
-								) {
+								// Skip the first section if specified
+								if ( $key === 0 && $first_section_added ) {
 									continue;
 								}
 
-								get_template_part( 'template-parts/new-memory/step-2/section-sidebar', null, [
-									'key'            => $key,
-									'section'        => $section,
-									'ready_sections' => $ready_sections
-								] );
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar',
+									null,
+									[
+										'key'            => $key,
+										'section'        => $section,
+										'ready_sections' => $ready_sections
+									]
+								);
+							}
+
+							// Then output the section with a custom title (at the end)
+							if ( ! empty( $section_with_custom_title ) ) {
+								get_template_part(
+									'template-parts/new-memory/step-2/section-sidebar',
+									null,
+									[
+										'key'     => 'custom', // you can use 'custom' or count($sections)
+										'section' => $section_with_custom_title[0]
+									]
+								);
 							}
 							?>
 						</div>

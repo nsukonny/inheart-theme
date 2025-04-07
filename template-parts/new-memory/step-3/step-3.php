@@ -87,7 +87,7 @@ $epitaph_role		= get_field( 'epitaph_role', $_SESSION['memory_page_id'] );
 					<textarea
 						class="epitaph-text"
 						name="epitaph-text"
-						placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"
+						placeholder="<?php esc_attr_e( 'Напишіть детальну біографію', 'inheart' ) ?>"
 					><?php echo esc_html( $epitaph ) ?></textarea>
 				</fieldset>
 			</form>

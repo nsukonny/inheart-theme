@@ -17,7 +17,7 @@ $index = 123123;
 	<div class="section-content-title"></div>
 	<textarea
 		class="section-content-text"
-		placeholder="<?php esc_attr_e( 'Напишіть якомога детальну біографію', 'inheart' ) ?>"
+		placeholder="<?php esc_attr_e( 'Напишіть детальну біографію', 'inheart' ) ?>"
 	></textarea>
 
 	<button

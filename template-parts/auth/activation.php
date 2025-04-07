@@ -52,9 +52,12 @@ if( $code === $original_code ){
 			)
 		] );
 	}	else {
-		get_template_part( 'template-parts/auth/activation-success' );
+		// get_template_part( 'template-parts/auth/activation-success' );
 		delete_user_meta( $user_id, 'activation_code' );
 		delete_user_meta( $user_id, 'registration_date' );
+		//redirect to profile page instead if activation-success
+		wp_redirect( site_url( '/profile' ) );
+		exit;
 	}
 
 	return;

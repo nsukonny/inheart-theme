@@ -14,6 +14,144 @@ const stepData = localStorage.getItem( 'ih-step-1' ) ?
 	JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : { lang: 'uk' }
 let cropper
 
+const dateOfBirth = document.getElementById('date-of-birth');
+const dateOfDeath = document.getElementById('date-of-death');
+let dateOfBirthPicker = null;
+let dateOfDeathPicker = null;
+
+
+/**
+ * Creates a debounced function that delays invoking the provided function until after a specified delay.
+ *
+ * @param {Function} fn - The function to debounce.
+ * @param {number} [delay=500] - The number of milliseconds to delay; defaults to 500ms.
+ * @returns {Function} A new debounced function that delays invoking the original function.
+ */
+function debounce(fn, delay = 500) {
+    let timeout
+    return (...args) => {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => fn.apply(this, args), delay)
+    }
+}
+/**
+ * Validates whether a given string is a valid date in the "dd.mm.yyyy" format.
+ *
+ * Validation rules:
+ * - The string must contain exactly three parts separated by dots.
+ * - The day (dd) must be between 1 and 31.
+ * - The month (mm) must be between 1 and 12.
+ * - The year (yyyy) must be between 1900 and 2100.
+ * - The date must actually exist (e.g., 31.02.2024 is invalid).
+ *
+ * @param {string} str - A string representing a date in "dd.mm.yyyy" format.
+ * @returns {boolean} true if the date is valid, false otherwise.
+ */
+function isValidDateString(str) {
+	let dd, mm, yyyy;
+
+	if (str.includes('.')) {
+		const parts = str.split('.');
+		if (parts.length !== 3) return false;
+
+		[dd, mm, yyyy] = parts.map(Number);
+	} else if (str.includes('-')) {
+		const parts = str.split('-');
+		if (parts.length !== 3) return false;
+
+		[yyyy, mm, dd] = parts.map(Number);
+	} else {
+		return false;
+	}
+
+	if (
+		isNaN(dd) || isNaN(mm) || isNaN(yyyy) ||
+		dd < 1 || dd > 31 ||
+		mm < 1 || mm > 12 ||
+		yyyy < 1900 || yyyy > 2100
+	) {
+		return false;
+	}
+
+	const date = new Date(yyyy, mm - 1, dd);
+	return (
+		date.getFullYear() === yyyy &&
+		date.getMonth() === mm - 1 &&
+		date.getDate() === dd
+	);
+}
+
+/**
+ * Parses a date string in "dd.mm.yyyy" format into a valid Date object.
+ *
+ * Requirements:
+ * - The input must contain exactly 3 parts separated by dots.
+ * - Day, month, and year must be valid numbers.
+ * - The date must actually exist (e.g., 31.02.2024 is invalid).
+ *
+ * @param {string} str - The date string in "dd.mm.yyyy" format.
+ * @returns {Date|null} A valid Date object if the input is correct, otherwise null.
+ */
+function parseDate(str) {
+	const trimmed = str.trim();
+
+	let dd, mm, yyyy;
+
+	if (trimmed.includes('.')) {
+		const parts = trimmed.split('.');
+		if (parts.length !== 3) return null;
+
+		[dd, mm, yyyy] = parts.map(Number);
+	} else if (trimmed.includes('-')) {
+		const parts = trimmed.split('-');
+		if (parts.length !== 3) return null;
+
+		[yyyy, mm, dd] = parts.map(Number);
+	} else {
+		return null;
+	}
+
+	const date = new Date(yyyy, mm - 1, dd);
+
+	if (
+		!isNaN(date.getTime()) &&
+		date.getFullYear() === yyyy &&
+		date.getMonth() === mm - 1 &&
+		date.getDate() === dd
+	) {
+		return date;
+	}
+
+	return null;
+}
+
+/**
+ * Validates that the "date of birth" is not later than the "date of death".
+ *
+ * - Both fields are optional and may be null or empty during validation.
+ * - If both dates are valid and birthDate > deathDate, applies an "error" class.
+ * - Removes "error" classes otherwise.
+ *
+ * @returns {void}
+ */
+function validateDates() {
+	if (!dateOfBirth || !dateOfDeath) return
+
+	const birthStr = dateOfBirth.value;
+	const deathStr = dateOfDeath.value;
+
+	const birthDate = parseDate(birthStr);
+	const deathDate = parseDate(deathStr);
+
+	// If both dates are valid
+	if (birthDate && deathDate) {
+		if (birthDate > deathDate) {
+			// Auto-set date of death to match date of birth
+			dateOfDeathPicker.setDate(birthDate, {render: true});
+		}
+	}
+}
+
 /**
  * Use JS-Datepicker for the dates.
  */
@@ -40,20 +178,41 @@ export const initDatepickers = () => {
 	if ( ! inputs.length ) return
 
 	inputs.forEach( input => {
-		datepicker( input, {
+		const dp = datepicker(input, {
 			formatter: (input, date, instance) => {
-				input.value = date.toLocaleDateString()
+					input.value = date.toLocaleDateString()
+					validateDates();
 			},
 			position: 'tl',
-			startDate: input.id === 'date-of-birth' ?
-				new Date(1930, 0, 1) : new Date(2014, 0, 1),
+			startDate: input.id === 'date-of-birth'
+				? new Date(1930, 0, 1)
+				: new Date(2014, 0, 1),
 			overlayPlaceholder: currentLang === 'uk' && 'Рік (4 цифри)',
 			overlayButton: currentLang === 'uk' && 'Підтвердити',
 			customMonths: currentLang === 'uk' && ukrMonths,
 			customOverlayMonths: currentLang === 'uk' && ukrMonths,
 			customDays: currentLang === 'uk' && ukrDays,
 			startDay: currentLang === 'uk' && 1
-		} )
+		})
+
+		if (input.id === 'date-of-birth') {
+			dateOfBirthPicker = dp;
+		} else if (input.id === 'date-of-death') {
+			dateOfDeathPicker = dp;
+		}
+	
+		input.addEventListener('input', debounce(() => {
+			const value = input.value.trim()
+
+			if (isValidDateString(value)) {
+				const [dd, mm, yyyy] = value.split('.').map(Number);
+				const date = new Date(yyyy, mm - 1, dd);
+				dp.setDate(date, { render: true });
+			}
+
+			validateDates();
+
+		}, 500))
 	} )
 }
 
@@ -201,28 +360,52 @@ export const addMainFormValidation = () => {
  * @returns {boolean}
  */
 export const checkStep1 = () => {
-	const fields	= document.querySelectorAll( '.new-memory-main-info input' )
-	let isFormValid	= true
+	const fields = document.querySelectorAll('.new-memory-main-info input');
+	let isFormValid = true;
 
-	if( ! fields.length ) return false
+	if (!fields.length) return false;
 
-	// Fill stepData again in the case localStorage was cleared.
-	stepData.lang = document.querySelector( '.new-memory-lang.active' ).dataset.lang
-	fields.forEach( field => {
-		const
-			index	= field.name,
-			value	= field.value
+	stepData.lang = document.querySelector('.new-memory-lang.active')?.dataset.lang || 'en';
 
-		if( field.classList.contains( 'error' ) || ( field.required && ! value ) ){
-			isFormValid = false
+	let birthDate = null;
+	let deathDate = null;
+
+	fields.forEach(field => {
+		const index = field.name;
+		const value = field.value.trim();
+
+		if (field.classList.contains('error') || (field.required && !value)) {
+			isFormValid = false;
 		}
 
-		if( index === 'photo' && field.dataset.cropped )
-			stepData.cropped = field.dataset.cropped
+		if (index === 'photo' && field.dataset.cropped) {
+			stepData.cropped = field.dataset.cropped;
+		}
 
-		stepData[index] = value
-	} )
-	localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
+		if (index === 'date-of-birth') {
+			if (!isValidDateString(value)) {
+				isFormValid = false;
+			} else {
+				birthDate = parseDate(value);
+			}
+		}
 
-	return isFormValid
-}
+		if (index === 'date-of-death') {
+			if (!isValidDateString(value)) {
+				isFormValid = false;
+			} else {
+				deathDate = parseDate(value);
+			}
+		}
+
+		stepData[index] = value;
+	});
+
+	if (birthDate && deathDate && birthDate > deathDate) {
+		isFormValid = false;
+	}
+
+	localStorage.setItem('ih-step-1', JSON.stringify(stepData));
+
+	return isFormValid;
+};
