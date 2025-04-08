@@ -326,42 +326,89 @@ export const isStepFilled = ( stepId = 0 ) => {
 	}
 }
 
+function parseDate(str) {
+	const cleaned = str.trim().replace(/[\s\/\\\-]+/g, '.'); // Normalize all separators to "."
+
+	const parts = cleaned.split('.').map(Number);
+	if (parts.length !== 3 || parts.some(isNaN)) return null;
+
+	let dd, mm, yyyy;
+	// Format: yyyy.mm.dd
+	if (parts[0] > 1900 && parts[0] <= 2100) {
+		[yyyy, mm, dd] = parts;
+	// Format: dd.mm.yyyy or mm.dd.yyyy
+	} else if (parts[2] > 1900 && parts[2] <= 2100) {
+		if (parts[0] > 12) {
+			[dd, mm, yyyy] = parts;
+		} else if (parts[1] > 12) {
+			[mm, dd, yyyy] = parts;
+		} else {
+			// Default to dd.mm.yyyy if ambiguous
+			[dd, mm, yyyy] = parts;
+		}
+	} else {
+		return null;
+	}
+
+	// Basic range checks
+	if (
+		!yyyy || !mm || !dd ||
+		dd < 1 || dd > 31 ||
+		mm < 1 || mm > 12 ||
+		yyyy < 1900 || yyyy > 2100
+	) return null;
+
+	const date = new Date(yyyy, mm - 1, dd);
+
+	// Final validation to ensure date is real (e.g., no Feb 31)
+	if (
+		date.getFullYear() === yyyy &&
+		date.getMonth() === mm - 1 &&
+		date.getDate() === dd
+	) {
+		return date;
+	}
+
+	return null;
+}
 /**
  * Do some actions on the last step.
  */
 const theLastStep = () => {
-	const
-		screen	= document.querySelector( '#new-memory-step-6' ),
-		step1	= localStorage.getItem( 'ih-step-1' ) ? JSON.parse( localStorage.getItem( 'ih-step-1' ) ) : null
+	const screen = document.querySelector('#new-memory-step-6');
+	const step1 = localStorage.getItem('ih-step-1') ? JSON.parse(localStorage.getItem('ih-step-1')) : null;
 
-	if( ! step1 ) return
+	if (!step1) return;
 
-	const
-		thumb		= step1.cropped || '',
-		firstName	= step1.firstname,
-		middleName	= step1.fathername,
-		lastName	= step1.lastname,
-		bornAtObj	= new Date( step1['date-of-birth'] ),
-		bornDay		= bornAtObj.getDate() < 10 ? `0${ bornAtObj.getDate() }` : bornAtObj.getDate(),
-		bornMonth	= ( bornAtObj.getMonth() + 1 ) < 10 ? `0${ bornAtObj.getMonth() + 1 }` : bornAtObj.getMonth() + 1,
-		bornAt		= `${ bornDay }.${ bornMonth }.${ bornAtObj.getFullYear() }`,
-		diedAtObj	= new Date( step1['date-of-death'] ),
-		diedDay		= diedAtObj.getDate() < 10 ? `0${ diedAtObj.getDate() }` : diedAtObj.getDate(),
-		diedMonth	= ( diedAtObj.getMonth() + 1 ) < 10 ? `0${ diedAtObj.getMonth() + 1 }` : diedAtObj.getMonth() + 1,
-		diedAt		= `${ diedDay }.${ diedMonth }.${ diedAtObj.getFullYear() }`
+	const parseSafeDate = str => {
+		const date = parseDate(str);
+		if (!date) return '';
+		const dd = String(date.getDate()).padStart(2, '0');
+		const mm = String(date.getMonth() + 1).padStart(2, '0');
+		const yyyy = date.getFullYear();
+		return `${dd}.${mm}.${yyyy}`;
+	};
 
-	// Push data to HTML.
-	if( thumb ){
-		screen.querySelector( '.page-created-thumb-img' )
-			.innerHTML = `<img src="${ thumb }" alt="${ firstName } ${ middleName } ${ lastName }" />`
+	const thumb = step1.cropped || '';
+	const firstName = step1.firstname || '';
+	const middleName = step1.fathername || '';
+	const lastName = step1.lastname || '';
+
+	const bornAt = parseSafeDate(step1['date-of-birth']);
+	const diedAt = parseSafeDate(step1['date-of-death']);
+
+	// Push data to HTML
+	if (thumb) {
+		screen.querySelector('.page-created-thumb-img').innerHTML =
+			`<img src="${thumb}" alt="${firstName} ${middleName} ${lastName}" />`;
 	}
 
-	screen.querySelector( '.page-created-firstname' ).innerHTML	= `${ firstName} ${ middleName }`
-	screen.querySelector( '.page-created-lastname' ).innerHTML	= lastName
-	screen.querySelector( '.page-created-dates' ).innerHTML		= `${ bornAt } - ${ diedAt }`
+	screen.querySelector('.page-created-firstname').innerHTML = `${firstName} ${middleName}`;
+	screen.querySelector('.page-created-lastname').innerHTML = lastName;
+	screen.querySelector('.page-created-dates').innerHTML = `${bornAt} - ${diedAt}`;
 
-	clearData()
-}
+	clearData();
+};
 
 const theLastMilitaryStep = () => {
 	const
