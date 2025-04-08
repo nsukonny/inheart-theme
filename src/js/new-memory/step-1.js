@@ -19,21 +19,6 @@ const dateOfDeath = document.getElementById('date-of-death');
 let dateOfBirthPicker = null;
 let dateOfDeathPicker = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-	const savedData = JSON.parse(localStorage.getItem('memoryFormData'));
-	if (savedData) {
-		const lastnameInput = document.querySelector('input[name="lastname"]');
-		const firstnameInput = document.querySelector('input[name="firstname"]');
-		const fathernameInput = document.querySelector('input[name="fathername"]');
-
-		if (lastnameInput) lastnameInput.value = savedData.lastname || '';
-		if (firstnameInput) firstnameInput.value = savedData.firstname || '';
-		if (fathernameInput) fathernameInput.value = savedData.fathername || '';
-
-		localStorage.removeItem('memoryFormData');
-	}
-});
-
 
 /**
  * Creates a debounced function that delays invoking the provided function until after a specified delay.
@@ -49,110 +34,88 @@ function debounce(fn, delay = 500) {
         timeout = setTimeout(() => fn.apply(this, args), delay)
     }
 }
+
 /**
- * Validates whether a given string is a valid date in the "dd.mm.yyyy" format.
+ * Checks whether the provided date string is valid.
+ * Accepts a wide variety of date formats:
+ * - dd.mm.yyyy
+ * - d/m/yyyy
+ * - yyyy-mm-dd
+ * - mm-dd-yyyy
+ * - and more (any separator: '.', '/', '-', '\', space)
  *
- * Validation rules:
- * - The string must contain exactly three parts separated by dots.
- * - The day (dd) must be between 1 and 31.
- * - The month (mm) must be between 1 and 12.
- * - The year (yyyy) must be between 1900 and 2100.
- * - The date must actually exist (e.g., 31.02.2024 is invalid).
- *
- * @param {string} str - A string representing a date in "dd.mm.yyyy" format.
- * @returns {boolean} true if the date is valid, false otherwise.
+ * @param {string} str - The input date string.
+ * @returns {boolean} True if the date is valid, otherwise false.
  */
 function isValidDateString(str) {
-	const parts = splitDateParts(str);
-	if (!parts) return false;
-
-	const { dd, mm, yyyy } = parts;
-
-	if (
-		dd < 1 || dd > 31 ||
-		mm < 1 || mm > 12 ||
-		yyyy < 1900 || yyyy > 2100
-	) {
-		return false;
-	}
-
-	const date = new Date(yyyy, mm - 1, dd);
-	return (
-		date.getFullYear() === yyyy &&
-		date.getMonth() === mm - 1 &&
-		date.getDate() === dd
-	);
+	return parseDate(str) !== null;
 }
 
 /**
- * Parses a date string into day, month, and year components.
+ * Converts any supported date string into a standard format: "dd.mm.yyyy".
+ *
+ * @param {string} str - The raw input date string.
+ * @returns {string} The formatted date string, or an empty string if invalid.
+ */
+function formatDateToStandard(str) {
+	const date = parseDate(str);
+	if (!date) return '';
+
+	const dd = String(date.getDate()).padStart(2, '0');
+	const mm = String(date.getMonth() + 1).padStart(2, '0');
+	const yyyy = date.getFullYear();
+
+	return `${dd}.${mm}.${yyyy}`;
+}
+
+/**
+ * Parses a variety of common date string formats and returns a valid Date object.
  *
  * Supported formats:
- * - "dd.mm.yyyy"
- * - "yyyy-mm-dd"
- * - "dd/mm/yyyy"
+ * - dd.mm.yyyy / d.m.yyyy
+ * - dd/mm/yyyy / mm/dd/yyyy
+ * - dd-mm-yyyy / mm-dd-yyyy
+ * - yyyy-mm-dd / yyyy.mm.dd / yyyy/mm/dd
+ * - With separators: ".", "/", "-", "\", or space
  *
- * This function detects the delimiter used and extracts the parts accordingly.
- * It returns `null` if the format is unsupported, the parts are missing,
- * or if any part is not a valid number.
- *
- * @param {string} str - The input date string (e.g. "12.01.1998", "1992-01-21", "1/12/1994").
- * @returns {{dd: number, mm: number, yyyy: number} | null} An object with parsed numeric day, month, and year — or `null` if invalid.
- *
- * @example
- * splitDateParts('12.01.1998') // { dd: 12, mm: 1, yyyy: 1998 }
- * splitDateParts('1992-01-21') // { dd: 21, mm: 1, yyyy: 1992 }
- * splitDateParts('1/12/1994')  // { dd: 1, mm: 12, yyyy: 1994 }
- * splitDateParts('invalid')    // null
+ * @param {string} str - The date string to parse.
+ * @returns {Date|null} A Date object if valid, otherwise null.
  */
-function splitDateParts(str) {
-	const trimmed = str.trim();
-	let dd, mm, yyyy;
+function parseDate(str) {
+	const cleaned = str.trim().replace(/[\s\/\\\-]+/g, '.'); // Normalize all separators to "."
 
-	let parts = [];
-	if (trimmed.includes('.')) {
-		parts = trimmed.split('.');
-		if (parts.length !== 3) return null;
-		[dd, mm, yyyy] = parts.map(Number);
-	} else if (trimmed.includes('-')) {
-		parts = trimmed.split('-');
-		if (parts.length !== 3) return null;
-		[yyyy, mm, dd] = parts.map(Number);
-	} else if (trimmed.includes('/')) {
-		parts = trimmed.split('/');
-		if (parts.length !== 3) return null;
-		[dd, mm, yyyy] = parts.map(Number);
+	const parts = cleaned.split('.').map(Number);
+	if (parts.length !== 3 || parts.some(isNaN)) return null;
+
+	let dd, mm, yyyy;
+	// Format: yyyy.mm.dd
+	if (parts[0] > 1900 && parts[0] <= 2100) {
+		[yyyy, mm, dd] = parts;
+	// Format: dd.mm.yyyy or mm.dd.yyyy
+	} else if (parts[2] > 1900 && parts[2] <= 2100) {
+		if (parts[0] > 12) {
+			[dd, mm, yyyy] = parts;
+		} else if (parts[1] > 12) {
+			[mm, dd, yyyy] = parts;
+		} else {
+			// Default to dd.mm.yyyy if ambiguous
+			[dd, mm, yyyy] = parts;
+		}
 	} else {
 		return null;
 	}
 
+	// Basic range checks
 	if (
-		isNaN(dd) || isNaN(mm) || isNaN(yyyy)
-	) {
-		return null;
-	}
+		!yyyy || !mm || !dd ||
+		dd < 1 || dd > 31 ||
+		mm < 1 || mm > 12 ||
+		yyyy < 1900 || yyyy > 2100
+	) return null;
 
-	return { dd, mm, yyyy };
-}
-
-/**
- * Parses a date string in "dd.mm.yyyy" format into a valid Date object.
- *
- * Requirements:
- * - The input must contain exactly 3 parts separated by dots.
- * - Day, month, and year must be valid numbers.
- * - The date must actually exist (e.g., 31.02.2024 is invalid).
- *
- * @param {string} str - The date string in "dd.mm.yyyy" format.
- * @returns {Date|null} A valid Date object if the input is correct, otherwise null.
- */
-function parseDate(str) {
-	const parts = splitDateParts(str);
-	if (!parts) return null;
-
-	const { dd, mm, yyyy } = parts;
 	const date = new Date(yyyy, mm - 1, dd);
 
+	// Final validation to ensure date is real (e.g., no Feb 31)
 	if (
 		date.getFullYear() === yyyy &&
 		date.getMonth() === mm - 1 &&
@@ -219,7 +182,7 @@ export const initDatepickers = () => {
 	inputs.forEach( input => {
 		const dp = datepicker(input, {
 			formatter: (input, date, instance) => {
-					input.value = date.toLocaleDateString()
+					input.value = formatDateToStandard(date.toLocaleDateString());
 					validateDates();
 			},
 			position: 'tl',
@@ -241,17 +204,13 @@ export const initDatepickers = () => {
 		}
 	
 		input.addEventListener('input', debounce(() => {
-			const value = input.value.trim()
-
-			if (isValidDateString(value)) {
-				const [dd, mm, yyyy] = value.split('.').map(Number);
-				const date = new Date(yyyy, mm - 1, dd);
-				dp.setDate(date, { render: true });
+			const formatted = formatDateToStandard(input.value);
+			if (formatted) {
+				input.value = formatted;
+				dp.setDate(parseDate(formatted), { render: true });
 			}
-
 			validateDates();
-
-		}, 500))
+		}, 500));
 	} )
 }
 
