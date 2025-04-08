@@ -19,6 +19,21 @@ const dateOfDeath = document.getElementById('date-of-death');
 let dateOfBirthPicker = null;
 let dateOfDeathPicker = null;
 
+document.addEventListener('DOMContentLoaded', () => {
+	const savedData = JSON.parse(localStorage.getItem('memoryFormData'));
+	if (savedData) {
+		const lastnameInput = document.querySelector('input[name="lastname"]');
+		const firstnameInput = document.querySelector('input[name="firstname"]');
+		const fathernameInput = document.querySelector('input[name="fathername"]');
+
+		if (lastnameInput) lastnameInput.value = savedData.lastname || '';
+		if (firstnameInput) firstnameInput.value = savedData.firstname || '';
+		if (fathernameInput) fathernameInput.value = savedData.fathername || '';
+
+		localStorage.removeItem('memoryFormData');
+	}
+});
+
 
 /**
  * Creates a debounced function that delays invoking the provided function until after a specified delay.
