@@ -19,6 +19,21 @@ const dateOfDeath = document.getElementById('date-of-death');
 let dateOfBirthPicker = null;
 let dateOfDeathPicker = null;
 
+document.addEventListener('DOMContentLoaded', () => {
+	const savedData = JSON.parse(localStorage.getItem('memoryFormData'));
+	if (savedData) {
+		const lastnameInput = document.querySelector('input[name="lastname"]');
+		const firstnameInput = document.querySelector('input[name="firstname"]');
+		const fathernameInput = document.querySelector('input[name="fathername"]');
+
+		if (lastnameInput) lastnameInput.value = savedData.lastname || '';
+		if (firstnameInput) firstnameInput.value = savedData.firstname || '';
+		if (fathernameInput) fathernameInput.value = savedData.fathername || '';
+
+		localStorage.removeItem('memoryFormData');
+	}
+});
+
 
 /**
  * Creates a debounced function that delays invoking the provided function until after a specified delay.
@@ -48,24 +63,12 @@ function debounce(fn, delay = 500) {
  * @returns {boolean} true if the date is valid, false otherwise.
  */
 function isValidDateString(str) {
-	let dd, mm, yyyy;
+	const parts = splitDateParts(str);
+	if (!parts) return false;
 
-	if (str.includes('.')) {
-		const parts = str.split('.');
-		if (parts.length !== 3) return false;
-
-		[dd, mm, yyyy] = parts.map(Number);
-	} else if (str.includes('-')) {
-		const parts = str.split('-');
-		if (parts.length !== 3) return false;
-
-		[yyyy, mm, dd] = parts.map(Number);
-	} else {
-		return false;
-	}
+	const { dd, mm, yyyy } = parts;
 
 	if (
-		isNaN(dd) || isNaN(mm) || isNaN(yyyy) ||
 		dd < 1 || dd > 31 ||
 		mm < 1 || mm > 12 ||
 		yyyy < 1900 || yyyy > 2100
@@ -82,6 +85,57 @@ function isValidDateString(str) {
 }
 
 /**
+ * Parses a date string into day, month, and year components.
+ *
+ * Supported formats:
+ * - "dd.mm.yyyy"
+ * - "yyyy-mm-dd"
+ * - "dd/mm/yyyy"
+ *
+ * This function detects the delimiter used and extracts the parts accordingly.
+ * It returns `null` if the format is unsupported, the parts are missing,
+ * or if any part is not a valid number.
+ *
+ * @param {string} str - The input date string (e.g. "12.01.1998", "1992-01-21", "1/12/1994").
+ * @returns {{dd: number, mm: number, yyyy: number} | null} An object with parsed numeric day, month, and year — or `null` if invalid.
+ *
+ * @example
+ * splitDateParts('12.01.1998') // { dd: 12, mm: 1, yyyy: 1998 }
+ * splitDateParts('1992-01-21') // { dd: 21, mm: 1, yyyy: 1992 }
+ * splitDateParts('1/12/1994')  // { dd: 1, mm: 12, yyyy: 1994 }
+ * splitDateParts('invalid')    // null
+ */
+function splitDateParts(str) {
+	const trimmed = str.trim();
+	let dd, mm, yyyy;
+
+	let parts = [];
+	if (trimmed.includes('.')) {
+		parts = trimmed.split('.');
+		if (parts.length !== 3) return null;
+		[dd, mm, yyyy] = parts.map(Number);
+	} else if (trimmed.includes('-')) {
+		parts = trimmed.split('-');
+		if (parts.length !== 3) return null;
+		[yyyy, mm, dd] = parts.map(Number);
+	} else if (trimmed.includes('/')) {
+		parts = trimmed.split('/');
+		if (parts.length !== 3) return null;
+		[dd, mm, yyyy] = parts.map(Number);
+	} else {
+		return null;
+	}
+
+	if (
+		isNaN(dd) || isNaN(mm) || isNaN(yyyy)
+	) {
+		return null;
+	}
+
+	return { dd, mm, yyyy };
+}
+
+/**
  * Parses a date string in "dd.mm.yyyy" format into a valid Date object.
  *
  * Requirements:
@@ -93,28 +147,13 @@ function isValidDateString(str) {
  * @returns {Date|null} A valid Date object if the input is correct, otherwise null.
  */
 function parseDate(str) {
-	const trimmed = str.trim();
+	const parts = splitDateParts(str);
+	if (!parts) return null;
 
-	let dd, mm, yyyy;
-
-	if (trimmed.includes('.')) {
-		const parts = trimmed.split('.');
-		if (parts.length !== 3) return null;
-
-		[dd, mm, yyyy] = parts.map(Number);
-	} else if (trimmed.includes('-')) {
-		const parts = trimmed.split('-');
-		if (parts.length !== 3) return null;
-
-		[yyyy, mm, dd] = parts.map(Number);
-	} else {
-		return null;
-	}
-
+	const { dd, mm, yyyy } = parts;
 	const date = new Date(yyyy, mm - 1, dd);
 
 	if (
-		!isNaN(date.getTime()) &&
 		date.getFullYear() === yyyy &&
 		date.getMonth() === mm - 1 &&
 		date.getDate() === dd

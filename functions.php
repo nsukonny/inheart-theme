@@ -211,40 +211,6 @@ add_action( 'wp_footer', 'add_live_chat_bot' );
 
 function add_live_chat_bot_custom_btn() {
     ?>
-    <style>
-        .contact-btn-custom {
-            position: fixed;
-            top: 50%;
-            right: -80px;
-            transform: translateY(-50%) rotate(-90deg);
-            transform-origin: center center;
-            padding: 0 15px;
-            background-color: rgb(1, 28, 26);
-            color: rgb(255, 255, 255);
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 30px;
-            height: 34px;
-            border-radius: 5px 5px 0 0;
-            box-shadow: 0 0 3px #9b9b9b;
-            user-select: none;
-            white-space: nowrap;
-            -webkit-font-smoothing: antialiased;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;
-            text-align: center;
-            -webkit-appearance: none;
-            transition: transform 0.15s ease-in-out;
-            margin: 0 10px;
-            z-index: 9999;
-        }
-
-        .contact-btn-custom:hover {
-            transform: translateY(-50%) rotate(-90deg) scale(1.05);
-        }
-    </style>
-
     <button type="button" id="openChat" class="contact-btn-custom" title="Зворотній зв'язок" tabindex="0">Зворотній зв'язок</button>
     <?php
 }

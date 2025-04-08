@@ -65,6 +65,26 @@
             "append": ""
         },
         {
+            "key": "field_67f4e742f170e",
+            "label": "No Memory Pages Note",
+            "name": "no_memory_pages_note",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_64e51ae2aaa8d",
             "label": "Сторінки пам'яті існують",
             "name": "",
@@ -294,5 +314,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1705352519
+    "modified": 1744103324
 }

@@ -673,6 +673,26 @@
                     "parent_repeater": "field_666cadd20130d"
                 }
             ]
+        },
+        {
+            "key": "field_67f4e3e897f71",
+            "label": "No Memories Note",
+            "name": "no_memory_pages_note",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -693,5 +713,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1718398585
+    "modified": 1744102691
 }
