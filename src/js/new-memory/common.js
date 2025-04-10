@@ -197,7 +197,10 @@ export const saveStep = stepId => {
 					break
 
 				case false:
-					showNotification( res.data.msg, 'error' )
+					if(stepId != 0)
+					{
+						showNotification( res.data.msg, 'error' )
+					}
 					break
 			}
 		}

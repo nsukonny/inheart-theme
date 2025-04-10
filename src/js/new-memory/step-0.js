@@ -1,6 +1,12 @@
 import { isStepFilled } from './common'
 import { ihAjaxRequest, showNotification } from '../common/global'
 
+// Declare global event for interface updates when theme changes
+const themeChangeEvent = new CustomEvent('themeChanged', {
+	bubbles: true,
+	detail: { theme: null, military: false }
+});
+
 /**
  * Theme selection.
  */
@@ -19,36 +25,84 @@ export const selectTheme = () => {
 			if( alreadySelectedTheme ) alreadySelectedTheme.classList.remove( 'active' )
 
 			theme.classList.add( 'active' )
-			localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: theme.dataset.value } ) )
+			const themeValue = theme.dataset.value;
+			localStorage.setItem( 'ih-step-0', JSON.stringify( { theme: themeValue } ) )
 
-			// Update page when changed from military to simple theme OR back.
-			if(
-				( initialTheme === 'military' && theme.dataset.value !== 'military' ) ||
-				( initialTheme !== 'military' && theme.dataset.value === 'military' )
-			){
-				const formData = new FormData()
+			// Check if switching between military and regular themes
+			const isMilitaryChange = (initialTheme === 'military' && themeValue !== 'military') || 
+                                    (initialTheme !== 'military' && themeValue === 'military');
 
-				formData.append( 'action', `ih_ajax_save_data_step_0` )
-				formData.append( 'stepData', localStorage.getItem( `ih-step-0` ) || '' )
+			if (isMilitaryChange) {
+				// Send data to server
+				const formData = new FormData();
+				formData.append('action', `ih_ajax_save_data_step_0`);
+				formData.append('stepData', localStorage.getItem(`ih-step-0`) || '');
 
-				ihAjaxRequest( formData ).then( res => {
-					if( res ){
-						switch( res.success ){
+				ihAjaxRequest(formData).then(res => {
+					if (res) {
+						switch (res.success) {
 							case true:
-								window.location.reload()
-								break
+								// Instead of reloading the page, apply changes dynamically
+								applyThemeChange(themeValue);
+								initialTheme = themeValue; // Update initialTheme for future comparisons
+								
+								// Update language for military theme
+								if (themeValue === 'military') {
+									const stepData1 = localStorage.getItem('ih-step-1') ?
+										JSON.parse(localStorage.getItem('ih-step-1')) : { lang: 'uk' };
+									
+									stepData1.lang = 'uk';
+									localStorage.setItem('ih-step-1', JSON.stringify(stepData1));
+								}
+								
+								// Trigger theme change event
+								themeChangeEvent.detail.theme = themeValue;
+								themeChangeEvent.detail.military = (themeValue === 'military');
+								document.dispatchEvent(themeChangeEvent);
+								
+								isStepFilled();
+								break;
 
 							case false:
-								showNotification( res.data.msg, 'error' )
-								break
+								showNotification(res.data.msg, 'error');
+								break;
 						}
 					}
-				} )
+				});
 			} else {
-				isStepFilled()
+				// Trigger theme change event
+				themeChangeEvent.detail.theme = themeValue;
+				themeChangeEvent.detail.military = (themeValue === 'military');
+				document.dispatchEvent(themeChangeEvent);
+				
+				isStepFilled();
 			}
-		} )
-	} )
+		});
+	});
+}
+
+/**
+ * Apply theme changes without page reload
+ * 
+ * @param {string} theme - Theme name
+ */
+function applyThemeChange(theme) {
+	// Apply theme classes
+	if (theme === 'military') {
+		document.body.classList.add('memory-page-theme-military');
+		
+		// If language switcher exists, make Ukrainian active
+		const langSwitcher = document.querySelector('.new-memory-lang[data-lang="uk"]');
+		if (langSwitcher) {
+			document.querySelector('.new-memory-lang.active')?.classList.remove('active');
+			langSwitcher.classList.add('active');
+		}
+	} else {
+		document.body.classList.remove('memory-page-theme-military');
+	}
+	
+	// Show notification about successful theme change
+	showNotification('Тему успішно змінено');
 }
 
 /**

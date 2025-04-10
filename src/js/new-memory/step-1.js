@@ -157,6 +157,23 @@ function validateDates() {
 	const birthStr = dateOfBirth.value;
 	const deathStr = dateOfDeath.value;
 
+	// Check date correctness
+	if (birthStr) {
+		if (!isValidDateString(birthStr)) {
+			dateOfBirth.classList.add('error-date');
+		} else {
+			dateOfBirth.classList.remove('error-date');
+		}
+	}
+
+	if (deathStr) {
+		if (!isValidDateString(deathStr)) {
+			dateOfDeath.classList.add('error-date');
+		} else {
+			dateOfDeath.classList.remove('error-date');
+		}
+	}
+
 	const birthDate = parseDate(birthStr);
 	const deathDate = parseDate(deathStr);
 
@@ -195,10 +212,36 @@ export const initDatepickers = () => {
 	if ( ! inputs.length ) return
 
 	inputs.forEach( input => {
+		// Prevent paste of non-numeric characters
+		input.addEventListener('paste', (e) => {
+			e.preventDefault();
+			const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+			const cleanedText = pastedText.replace(/[^\d\.\/\-]/g, '');
+			document.execCommand('insertText', false, cleanedText);
+		});
+
+		// Set placeholder
+		input.placeholder = '__.__._____';
+
+		// Prevent non-numeric characters input (except separators)
+		input.addEventListener('keypress', (e) => {
+			// Allow only digits and dot
+			if (!/[\d\.]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+				e.preventDefault();
+				return false;
+			}
+
+			// Automatically add dot after entering 2 and 5 characters
+			const value = input.value;
+			if (e.key !== '.' && /^\d{2}$/.test(value) || /^\d{2}\.\d{2}$/.test(value)) {
+				input.value = value + '.';
+			}
+		});
+
 		const dp = datepicker(input, {
 			formatter: (input, date, instance) => {
-					input.value = formatDateToStandard(date.toLocaleDateString());
-					validateDates();
+				input.value = formatDateToStandard(date.toLocaleDateString());
+				validateDates();
 			},
 			position: 'tl',
 			startDate: input.id === 'date-of-birth'
@@ -209,7 +252,13 @@ export const initDatepickers = () => {
 			customMonths: currentLang === 'uk' && ukrMonths,
 			customOverlayMonths: currentLang === 'uk' && ukrMonths,
 			customDays: currentLang === 'uk' && ukrDays,
-			startDay: currentLang === 'uk' && 1
+			startDay: currentLang === 'uk' && 1,
+			onSelect: (instance, date) => {
+				validateDates();
+				requestAnimationFrame(() => {
+					instance.hide();
+				});
+			}
 		})
 
 		if (input.id === 'date-of-birth') {
@@ -218,12 +267,60 @@ export const initDatepickers = () => {
 			dateOfDeathPicker = dp;
 		}
 	
-		input.addEventListener('input', debounce(() => {
-			const formatted = formatDateToStandard(input.value);
-			if (formatted) {
-				input.value = formatted;
-				dp.setDate(parseDate(formatted), { render: true });
+		input.addEventListener('input', debounce((e) => {
+			// Filter out non-numeric characters
+			const value = e.target.value;
+			const cleanedValue = value.replace(/[^\d\.\/\-]/g, '');
+			if (value !== cleanedValue) {
+				e.target.value = cleanedValue;
 			}
+
+			// Automatically format entered date
+			const parts = cleanedValue.split(/[\.\/\-]/);
+			if (parts.length === 1 && parts[0].length > 2) {
+				// If more than 2 digits entered without separator, add dots
+				let formattedValue = '';
+				const digits = parts[0];
+				
+				if (digits.length >= 2) {
+					formattedValue += digits.substring(0, 2) + '.';
+					
+					if (digits.length >= 4) {
+						formattedValue += digits.substring(2, 4) + '.';
+						formattedValue += digits.substring(4, Math.min(8, digits.length));
+					} else {
+						formattedValue += digits.substring(2, digits.length);
+					}
+					
+					e.target.value = formattedValue;
+				}
+			}
+
+			if (/^\d{4}$/.test(cleanedValue)) {
+				const year = parseInt(cleanedValue);
+				if (year >= 1900 && year <= 2100) {
+					e.target.value = `01.01.${year}`;
+				}
+			}
+
+			const formatted = formatDateToStandard(e.target.value);
+			if (formatted) {
+				e.target.value = formatted;
+				dp.setDate(parseDate(formatted), { render: true });
+				dp.hide();
+			}
+
+			// Check date correctness
+			if (e.target.value) {
+				if (!isValidDateString(e.target.value)) {
+					e.target.classList.add('error-date');
+				} else {
+					e.target.classList.remove('error-date');
+				}
+			} else {
+				e.target.classList.remove('error-date');
+			}
+
 			validateDates();
 		}, 500));
 	} )

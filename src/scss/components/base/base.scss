@@ -291,3 +291,8 @@ ul {
 .contact-btn-custom:hover {
 	transform: translateY(-50%) rotate(-90deg) scale(1.05);
 }
+
+.error-date{
+	border-color: transparent !important;
+	box-shadow: 0 0 0 3px rgba(247, 80, 65, 0.4);
+}
