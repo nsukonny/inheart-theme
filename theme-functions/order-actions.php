@@ -535,8 +535,7 @@ function ih_ajax_create_payment_order(): void
     $res  = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
         'headers'     => [
             'Content-Type' => 'application/json; charset=utf-8',
-            // 'X-Token'      => $mono_token
-			'X-Token'      => 'u9Qh8bBl0RJCZVdqaLTPVsW0OfnPOFQ8Q_25FkdEWIZM'
+			'X-Token'      => $mono_token
         ],
         'data_format' => 'body',
         'body'        => $body
@@ -610,33 +609,33 @@ function ih_ajax_create_payment_order(): void
         remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
     }
 
-    /**
-     * Send email to Customer.
-     *
-     * @see Theme Settings -> Email Templates -> Orders -> Order Created.
-     */
-    $customer_subject = get_field( 'order_created_subject', 'option' );
-    $customer_body    = get_field( 'order_created_body', 'option' );
+    // /**
+    //  * Send email to Customer.
+    //  *
+    //  * @see Theme Settings -> Email Templates -> Orders -> Order Created.
+    //  */
+    // $customer_subject = get_field( 'order_created_subject', 'option' );
+    // $customer_body    = get_field( 'order_created_body', 'option' );
 
-    if( $customer_subject && $customer_body ){
-        $customer_body = str_replace( ['https://[', 'http://['], '[', $customer_body );
-        $customer_body = str_replace( [
-            '[firstname]',
-            '[lastname]',
-            '[fathername]',
-            '[invoice_id]',
-            '[ordered]'
-        ], [
-            $firstname,
-            $lastname,
-            $fathername,
-            $invoice_id,
-            $ordered
-        ], $customer_body );
-        add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-        wp_mail( $email, $customer_subject, $customer_body );
-        remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-    }
+    // if( $customer_subject && $customer_body ){
+    //     $customer_body = str_replace( ['https://[', 'http://['], '[', $customer_body );
+    //     $customer_body = str_replace( [
+    //         '[firstname]',
+    //         '[lastname]',
+    //         '[fathername]',
+    //         '[invoice_id]',
+    //         '[ordered]'
+    //     ], [
+    //         $firstname,
+    //         $lastname,
+    //         $fathername,
+    //         $invoice_id,
+    //         $ordered
+    //     ], $customer_body );
+    //     add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+    //     wp_mail( $email, $customer_subject, $customer_body );
+    //     remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+    // }
 
 	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }
