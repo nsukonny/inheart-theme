@@ -652,7 +652,7 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 	if( ! $mono_token = get_field( 'mono_token', 'option' ) ) return $order_status;
 
 	$res = wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
-		'headers' => ['X-Token' => '$mono_token']
+		'headers' => ['X-Token' => $mono_token]
 	] );
 
 	if( is_wp_error( $res ) || empty( $res['body'] ) ) return $order_status;
