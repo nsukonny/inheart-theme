@@ -38,6 +38,8 @@ function ih_load_theme_dependencies(): void
 	require_once( 'theme-functions/new-memory-creation.php' );	// Create new memory.
 	require_once( 'theme-functions/profile-actions.php' );	// Profile pages functions.
 	require_once( 'theme-functions/order-actions.php' );	// Order functions.
+	require_once get_template_directory() . '/inc/payment-scripts.php';
+	require_once get_template_directory() . '/inc/succesfull-payment-scripts.php';
 }
 
 add_action( 'init', 'ih_init_theme' );
@@ -208,7 +210,7 @@ function add_live_chat_bot() {
 }
 
 add_action( 'wp_footer', 'add_live_chat_bot' );
-
+/*
 function add_live_chat_bot_custom_btn() {
     ?>
     <button type="button" id="openChat" class="contact-btn-custom" title="Зворотній зв'язок" tabindex="0">Зворотній зв'язок</button>
@@ -264,4 +266,4 @@ function add_live_chat_bot_custom_btn_logic() {
 		<?php
 }
 
-add_action( 'wp_footer', 'add_live_chat_bot_custom_btn_logic' );
+add_action( 'wp_footer', 'add_live_chat_bot_custom_btn_logic' );*/

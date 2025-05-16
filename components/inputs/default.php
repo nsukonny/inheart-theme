@@ -19,6 +19,7 @@ $icon_lead		= $args['icon_lead'] ?? '';	// Icon file name with extension. Must b
 $icon_tail		= $args['icon_tail'] ?? '';	// ^ Same here.
 $wrap_class		= $icon_lead ? ' icon-lead' : '';
 $wrap_class		.= $icon_tail ? ' icon-tail' : '';
+$extra_attrs    = $args['extra_attrs'] ?? ''; // Дополнительные атрибуты для поля ввода
 ?>
 
 <label for="<?php echo esc_attr( $name ) ?>" class="label <?php echo esc_attr( $label_class ) ?>">
@@ -42,6 +43,8 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 		value="<?php echo esc_attr( $value ) ?>"
 		autocomplete="<?php echo esc_attr( $autocomplete ) ?>"
 		<?php echo ( $required ? 'required' : '' ) ?>
+		<?php echo $extra_attrs ?>
+		class="input-field"
 	/>
 
 	<?php

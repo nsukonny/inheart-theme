@@ -387,7 +387,7 @@ function ih_ajax_create_order(): void
 	update_field( 'invoice_id', $invoice_id, $order_id );
 	update_field( 'status_modified_date', 0, $order_id );
 	update_field( 'ordered', $ordered, $order_id );
-
+	update_field( 'status', 'created', $order_id );
 	/**
 	 * Send email to Admin.
 	 *
@@ -433,6 +433,144 @@ function ih_ajax_create_order(): void
 	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }
 
+add_action( 'wp_ajax_ih_ajax_create_payment_order', 'ih_ajax_create_payment_order' );
+add_action( 'wp_ajax_nopriv_ih_ajax_create_payment_order', 'ih_ajax_create_payment_order' );
+/**
+ * Create a Payment Order without memory page and user authentication.
+ *
+ * @return void
+ */
+function ih_ajax_create_payment_order(): void
+{
+    $email          = ih_clean( $_POST['email'] );
+    $phone          = ih_clean( $_POST['phone'] );
+    $city           = ih_clean( $_POST['city'] );
+    $department     = ih_clean( $_POST['warehouse'] );
+    $firstname      = ih_clean( $_POST['name'] );
+    $lastname       = ih_clean( $_POST['surname'] );
+    $fathername     = ih_clean( $_POST['lastname'] );
+    $qr_count       = (int) ih_clean( $_POST['qr-count-qty'] );
+
+    // Not all fields are filled.
+    if(
+        ! $email || ! $phone || ! $city || ! $department ||
+        ! $firstname || ! $lastname || ! $fathername
+    ) wp_send_json_error( ['msg' => __( 'Заповніть всі поля', 'inheart' )] );
+
+    // No QR codes count provided.
+    if( ! $qr_count )
+        wp_send_json_error( ['msg' => __( 'Не вказана кількість QR кодів', 'inheart' )] );
+
+    if( ! $price = ih_get_expanded_page_order_price( $qr_count ) )
+        wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
+
+    if( ! $mono_token = get_field( 'mono_token', 'option' ) )
+        wp_send_json_error( ['msg' => __( 'Невірний або відсутній токен', 'inheart' )] );
+
+    // Make a request to MonoBank.
+    $dest   = "QR-код на металевій пластині";
+    $amount = $price * 100;
+    $body   = json_encode([
+        'amount'           => $amount,    // UAH kopecks.
+        'redirectUrl'      => get_bloginfo('url').'/succesfull-payment',
+        'webHookUrl'       => get_bloginfo('url').'/wp-json/mono/acquiring/status',
+        'paymentType'      => 'debit',
+        'merchantPaymInfo' => [
+            'destination' => $dest,
+            'comment'     => $dest,
+            'basketOrder' => [
+                [
+                    'name'  => $dest,
+                    'qty'   => $qr_count,
+                    'sum'   => $amount / $qr_count,
+                    'total' => $amount,
+                    'unit'  => 'шт.',
+                    'code'  => base64_encode($dest.'-'.time())
+                ]
+            ]
+        ]
+    ]);
+    $res  = wp_remote_post( 'https://api.monobank.ua/api/merchant/invoice/create', [
+        'headers'     => [
+            'Content-Type' => 'application/json; charset=utf-8',
+            // 'X-Token'      => $mono_token
+			'X-Token'      => 'u9Qh8bBl0RJCZVdqaLTPVsW0OfnPOFQ8Q_25FkdEWIZM'
+        ],
+        'data_format' => 'body',
+        'body'        => $body
+    ] );
+
+    if( is_wp_error( $res ) || empty( $res ) )
+        wp_send_json_error( ['msg' => __( 'Немає відповіді від банку', 'inheart' )] );
+
+    $res_body = json_decode( $res['body'], true );
+
+    if( empty( $res_body ) )
+        wp_send_json_error( ['msg' => __( 'Помилка під час створення запиту до оплати', 'inheart' )] );
+
+    if( ! $invoice_id = $res_body['invoiceId'] ?? null )
+        wp_send_json_error( ['msg' => __( 'Відповідь банку не містить ID рахунку', 'inheart' )] );
+
+    // Create new Order.
+    $order_data = [
+        'post_title'    => "Замовлення від $lastname $firstname $fathername",
+        'post_status'   => 'publish',
+        'post_type'     => 'expanded-page'
+    ];
+    $order_id = wp_insert_post( wp_slash( $order_data ) );
+
+    if( is_wp_error( $order_id ) )
+        wp_send_json_error( ['msg' => __( 'Не вдалося створити замовлення', 'inheart' )] );
+
+    $ordered = "QR-код на металевій пластині - $qr_count шт. ($qr_count x " . ih_get_metal_qr_price() . " грн)\n" .
+        "Загальна вартість: $price грн";
+
+    update_field( 'firstname', $firstname, $order_id );
+    update_field( 'lastname', $lastname, $order_id );
+    update_field( 'fathername', $fathername, $order_id );
+    update_field( 'email', $email, $order_id );
+    update_field( 'phone', $phone, $order_id );
+    update_field( 'city', $city, $order_id );
+    update_field( 'department', $department, $order_id );
+    update_field( 'invoice_id', $invoice_id, $order_id );
+    update_field( 'status_modified_date', 0, $order_id );
+    update_field( 'ordered', $ordered, $order_id );
+    update_field( 'status', 'created', $order_id );
+
+    /**
+     * Send email to Admin.
+     *
+     * @see Theme Settings -> Email Templates -> Orders -> Order Created.
+     */
+    $subject    = get_field( 'order_created_subject_admin', 'option' );
+    $body       = get_field( 'order_created_body_admin', 'option' );
+
+    if( $subject && $body ){
+        $body = str_replace( ['https://[', 'http://['], '[', $body );
+        $body = str_replace( [
+            '[firstname]',
+            '[lastname]',
+            '[fathername]',
+            '[invoice_id]',
+            '[ordered]',
+            '[order_admin_url]'
+        ], [
+            $firstname,
+            $lastname,
+            $fathername,
+            $invoice_id,
+            $ordered,
+            get_edit_post_link( $order_id )
+        ], $body );
+
+        add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+        wp_mail( ih_get_order_emails_array(), $subject, $body );
+        remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+    }
+
+    wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
+}
+
 function ih_get_invoice_status( int $order_id = 0 ): ?string
 {
 	// Invoice ID was not passed - get it from the latest Order of the current Customer.
@@ -445,7 +583,7 @@ function ih_get_invoice_status( int $order_id = 0 ): ?string
 	if( ! $mono_token = get_field( 'mono_token', 'option' ) ) return $order_status;
 
 	$res = wp_remote_get( "https://api.monobank.ua/api/merchant/invoice/status?invoiceId=$invoice_id", [
-		'headers' => ['X-Token' => $mono_token]
+		'headers' => ['X-Token' => '$mono_token']
 	] );
 
 	if( is_wp_error( $res ) || empty( $res['body'] ) ) return $order_status;
@@ -496,15 +634,22 @@ function ih_get_latest_invoice_id( int $customer_id ): int
  */
 function ih_check_and_update_order_status( int $order_id, string $new_status ): bool
 {
-	// If payment is success.
-	if( $new_status === 'success' && ( $memory_page_id = get_field( 'memory_page_id', $order_id ) ) ){
-		// Update Memory Page meta.
-		update_field( 'is_expanded', 1, $memory_page_id );
+	// If payment is success
+	if( $new_status === 'success' ) {
+		$memory_page_id = get_field( 'memory_page_id', $order_id );
+		
+		// If there is a memory page connection
+		if( $memory_page_id ) {
+			// Update Memory Page meta
+			update_field( 'is_expanded', 1, $memory_page_id );
+		}
 
-		// Create new QR.
+		// Create new QR for both types of orders
 		$qr_data = [
 			'post_type'		=> 'qr',
-			'post_title'	=> "Замовлено для сторінки #$memory_page_id (" . get_the_title( $memory_page_id ) . ")",
+			'post_title'	=> $memory_page_id 
+				? "Замовлено для сторінки  #$memory_page_id (" . get_the_title( $memory_page_id ) . ")"
+				: "Замовлено QR-код від " . get_field( 'lastname', $order_id ) . " " . get_field( 'firstname', $order_id ),
 			'post_status'	=> 'draft'
 		];
 		$qr_id = wp_insert_post( wp_slash( $qr_data ) );
@@ -517,9 +662,20 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 			'post_status'	=> 'publish'
 		] );
 
-		$memory_page_url = get_the_permalink( $memory_page_id );
-		update_field( 'memory_page_id', $memory_page_id, $qr_id );
-		update_field( 'memory_page_url', $memory_page_url, $qr_id );
+		// Save data depending on order type
+		if( $memory_page_id ) {
+			$memory_page_url = get_the_permalink( $memory_page_id );
+			update_field( 'memory_page_id', $memory_page_id, $qr_id );
+			update_field( 'memory_page_url', $memory_page_url, $qr_id );
+		}
+
+		// Common data for both order types
+		update_field( 'order_id', $order_id, $qr_id );
+		update_field( 'customer_name', get_field( 'firstname', $order_id ) . ' ' . get_field( 'lastname', $order_id ), $qr_id );
+		update_field( 'customer_email', get_field( 'email', $order_id ), $qr_id );
+		update_field( 'customer_phone', get_field( 'phone', $order_id ), $qr_id );
+		update_field( 'delivery_city', get_field( 'city', $order_id ), $qr_id );
+		update_field( 'delivery_warehouse', get_field( 'department', $order_id ), $qr_id );
 
 		/**
 		 * Send email to Admin.
@@ -554,9 +710,9 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 			], [
 				$qr_id,
 				get_edit_post_link( $qr_id ),
-				$memory_page_id,
-				get_edit_post_link( $memory_page_id ),
-				$memory_page_url,
+				$memory_page_id ?: '—',
+				$memory_page_id ? get_edit_post_link( $memory_page_id ) : '—',
+				$memory_page_id ? get_the_permalink( $memory_page_id ) : '—',
 				$firstname,
 				$lastname,
 				$fathername,

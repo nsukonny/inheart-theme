@@ -1,0 +1,120 @@
+.custom-form{
+    max-width: 554px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 32px;
+    text-align: left;
+    padding: 24px;
+
+    .flex{
+        .legend{
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+
+            svg{
+                margin-left: 10px;
+            }
+        }
+    }
+}
+
+.title{
+    font-family: Calvino Grande;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0px;
+    color: #011C1A;
+}
+
+.description{
+    font-family: Grafita;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #011C1A;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.label-checkbox-custom{
+    color: #011C1A !important;
+    margin-bottom: 20px;
+}
+
+.payment-submit-container{
+    width: 100%;
+
+    .payment-submit-btn{
+        width: 100%;;
+    }
+}
+
+.logo-only-btn{
+ margin: auto;
+    width: 90%;
+    border-bottom: 1px solid ;
+    border-color: rgba(#0D514C99, 0.6);
+    padding: 20px 20px !important;   
+    height: 73px;
+
+    .container{
+        .header-logo-custom{
+            height: 32px;
+        }
+    }
+
+}
+
+.input-container {
+    position: relative;
+}
+
+.nova-poshta-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nova-poshta-dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.nova-poshta-dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.nova-poshta-dropdown-item.selected {
+    background-color: #e3f2fd;
+}
+
+/* Стили для скроллбара */
+.nova-poshta-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.nova-poshta-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.nova-poshta-dropdown::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.nova-poshta-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} 
