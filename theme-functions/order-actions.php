@@ -430,6 +430,48 @@ function ih_ajax_create_order(): void
 	update_field( 'city', $city, "user_$customer_id" );
 	update_field( 'department', $department, "user_$customer_id" );
 
+	/**
+	 * Send email to Customer.
+	 *
+	 * @see Theme Settings -> Email Templates -> Orders -> Order Created.
+	 */
+	$customer_subject = get_field( 'order_created_subject', 'option' );
+	$customer_body    = get_field( 'order_created_body', 'option' );
+
+	if( $customer_subject && $customer_body ){
+		$customer_body = str_replace( ['https://[', 'http://['], '[', $customer_body );
+		$customer_body = str_replace( [
+			'[firstname]',
+			'[lastname]',
+			'[fathername]',
+			'[invoice_id]',
+			'[ordered]'
+		], [
+			$firstname,
+			$lastname,
+			$fathername,
+			$invoice_id,
+			$ordered
+		], $customer_body );
+
+		// Debug logging
+		error_log('Attempting to send email to customer:');
+		error_log('To: ' . $email);
+		error_log('Subject: ' . $customer_subject);
+		error_log('Body: ' . $customer_body);
+
+		add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+		$mail_sent = wp_mail( $email, $customer_subject, $customer_body );
+		remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+
+		// Log result
+		error_log('Email send result: ' . ($mail_sent ? 'Success' : 'Failed'));
+	} else {
+		error_log('Email templates not found:');
+		error_log('Subject template exists: ' . ($customer_subject ? 'Yes' : 'No'));
+		error_log('Body template exists: ' . ($customer_body ? 'Yes' : 'No'));
+	}
+
 	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }
 
@@ -568,7 +610,35 @@ function ih_ajax_create_payment_order(): void
         remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
     }
 
-    wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
+    /**
+     * Send email to Customer.
+     *
+     * @see Theme Settings -> Email Templates -> Orders -> Order Created.
+     */
+    $customer_subject = get_field( 'order_created_subject', 'option' );
+    $customer_body    = get_field( 'order_created_body', 'option' );
+
+    if( $customer_subject && $customer_body ){
+        $customer_body = str_replace( ['https://[', 'http://['], '[', $customer_body );
+        $customer_body = str_replace( [
+            '[firstname]',
+            '[lastname]',
+            '[fathername]',
+            '[invoice_id]',
+            '[ordered]'
+        ], [
+            $firstname,
+            $lastname,
+            $fathername,
+            $invoice_id,
+            $ordered
+        ], $customer_body );
+        add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+        wp_mail( $email, $customer_subject, $customer_body );
+        remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+    }
+
+	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }
 
 function ih_get_invoice_status( int $order_id = 0 ): ?string
@@ -641,7 +711,7 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 		// If there is a memory page connection
 		if( $memory_page_id ) {
 			// Update Memory Page meta
-			update_field( 'is_expanded', 1, $memory_page_id );
+		update_field( 'is_expanded', 1, $memory_page_id );
 		}
 
 		// Create new QR for both types of orders
@@ -664,9 +734,9 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 
 		// Save data depending on order type
 		if( $memory_page_id ) {
-			$memory_page_url = get_the_permalink( $memory_page_id );
-			update_field( 'memory_page_id', $memory_page_id, $qr_id );
-			update_field( 'memory_page_url', $memory_page_url, $qr_id );
+		$memory_page_url = get_the_permalink( $memory_page_id );
+		update_field( 'memory_page_id', $memory_page_id, $qr_id );
+		update_field( 'memory_page_url', $memory_page_url, $qr_id );
 		}
 
 		// Common data for both order types
