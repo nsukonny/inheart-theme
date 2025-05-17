@@ -140,104 +140,75 @@ $class			= isset( $args['hidden'] ) && $args['hidden'] ? '' : ' active';
 					return;
 				}
 				
-				// Prevent form submission on button click
+				// Функция для нормализации телефона (разрешает +380 и 0, преобразует 0 в +380)
+				function normalizePhone(phone) {
+					// Удаляем все нецифры
+					let digits = phone.replace(/\D/g, '');
+					// Если начинается с 0 и длина 10, преобразуем в +380
+					if (digits.length === 10 && digits[0] === '0') {
+						return '+380' + digits.slice(1);
+					}
+					// Если уже +380XXXXXXXXX (12 цифр, начинается с 380)
+					if (digits.length === 12 && digits.startsWith('380')) {
+						return '+' + digits;
+					}
+					return null; // невалидный
+				}
+				
+				// Обработчик blur для поля телефона (автозамена 0 на +380)
+				phoneInput.addEventListener('blur', function() {
+					let norm = normalizePhone(phoneInput.value);
+					if (norm) phoneInput.value = norm;
+				});
+				
+				// Обработчик submit кнопки (предотвращаем отправку и проверяем валидность)
 				submitButton.addEventListener('click', function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 					console.log('Submit button clicked, preventing default');
-					
-					// Validate form
 					var isEmailValid = emailInput.value.includes('@') && emailInput.value.includes('.');
-					var isPhoneValid = phoneInput.value.startsWith('+') && phoneInput.value.length >= 10;
+					var isPhoneValid = !!normalizePhone(phoneInput.value);
 					var isTermsAccepted = termsCheckbox.checked;
-					
 					if (isEmailValid && isPhoneValid && isTermsAccepted) {
-						// Save form data
-						var formData = {
-							email: emailInput.value,
-							phone: phoneInput.value,
-							termsAccepted: termsCheckbox.checked,
-							completed: true
-						};
+						// Сохраняем данные (например, в localStorage) и переходим на шаг 1
+						var formData = { email: emailInput.value, phone: phoneInput.value, termsAccepted: termsCheckbox.checked, completed: true };
 						localStorage.setItem('ih-payment-step-0', JSON.stringify(formData));
-						
-						// Update step number in header
+						// Обновляем шаг в хедере (если есть)
 						var currentStepEl = document.querySelector('.payment-current-step');
-						if (currentStepEl) {
-							currentStepEl.textContent = '2';
-						}
-						
-						// Hide step 0
+						if (currentStepEl) { currentStepEl.textContent = '2'; }
+						// Скрываем шаг 0 (например, удаляем класс active и добавляем hidden)
 						var step0 = document.getElementById('new-memory-step-0');
-						if (step0) {
-							step0.classList.remove('active', 'step-visible');
-							step0.classList.add('hidden', 'step-hidden');
-							step0.style.display = 'none';
-							step0.style.visibility = 'hidden';
-							step0.style.opacity = '0';
-						}
-						
-						// Show step 1
+						if (step0) { step0.classList.remove('active', 'step-visible'); step0.classList.add('hidden', 'step-hidden'); step0.style.display = 'none'; step0.style.visibility = 'hidden'; step0.style.opacity = '0'; }
+						// Показываем шаг 1 (например, удаляем hidden и добавляем active)
 						var step1 = document.getElementById('new-memory-step-1');
-						if (step1) {
-							step1.classList.remove('hidden', 'step-hidden');
-							step1.classList.add('active', 'step-visible');
-							step1.style.display = 'flex';
-							step1.style.visibility = 'visible';
-							step1.style.opacity = '1';
-						}
-						
-						// Update URL without page reload
-						if (history.pushState) {
-							var newUrl = window.location.pathname + '?step=1';
-							window.history.pushState({step: 1}, '', newUrl);
-						}
-						
+						if (step1) { step1.classList.remove('hidden', 'step-hidden'); step1.classList.add('active', 'step-visible'); step1.style.display = 'flex'; step1.style.visibility = 'visible'; step1.style.opacity = '1'; }
+						// Обновляем URL (опционально)
+						if (history.pushState) { var newUrl = window.location.pathname + '?step=1'; window.history.pushState({step: 1}, '', newUrl); }
 						return false;
 					}
 				});
 				
-				// Also prevent form submission on form submit event
-				form.addEventListener('submit', function(e) {
-					e.preventDefault();
-					e.stopPropagation();
-					console.log('Form submit event prevented');
-					return false;
-				});
+				// Обработчик submit формы (предотвращаем отправку)
+				form.addEventListener('submit', function(e) { e.preventDefault(); e.stopPropagation(); console.log('Form submit event prevented'); return false; });
 				
+				// Функция inline-валидации (обновлена для телефона)
 				function validateFormInline() {
 					console.log('Inline validation running');
-					
 					var isEmailValid = emailInput.value.includes('@') && emailInput.value.includes('.');
-					
-					var isPhoneValid = phoneInput.value.startsWith('+') && phoneInput.value.length >= 10;
-					
+					var isPhoneValid = !!normalizePhone(phoneInput.value);
 					var isTermsAccepted = termsCheckbox.checked;
-					
 					if (isEmailValid && isPhoneValid && isTermsAccepted) {
 						submitButton.removeAttribute('disabled');
-						validationStatus.innerText = 'Форма готова к отправке';
-						validationStatus.style.color = 'green';
+						if (validationStatus) { validationStatus.innerText = 'Форма готова к отправке'; validationStatus.style.color = 'green'; }
 					} else {
 						submitButton.setAttribute('disabled', 'true');
-						
 						var reasons = [];
 						if (!isEmailValid && emailInput.value) reasons.push('Email неверный');
 						if (!isPhoneValid && phoneInput.value) reasons.push('Телефон неверный');
 						if (!isTermsAccepted) reasons.push('Примите условия');
-						
-						validationStatus.innerText = reasons.length ? 'Ошибки: ' + reasons.join(', ') : 'Заполните форму';
-						validationStatus.style.color = 'red';
+						if (validationStatus) { validationStatus.innerText = reasons.length ? 'Ошибки: ' + reasons.join(', ') : 'Заполните форму'; validationStatus.style.color = 'red'; }
 					}
-					
-					console.log('Inline validation complete:', {
-						email: emailInput.value,
-						isEmailValid,
-						phone: phoneInput.value,
-						isPhoneValid,
-						termsAccepted: isTermsAccepted,
-						buttonDisabled: submitButton.hasAttribute('disabled')
-					});
+					console.log('Inline validation complete:', { email: emailInput.value, isEmailValid, phone: phoneInput.value, isPhoneValid, termsAccepted: isTermsAccepted, buttonDisabled: submitButton.hasAttribute('disabled') });
 				}
 				
 				emailInput.addEventListener('input', validateFormInline);
@@ -383,7 +354,7 @@ $class			= isset( $args['hidden'] ) && $args['hidden'] ? '' : ' active';
 					
 					// Check form validity
 					var isEmailValid = emailInput.value.includes('@') && emailInput.value.includes('.');
-					var isPhoneValid = phoneInput.value.startsWith('+') && phoneInput.value.length >= 10;
+					var isPhoneValid = !!normalizePhone(phoneInput.value);
 					var isTermsAccepted = termsCheckbox.checked;
 					
 					if (isEmailValid && isPhoneValid && isTermsAccepted) {
