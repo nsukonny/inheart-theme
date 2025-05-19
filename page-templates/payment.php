@@ -10,6 +10,13 @@
 // Include our custom header
 get_template_part( 'template-parts/payment/header');
 
+// Add global ajaxUrl variable
+?>
+<script>
+    window.ajaxUrlPayment = '<?php echo admin_url('admin-ajax.php'); ?>';
+</script>
+<?php
+
 wp_enqueue_style( 'payment-styles', THEME_URI . '/static/css/pages/payment.min.css', [], THEME_VERSION );
 wp_enqueue_script( 'nova-poshta', THEME_URI . '/static/js/nova-poshta/nova-poshta.min.js', [], THEME_VERSION, true );
 wp_enqueue_script( 'payment-script', THEME_URI . '/static/js/payment/payment.min.js', [], THEME_VERSION, true );

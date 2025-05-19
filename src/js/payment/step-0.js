@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-	console.log('DOMContentLoaded in step-0 template');
 	
 	var form = document.getElementById('payment-step-0-form');
 	var emailInput = document.querySelector('#payment-step-0-form input[name="email"]');
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	submitButton.addEventListener('click', function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		console.log('Submit button clicked, preventing default');
 		var isEmailValid = emailInput.value.includes('@') && emailInput.value.includes('.');
 		var isPhoneValid = !!normalizePhone(phoneInput.value);
 		var isTermsAccepted = termsCheckbox.checked;
@@ -63,11 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	
 	// Обработчик submit формы (предотвращаем отправку)
-	form.addEventListener('submit', function(e) { e.preventDefault(); e.stopPropagation(); console.log('Form submit event prevented'); return false; });
+	form.addEventListener('submit', function(e) { e.preventDefault(); e.stopPropagation(); return false; });
 	
 	// Функция inline-валидации (обновлена для телефона)
 	function validateFormInline() {
-		console.log('Inline validation running');
 		var isEmailValid = emailInput.value.includes('@') && emailInput.value.includes('.');
 		var isPhoneValid = !!normalizePhone(phoneInput.value);
 		var isTermsAccepted = termsCheckbox.checked;
@@ -82,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (!isTermsAccepted) reasons.push('Примите условия');
 			if (validationStatus) { validationStatus.innerText = reasons.length ? 'Ошибки: ' + reasons.join(', ') : 'Заполните форму'; validationStatus.style.color = 'red'; }
 		}
-		console.log('Inline validation complete:', { email: emailInput.value, isEmailValid, phone: phoneInput.value, isPhoneValid, termsAccepted: isTermsAccepted, buttonDisabled: submitButton.hasAttribute('disabled') });
 	}
 	
 	emailInput.addEventListener('input', validateFormInline);
@@ -93,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	// Function to switch to step 1
 	function switchToStep1() {
-		console.log('Switching to step 1...');
 		
 		// Save form data to localStorage
 		var formData = {
@@ -103,13 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			completed: true
 		};
 		localStorage.setItem('ih-payment-step-0', JSON.stringify(formData));
-		console.log('Form data saved to localStorage');
 		
 		// Update step number in header
 		var currentStepEl = document.querySelector('.payment-current-step');
 		if (currentStepEl) {
 			currentStepEl.textContent = '2';
-			console.log('Updated step number in header to 2');
 		}
 		
 		// Hide current step with stronger CSS rules
@@ -126,9 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			step0.style.position = 'absolute';
 			step0.style.pointerEvents = 'none';
 			step0.style.zIndex = '-1';
-			console.log('Step 0 hidden with stronger styles');
-		} else {
-			console.error('Step 0 element not found');
 		}
 		
 		// Show next step with stronger CSS rules
@@ -148,18 +138,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			step1.style.position = 'relative';
 			step1.style.pointerEvents = 'auto';
 			step1.style.zIndex = '1';
-			console.log('Step 1 displayed with stronger styles');
 			
 			// Check if step is actually visible after our changes
 			setTimeout(function() {
 				var computedStyle = getComputedStyle(step1);
-				console.log('Step 1 computed style:', {
-					display: computedStyle.display,
-					visibility: computedStyle.visibility,
-					opacity: computedStyle.opacity,
-					position: computedStyle.position
-				});
-				
 				// If still not visible, try again
 				if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden') {
 					console.warn('Step 1 still not visible, forcing display with dynamic style element');
@@ -181,12 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
 						}
 						step1.classList.add('step-visible');
 						step1.style.display = 'flex';
-						console.log('Re-inserted step 1 into DOM');
 					}, 50);
 				}
 			}, 100);
-		} else {
-			console.error('Step 1 element not found');
 		}
 		
 		// Show footer for back button functionality
@@ -196,9 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			footer.style.display = 'block';
 			footer.style.visibility = 'visible';
 			footer.style.opacity = '1';
-			console.log('Footer displayed');
-		} else {
-			console.error('Footer element not found');
 		}
 		
 		// Enable "Back" button
@@ -208,20 +184,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			prevButton.setAttribute('data-prev', '0');
 			prevButton.style.display = 'inline-flex';
 			prevButton.style.visibility = 'visible';
-			console.log('Prev button enabled');
-		} else {
-			console.error('Prev button not found');
 		}
 		
 		validationStatus.innerText = 'Переход на шаг 2 успешно выполнен';
 		validationStatus.style.color = 'green';
-		
-		console.log('Successfully switched to step 1');
 	}
 	
 	// Handle form submission
 	form.addEventListener('submit', function(e) {
-		console.log('Form submit event in inline script');
 		
 		// Prevent form submission and page reload
 		e.preventDefault();
@@ -253,7 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				// Additionally call global forceShowStep1 function if available
 				if (typeof window.forceShowStep1 === 'function') {
-					console.log('Calling global forceShowStep1 function');
 					window.forceShowStep1();
 				}
 				
@@ -262,7 +231,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Use history.replaceState to avoid creating new browser history entry
 				try {
 					window.history.replaceState({step: 1}, 'Шаг 2', newUrl);
-					console.log('URL updated to indicate step 1');
 				} catch (e) {
 					console.error('Error updating URL:', e);
 				}
@@ -273,6 +241,4 @@ document.addEventListener('DOMContentLoaded', function() {
 			validationStatus.style.color = 'red';
 		}
 	});
-	
-	console.log('Inline script setup complete');
 });

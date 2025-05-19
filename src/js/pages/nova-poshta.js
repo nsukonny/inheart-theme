@@ -68,8 +68,6 @@ class NovaPoshtaAPI {
                 return this.warehousesCache.get(cacheKey);
             }
 
-            console.log('Getting warehouses for city:', cityName, 'search:', searchString);
-
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -90,7 +88,6 @@ class NovaPoshtaAPI {
             });
 
             const data = await response.json();
-            console.log('Warehouses API response:', data);
             
             if (data.success) {
                 const warehouses = data.data.map(warehouse => ({
@@ -133,7 +130,6 @@ function createDropdown(container, items, onSelect) {
         option.className = 'np-dropdown-item';
         option.textContent = item.name;
         option.addEventListener('click', (e) => {
-            console.log('Item selected:', item);
             e.preventDefault();
             e.stopPropagation();
             onSelect(item);

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Define AJAX URL
-    const ajaxUrl = window.ajaxUrl;
+    const ajaxUrl = window.ajaxUrlPayment;
     
     var form = document.getElementById('payment-step-1-form');
     var inputs = document.querySelectorAll('#payment-step-1-form input[required]');
