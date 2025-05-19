@@ -155,10 +155,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Form submission handler
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        if (validateForm()) {
+        if (!validateForm()) {
+            return;
+        }
+
+        // Get submit button
+        const submitButton = document.getElementById('payment-step-1-submit');
+        const originalText = submitButton.innerHTML;
+
+        try {
+            // Start loading state
+            submitButton.classList.add('loading');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '';
+
             // Get data from step 0
             const step0Data = JSON.parse(localStorage.getItem('ih-payment-step-0') || '{}');
             
@@ -175,42 +188,43 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('qr-count-qty','1');
 
             // Send request
-            fetch(ajaxUrl, {
+            const response = await fetch(ajaxUrl, {
                 method: 'POST',
                 body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Clear all form data from localStorage
-                    localStorage.removeItem('ih-payment-step-0');
-                    localStorage.removeItem('ih-payment-step-1');
-                    
-                    // Clear all fields on step-1
-                    inputs.forEach(function(input) {
-                        input.value = '';
-                    });
-                    
-                    // Clear all fields on step-0
-                    const step0Inputs = document.querySelectorAll('#new-memory-step-0 input');
-                    step0Inputs.forEach(function(input) {
-                        input.value = '';
-                    });
-                    
-                    // Redirect to payment page
-                    if (data.data.pageUrl) {
-                        window.location.href = data.data.pageUrl;
-                    } else {
-                        alert('Помилка: не отримано URL для оплати');
-                    }
-                } else {
-                    alert(data.data.msg || 'Помилка при створенні замовлення');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Помилка при створенні замовлення');
             });
+            
+            const data = await response.json();
+
+            if (data.success) {
+                // Clear all form data from localStorage
+                localStorage.removeItem('ih-payment-step-0');
+                localStorage.removeItem('ih-payment-step-1');
+                
+                // Clear all fields on step-1
+                inputs.forEach(input => input.value = '');
+                
+                // Clear all fields on step-0
+                const step0Inputs = document.querySelectorAll('#new-memory-step-0 input');
+                step0Inputs.forEach(input => input.value = '');
+                
+                // Redirect to payment page
+                if (data.data.pageUrl) {
+                    window.location.href = data.data.pageUrl;
+                } else {
+                    throw new Error('Помилка: не отримано URL для оплати');
+                }
+            } else {
+                throw new Error(data.data.msg || 'Помилка при створенні замовлення');
+            }
+        } catch (error) {
+            // Reset button state
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+            
+            // Show error
+            console.error('Error:', error);
+            alert(error.message || 'Помилка при створенні замовлення');
         }
     });
     
