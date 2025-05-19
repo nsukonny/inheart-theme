@@ -14,7 +14,7 @@ $description	= get_field( 'description_succesfull_payment' );
 $image          = get_field( 'image_succesfull_payment' );
 $button_text	= get_field( 'button_text_succesfull_payment' ) ?: 'Зареєструватися / увійти в акаунт';
 
-
+wp_enqueue_style( 'payment-succesfull-styles', THEME_URI . '/static/css/pages/succesfull-payment.min.css', [], THEME_VERSION );
 ?>
 
 <?php wp_head(); ?>
