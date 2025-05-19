@@ -38,7 +38,6 @@ function ih_load_theme_dependencies(): void
 	require_once( 'theme-functions/new-memory-creation.php' );	// Create new memory.
 	require_once( 'theme-functions/profile-actions.php' );	// Profile pages functions.
 	require_once( 'theme-functions/order-actions.php' );	// Order functions.
-	require_once get_template_directory() . '/inc/payment-scripts.php';
 }
 
 add_action( 'init', 'ih_init_theme' );
