@@ -972,6 +972,11 @@ function ih_process_mono_checkout_order(array $order_data): bool {
         "Загальна вартість: $amount грн";
     update_field('ordered', $ordered, $order_id);
 
+	wp_update_post([
+		'ID' => $order_id,
+		'post_title' => "Замовлення від $lastname $firstname"
+	]);
+
     // If payment is successful, create QR code
     if ($status === 'success') {
         $qr_data = [
