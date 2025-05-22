@@ -860,7 +860,7 @@ function ih_process_mono_checkout_order(array $order_data): bool {
     $phone = $order_data['mainClientInfo']['phoneNumber'];
     $city = $order_data['deliveryAddressInfo']['cityName'];
     $department = $order_data['delivery_branch_address'];
-    $amount = $order_data['amount'];
+    $amount = $order_data['amount']; // Convert from kopecks to UAH
     $quantity = $order_data['quantity'];
     $status = $order_data['generalStatus'];
 
@@ -882,17 +882,6 @@ function ih_process_mono_checkout_order(array $order_data): bool {
 		update_field('status', 'created', $order_id);
 		update_field('qr-count-qty', 1, $order_id);
     }
-
-	$firstname = $order_data['mainClientInfo']['first_name'];
-    $lastname = $order_data['mainClientInfo']['last_name'];
-	$fathername = '';
-    $email = $order_data['mainClientInfo']['email'];
-    $phone = $order_data['mainClientInfo']['phoneNumber'];
-    $city = $order_data['deliveryAddressInfo']['cityName'];
-    $department = $order_data['delivery_branch_address'];
-    $amount = $order_data['amount'] / 100; // Convert from kopecks to UAH
-    $quantity = $order_data['quantity'];
-    $status = $order_data['generalStatus'];
 
 	update_field( 'firstname', $firstname, $order_id );
     update_field( 'lastname', $lastname, $order_id );
@@ -1012,7 +1001,7 @@ function ih_ajax_create_mono_payment(): void {
     // Prepare request to Mono Checkout
     $request_data = [
         'order_ref' => $order_ref,
-        'amount' => 1, // Сумма в гривнах $price
+        'amount' => 10, // Сумма в гривнах $price
         'ccy' => 980, // UAH
         'count' => $qr_count,
         'products' => [
@@ -1020,7 +1009,7 @@ function ih_ajax_create_mono_payment(): void {
                 'name' => 'QR-код на металевій пластині',
                 'product_img_src' => 'https://monobank.ua',
                 'cnt' => $qr_count,
-                'price' => 1, // Сумма в гривнах $price
+                'price' => 10,
                 'code_product' => 1,
                 'code_checkbox' => '',
                 'uktzed' => '',
@@ -1034,13 +1023,13 @@ function ih_ajax_create_mono_payment(): void {
         'payment_method_list' => [
             'card'
         ],
-        'dlv_pay_merchant' => null,
+        'dlv_pay_merchant' => false,
         'payments_number' => 3,
         'callback_url' => get_bloginfo('url') . '/wp-json/mono/checkout/status',
         'return_url' => get_bloginfo('url') . '/succesfull-payment',
         'fl_recall' => 'true',
         'acceptable_age' => '',
-        'hold' => 'true',
+        'hold' => 'false',
         'destination' => 'QR-код на металевій пластині',
     ];
 
