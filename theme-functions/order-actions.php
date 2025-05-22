@@ -937,6 +937,7 @@ function ih_process_mono_checkout_order(array $order_data): bool {
     $amount = $order_data['amount']; // Convert from kopecks to UAH
     $quantity = $order_data['quantity'];
     $status = $order_data['generalStatus'];
+	$invoice_id = $order_data['orderId'];
 
     // If order doesn't exist, create new one
     if (!$order_id) {
@@ -964,7 +965,7 @@ function ih_process_mono_checkout_order(array $order_data): bool {
     update_field( 'phone', $phone, $order_id );
     update_field( 'city', $city, $order_id );
     update_field( 'department', $department, $order_id );
-    update_field( 'invoice_id', $order_id, $order_id );
+    update_field( 'invoice_id', $invoice_id, $order_id );
     update_field('status', $status, $order_id);
     
     // Format ordered items description
