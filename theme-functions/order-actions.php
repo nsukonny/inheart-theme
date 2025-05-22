@@ -803,7 +803,8 @@ function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Respo
     date_default_timezone_set('UTC');
     $current_date = date('d.m.Y H:i:s');
 
-	file_put_contents(ABSPATH . '/mono-checkout.log', 
+    // Log the entire request
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         $current_date . ": Callback Request Data:\n" . 
         "Method: " . $request->get_method() . "\n" .
         "Headers: " . print_r($request->get_headers(), true) . "\n" .
@@ -821,21 +822,20 @@ function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Respo
 
     $data = json_decode($req_body, true);
     
-    if (!isset($data['result'])) {
-        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Invalid request format." . PHP_EOL, FILE_APPEND);
+    // Check for required fields in the actual format
+    if (!isset($data['orderId']) || !isset($data['generalStatus'])) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Invalid request format. Data: " . print_r($data, true) . PHP_EOL, FILE_APPEND);
         return new WP_REST_Response(['status' => 'error', 'message' => 'Invalid request format'], 400);
     }
 
-    $result = $data['result'];
-    
     // Log incoming data
-    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Processing order {$result['orderId']}" . PHP_EOL, FILE_APPEND);
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Processing order {$data['orderId']} with status {$data['generalStatus']}" . PHP_EOL, FILE_APPEND);
 
-    // Process the order
-    $order_processed = ih_process_mono_checkout_order($result);
+    // Process the order with the actual data structure
+    $order_processed = ih_process_mono_checkout_order($data);
     
     if (!$order_processed) {
-        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Failed to process order {$result['orderId']}" . PHP_EOL, FILE_APPEND);
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Failed to process order {$data['orderId']}" . PHP_EOL, FILE_APPEND);
         return new WP_REST_Response(['status' => 'error', 'message' => 'Failed to process order'], 500);
     }
 
