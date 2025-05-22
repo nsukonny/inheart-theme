@@ -241,4 +241,69 @@ document.addEventListener('DOMContentLoaded', function() {
 			validationStatus.style.color = 'red';
 		}
 	});
+
+	// Get the Mono Checkout button
+	const monoCheckoutButton = document.getElementById('mono-checkout-submit');
+	
+	// Add click handler for Mono Checkout button
+	monoCheckoutButton.addEventListener('click', async function(e) {
+		e.preventDefault();
+		console.log('Mono Checkout button clicked');
+
+		try {
+			// Disable button and show loading state
+			monoCheckoutButton.disabled = true;
+			monoCheckoutButton.classList.add('loading');
+			
+			// Prepare form data
+			const formData = new FormData();
+			formData.append('action', 'ih_ajax_create_mono_payment');
+			formData.append('qr-count-qty', '1');
+
+			console.log('Sending request to:', window.ajaxUrlPayment);
+			console.log('Form data:', {
+				action: 'ih_ajax_create_mono_payment',
+				email: emailInput.value,
+				phone: phoneInput.value,
+				terms: termsCheckbox.checked ? '1' : '0',
+				'qr-count-qty': '1'
+			});
+
+			// Send request to create Mono payment
+			const response = await fetch(window.ajaxUrlPayment, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: {
+					'X-Requested-With': 'XMLHttpRequest'
+				},
+				body: formData
+			});
+			
+			console.log('Response status:', response.status);
+			const responseText = await response.text();
+			console.log('Raw response:', responseText);
+			
+			let data;
+			try {
+				data = JSON.parse(responseText);
+				console.log('Parsed response:', data);
+			} catch (e) {
+				console.error('Failed to parse response as JSON:', e);
+				throw new Error('Некоректна відповідь від сервера');
+			}
+
+			if (data.success && data.data && data.data.checkoutUrl) {
+				console.log('Redirecting to:', data.data.checkoutUrl);
+				window.location.href = data.data.checkoutUrl;
+			} else {
+				console.error('Invalid response format:', data);
+				throw new Error(data.data?.msg || 'Помилка при створенні оплати через Mono');
+			}
+		} catch (error) {
+			console.error('Error in Mono Checkout handler:', error);
+			// Reset button state
+			monoCheckoutButton.disabled = false;
+			monoCheckoutButton.classList.remove('loading');
+		}
+	});
 });

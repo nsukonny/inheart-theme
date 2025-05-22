@@ -609,33 +609,6 @@ function ih_ajax_create_payment_order(): void
         remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
     }
 
-    // /**
-    //  * Send email to Customer.
-    //  *
-    //  * @see Theme Settings -> Email Templates -> Orders -> Order Created.
-    //  */
-    // $customer_subject = get_field( 'order_created_subject', 'option' );
-    // $customer_body    = get_field( 'order_created_body', 'option' );
-
-    // if( $customer_subject && $customer_body ){
-    //     $customer_body = str_replace( ['https://[', 'http://['], '[', $customer_body );
-    //     $customer_body = str_replace( [
-    //         '[firstname]',
-    //         '[lastname]',
-    //         '[fathername]',
-    //         '[invoice_id]',
-    //         '[ordered]'
-    //     ], [
-    //         $firstname,
-    //         $lastname,
-    //         $fathername,
-    //         $invoice_id,
-    //         $ordered
-    //     ], $customer_body );
-    //     add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-    //     wp_mail( $email, $customer_subject, $customer_body );
-    //     remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
-    // }
 
 	wp_send_json_success( ['pageUrl' => $res_body['pageUrl']] );
 }
@@ -709,7 +682,6 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 		
 		// If there is a memory page connection
 		if( $memory_page_id ) {
-			// Update Memory Page meta
 		update_field( 'is_expanded', 1, $memory_page_id );
 		}
 
@@ -798,5 +770,385 @@ function ih_check_and_update_order_status( int $order_id, string $new_status ): 
 	}
 
 	return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Add new REST API endpoint for Mono Checkout
+add_action('rest_api_init', 'ih_rest_api_init_mono_checkout');
+function ih_rest_api_init_mono_checkout(): void {
+    register_rest_route('mono/checkout', '/status', [
+        'methods' => 'POST',
+        'permission_callback' => '__return_true',
+        'callback' => 'ih_mono_checkout_handle_status'
+    ]);
+}
+
+/**
+ * Handle Mono Checkout webhook callback
+ * 
+ * @param WP_REST_Request $request
+ * @return WP_REST_Response
+ */
+function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Response {
+    date_default_timezone_set('UTC');
+    $current_date = date('d.m.Y H:i:s');
+
+    if (!$req_body = $request->get_body() ?? null) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: No request body provided." . PHP_EOL, FILE_APPEND);
+        return new WP_REST_Response(['status' => 'error', 'message' => 'No request body'], 400);
+    }
+
+    $data = json_decode($req_body, true);
+    
+    if (!isset($data['result'])) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Invalid request format." . PHP_EOL, FILE_APPEND);
+        return new WP_REST_Response(['status' => 'error', 'message' => 'Invalid request format'], 400);
+    }
+
+    $result = $data['result'];
+    
+    // Log incoming data
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Processing order {$result['orderId']}" . PHP_EOL, FILE_APPEND);
+
+    // Process the order
+    $order_processed = ih_process_mono_checkout_order($result);
+    
+    if (!$order_processed) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Failed to process order {$result['orderId']}" . PHP_EOL, FILE_APPEND);
+        return new WP_REST_Response(['status' => 'error', 'message' => 'Failed to process order'], 500);
+    }
+
+    return new WP_REST_Response(['status' => 'success'], 200);
+}
+
+/**
+ * Process Mono Checkout order data and create/update order
+ * 
+ * @param array $order_data
+ * @return bool
+ */
+function ih_process_mono_checkout_order(array $order_data): bool {
+    // Check if order already exists
+    $existing_order = get_posts([
+        'post_type' => 'expanded-page',
+        'numberposts' => 1,
+        'meta_query' => [
+            [
+                'key' => 'invoice_id',
+                'value' => $order_data['orderId']
+            ]
+        ]
+    ]);
+
+    $order_id = $order_data['orderId'];
+
+    // Prepare order data
+    $firstname = $order_data['mainClientInfo']['first_name'];
+    $lastname = $order_data['mainClientInfo']['last_name'];
+	$fathername = '';
+    $email = $order_data['mainClientInfo']['email'];
+    $phone = $order_data['mainClientInfo']['phoneNumber'];
+    $city = $order_data['deliveryAddressInfo']['cityName'];
+    $department = $order_data['delivery_branch_address'];
+    $amount = $order_data['amount'];
+    $quantity = $order_data['quantity'];
+    $status = $order_data['generalStatus'];
+
+    // If order doesn't exist, create new one
+    if (!$order_id) {
+        $order_data = [
+            'post_title' => "Замовлення від $lastname $firstname",
+            'post_status' => 'publish',
+            'post_type' => 'expanded-page'
+        ];
+        
+        $order_id = wp_insert_post(wp_slash($order_data));
+        
+        if (is_wp_error($order_id)) {
+            return false;
+        }
+		
+		update_field('invoice_id', $order_id, $order_id);
+		update_field('status', 'created', $order_id);
+		update_field('qr-count-qty', 1, $order_id);
+    }
+
+	$firstname = $order_data['mainClientInfo']['first_name'];
+    $lastname = $order_data['mainClientInfo']['last_name'];
+	$fathername = '';
+    $email = $order_data['mainClientInfo']['email'];
+    $phone = $order_data['mainClientInfo']['phoneNumber'];
+    $city = $order_data['deliveryAddressInfo']['cityName'];
+    $department = $order_data['delivery_branch_address'];
+    $amount = $order_data['amount'] / 100; // Convert from kopecks to UAH
+    $quantity = $order_data['quantity'];
+    $status = $order_data['generalStatus'];
+
+	update_field( 'firstname', $firstname, $order_id );
+    update_field( 'lastname', $lastname, $order_id );
+    update_field( 'fathername', $fathername, $order_id );
+    update_field( 'email', $email, $order_id );
+    update_field( 'phone', $phone, $order_id );
+    update_field( 'city', $city, $order_id );
+    update_field( 'department', $department, $order_id );
+    update_field( 'invoice_id', $order_id, $order_id );
+    update_field('status', $status, $order_id);
+    
+    // Format ordered items description
+    $ordered = "QR-код на металевій пластині - $quantity шт. ($quantity x " . ih_get_metal_qr_price() . " грн)\n" .
+        "Загальна вартість: $amount грн";
+    update_field('ordered', $ordered, $order_id);
+
+    // If payment is successful, create QR code
+    if ($status === 'success') {
+        $qr_data = [
+            'post_type' => 'qr',
+            'post_title' => "Замовлено QR-код від $lastname $firstname",
+            'post_status' => 'draft'
+        ];
+        
+        $qr_id = wp_insert_post(wp_slash($qr_data));
+
+        
+        if (!is_wp_error($qr_id)) {
+            wp_update_post([
+                'ID' => $qr_id,
+                'post_name' => $qr_id,
+                'post_status' => 'publish'
+            ]);
+
+            // Save QR code data
+            update_field('order_id', $order_id, $qr_id);
+            update_field('customer_name', "$firstname $lastname", $qr_id);
+            update_field('customer_email', $email, $qr_id);
+            update_field('customer_phone', $phone, $qr_id);
+            update_field('delivery_city', $city, $qr_id);
+            update_field('delivery_warehouse', $department, $qr_id);
+
+
+		/**
+		 * Send email to Admin.
+		 *
+		 * @see Theme Settings -> Email Templates -> Orders -> Order Created.
+		 */
+		$subject    = get_field( 'order_created_subject_admin', 'option' );
+		$body       = get_field( 'order_created_body_admin', 'option' );
+
+		if( $subject && $body ){
+			$body = str_replace( ['https://[', 'http://['], '[', $body );
+			$body = str_replace( [
+				'[firstname]',
+				'[lastname]',
+				'[fathername]',
+				'[invoice_id]',
+				'[ordered]',
+				'[order_admin_url]'
+			], [
+				$firstname,
+				$lastname,
+				$fathername,
+				$invoice_id,
+				$ordered,
+				get_edit_post_link( $order_id )
+			], $body );
+
+			add_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+			wp_mail( ih_get_order_emails_array(), $subject, $body );
+			remove_filter( 'wp_mail_content_type', 'ih_set_html_content_type' );
+		}
+        }
+    }
+
+    // Send order status email
+    ih_send_email_on_status_change($status, $order_id);
+
+    return true;
+}
+
+add_action('wp_ajax_ih_ajax_create_mono_payment', 'ih_ajax_create_mono_payment');
+add_action('wp_ajax_nopriv_ih_ajax_create_mono_payment', 'ih_ajax_create_mono_payment');
+/**
+ * Create a payment through Mono Checkout
+ * 
+ * @return void
+ */
+function ih_ajax_create_mono_payment(): void {
+    date_default_timezone_set('UTC');
+    $current_date = date('d.m.Y H:i:s');
+
+    $qr_count = (int)ih_clean($_POST['qr-count-qty']);
+
+    // Log incoming request
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Incoming request - Email: $email, Phone: $phone, QR Count: $qr_count\n", FILE_APPEND);
+
+    // Validate required fields
+    if (!$qr_count) {
+        wp_send_json_error(['msg' => __('Заповніть всі поля та прийміть умови', 'inheart')]);
+    }
+
+    // Calculate price
+    if (!$price = ih_get_expanded_page_order_price($qr_count)) {
+        wp_send_json_error(['msg' => __('Невірні дані товарів', 'inheart')]);
+    }
+
+    // Get Mono token from existing settings
+    if (!$mono_token = get_field('mono_token', 'option')) {
+        wp_send_json_error(['msg' => __('Невірний або відсутній токен', 'inheart')]);
+    }
+
+    // Generate unique order reference
+    $order_ref = substr(md5(uniqid()), 0, 12);
+
+    // Prepare request to Mono Checkout
+    $request_data = [
+        'order_ref' => $order_ref,
+        'amount' => 1, // Сумма в гривнах $price
+        'ccy' => 980, // UAH
+        'count' => $qr_count,
+        'products' => [
+            [
+                'name' => 'QR-код на металевій пластині',
+                'product_img_src' => 'https://monobank.ua',
+                'cnt' => $qr_count,
+                'price' => 1, // Сумма в гривнах $price
+                'code_product' => 1,
+                'code_checkbox' => '',
+                'uktzed' => '',
+                'tax' => ''
+            ]
+        ],
+        'dlv_method_list' => [
+            'np_brnm',
+            'np_box'
+        ],
+        'payment_method_list' => [
+            'card'
+        ],
+        'dlv_pay_merchant' => null,
+        'payments_number' => 3,
+        'callback_url' => get_bloginfo('url') . '/wp-json/mono/checkout/status',
+        'return_url' => get_bloginfo('url') . '/succesfull-payment',
+        'fl_recall' => 'true',
+        'acceptable_age' => '',
+        'hold' => 'true',
+        'destination' => 'QR-код на металевій пластині',
+    ];
+
+    // Remove empty values to avoid validation errors
+    $request_data = array_filter($request_data, function($value) {
+        if (is_array($value)) {
+            return !empty($value);
+        }
+        return $value !== '' && $value !== null;
+    });
+
+    // Remove empty values from nested arrays
+    if (isset($request_data['dlv_info_merchant'])) {
+        $request_data['dlv_info_merchant'] = array_filter($request_data['dlv_info_merchant'], function($value) {
+            return $value !== '' && $value !== null;
+        });
+    }
+
+    $body = json_encode($request_data, JSON_UNESCAPED_UNICODE);
+
+    // Log request data
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Request to Mono API:\n" . print_r($request_data, true) . "\n", FILE_APPEND);
+
+    // Make request to Mono Checkout API
+    $res = wp_remote_post('https://api.monobank.ua/personal/checkout/order', [
+        'headers' => [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'X-Token' => $mono_token
+        ],
+        'data_format' => 'body',
+        'body' => $body,
+        'timeout' => 30
+    ]);
+
+    // Log response with more details
+    if (is_wp_error($res)) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: WP Error: " . $res->get_error_message() . "\n", FILE_APPEND);
+        wp_send_json_error(['msg' => __('Немає відповіді від банку', 'inheart')]);
+    }
+
+    // Log response status and headers
+    $response_code = wp_remote_retrieve_response_code($res);
+    $response_message = wp_remote_retrieve_response_message($res);
+    $response_headers = wp_remote_retrieve_headers($res);
+    
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Response Code: $response_code\n", FILE_APPEND);
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Response Message: $response_message\n", FILE_APPEND);
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Response Headers:\n" . print_r($response_headers, true) . "\n", FILE_APPEND);
+
+    if (empty($res)) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Empty response from Mono API\n", FILE_APPEND);
+        wp_send_json_error(['msg' => __('Немає відповіді від банку', 'inheart')]);
+    }
+
+    $res_body = json_decode($res['body'], true);
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Raw Response Body:\n" . $res['body'] . "\n", FILE_APPEND);
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Decoded Response Body:\n" . print_r($res_body, true) . "\n", FILE_APPEND);
+
+    // Check for specific error responses
+    if ($response_code !== 200) {
+        $error_message = isset($res_body['errorDescription']) ? $res_body['errorDescription'] : __('Помилка під час створення запиту до оплати', 'inheart');
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: API Error: $error_message\n", FILE_APPEND);
+        wp_send_json_error(['msg' => $error_message]);
+    }
+
+    if (empty($res_body)) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Empty response body\n", FILE_APPEND);
+        wp_send_json_error(['msg' => __('Помилка під час створення запиту до оплати', 'inheart')]);
+    }
+
+    // Check for result in response
+    if (!isset($res_body['result'])) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: No result in response\n", FILE_APPEND);
+        wp_send_json_error(['msg' => __('Невірний формат відповіді від банку', 'inheart')]);
+    }
+
+    $result = $res_body['result'];
+
+    // Check for required fields in result
+    if (!isset($result['order_id']) || !isset($result['redirect_url'])) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Missing required fields in result\n", FILE_APPEND);
+        wp_send_json_error(['msg' => __('Відповідь банку не містить необхідних даних', 'inheart')]);
+    }
+
+    // Create temporary order to track payment
+    $order_data = [
+        'post_title' => "Замовлення через Mono Checkout",
+        'post_status' => 'publish',
+        'post_type' => 'expanded-page'
+    ];
+    
+    $order_id = wp_insert_post(wp_slash($order_data));
+    
+    if (is_wp_error($order_id)) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Failed to create order: " . $order_id->get_error_message() . "\n", FILE_APPEND);
+        wp_send_json_error(['msg' => __('Не вдалося створити замовлення', 'inheart')]);
+    }
+
+    // Save initial order data
+    update_field('invoice_id', $result['order_id'], $order_id);
+    update_field('status', 'created', $order_id);
+    update_field('qr-count-qty', $qr_count, $order_id);
+
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Order created successfully, ID: $order_id\n", FILE_APPEND);
+
+    // Send success response with redirect URL
+    wp_send_json_success([
+        'checkoutUrl' => $result['redirect_url']
+    ]);
 }
 
