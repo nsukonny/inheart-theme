@@ -825,18 +825,81 @@ function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Respo
     // Check for required fields in the actual format
     if (!isset($data['orderId']) || !isset($data['generalStatus'])) {
         file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Invalid request format. Data: " . print_r($data, true) . PHP_EOL, FILE_APPEND);
+        
+        // Try to find order by orderId if it exists
+        if (isset($data['orderId'])) {
+            $orders = get_posts([
+                'post_type' => 'expanded-page',
+                'numberposts' => 1,
+                'meta_query' => [
+                    [
+                        'key' => 'invoice_id',
+                        'value' => $data['orderId']
+                    ]
+                ]
+            ]);
+            
+            if (!empty($orders)) {
+                $order_id = $orders[0]->ID;
+                update_field('status', 'failure', $order_id);
+                file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Set failure status for order $order_id due to invalid request format" . PHP_EOL, FILE_APPEND);
+            }
+        }
+        
         return new WP_REST_Response(['status' => 'error', 'message' => 'Invalid request format'], 400);
     }
 
     // Log incoming data
     file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Processing order {$data['orderId']} with status {$data['generalStatus']}" . PHP_EOL, FILE_APPEND);
 
-    // Process the order with the actual data structure
-    $order_processed = ih_process_mono_checkout_order($data);
-    
-    if (!$order_processed) {
-        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Failed to process order {$data['orderId']}" . PHP_EOL, FILE_APPEND);
-        return new WP_REST_Response(['status' => 'error', 'message' => 'Failed to process order'], 500);
+    try {
+        // Process the order with the actual data structure
+        $order_processed = ih_process_mono_checkout_order($data);
+        
+        if (!$order_processed) {
+            // Find order and set failure status
+            $orders = get_posts([
+                'post_type' => 'expanded-page',
+                'numberposts' => 1,
+                'meta_query' => [
+                    [
+                        'key' => 'invoice_id',
+                        'value' => $data['orderId']
+                    ]
+                ]
+            ]);
+            
+            if (!empty($orders)) {
+                $order_id = $orders[0]->ID;
+                update_field('status', 'failure', $order_id);
+                file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Set failure status for order $order_id due to processing error" . PHP_EOL, FILE_APPEND);
+            }
+            
+            file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Failed to process order {$data['orderId']}" . PHP_EOL, FILE_APPEND);
+            return new WP_REST_Response(['status' => 'error', 'message' => 'Failed to process order'], 500);
+        }
+    } catch (Exception $e) {
+        // Log the error and set failure status
+        file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Exception while processing order {$data['orderId']}: " . $e->getMessage() . PHP_EOL, FILE_APPEND);
+        
+        $orders = get_posts([
+            'post_type' => 'expanded-page',
+            'numberposts' => 1,
+            'meta_query' => [
+                [
+                    'key' => 'invoice_id',
+                    'value' => $data['orderId']
+                ]
+            ]
+        ]);
+        
+        if (!empty($orders)) {
+            $order_id = $orders[0]->ID;
+            update_field('status', 'failure', $order_id);
+            file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Set failure status for order $order_id due to exception" . PHP_EOL, FILE_APPEND);
+        }
+        
+        return new WP_REST_Response(['status' => 'error', 'message' => 'Internal server error'], 500);
     }
 
     return new WP_REST_Response(['status' => 'success'], 200);
@@ -861,7 +924,7 @@ function ih_process_mono_checkout_order(array $order_data): bool {
         ]
     ]);
 
-    $order_id = $order_data['orderId'];
+    $order_id		= $existing_order[0]->ID;
 
     // Prepare order data
     $firstname = $order_data['mainClientInfo']['first_name'];
