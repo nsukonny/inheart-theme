@@ -803,6 +803,17 @@ function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Respo
     date_default_timezone_set('UTC');
     $current_date = date('d.m.Y H:i:s');
 
+	file_put_contents(ABSPATH . '/mono-checkout.log', 
+        $current_date . ": Callback Request Data:\n" . 
+        "Method: " . $request->get_method() . "\n" .
+        "Headers: " . print_r($request->get_headers(), true) . "\n" .
+        "Body: " . $request->get_body() . "\n" .
+        "Params: " . print_r($request->get_params(), true) . "\n" .
+        "JSON: " . print_r($request->get_json_params(), true) . "\n" .
+        "----------------------------------------\n", 
+        FILE_APPEND
+    );
+
     if (!$req_body = $request->get_body() ?? null) {
         file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: No request body provided." . PHP_EOL, FILE_APPEND);
         return new WP_REST_Response(['status' => 'error', 'message' => 'No request body'], 400);
