@@ -1084,7 +1084,7 @@ function ih_ajax_create_mono_payment(): void {
     // Prepare request to Mono Checkout
     $request_data = [
         'order_ref' => $order_ref,
-        'amount' => 10, // Сумма в гривнах $price
+        'amount' => $price, // Сумма в гривнах
         'ccy' => 980, // UAH
         'count' => $qr_count,
         'products' => [
@@ -1092,7 +1092,7 @@ function ih_ajax_create_mono_payment(): void {
                 'name' => 'QR-код на металевій пластині',
                 'product_img_src' => 'https://monobank.ua',
                 'cnt' => $qr_count,
-                'price' => 10,
+                'price' => $price,
                 'code_product' => 1,
                 'code_checkbox' => '',
                 'uktzed' => '',
