@@ -936,7 +936,7 @@ function ih_process_mono_checkout_order(array $order_data): bool {
     $department = $order_data['delivery_branch_address'];
     $amount = $order_data['amount']; // Convert from kopecks to UAH
     $quantity = $order_data['quantity'];
-    $status = $order_data['generalStatus'];
+    $status = $order_data['payment_status'];
 	$invoice_id = $order_data['orderId'];
 
     // If order doesn't exist, create new one
@@ -958,6 +958,8 @@ function ih_process_mono_checkout_order(array $order_data): bool {
 		update_field('qr-count-qty', 1, $order_id);
     }
 
+	$modified	= strtotime( $order_data['modifiedDate'] );
+
 	update_field( 'firstname', $firstname, $order_id );
     update_field( 'lastname', $lastname, $order_id );
     update_field( 'fathername', $fathername, $order_id );
@@ -967,6 +969,7 @@ function ih_process_mono_checkout_order(array $order_data): bool {
     update_field( 'department', $department, $order_id );
     update_field( 'invoice_id', $invoice_id, $order_id );
     update_field('status', $status, $order_id);
+	update_field( 'status_modified_date', $modified, $order_id );
     
     // Format ordered items description
     $ordered = "QR-код на металевій пластині - $quantity шт. ($quantity x " . ih_get_metal_qr_price() . " грн)\n" .
