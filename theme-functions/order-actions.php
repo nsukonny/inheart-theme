@@ -823,7 +823,7 @@ function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Respo
     $data = json_decode($req_body, true);
     
     // Check for required fields in the actual format
-    if (!isset($data['orderId']) || !isset($data['generalStatus'])) {
+    if (!isset($data['orderId']) || !isset($data['payment_status'])) {
         file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Invalid request format. Data: " . print_r($data, true) . PHP_EOL, FILE_APPEND);
         
         // Try to find order by orderId if it exists
@@ -850,7 +850,7 @@ function ih_mono_checkout_handle_status(WP_REST_Request $request): WP_REST_Respo
     }
 
     // Log incoming data
-    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Processing order {$data['orderId']} with status {$data['generalStatus']}" . PHP_EOL, FILE_APPEND);
+    file_put_contents(ABSPATH . '/mono-checkout.log', "$current_date: Processing order {$data['orderId']} with status {$data['payment_status']}" . PHP_EOL, FILE_APPEND);
 
     try {
         // Process the order with the actual data structure
