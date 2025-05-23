@@ -235,6 +235,12 @@ body {
 	margin: 0px 0px !important;
 
 	.menu{
+		.menu-item{
+			a{
+				color:#c3dae2;
+			}
+			
+		}
 		.head-item{
 			a{
 				svg{
@@ -248,6 +254,7 @@ body {
 				direction: rtl;
 				color: #c3dae2 !important;
 				transition: opacity .2s;
+				opacity: .8;
 				svg{
 					margin-left: 5px;
 				}
@@ -256,7 +263,7 @@ body {
 
 		.last-item:hover{
 			a{
-				opacity: .8;
+				opacity: .6;
 			}
 		}
 	}
