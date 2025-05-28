@@ -503,25 +503,6 @@ function ih_ajax_create_payment_order(): void
     if( ! $qr_count )
         wp_send_json_error( ['msg' => __( 'Не вказана кількість QR кодів', 'inheart' )] );
 
-    // Try to create user if doesn't exist
-    if (!email_exists($email)) {
-        // Generate a random password
-        $password = wp_generate_password(12, true);
-        
-        // Create user
-        $user_id = ih_create_user_no_activation($firstname, $lastname, $email, $password);
-        
-        if (is_wp_error($user_id)) {
-            wp_send_json_error(['msg' => $user_id->get_error_message()]);
-        }
-    } else {
-        // Get existing user
-        $user = get_user_by('email', $email);
-        if (!$user) {
-            wp_send_json_error(['msg' => __('Помилка отримання даних користувача', 'inheart')]);
-        }
-        $user_id = $user->ID;
-    }
 
     if( ! $price = ih_get_expanded_page_order_price( $qr_count ) )
         wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
@@ -597,6 +578,30 @@ function ih_ajax_create_payment_order(): void
     update_field( 'status_modified_date', 0, $order_id );
     update_field( 'ordered', $ordered, $order_id );
     update_field( 'status', 'created', $order_id );
+
+	// Try to create user if doesn't exist
+    if (!email_exists($email)) {
+        // Generate a random password
+        $password = wp_generate_password(12, true);
+        
+        // Create user
+        $user_id = ih_create_user_no_activation($firstname, $lastname, $email, $password);
+
+		if (!is_wp_error($user_id)) {
+            update_field('customer_id', $user_id, $order_id);
+        }
+        
+        if (is_wp_error($user_id)) {
+            wp_send_json_error(['msg' => $user_id->get_error_message()]);
+        }
+    } else {
+        // Get existing user
+        $user = get_user_by('email', $email);
+        if (!$user) {
+            wp_send_json_error(['msg' => __('Помилка отримання даних користувача', 'inheart')]);
+        }
+        $user_id = $user->ID;
+    }
 
     /**
      * Send email to Admin.
@@ -989,6 +994,10 @@ function ih_process_mono_checkout_order(array $order_data): bool {
         if (!is_wp_error($user_id)) {
             // Store customer ID in order
             update_field('customer_id', $user_id, $order_id);
+        }
+
+		if (is_wp_error($user_id)) {
+            wp_send_json_error(['msg' => $user_id->get_error_message()]);
         }
     } else {
         // If user exists, get their ID and update order
