@@ -1345,6 +1345,11 @@ function ih_create_user_no_activation($firstname, $lastname, $email, $password) 
         FILE_APPEND
     );
 
+	file_put_contents(ABSPATH . '/mono-checkout.log', 
+            "$current_date: User creds: $email   $password\n", 
+            FILE_APPEND
+        );
+
     // Remove any activation related meta if they exist
     try {
 		$code   = sha1( $user_id . time() );
@@ -1370,10 +1375,7 @@ function ih_create_user_no_activation($firstname, $lastname, $email, $password) 
             FILE_APPEND
         );
 
-        file_put_contents(ABSPATH . '/mono-checkout.log', 
-            "$current_date: User creds: $email   $password\n", 
-            FILE_APPEND
-        );
+        
 
         $body = str_replace([
             '[user_login]',
