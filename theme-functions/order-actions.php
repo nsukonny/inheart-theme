@@ -503,6 +503,26 @@ function ih_ajax_create_payment_order(): void
     if( ! $qr_count )
         wp_send_json_error( ['msg' => __( 'Не вказана кількість QR кодів', 'inheart' )] );
 
+    // Try to create user if doesn't exist
+    if (!email_exists($email)) {
+        // Generate a random password
+        $password = wp_generate_password(12, true);
+        
+        // Create user
+        $user_id = ih_create_user_no_activation($firstname, $lastname, $email, $password);
+        
+        if (is_wp_error($user_id)) {
+            wp_send_json_error(['msg' => $user_id->get_error_message()]);
+        }
+    } else {
+        // Get existing user
+        $user = get_user_by('email', $email);
+        if (!$user) {
+            wp_send_json_error(['msg' => __('Помилка отримання даних користувача', 'inheart')]);
+        }
+        $user_id = $user->ID;
+    }
+
     if( ! $price = ih_get_expanded_page_order_price( $qr_count ) )
         wp_send_json_error( ['msg' => __( 'Невірні дані товарів', 'inheart' )] );
 
@@ -924,20 +944,20 @@ function ih_process_mono_checkout_order(array $order_data): bool {
         ]
     ]);
 
-    $order_id		= $existing_order[0]->ID;
+    $order_id = $existing_order[0]->ID;
 
     // Prepare order data
     $firstname = $order_data['mainClientInfo']['first_name'];
     $lastname = $order_data['mainClientInfo']['last_name'];
-	$fathername = '';
+    $fathername = '';
     $email = $order_data['mainClientInfo']['email'];
     $phone = $order_data['mainClientInfo']['phoneNumber'];
     $city = $order_data['deliveryAddressInfo']['cityName'];
     $department = $order_data['delivery_branch_address'];
-    $amount = $order_data['amount']; // Convert from kopecks to UAH
+    $amount = $order_data['amount'];
     $quantity = $order_data['quantity'];
     $status = $order_data['payment_status'];
-	$invoice_id = $order_data['orderId'];
+    $invoice_id = $order_data['orderId'];
 
     // If order doesn't exist, create new one
     if (!$order_id) {
@@ -952,15 +972,35 @@ function ih_process_mono_checkout_order(array $order_data): bool {
         if (is_wp_error($order_id)) {
             return false;
         }
-		
-		update_field('invoice_id', $order_id, $order_id);
-		update_field('status', 'created', $order_id);
-		update_field('qr-count-qty', 1, $order_id);
+        
+        update_field('invoice_id', $order_id, $order_id);
+        update_field('status', 'created', $order_id);
+        update_field('qr-count-qty', 1, $order_id);
     }
 
-	$modified	= strtotime( $order_data['modifiedDate'] );
+    // Try to create user if doesn't exist
+    if (!email_exists($email)) {
+        // Generate a random password
+        $password = wp_generate_password(12, true);
+        
+        // Create user
+        $user_id = ih_create_user_no_activation($firstname, $lastname, $email, $password);
+        
+        if (!is_wp_error($user_id)) {
+            // Store customer ID in order
+            update_field('customer_id', $user_id, $order_id);
+        }
+    } else {
+        // If user exists, get their ID and update order
+        $user = get_user_by('email', $email);
+        if ($user) {
+            update_field('customer_id', $user->ID, $order_id);
+        }
+    }
 
-	update_field( 'firstname', $firstname, $order_id );
+    $modified	= strtotime( $order_data['modifiedDate'] );
+
+    update_field( 'firstname', $firstname, $order_id );
     update_field( 'lastname', $lastname, $order_id );
     update_field( 'fathername', $fathername, $order_id );
     update_field( 'email', $email, $order_id );
@@ -969,17 +1009,17 @@ function ih_process_mono_checkout_order(array $order_data): bool {
     update_field( 'department', $department, $order_id );
     update_field( 'invoice_id', $invoice_id, $order_id );
     update_field('status', $status, $order_id);
-	update_field( 'status_modified_date', $modified, $order_id );
+    update_field( 'status_modified_date', $modified, $order_id );
     
     // Format ordered items description
     $ordered = "QR-код на металевій пластині - $quantity шт. ($quantity x " . ih_get_metal_qr_price() . " грн)\n" .
         "Загальна вартість: $amount грн";
     update_field('ordered', $ordered, $order_id);
 
-	wp_update_post([
-		'ID' => $order_id,
-		'post_title' => "Замовлення від $lastname $firstname"
-	]);
+    wp_update_post([
+        'ID' => $order_id,
+        'post_title' => "Замовлення від $lastname $firstname"
+    ]);
 
     // If payment is successful, create QR code
     if ($status === 'success') {
@@ -1221,6 +1261,217 @@ function ih_ajax_create_mono_payment(): void {
     // Send success response with redirect URL
     wp_send_json_success([
         'checkoutUrl' => $result['redirect_url']
+    ]);
+}
+
+/**
+ * Create a new user without email activation
+ * 
+ * @param string $firstname User's first name
+ * @param string $lastname User's last name
+ * @param string $email User's email
+ * @param string $password User's password
+ * @return int|WP_Error User ID on success, WP_Error on failure
+ */
+function ih_create_user_no_activation($firstname, $lastname, $email, $password) {
+    date_default_timezone_set('UTC');
+    $current_date = date('d.m.Y H:i:s');
+    
+    // Логируем начало процесса создания пользователя
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: Starting user creation process for email: $email\n", 
+        FILE_APPEND
+    );
+
+    // Validate email
+    if (!is_email($email)) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Invalid email format: $email\n", 
+            FILE_APPEND
+        );
+        return new WP_Error('invalid_email', __('Invalid email address.', 'inheart'));
+    }
+
+    // Check if email already exists
+    if (email_exists($email)) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Email already exists: $email\n", 
+            FILE_APPEND
+        );
+        return new WP_Error('email_exists', __('Email address already exists.', 'inheart'));
+    }
+
+    // Generate username from email
+    $username = sanitize_user(current(explode('@', $email)));
+    $counter = 1;
+    $base_username = $username;
+    
+    // Ensure username is unique
+    while (username_exists($username)) {
+        $username = $base_username . $counter;
+        $counter++;
+    }
+
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: Generated username: $username\n", 
+        FILE_APPEND
+    );
+
+    // Create user
+    $user_id = wp_create_user($username, $password, $email);
+    
+    if (is_wp_error($user_id)) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Failed to create user. Error: " . $user_id->get_error_message() . "\n", 
+            FILE_APPEND
+        );
+        return $user_id;
+    }
+
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: User created successfully. ID: $user_id\n", 
+        FILE_APPEND
+    );
+
+    // Set user role
+    $user = new WP_User($user_id);
+    $user->set_role(get_option('default_role'));
+
+    // Update user meta
+    update_user_meta($user_id, 'first_name', $firstname);
+    update_user_meta($user_id, 'last_name', $lastname);
+    update_user_meta($user_id, 'display_name', $firstname . ' ' . $lastname);
+
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: User meta updated for ID: $user_id\n", 
+        FILE_APPEND
+    );
+
+    // Send email
+    $subject = get_field('subject_auto', 'option');
+    $body = get_field('body_auto', 'option');
+
+    if ($subject && $body) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Preparing to send welcome email to: $email\n", 
+            FILE_APPEND
+        );
+
+		file_put_contents(ABSPATH . '/user-creation.log', 
+			"$current_date: User creds: $email   $password\n", 
+			FILE_APPEND
+		);
+
+        $body = str_replace([
+            '[user_login]',
+            '[user_email]',
+            '[user_password]',
+            '[auth_url]'
+        ], [
+            $firstname.' '.$lastname,
+            $email,
+            $password,
+            home_url('/login/')
+        ], $body);
+
+        add_filter('wp_mail_content_type', 'ih_set_html_content_type');
+        $mail_sent = wp_mail($email, $subject, $body);
+        remove_filter('wp_mail_content_type', 'ih_set_html_content_type');
+
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Welcome email " . ($mail_sent ? "sent successfully" : "failed to send") . " to: $email\n", 
+            FILE_APPEND
+        );
+
+        if (!$mail_sent) {
+            file_put_contents(ABSPATH . '/user-creation.log', 
+                "$current_date: Email sending failed. Subject: $subject\n", 
+                FILE_APPEND
+            );
+        }
+    } else {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Email templates not found. Subject exists: " . ($subject ? 'Yes' : 'No') . 
+            ", Body exists: " . ($body ? 'Yes' : 'No') . "\n", 
+            FILE_APPEND
+        );
+    }
+
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: User creation process completed for ID: $user_id\n" . 
+        "----------------------------------------\n", 
+        FILE_APPEND
+    );
+
+    return $user_id;
+}
+
+/**
+ * AJAX handler for creating user without activation
+ */
+add_action('wp_ajax_ih_ajax_create_user_no_activation', 'ih_ajax_create_user_no_activation');
+add_action('wp_ajax_nopriv_ih_ajax_create_user_no_activation', 'ih_ajax_create_user_no_activation');
+function ih_ajax_create_user_no_activation(): void {
+    date_default_timezone_set('UTC');
+    $current_date = date('d.m.Y H:i:s');
+    
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: AJAX request received for user creation\n", 
+        FILE_APPEND
+    );
+
+    // Verify nonce for security
+    if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'ih_create_user_nonce')) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Security check failed. Nonce verification failed\n", 
+            FILE_APPEND
+        );
+        wp_send_json_error(['msg' => __('Security check failed.', 'inheart')]);
+    }
+
+    // Validate required fields
+    $firstname = ih_clean($_POST['firstname'] ?? '');
+    $lastname = ih_clean($_POST['lastname'] ?? '');
+    $email = ih_clean($_POST['email'] ?? '');
+    $password = ih_clean($_POST['password'] ?? '');
+
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: AJAX request data - Email: $email, Name: $firstname $lastname\n", 
+        FILE_APPEND
+    );
+
+    if (!$firstname || !$lastname || !$email || !$password) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: Missing required fields in AJAX request\n", 
+            FILE_APPEND
+        );
+        wp_send_json_error(['msg' => __('All fields are required.', 'inheart')]);
+    }
+
+    // Create user
+    $user_id = ih_create_user_no_activation($firstname, $lastname, $email, $password);
+
+    if (is_wp_error($user_id)) {
+        file_put_contents(ABSPATH . '/user-creation.log', 
+            "$current_date: User creation failed via AJAX. Error: " . $user_id->get_error_message() . "\n", 
+            FILE_APPEND
+        );
+        wp_send_json_error(['msg' => $user_id->get_error_message()]);
+    }
+
+    // Log user in
+    wp_set_current_user($user_id);
+    wp_set_auth_cookie($user_id);
+
+    file_put_contents(ABSPATH . '/user-creation.log', 
+        "$current_date: User logged in via AJAX. ID: $user_id\n" . 
+        "----------------------------------------\n", 
+        FILE_APPEND
+    );
+
+    wp_send_json_success([
+        'msg' => __('User created successfully.', 'inheart'),
+        'user_id' => $user_id
     ]);
 }
 

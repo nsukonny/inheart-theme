@@ -3,6 +3,63 @@
     "title": "Theme Settings: Email Templates",
     "fields": [
         {
+            "key": "field_68370423a0f72",
+            "label": "Авто реєстрація",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_68370498f00bc",
+            "label": "Subject",
+            "name": "subject_auto",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_683704cdf00bd",
+            "label": "Body",
+            "name": "body_auto",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "You can use these placeholders: [user_login] [user_email] [user_password][auth_url]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
             "key": "field_648a3f445c270",
             "label": "Регістрація",
             "name": "",
@@ -705,5 +762,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1712443397
+    "modified": 1748436605
 }

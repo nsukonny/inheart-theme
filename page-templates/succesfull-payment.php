@@ -53,11 +53,81 @@ wp_enqueue_style( 'payment-succesfull-styles', THEME_URI . '/static/css/pages/su
 		if( $paged >= 2 || $page >= 2 ) echo ' | ' . sprintf( __( 'Page %s', 'inheart' ), max( $paged, $page ) );
 		?>
 	</title>
+
+	<style>
+        .notification-popup {
+            display: none;
+            position: fixed;
+			top: 20px;
+			right: 0px;
+			left: 0px;
+			margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-width: 380px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .notification-popup__title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .notification-popup__text {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .notification-popup__close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #999;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+		@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 
 
 <main class="main successful-payment">
+	<div class="notification-popup" id="notificationPopup">
+        <span class="notification-popup__close" onclick="this.parentElement.style.display='none'">&times;</span>
+        <div class="notification-popup__title">Акаунт успішно створено!</div>
+        <div class="notification-popup__text">
+            Ваш обліковий запис успішно зареєстровано. Дані для входу (email та пароль) надіслано на вашу електронну пошту.
+        </div>
+    </div>
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Показываем popup
+            document.getElementById('notificationPopup').style.display = 'block';
+            
+            // Автоматически скрываем через 10 секунд
+            setTimeout(function() {
+                document.getElementById('notificationPopup').style.display = 'none';
+            }, 10000);
+        });
+    </script>
 	<div class="container">
 		<div class="successful-payment__content">
 			<!-- Success Image -->
