@@ -1278,14 +1278,14 @@ function ih_create_user_no_activation($firstname, $lastname, $email, $password) 
     $current_date = date('d.m.Y H:i:s');
     
     // Логируем начало процесса создания пользователя
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: Starting user creation process for email: $email\n", 
         FILE_APPEND
     );
 
     // Validate email
     if (!is_email($email)) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Invalid email format: $email\n", 
             FILE_APPEND
         );
@@ -1294,7 +1294,7 @@ function ih_create_user_no_activation($firstname, $lastname, $email, $password) 
 
     // Check if email already exists
     if (email_exists($email)) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Email already exists: $email\n", 
             FILE_APPEND
         );
@@ -1312,55 +1312,68 @@ function ih_create_user_no_activation($firstname, $lastname, $email, $password) 
         $counter++;
     }
 
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: Generated username: $username\n", 
         FILE_APPEND
     );
 
-    // Create user
-    $user_id = wp_create_user($username, $password, $email);
-    
+    // Create user without password first
+    $user_id = wp_insert_user([
+        'user_login' => $username,
+        'user_email' => $email,
+        'first_name' => $firstname,
+        'last_name' => $lastname,
+        'display_name' => $firstname . ' ' . $lastname,
+        'show_admin_bar_front' => 'false',
+        'role' => get_option('default_role')
+    ]);
+
+    // New User creation error.
     if (is_wp_error($user_id)) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Failed to create user. Error: " . $user_id->get_error_message() . "\n", 
             FILE_APPEND
         );
         return $user_id;
     }
 
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    // Set password separately
+    wp_set_password($password, $user_id);
+
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: User created successfully. ID: $user_id\n", 
         FILE_APPEND
     );
 
-    // Set user role
-    $user = new WP_User($user_id);
-    $user->set_role(get_option('default_role'));
+    // Remove any activation related meta if they exist
+    try {
+		$code   = sha1( $user_id . time() );
+		add_user_meta( $user_id, 'activation_code', $code, true );
+		add_user_meta( $user_id, 'registration_date', time(), true );
 
-    // Update user meta
-    update_user_meta($user_id, 'first_name', $firstname);
-    update_user_meta($user_id, 'last_name', $lastname);
-    update_user_meta($user_id, 'display_name', $firstname . ' ' . $lastname);
-
-    file_put_contents(ABSPATH . '/user-creation.log', 
-        "$current_date: User meta updated for ID: $user_id\n", 
-        FILE_APPEND
-    );
+        delete_user_meta($user_id, 'activation_code');
+        delete_user_meta($user_id, 'registration_date');
+    } catch (Exception $e) {
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
+            "$current_date: Error on deleting meta: $user_id " . $e->getMessage() . "\n", 
+            FILE_APPEND
+        );
+    }
 
     // Send email
     $subject = get_field('subject_auto', 'option');
     $body = get_field('body_auto', 'option');
 
     if ($subject && $body) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Preparing to send welcome email to: $email\n", 
             FILE_APPEND
         );
 
-		file_put_contents(ABSPATH . '/user-creation.log', 
-			"$current_date: User creds: $email   $password\n", 
-			FILE_APPEND
-		);
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
+            "$current_date: User creds: $email   $password\n", 
+            FILE_APPEND
+        );
 
         $body = str_replace([
             '[user_login]',
@@ -1378,26 +1391,26 @@ function ih_create_user_no_activation($firstname, $lastname, $email, $password) 
         $mail_sent = wp_mail($email, $subject, $body);
         remove_filter('wp_mail_content_type', 'ih_set_html_content_type');
 
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Welcome email " . ($mail_sent ? "sent successfully" : "failed to send") . " to: $email\n", 
             FILE_APPEND
         );
 
         if (!$mail_sent) {
-            file_put_contents(ABSPATH . '/user-creation.log', 
+            file_put_contents(ABSPATH . '/mono-checkout.log', 
                 "$current_date: Email sending failed. Subject: $subject\n", 
                 FILE_APPEND
             );
         }
     } else {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Email templates not found. Subject exists: " . ($subject ? 'Yes' : 'No') . 
             ", Body exists: " . ($body ? 'Yes' : 'No') . "\n", 
             FILE_APPEND
         );
     }
 
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: User creation process completed for ID: $user_id\n" . 
         "----------------------------------------\n", 
         FILE_APPEND
@@ -1415,14 +1428,14 @@ function ih_ajax_create_user_no_activation(): void {
     date_default_timezone_set('UTC');
     $current_date = date('d.m.Y H:i:s');
     
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: AJAX request received for user creation\n", 
         FILE_APPEND
     );
 
     // Verify nonce for security
     if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'ih_create_user_nonce')) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Security check failed. Nonce verification failed\n", 
             FILE_APPEND
         );
@@ -1435,13 +1448,13 @@ function ih_ajax_create_user_no_activation(): void {
     $email = ih_clean($_POST['email'] ?? '');
     $password = ih_clean($_POST['password'] ?? '');
 
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: AJAX request data - Email: $email, Name: $firstname $lastname\n", 
         FILE_APPEND
     );
 
     if (!$firstname || !$lastname || !$email || !$password) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: Missing required fields in AJAX request\n", 
             FILE_APPEND
         );
@@ -1452,7 +1465,7 @@ function ih_ajax_create_user_no_activation(): void {
     $user_id = ih_create_user_no_activation($firstname, $lastname, $email, $password);
 
     if (is_wp_error($user_id)) {
-        file_put_contents(ABSPATH . '/user-creation.log', 
+        file_put_contents(ABSPATH . '/mono-checkout.log', 
             "$current_date: User creation failed via AJAX. Error: " . $user_id->get_error_message() . "\n", 
             FILE_APPEND
         );
@@ -1463,7 +1476,7 @@ function ih_ajax_create_user_no_activation(): void {
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id);
 
-    file_put_contents(ABSPATH . '/user-creation.log', 
+    file_put_contents(ABSPATH . '/mono-checkout.log', 
         "$current_date: User logged in via AJAX. ID: $user_id\n" . 
         "----------------------------------------\n", 
         FILE_APPEND
@@ -1474,4 +1487,3 @@ function ih_ajax_create_user_no_activation(): void {
         'user_id' => $user_id
     ]);
 }
-
