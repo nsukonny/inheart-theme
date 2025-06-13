@@ -1400,7 +1400,7 @@ body.single-memory_page.military
 
 	.single-memory-fight
 	{
-		height: 1100vh;
+		height: 200vh;
 		position: relative;
 
 		&__item-more
@@ -1564,7 +1564,7 @@ body.single-memory_page.military
 			width: 100%;
 			height: 100%;
 			opacity: 0;
-			transition: opacity 0.3s linear;
+			transition: opacity 0.1s linear;
 
 
 			&::before
