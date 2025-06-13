@@ -240,8 +240,15 @@ export const prevStep = () => {
 
 		isStepFilled( prevStepIdUpd )
 
-		if( prevStepId == 0 ) prevStepBtn.classList.add( 'hidden' )
-		else prevStepBtn.setAttribute( 'data-prev', getPrevStepId( prevStepIdGlobal ) )
+		if( prevStepId == 0 ) {
+			prevStepBtn.classList.add( 'hidden' )
+			// Hide footer when going back to step-0
+			if (footer) {
+				footer.style.display = 'none'
+			}
+		} else {
+			prevStepBtn.setAttribute( 'data-prev', getPrevStepId( prevStepIdGlobal ) )
+		}
 
 		nextStepBtn.setAttribute( 'data-next', nextStepIdGlobal )
 	} )

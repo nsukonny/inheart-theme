@@ -144,4 +144,72 @@
 			}
 		}
 	}
+
+	.new-memory-themes-right-desk {
+		display: block !important;
+	}
+
+	.new-memory-themes-desk {
+		display: flex !important;
+	}
+
+	.new-memory-themes-mobile {
+		display: none !important;
+	}
+
+	.new-memory-themes-right-mobile {
+		display: none !important;
+	}
+
+	@media (max-width: 768px) {
+		.new-memory-step-desc {
+			display: none !important;
+		}
+
+		.new-memory-themes-right-desk {
+			display: none !important;
+		}
+
+		.new-memory-themes-desk {
+			display: none !important;
+		}
+
+		.new-memory-themes-right-mobile {
+			display: block !important;
+		}
+
+		.new-memory-themes-mobile {
+			display: flex !important;
+		}
+
+		.new-memory-themes-mobile .new-memory-theme,
+		.new-memory-themes-right-mobile .new-memory-theme {
+			max-width: 168px !important;
+			max-height: 120px !important;
+			width: 100% !important;
+			height: 100% !important;
+			overflow: hidden;
+			align-items: center;
+			display: flex;
+			border-radius: 33px;
+		}
+	}
+
+	@media (max-width: 400px) {
+		.container{
+			padding: 0px 15px;
+		}
+	}
+
+	@media (max-width: 360px) {
+		.new-memory-themes-right-mobile {
+			display: flex !important;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.new-memory-themes-mobile {
+			justify-content: center;
+		}
+	}
 }

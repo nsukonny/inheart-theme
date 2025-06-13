@@ -11,8 +11,8 @@ $class		= isset( $args['active_back'] ) && $args['active_back'] ? '' : ' hidden'
 $next_index	= $class ? 1 : 2;
 $allow_next = ( isset( $_SESSION['memory_page_id'] ) && get_field( 'theme', $_SESSION['memory_page_id'] ) )
 			? '' : 'disabled';
+$step = (int) $_GET['step'];
 ?>
-
 			<footer class="new-memory-footer">
 				<div class="new-memory-progress-bar flex flex-wrap">
 					<?php

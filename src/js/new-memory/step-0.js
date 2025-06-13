@@ -1,4 +1,4 @@
-import { isStepFilled,disallowNextStep } from './common'
+import { isStepFilled, disallowNextStep, allowNextStep } from './common'
 import { ihAjaxRequest, showNotification } from '../common/global'
 
 /**
@@ -7,10 +7,16 @@ import { ihAjaxRequest, showNotification } from '../common/global'
 export const selectTheme = () => {
 	const
 		themes       = document.querySelectorAll( '.new-memory-theme' ),
-		activeTheme  = document.querySelector( '.new-memory-theme.active' )
+		activeTheme  = document.querySelector( '.new-memory-theme.active' ),
+		footer       = document.querySelector( '.new-memory-footer' )
 	let initialTheme = activeTheme ? activeTheme.dataset.value : undefined
 
 	if( ! themes.length ) return
+
+	// Hide footer on step-0
+	if (footer) {
+		footer.style.display = 'none'
+	}
 
 	themes.forEach( theme => {
 		theme.addEventListener( 'click', () => {
@@ -27,7 +33,6 @@ export const selectTheme = () => {
                                     (initialTheme !== 'military' && themeValue === 'military');
 
 			if (isMilitaryChange) {
-				disallowNextStep();
 				// Send data to server
 				const formData = new FormData();
 				formData.append('action', `ih_ajax_save_data_step_0`);
@@ -37,7 +42,19 @@ export const selectTheme = () => {
 					if (res) {
 						switch (res.success) {
 							case true:
-								window.location.reload();
+								// Скрываем текущий шаг
+								document.querySelector('.new-memory-step.active').classList.remove('active');
+								// Показываем следующий шаг
+								document.querySelector('#new-memory-step-1').classList.add('active');
+								// Показываем кнопку "Назад"
+								document.querySelector('.new-memory-prev-step').classList.remove('hidden');
+								document.querySelector('.new-memory-prev-step').setAttribute('data-prev', '0');
+								// Показываем футер
+								if (footer) {
+									footer.style.display = 'block'
+								}
+								// Проверяем заполненность следующего шага
+								isStepFilled(1);
 								break;
 
 							case false:
@@ -47,8 +64,30 @@ export const selectTheme = () => {
 					}
 				});
 			} else {
-				
-				isStepFilled();
+				// Сохраняем данные шага
+				const formData = new FormData();
+				formData.append('action', 'ih_ajax_save_data_step_0');
+				formData.append('stepData', localStorage.getItem('ih-step-0') || '');
+
+				ihAjaxRequest(formData).then(res => {
+					if (res && res.success) {
+						// Скрываем текущий шаг
+						document.querySelector('.new-memory-step.active').classList.remove('active');
+						// Показываем следующий шаг
+						document.querySelector('#new-memory-step-1').classList.add('active');
+						// Показываем кнопку "Назад"
+						document.querySelector('.new-memory-prev-step').classList.remove('hidden');
+						document.querySelector('.new-memory-prev-step').setAttribute('data-prev', '0');
+						// Показываем футер
+						if (footer) {
+							footer.style.display = 'block'
+						}
+						// Проверяем заполненность следующего шага
+						isStepFilled(1);
+					} else if (res) {
+						showNotification(res.data.msg, 'error');
+					}
+				});
 			}
 		});
 	});
