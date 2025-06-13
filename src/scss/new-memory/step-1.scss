@@ -229,4 +229,21 @@ body.memory-page-theme-military {
 			color: $dark-yellow
 		}
 	}
+
+	@media (max-width:768px) {
+		.label-file{
+			width: 100%;
+			.button-icon-lead{
+				background: #C69A39;
+
+				&.added{
+					background: #fff !important;
+				}
+			}
+
+			.filename{
+				margin: auto !important;
+			}
+		}
+	}
 }

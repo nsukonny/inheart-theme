@@ -81,8 +81,7 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 					'label_class'	=> 'full',
 					'placeholder'	=> __( 'По батькові Померлого', 'inheart' ),
 					'value'			=> $middle_name,
-					'autocomplete'	=> 'additional-name',
-					'required'		=> 1
+					'autocomplete'	=> 'additional-name'
 				] );
 				get_template_part( 'components/inputs/date', null, [
 					'name'			=> 'date-of-birth',
@@ -130,7 +129,6 @@ if( $memory_page_id = $_SESSION['memory_page_id'] ?? null ){
 						id="photo"
 						name="photo"
 						type="file"
-						<?php echo ( $thumb_title ? '' : ' required' ) ?>
 						data-cropped="<?php echo esc_url( $thumb ) ?>"
 					/>
 					<span class="filename"><?php echo esc_html( $thumb_title ) ?></span>

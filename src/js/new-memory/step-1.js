@@ -439,28 +439,29 @@ export const uploadMainPhoto = () => {
  * Validate Step 1 Main info form.
  */
 export const addMainFormValidation = () => {
-	const fields = document.querySelectorAll( '.new-memory-main-info input:not([type="file"])' )
+	const fields = document.querySelectorAll('.new-memory-main-info input:not([type="file"])')
 
-	if( ! fields.length ) return
+	if (!fields.length) return
 
-	fields.forEach( field => {
-		field.addEventListener( 'change', e => checkFieldValue( e ) )
-		field.addEventListener( 'keyup', e => checkFieldValue( e ) )
-		field.addEventListener( 'blur', e => checkFieldValue( e ) )
-	} )
+	fields.forEach(field => {
+		field.addEventListener('change', e => checkFieldValue(e))
+		field.addEventListener('keyup', e => checkFieldValue(e))
+		field.addEventListener('blur', e => checkFieldValue(e))
+	})
 
 	const checkFieldValue = e => {
 		const
-			field	= e.target,
-			value	= field.value,
-			index	= field.name
+			field = e.target,
+			value = field.value,
+			index = field.name
 
-		if( ! value ) field.classList.add( 'error' )
-		else field.classList.remove( 'error' )
+		// Only add error class if field is required and empty
+		if (field.required && !value) field.classList.add('error')
+		else field.classList.remove('error')
 
 		stepData[index] = value
-		localStorage.setItem( 'ih-step-1', JSON.stringify( stepData ) )
-		isStepFilled( 1 )
+		localStorage.setItem('ih-step-1', JSON.stringify(stepData))
+		isStepFilled(1)
 	}
 }
 
@@ -484,7 +485,8 @@ export const checkStep1 = () => {
 		const index = field.name;
 		const value = field.value.trim();
 
-		if (field.classList.contains('error') || (field.required && !value)) {
+		// Only check for errors if field is required
+		if (field.required && (field.classList.contains('error') || !value)) {
 			isFormValid = false;
 		}
 
@@ -518,4 +520,4 @@ export const checkStep1 = () => {
 	localStorage.setItem('ih-step-1', JSON.stringify(stepData));
 
 	return isFormValid;
-};
+}
