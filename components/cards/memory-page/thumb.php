@@ -37,10 +37,18 @@ $hours		= $lifetime['hours'];
 					fill="transparent"
 			></path>
 
-			<text mask="url(#Mask)">
-				<textPath href="#curve" startOffset="50%" text-anchor="middle">
-					<?php echo ih_get_memory_page_name( $id ) ?>
-				</textPath>
+			<text>
+				<textPath xlink:href="#curve" startOffset="0">
+					<?php
+					printf(
+						esc_html__( '%d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %s років ~ %s місяців ~ %d тижнів ~ %d днів ~ %d годин %s років ~ %s місяців ~ %d тижнів ~ %d днів ~ %d годин', 'inheart' ),
+						$years, $months, $weeks, $days, $hours,
+						$years, $months, $weeks, $days, $hours,
+						$years, $months, $weeks, $days, $hours,
+						$years, $months, $weeks, $days, $hours,
+						$years, $months, $weeks, $days, $hours
+					);
+					?>
 			</text>
 		</svg>
 	</div>
