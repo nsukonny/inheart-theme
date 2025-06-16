@@ -19,7 +19,16 @@ $hours		= $lifetime['hours'];
 ?>
 
 <div class="single-memory-thumb">
-    <?php if( has_post_thumbnail( $id ) ) echo get_the_post_thumbnail( $id, 'full' ) ?>
+    <?php 
+    if( has_post_thumbnail( $id ) ) {
+        echo get_the_post_thumbnail( $id, 'full' );
+    } else {
+        $default_thumb = get_field( 'default_memory_page_thumbnail', 'option' );
+        if( $default_thumb ) {
+            echo wp_get_attachment_image( $default_thumb['id'], 'full' );
+        }
+    }
+    ?>
 
     <div class="single-memory-thumb-border">
         <svg viewBox="-20 -20 560 800" class="page-head-portrait-text">
@@ -40,31 +49,11 @@ $hours		= $lifetime['hours'];
                     fill="transparent"
             ></path>
 
-
-            <text  mask="url(#Mask)">
-                <textPath xlink:href="#curve" startOffset="50%">
-                    <?php
-                    printf(
-                        esc_html__( '%d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %d років ~ %d місяців ~ %d тижнів ~ %d днів ~ %d годин %s років ~ %s місяців ~ %d тижнів ~ %d днів ~ %d годин %s років ~ %s місяців ~ %d тижнів ~ %d днів ~ %d годин', 'inheart' ),
-                        $years, $months, $weeks, $days, $hours,
-                        $years, $months, $weeks, $days, $hours,
-                        $years, $months, $weeks, $days, $hours,
-                        $years, $months, $weeks, $days, $hours,
-                        $years, $months, $weeks, $days, $hours
-                    );
-                    ?>
-                    <animate attributeName="startOffset" from="-50%" to="0%" begin="0s" dur="30s" repeatCount="indefinite"></animate>
+            <text mask="url(#Mask)">
+                <textPath href="#curve" startOffset="50%" text-anchor="middle">
+                    <?php echo ih_get_memory_page_name( $id ) ?>
                 </textPath>
             </text>
-            <animateMotion
-                    xlink:href="#CC"
-                    attributeName="motion"
-                    attributeType="XML"
-                    additive="sum"
-                    dur="6s"
-                    repeatCount="indefinite">
-                <mpath xlink:href="#OUT"/>
-            </animateMotion>
         </svg>
     </div>
 </div>

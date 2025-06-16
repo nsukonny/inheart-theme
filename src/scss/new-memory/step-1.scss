@@ -234,10 +234,10 @@ body.memory-page-theme-military {
 		.label-file{
 			width: 100%;
 			.button-icon-lead{
-				background: #C69A39;
+				background: #c69a39 !important;
 
 				&.added{
-					background: #fff !important;
+					background: transparent !important;
 				}
 			}
 
@@ -246,4 +246,53 @@ body.memory-page-theme-military {
 			}
 		}
 	}
+
+	.new-memory-main-info {
+  .label-file {
+    .button {
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+      transition: all 0.3s ease;
+      min-width: 266px;
+
+	  .content {
+		position: relative;
+		z-index: 2; // ← поверх заливки
+		display: inline-flex;
+		align-items: center;
+		gap: 8px; // если нужно отступ между иконкой и текстом
+	}
+
+      // Обертка для текста
+      span {
+        position: relative;
+        z-index: 2; // выше ::before
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0;
+        background: #A3CDDC !important;
+        transition: width 0.3s ease;
+        z-index: 0; // ниже текста
+        pointer-events: none;
+      }
+
+      &.uploading {
+        background: #CEDCE0 !important;
+        pointer-events: none;
+        color: #000;
+
+        &::before {
+          width: var(--upload-progress, 0%);
+        }
+      }
+    }
+  }
+}
 }

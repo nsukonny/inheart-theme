@@ -27,8 +27,8 @@ $text_updated	= get_field( 'page_updated_text' );
 			</svg>
 
 			<?php
-			if( $is_edit ) _e( "Сторінку пам’яті оновлено", 'inheart' );
-			else _e( "Сторінку пам’яті створено", 'inheart' );
+			if( $is_edit ) _e( "Сторінку пам'яті оновлено", 'inheart' );
+			else _e( "Сторінку пам'яті створено", 'inheart' );
 			?>
 		</div>
 
@@ -37,8 +37,14 @@ $text_updated	= get_field( 'page_updated_text' );
 				<div class="page-created-thumb-border"></div>
 				<div class="page-created-thumb-img">
 					<?php
-					if( has_post_thumbnail( $memory_page_id ) )
+					if( has_post_thumbnail( $memory_page_id ) ) {
 						echo get_the_post_thumbnail( $memory_page_id, 'full' );
+					} else {
+						$default_thumb = get_field( 'default_memory_page_thumbnail', 'option' );
+						if( $default_thumb ) {
+							echo wp_get_attachment_image( $default_thumb['id'], 'full' );
+						}
+					}
 					?>
 				</div>
 			</div>

@@ -353,33 +353,121 @@ export const uploadMainPhoto = () => {
 		photo			= document.querySelector( '#photo' ),
 		img				= document.querySelector( '.popup-photo' ),
 		saveBtn			= document.querySelector( '.popup-save-photo' ),
-		mainPhotoNameEl	= document.querySelector( '.new-memory-main-info .filename' )
+		mainPhotoNameEl	= document.querySelector( '.new-memory-main-info .filename' ),
+		photoButtons	= document.querySelectorAll( '.new-memory-main-info .label-file .button' )
 	let mainPhotoName
 
-	if( ! popup || ! photo || ! img || ! saveBtn || ! mainPhotoNameEl ) return
+	if( ! popup || ! photo || ! img || ! saveBtn || ! mainPhotoNameEl || !photoButtons.length ) {
+		console.error('Required elements not found:', {
+			popup: !!popup,
+			photo: !!photo,
+			img: !!img,
+			saveBtn: !!saveBtn,
+			mainPhotoNameEl: !!mainPhotoNameEl,
+			photoButtons: photoButtons.length
+		})
+		return
+	}
 
 	photo.addEventListener( 'change', () => {
-		const
-			fReader	= new FileReader(),
-			file	= photo.files[0]
+		const file = photo.files[0]
+		if (!file) return
 
-		mainPhotoName = file.name
-		fReader.readAsDataURL( file )
-		fReader.onload = e => {
-			img.src = e.target.result
-			popup.classList.remove( 'hidden' )
-			setTargetElement( '#photo-popup' )
-			disableBodyScroll( getTargetElement(), { reserveScrollBarGap: true } )
-			cropper = new Cropper( img, {
-				aspectRatio	: 302 / 389,
-				movable		: false,
-				rotatable	: false,
-				scalable	: true,
-				zoomable	: false,
-				zoomOnTouch	: false
-			} )
+		console.log('File selected:', file.name, 'Size:', file.size)
+
+		// Store original content for both buttons
+		const originalContents = Array.from(photoButtons).map(button => button.querySelector('.content'))
+		if (!originalContents.every(content => content)) {
+			console.error('Original content not found in some buttons')
+			return
 		}
-	} )
+
+		// Create loading text
+		const loadingText = document.createElement('span')
+		loadingText.className = 'content'
+		loadingText.textContent = 'Фото завантажується'
+
+		// Add uploading class and reset progress to all buttons
+		photoButtons.forEach(button => {
+			button.classList.add('uploading')
+			button.style.setProperty('--upload-progress', '0%')
+			// Replace content
+			const originalContent = button.querySelector('.content')
+			originalContent.style.display = 'none'
+			button.appendChild(loadingText.cloneNode(true))
+		})
+		console.log('Added uploading class and reset progress')
+
+		const fReader = new FileReader()
+		mainPhotoName = file.name
+
+		// Start artificial progress animation
+		let progress = 0
+		const progressInterval = setInterval(() => {
+			progress += 1
+			console.log('Progress:', progress.toFixed(2) + '%')
+			// Update progress for all buttons
+			photoButtons.forEach(button => {
+				button.style.setProperty('--upload-progress', `${progress}%`)
+			})
+			
+			if (progress >= 100) {
+				clearInterval(progressInterval)
+				// Show popup only after reaching 100%
+				setTimeout(() => {
+					console.log('Progress complete, showing popup')
+					// Restore all buttons
+					photoButtons.forEach((button, index) => {
+						button.classList.remove('uploading')
+						button.style.removeProperty('--upload-progress')
+						// Remove loading text and restore original content
+						button.querySelectorAll('.content').forEach(content => {
+							if (content !== originalContents[index]) {
+								content.remove()
+							}
+						})
+						originalContents[index].style.display = 'inline-flex'
+					})
+
+					img.src = fReader.result
+					popup.classList.remove('hidden')
+					setTargetElement('#photo-popup')
+					disableBodyScroll(getTargetElement(), { reserveScrollBarGap: true })
+					cropper = new Cropper(img, {
+						aspectRatio: 302 / 389,
+						movable: false,
+						rotatable: false,
+						scalable: true,
+						zoomable: false,
+						zoomOnTouch: false
+					})
+				}, 300)
+			}
+		}, 30)
+
+		fReader.readAsDataURL(file)
+		fReader.onload = e => {
+			// Store the result but don't show popup yet
+			fReader.result = e.target.result
+		}
+
+		fReader.onerror = () => {
+			clearInterval(progressInterval)
+			console.error('Error reading file')
+			// Restore all buttons on error
+			photoButtons.forEach((button, index) => {
+				button.classList.remove('uploading')
+				button.style.removeProperty('--upload-progress')
+				// Remove loading text and restore original content
+				button.querySelectorAll('.content').forEach(content => {
+					if (content !== originalContents[index]) {
+						content.remove()
+					}
+				})
+				originalContents[index].style.display = 'inline-flex'
+			})
+		}
+	})
 
 	// Close popup.
 	popup.addEventListener( 'click', e => {

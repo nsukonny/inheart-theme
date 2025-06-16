@@ -24,9 +24,15 @@ $content		= get_field( 'content', $id );
     <div class="memory-preview-top flex flex-wrap justify-between align-center">
         <a href="<?php echo get_the_permalink( $page_id ) ?>" class="memory-preview-page flex align-center">
             <?php
-			if( has_post_thumbnail( $page_id ) )
-				echo '<div class="memory-preview-page-thumb">' . get_the_post_thumbnail( $page_id, 'ih-logo' ) . '</div>';
-			?>
+            if( has_post_thumbnail( $page_id ) ) {
+                echo '<div class="memory-preview-page-thumb">' . get_the_post_thumbnail( $page_id, 'ih-logo' ) . '</div>';
+            } else {
+                $default_thumb = get_field( 'default_memory_page_thumbnail', 'option' );
+                if( $default_thumb ) {
+                    echo '<div class="memory-preview-page-thumb">' . wp_get_attachment_image( $default_thumb['id'], 'ih-logo' ) . '</div>';
+                }
+            }
+            ?>
 
             <div class="memory-preview-page-name">
                 <?php echo ih_get_memory_page_name( $page_id ) ?>
@@ -34,69 +40,49 @@ $content		= get_field( 'content', $id );
         </a>
 
         <div class="memory-preview-actions flex align-center">
-            <?php
-			if( $type === 'others' ){
-				if( $status === 'publish' && ! $is_rejected )
-					echo '<span class="button info">' . __( 'Спогад опубліковано', 'inheart' ) . '</span>';
+            <?php if( $status === 'pending' ): ?>
+                <div class="memory-preview-status flex align-center">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="12" fill="#D0AD60"/>
+                        <path d="M17.6139 8.15706C17.8033 8.35802 17.7939 8.67446 17.5929 8.86386L9.66309 16.3378C9.42573 16.5615 9.05311 16.5546 8.82417 16.3222L6.14384 13.6019C5.95003 13.4052 5.95237 13.0886 6.14907 12.8948C6.34578 12.701 6.66235 12.7033 6.85616 12.9001L9.26192 15.3417L16.9071 8.13614C17.108 7.94674 17.4245 7.95611 17.6139 8.15706Z" fill="#011C1A"/>
+                    </svg>
 
-				if( $status === 'pending' ){
-					?>
-					<button class="button lg primary memory-preview-publish">
-						<?php _e( "Додати на сторінку пам'яті", 'inheart' ) ?>
-					</button>
-					<?php
-				}
-				?>
-				<button class="button button-icon lg danger memory-preview-delete" data-type="others">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<mask id="mask0_905_13219" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="2" width="12" height="16">
-							<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9165 3.33333H14.9998C15.4582 3.33333 15.8332 3.70833 15.8332 4.16667C15.8332 4.625 15.4582 5 14.9998 5H4.99984C4.5415 5 4.1665 4.625 4.1665 4.16667C4.1665 3.70833 4.5415 3.33333 4.99984 3.33333H7.08317L7.67484 2.74167C7.82484 2.59167 8.0415 2.5 8.25817 2.5H11.7415C11.9582 2.5 12.1748 2.59167 12.3248 2.74167L12.9165 3.33333ZM6.6665 17.5C5.74984 17.5 4.99984 16.75 4.99984 15.8333V7.5C4.99984 6.58333 5.74984 5.83333 6.6665 5.83333H13.3332C14.2498 5.83333 14.9998 6.58333 14.9998 7.5V15.8333C14.9998 16.75 14.2498 17.5 13.3332 17.5H6.6665Z" fill="black"/>
-						</mask>
-						<g mask="url(#mask0_905_13219)">
-							<rect width="20" height="20" fill="currentColor"/>
-						</g>
-					</svg>
-				</button>
-				<?php
-			}else{
-				if( $status === 'publish' && ! $is_rejected )
-					echo '<span class="button info">' . __( 'Спогад опубліковано', 'inheart' ) . '</span>';
+                    <?php _e( 'На модерації', 'inheart' ) ?>
+                </div>
+            <?php endif; ?>
 
-				if( $is_rejected ){
-					?>
-					<button class="button negative no-events"><?php esc_html_e( 'Відмовлено в публікації', 'inheart' ) ?></button>
-					<button class="button md outlined memory-preview-rejected-submit" data-type="yours">OK</button>
-					<?php
-				}elseif( $status === 'pending' ){
-					?>
-					<button class="button no-events">
-						<?php _e( 'На модерації', 'inheart' ) ?>
-					</button>
-					<button class="button button-icon lg danger memory-preview-delete" data-type="yours">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<mask id="mask0_905_13220" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="2" width="12" height="16">
-								<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9165 3.33333H14.9998C15.4582 3.33333 15.8332 3.70833 15.8332 4.16667C15.8332 4.625 15.4582 5 14.9998 5H4.99984C4.5415 5 4.1665 4.625 4.1665 4.16667C4.1665 3.70833 4.5415 3.33333 4.99984 3.33333H7.08317L7.67484 2.74167C7.82484 2.59167 8.0415 2.5 8.25817 2.5H11.7415C11.9582 2.5 12.1748 2.59167 12.3248 2.74167L12.9165 3.33333ZM6.6665 17.5C5.74984 17.5 4.99984 16.75 4.99984 15.8333V7.5C4.99984 6.58333 5.74984 5.83333 6.6665 5.83333H13.3332C14.2498 5.83333 14.9998 6.58333 14.9998 7.5V15.8333C14.9998 16.75 14.2498 17.5 13.3332 17.5H6.6665Z" fill="black"/>
-							</mask>
-							<g mask="url(#mask0_905_13220)">
-								<rect width="20" height="20" fill="currentColor"/>
-							</g>
-						</svg>
-					</button>
-					<?php
-				}elseif( $status === 'trash' ){}
-			}
-            ?>
+            <?php if( $is_rejected ): ?>
+                <div class="memory-preview-status flex align-center">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="12" fill="#D0AD60"/>
+                        <path d="M17.6139 8.15706C17.8033 8.35802 17.7939 8.67446 17.5929 8.86386L9.66309 16.3378C9.42573 16.5615 9.05311 16.5546 8.82417 16.3222L6.14384 13.6019C5.95003 13.4052 5.95237 13.0886 6.14907 12.8948C6.34578 12.701 6.66235 12.7033 6.85616 12.9001L9.26192 15.3417L16.9071 8.13614C17.108 7.94674 17.4245 7.95611 17.6139 8.15706Z" fill="#011C1A"/>
+                    </svg>
+
+                    <?php _e( 'Відхилено', 'inheart' ) ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="memory-preview-delete flex align-center justify-center" data-id="<?php echo esc_attr( $id ) ?>">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <mask id="mask_<?php echo esc_attr( $id ) ?>" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="3" width="14" height="18">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M14.79 3.29L15.5 4H18C18.55 4 19 4.45 19 5C19 5.55 18.55 6 18 6H6C5.45 6 5 5.55 5 5C5 4.45 5.45 4 6 4H8.5L9.21 3.29C9.39 3.11 9.65 3 9.91 3H14.09C14.35 3 14.61 3.11 14.79 3.29ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V9C18 7.9 17.1 7 16 7H8C6.9 7 6 7.9 6 9V19ZM9 9H15C15.55 9 16 9.45 16 10V18C16 18.55 15.55 19 15 19H9C8.45 19 8 18.55 8 18V10C8 9.45 8.45 9 9 9Z" fill="black"/>
+                    </mask>
+                    <g mask="url(#mask_<?php echo esc_attr( $id ) ?>)">
+                        <rect width="24" height="24" fill="currentColor"/>
+                    </g>
+                </svg>
+            </div>
         </div>
     </div>
 
     <div class="memory-preview-body flex direction-column align-center">
         <?php
         if( has_post_thumbnail( $id ) ){
-			?>
-			<div class="memory-preview-thumb" data-full="<?php echo get_the_post_thumbnail_url( $id, 'full' ) ?>">
-				<?php echo get_the_post_thumbnail( $id, 'ih-logo' ) ?>
-			</div>
-			<?php
+            ?>
+            <div class="memory-preview-thumb" data-full="<?php echo get_the_post_thumbnail_url( $id, 'full' ) ?>">
+                <?php echo get_the_post_thumbnail( $id, 'ih-logo' ) ?>
+            </div>
+            <?php
         }
 
         if( $content ) echo '<div class="memory-preview-text">' . $content . '</div>';

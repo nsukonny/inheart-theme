@@ -201,13 +201,14 @@ add_filter('wp_redirect', 'rewrite_redirect_to_profile');
  *
  * @return void
  */
+/*
 function add_live_chat_bot() {
     ?>
     <script src="https://cdn.pulse.is/livechat/loader.js" data-live-chat-id="67dbfd8379266126cf05a4f3" async></script>
     <?php
 }
 
-add_action( 'wp_footer', 'add_live_chat_bot' );
+add_action( 'wp_footer', 'add_live_chat_bot' );/*
 /*
 function add_live_chat_bot_custom_btn() {
     ?>

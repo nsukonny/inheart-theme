@@ -29,12 +29,12 @@ $full_price     = ih_get_expanded_page_order_price( 1, true );
 	<div class="container direction-column align-center">
 		<h2 class="military-created-title flex justify-center align-center">
 			<?php
-			if( $is_edit ) _e( "Сторінка пам’яті оновлена", 'inheart' );else _e( "Сторінка пам’яті створена", 'inheart' );
+			if( $is_edit ) _e( "Сторінка пам'яті оновлена", 'inheart' );else _e( "Сторінка пам'яті створена", 'inheart' );
 			?>
 		</h2>
 
 		<p class="military-created-desc">
-			<?php _e( "Тепер ви можете замовити металевий QR-код, через який можна швидко перейти до Сторінки памʼяті. Зазвичай його кріплять на памʼятник", 'inheart' ) ?>
+			<?php _e( "Тепер ви можете замовити металевий QR-код, через який можна швидко перейти до Сторінки пам'яті. Зазвичай його кріплять на пам'ятник", 'inheart' ) ?>
 		</p>
 
 		<div class="military-created-qr flex justify-center">
@@ -55,7 +55,14 @@ $full_price     = ih_get_expanded_page_order_price( 1, true );
 				<div class="military-created-top flex flex-wrap justify-between">
 					<div class="military-created-thumb">
 						<?php
-						if( has_post_thumbnail( $memory_page_id ) ) echo get_the_post_thumbnail( $memory_page_id, 'full', ['loading' => 'lazy'] );
+						if( has_post_thumbnail( $memory_page_id ) ) {
+							echo get_the_post_thumbnail( $memory_page_id, 'full', ['loading' => 'lazy'] );
+						} else {
+							$default_thumb = get_field( 'default_memory_page_thumbnail', 'option' );
+							if( $default_thumb ) {
+								echo wp_get_attachment_image( $default_thumb['id'], 'full', ['loading' => 'lazy'] );
+							}
+						}
 						?>
 					</div>
 
