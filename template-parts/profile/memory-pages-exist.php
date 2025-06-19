@@ -7,8 +7,7 @@
  * @subpackage inheart
  */
 
-if( ! $memory_pages = $args['pages'] ?? null ) return;
-
+$memory_pages = $args['pages'] ?? null; 
 $class             = ( isset( $args['hide'] ) && $args['hide'] ) ? ' hidden' : '';
 $draft_memory_page = $args['draft'] ?? null;
 ?>
@@ -22,8 +21,11 @@ $draft_memory_page = $args['draft'] ?? null;
 			get_template_part( 'components/cards/memory-page/card', null, [ 'id' => $draft_memory_page->ID ] );
 		}
 
-		foreach( $memory_pages as $page ) {
-			get_template_part( 'components/cards/memory-page/card', null, [ 'id' => $page->ID ] );
+		if( $memory_pages != null)
+		{
+			foreach( $memory_pages as $page ) {
+				get_template_part( 'components/cards/memory-page/card', null, [ 'id' => $page->ID ] );
+			}
 		}
 		?>
 	</div>

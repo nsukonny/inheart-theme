@@ -43,7 +43,7 @@ $draft_memory_page = get_posts( [
         <?php
         get_template_part( 'components/sidebar/sidebar' );
 
-        if ( ! empty( $memory_pages ) ) {
+        if ( ! empty( $memory_pages ) || ! empty($draft_memory_page)) {
 	        get_template_part( 'template-parts/profile/memory-pages', 'exist', [
 		        'pages' => $memory_pages,
 				'draft' => ! empty( $draft_memory_page ) ? $draft_memory_page[0] : null,
