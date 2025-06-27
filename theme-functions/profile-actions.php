@@ -143,13 +143,18 @@ function ih_ajax_add_person_memory(): void
 
 	$post_data = [
 		'post_title'	=> "$fullname для сторінки " . get_the_title( $memory_page_id ),
-		'post_status'	=> 'pending',
+		'post_status'	=> 'publish', // Для отладки сразу публикуем
 		'post_type'		=> 'memory',
 		'post_author'	=> get_current_user_id()
 	];
 	$post_id = wp_insert_post( wp_slash( $post_data ) );
 
-	if( is_wp_error( $post_id ) ) wp_send_json_error( ['msg' => __( 'Не вдалося створити спогад', 'inheart' )] );
+	if( is_wp_error( $post_id ) ) {
+		error_log( 'Ошибка создания memory: ' . $post_id->get_error_message() );
+		wp_send_json_error( ['msg' => $post_id->get_error_message()] );
+	}
+
+	error_log( 'Создана memory: ' . $post_id . ' статус: ' . get_post_status($post_id) );
 
 	update_field( 'memory_page', $memory_page_id, $post_id );
 	update_field( 'full_name', $fullname, $post_id );
