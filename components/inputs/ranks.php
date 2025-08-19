@@ -30,7 +30,7 @@ $military_title	= get_field( 'military_title', $_SESSION['memory_page_id'] );
 			value="<?php echo esc_attr( $military_title ) ?>"
 		/>
 		<span class="input-icon tail">
-			<?php get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/arrow-down-s-line.svg'] ) ?>
+			<?php get_template_part( 'components/svg/svg', null, ['url' => THEME_DIR . '/static/img/arrow-down-s-line.svg'] ) ?>
 		</span>
 	</span>
 

@@ -29,10 +29,10 @@ $lost_pass		= $args['lost_pass'] ?? '';
 
 		<?php
 		echo '<span class="input-icon tail pass-toggle">';
-		get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/eye-gray.svg'] );
+		get_template_part( 'components/svg/svg', null, ['url' => THEME_DIR . '/static/img/eye-gray.svg'] );
 		echo '</span>';
 		echo '<span class="input-icon tail pass-toggle crossed">';
-		get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/eye-gray-crossed.svg'] );
+		get_template_part( 'components/svg/svg', null, ['url' => THEME_DIR . '/static/img/eye-gray-crossed.svg'] );
 		echo '</span>';
 		?>
 	</span>

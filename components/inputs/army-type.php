@@ -52,7 +52,7 @@ $wrap_class		.= $icon_tail ? ' icon-tail' : '';
 	<?php
 	if( $icon_tail ){
 		echo '<span class="input-icon tail">';
-			get_template_part( 'components/svg/svg', null, ['url' => THEME_URI . '/static/img/' . esc_attr( $icon_tail )] );
+			get_template_part( 'components/svg/svg', null, ['url' => THEME_DIR . '/static/img/' . esc_attr( $icon_tail )] );
 		echo '</span>';
 	}
 
